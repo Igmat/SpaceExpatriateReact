@@ -1,9 +1,13 @@
 import styles from './Resource.module.scss';
 import { Resource } from '../../card-types';
 
-export const ResourceComponent = (props: Resource) => {
+export interface ResourceComponentProps {
+    type: Resource;
+}
+
+export const ResourceComponent = (props: ResourceComponentProps) => {
     return (
-        <div className={`${styles[props.types]} ${styles.resource}`}>
+        <div className={`${styles[props.type]} ${styles.resource}`}>
 
         </div>
     )
