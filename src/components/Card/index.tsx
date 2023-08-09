@@ -9,20 +9,20 @@ export const Card = (props: CardProps) => {
 
     return (
 
-        <div className={styles[props.type]}>
+        <div className={`${styles[props.type]} ${styles.card}`}>
             {props.type === 'delivery' && (
-                props.resources.map(el => <div className={styles[el]}></div>)
+                props.resources.map(el => <ResourceComponent type={el}/>)
             )}
             {props.type === 'engineering' && (
                 <div className={styles[props.connection]}>
                     <div className={styles.entryPoint}>
                         {props.entryPoint && (
-                            <div className={styles[props.entryPoint]}></div>
+                            <ResourceComponent type={props.entryPoint}/>
                         )}
                     </div>
                     <div className={styles.exitPoint}>
                         {props.exitPoint.map(el =>
-                            <div className={styles[el]}></div>)}
+                             <ResourceComponent type={el}/>)}
                         {props.points && <div>{props.points}</div>}
                     </div>
                 </div>

@@ -13,6 +13,7 @@ export const Player = () => {
 
     return (
         <div>
+            123
             <Table />
             <Hand cards={cards} />
         </div>

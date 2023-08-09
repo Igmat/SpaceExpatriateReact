@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders player 1`] = `
+<div>
+  123
+  <div />
+  <div
+    className="container"
+  >
+    <div
+      className="delivery card"
+    >
+      <div
+        className="fuel resource"
+      />
+    </div>
+    <div
+      className="engineering card"
+    >
+      <div
+        className="start"
+      >
+        <div
+          className="entryPoint"
+        />
+        <div
+          className="exitPoint"
+        >
+          <div
+            className="dark-matter resource"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      className="military card"
+    >
+      <div
+        className="intelligence"
+      />
+    </div>
+    <div
+      className="terraforming card"
+    >
+      <div>
+        <div
+          className="minerals resource"
+        />
+        <div
+          className="nanotechnologies resource"
+        />
+      </div>
+      <div>
+        1
+      </div>
+    </div>
+  </div>
+</div>
+`;
