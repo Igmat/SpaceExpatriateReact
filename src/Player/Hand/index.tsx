@@ -8,8 +8,8 @@ interface HandProps {
 
 export const Hand = (props: HandProps) => {
     return (
-        <>
+        <div className={styles.container}>
             {props.cards.map(card => <Card {...card} />)}
-        </>
+        </div>
     )
 }
