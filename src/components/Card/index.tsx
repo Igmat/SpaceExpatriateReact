@@ -1,7 +1,7 @@
 import styles from './Card.module.scss';
-import { CardDefinition } from '../../card-types';
+import { CardDefinition } from '../../Rules/card-types';
 import { ResourceComponent } from '../ResourceComponent';
-import {Resource} from '../../card-types'
+import {Resource} from '../../Rules/card-types'
 
 type CardProps = CardDefinition & {} // & {}- передаем действия игрока
 

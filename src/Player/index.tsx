@@ -1,4 +1,4 @@
-import { CardDefinition } from "../card-types";
+import { CardDefinition } from "../Rules/card-types";
 import { Hand } from "./Hand";
 import { Table } from "./Table";
 

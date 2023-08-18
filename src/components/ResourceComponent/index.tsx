@@ -1,5 +1,5 @@
 import styles from './Resource.module.scss';
-import { Resource } from '../../card-types';
+import { Resource } from '../../Rules/card-types';
 import { log } from 'console';
 
 export interface ResourceComponentProps {

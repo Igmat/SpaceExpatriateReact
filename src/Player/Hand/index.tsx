@@ -1,5 +1,5 @@
 import styles from './Hand.module.scss';
-import { CardDefinition } from '../../card-types';
+import { CardDefinition } from '../../Rules/card-types';
 import { Card } from '../../components/Card';
 
 interface HandProps {
