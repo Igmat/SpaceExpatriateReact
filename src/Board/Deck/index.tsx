@@ -1,10 +1,12 @@
+import { DeckModel } from '../../Rules/DeckModel';
 import styles from './Deck.module.scss';
-import { DeliveryCard } from '../../card-types';
 
 interface DeckProps {
     type: 'delivery' | 'engineering' | 'terraforming' | 'military',
     order?: number[]
 }
+
+/*
 
 const deliveryCards: { [key: number]: DeliveryCard } = {
     1: {
@@ -29,12 +31,13 @@ const deliveryCards: { [key: number]: DeliveryCard } = {
     },
 }
 
+
 const card = deliveryCards[4]
 
 const allCardIds = Object.keys(deliveryCards);
 
 const mixCards = (cards: number[]): number[] => {
-    /*
+    
     if (cards.length === 0) {
         return []
     }
@@ -43,7 +46,7 @@ const mixCards = (cards: number[]): number[] => {
     const newDeck = [...cards].splice(randomIndex, 1);
     const restMixedcards = mixCards(newDeck);
     return [cards[randomIndex], ...restMixedcards];
-    */
+    
     
     const result: number[] = [];
     const restCards = [...cards];
@@ -63,6 +66,36 @@ const takeCard = (cards: number[]) => {
     return deliveryCards[idOfCard];
 }
 
+*/
+
+const DeliveryDeck = new DeckModel({
+    1: {
+        id: 1,
+        type: 'delivery',
+        resources: ['biotic materials', 'biotic materials'],
+    },
+    2: {
+        id: 2,
+        type: 'delivery',
+        resources: ['fuel', 'fuel'],
+    },
+    3: {
+        id: 3,
+        type: 'delivery',
+        resources: ['minerals', 'minerals'],
+    },
+    4: {
+        id: 4,
+        type: 'delivery',
+        resources: ['machinery'],
+    },
+    5: {
+        id: 5,
+        type: 'delivery',
+        resources: ['nanotechnologies'],
+    },
+});
+
 export const Deck = (props: DeckProps) => {
     return (
         <div className={`${styles[props.type]} ${styles.deck}`}>
@@ -70,5 +103,3 @@ export const Deck = (props: DeckProps) => {
         </div>
     )
 }
-
-// превратить в класс DeliveryDeck и создать сброс карт
