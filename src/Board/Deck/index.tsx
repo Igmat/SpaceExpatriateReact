@@ -1,52 +1,26 @@
-import { DeckModel } from '../../Rules/DeckModel';
-import styles from './Deck.module.scss';
+import { DeckModel } from "../../Rules/DeckModel";
+import styles from "./Deck.module.scss";
+import { Card } from "../../components/Card";
+import { CardDefinition } from "../../Rules/card-types";
+import { observer } from "mobx-react-lite";
 
 interface DeckProps {
-    type: 'delivery' | 'engineering' | 'terraforming' | 'military',
-    order?: number[]
-    onOpenClick?: () => void
-    onClosedClick?: () => void
+  model: DeckModel<CardDefinition>;
 }
 
-
-
-const DeliveryDeck = new DeckModel({
-    1: {
-        id: 1,
-        type: 'delivery',
-        resources: ['biotic materials', 'biotic materials'],
-    },
-    2: {
-        id: 2,
-        type: 'delivery',
-        resources: ['fuel', 'fuel'],
-    },
-    3: {
-        id: 3,
-        type: 'delivery',
-        resources: ['minerals', 'minerals'],
-    },
-    4: {
-        id: 4,
-        type: 'delivery',
-        resources: ['machinery'],
-    },
-    5: {
-        id: 5,
-        type: 'delivery',
-        resources: ['nanotechnologies'],
-    },
+export const Deck = observer((props: DeckProps) => {
+  return (
+    <>
+      <div
+        className={`${styles[props.model.type]} ${styles.deck}`}
+        onClick={props.model.takeCard}
+      ></div>
+      <div
+        className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
+        onClick={props.model.takeOpenedCardAndOpenNew}
+      >
+        {props.model.openedCard && <Card {...props.model.openedCard} />}
+      </div>
+    </>
+  );
 });
-
-export const Deck = (props: DeckProps) => {
-    return (
-
-        <>
-        <div className={`${styles[props.type]} ${styles.deck}`} onClick={props.onClosedClick}>
-        </div>
-        <div className={`${styles[props.type]} ${styles.deck} ${styles.open}`} onClick={props.onOpenClick}>
-     
-        </div>
-        </>
-    )
-}

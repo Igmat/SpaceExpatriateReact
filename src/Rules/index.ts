@@ -2,11 +2,12 @@ import { DeckModel } from "./DeckModel";
 import { deliveryCards } from "./CardDefinitions/delivery";
 import { militaryCards } from "./CardDefinitions/military";
 import { engineeringCards } from "./CardDefinitions/engineering";
+import { terraformingCards } from "./CardDefinitions/terraforming"; 
 
 export const GameState = {
-    deliveryDeck: new DeckModel(deliveryCards),
-    engineeringDeck: new DeckModel(engineeringCards),
-    terraformingDeck: new DeckModel({}),
-    militaryDeck: new DeckModel(militaryCards),
+    deliveryDeck: new DeckModel('delivery', deliveryCards),
+    engineeringDeck: new DeckModel('engineering', engineeringCards),
+    terraformingDeck: new DeckModel('terraforming', terraformingCards),
+    militaryDeck: new DeckModel('military', militaryCards),
 };
 
