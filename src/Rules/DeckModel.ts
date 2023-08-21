@@ -18,8 +18,16 @@ export class DeckModel<T extends {id: number}> {
     }
 
     takeOpenedCard() {
+        console.log("takeOpenedCard")
         const result = this.openedCard;
         this.openedCard = undefined;
+        return result;
+    }
+
+    takeOpenedCardAndOpenNew() {
+        console.log("takeOpenedCardandOpenNew")
+        const result = this.takeOpenedCard();
+        this.openCard();
         return result;
     }
 
@@ -37,6 +45,7 @@ export class DeckModel<T extends {id: number}> {
     }
 
     takeCard(): T {
+        console.log("takeCard")
         const idOfCard = this.#activeCards.pop()!;
         if (this.#activeCards.length === 0) {
             this.#activeCards = this.#droppedCards;

@@ -20,3 +20,4 @@ export const engineeringCards = createCards<EngineeringCard>(
     { connection: "start", entryPoint: "minerals", points: 1, name: "NUCLEAR POWER PLANT", quantity: 2 },
     { connection: "start", entryPoint: "biotic materials", points: 1, name: "BIOMASS-FUEL POWER STATION", quantity: 2 },
 )
+
