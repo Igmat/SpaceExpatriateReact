@@ -1,4 +1,6 @@
-export type Resource = 'fuel' | 'minerals' | 'biotic materials' | 'machinery' | 'nanotechnologies' | 'dark matter';
+export type ResourcePrimitive = 'fuel' | 'minerals' | 'biotic materials' | 'machinery' | 'nanotechnologies' | 'dark matter';
+
+export type Resource = ResourcePrimitive | ResourcePrimitive[];
 
 export type CardDefinition = DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard;
 
@@ -15,8 +17,9 @@ export interface EngineeringCard {
     type: 'engineering',
     connection: 'start' | 'continue' | 'end',
     entryPoint?: Resource,
-    exitPoint: Resource[],
-    points?: number
+    exitPoint?: Resource[],
+    points?: number,
+    name: string
 }
 
 export interface TerraformingCard {
