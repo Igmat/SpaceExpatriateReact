@@ -99,7 +99,7 @@ const DeliveryDeck = new DeckModel({
 export const Deck = (props: DeckProps) => {
     return (
         <div className={`${styles[props.type]} ${styles.deck}`}>
-
+            
         </div>
     )
 }
