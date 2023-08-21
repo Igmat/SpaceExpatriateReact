@@ -1,7 +1,6 @@
 import styles from './Card.module.scss';
 import { CardDefinition } from '../../Rules/card-types';
 import { ResourceComponent } from '../ResourceComponent';
-import {Resource} from '../../Rules/card-types'
 
 type CardProps = CardDefinition & {} // & {}- передаем действия игрока
 
@@ -21,7 +20,7 @@ export const Card = (props: CardProps) => {
                         )}
                     </div>
                     <div className={styles.exitPoint}>
-                        {props.exitPoint.map(el =>
+                        {props.exitPoint && props.exitPoint.map(el =>
                              <ResourceComponent type={el}/>)}
                         {props.points && <div>{props.points}</div>}
                     </div>

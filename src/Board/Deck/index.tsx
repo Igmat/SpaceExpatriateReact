@@ -40,10 +40,12 @@ const DeliveryDeck = new DeckModel({
 
 export const Deck = (props: DeckProps) => {
     return (
+
         <>
         <div className={`${styles[props.type]} ${styles.deck}`} onClick={props.onClosedClick}>
         </div>
         <div className={`${styles[props.type]} ${styles.deck} ${styles.open}`} onClick={props.onOpenClick}>
+     
         </div>
         </>
     )

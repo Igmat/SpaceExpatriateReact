@@ -6,7 +6,7 @@ export const Player = () => {
 
     const cards: CardDefinition[] = [
         { id: 1, type: "delivery", resources: ["fuel"] },
-        { id: 2, type: "engineering", connection: "start", exitPoint: ["dark matter"] },
+        { id: 2, type: "engineering", connection: "start", exitPoint: ["dark matter"], name: "BIOMASS-FUEL POWER STATION" },
         { id: 2, type: "military", weapon: "intelligence" },
         { id: 1, type: "terraforming", points: 1, resources: ["minerals", "nanotechnologies"] }
     ];
