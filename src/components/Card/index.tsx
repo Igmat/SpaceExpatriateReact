@@ -2,28 +2,26 @@ import styles from "./Card.module.scss";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResourceComponent } from "../ResourceComponent";
 
-type CardProps = CardDefinition & {}; // & {}- передаем действия игрока
-
+type CardProps = CardDefinition & {
+  onClick?: () => void;
+}; // & {}- передаем действия игрока
 
 export const Card = (props: CardProps) => {
   return (
-    <div className={`${styles[props.type]} ${styles.card}`}>
+    <div
+      className={`${styles[props.type]} ${styles.card}`}
+      onClick={props.onClick}
+    >
       {props.type === "delivery" &&
-        props.resources.map((el, ind) => (
-          <ResourceComponent  key={props.type + ind} type={el} />
-        ))}
+        props.resources.map((el) => <ResourceComponent type={el} />)}
       {props.type === "engineering" && (
         <div className={styles[props.connection]}>
           <div className={styles.entryPoint}>
-            {props.entryPoint && (
-              <ResourceComponent  key={1} type={props.entryPoint} />
-            )}
+            {props.entryPoint && <ResourceComponent type={props.entryPoint} />}
           </div>
           <div className={styles.exitPoint}>
             {props.exitPoint &&
-              props.exitPoint.map((el) => (
-                <ResourceComponent key={2} type={el} />
-              ))}
+              props.exitPoint.map((el) => <ResourceComponent type={el} />)}
             {props.points && <div>{props.points}</div>}
           </div>
         </div>
@@ -34,8 +32,9 @@ export const Card = (props: CardProps) => {
       {props.type === "terraforming" && (
         <>
           <div>
-            {props.resources.map((el, ind) => (
-              <ResourceComponent  key={props.type + ind} type={el} />
+            {/*props.resources.map(el => <div className={styles[el]}></div>)*/}
+            {props.resources.map((el) => (
+              <ResourceComponent type={el} />
             ))}
           </div>
           <div>{props.points}</div>

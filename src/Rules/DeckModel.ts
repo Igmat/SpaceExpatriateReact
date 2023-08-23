@@ -1,6 +1,5 @@
 import { CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
-import { PlayerModel } from "./PlayerModel";
 
 export class DeckModel<T extends { id: number }> {
   constructor(
@@ -32,6 +31,7 @@ export class DeckModel<T extends { id: number }> {
   }
 
   takeOpenedCardAndOpenNew = () => {
+    console.log("takeOpenedCardandOpenNew");
     const result = this.takeOpenedCard();
     this.openCard();
  
@@ -54,7 +54,7 @@ export class DeckModel<T extends { id: number }> {
     const idOfCard = this.activeCards.pop()!;
     if (this.activeCards.length === 0) {
       this.activeCards = this.droppedCards;
-      this.droppedCards = []
+      this.droppedCards = [];
       this.mixCards();
     }
     console.log('Im in takeCard')
@@ -73,7 +73,3 @@ export class DeckModel<T extends { id: number }> {
 }
 
 //https://mobx.js.org/README.html
-//(создать класс для "Руки")
-//Сделать отображение руки из актуальных данных
-//При взаимодействии с колодой логичным образом менять "руку"
-//Из колоды в руку, из руки в сброс

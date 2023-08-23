@@ -1,15 +1,15 @@
-import { CardDefinition } from "../Rules/card-types";
+import { CardDefinition } from '../Rules/card-types';
+import { GameState } from '../Rules';
 import { Hand } from "./Hand";
 import { Table } from "./Table";
-import { GameState, PlayerState } from "../Rules";
-import { DeckModel } from "../Rules/DeckModel";
+import { observer } from 'mobx-react-lite';
 
-export const Player = () => {
-  return (
-    <div>
-      <Table />
-      <Hand player={PlayerState.cards} state={GameState}/>
-   
-    </div>
-  );
-};
+export const Player = observer(() => {
+
+    return (
+        <>
+            <Table />
+            <Hand model={GameState.hand} decks={GameState.decks}/>
+        </>
+    )
+})
