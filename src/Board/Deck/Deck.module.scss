@@ -1,25 +1,61 @@
 .delivery {
-    background-color: #2cd423;
+  background-color: #66a663;
+  background-image: url("../../img/111.png");
+  box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .engineering {
-    background-color: #f7ef01;
+  background-color: #efea63;
+  background-image: url("../../img/111.png");
+  box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .terraforming {
-    background-color: #3f42f6;
+  background-color: #2e2f5d;
+  background-image: url("../../img/111.png");
+  box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .military {
-    background-color: #d80a0a;
-}
-
-.open{
-    background-color: #ffffff;
-    border: 3px dotted black;
+  background-color: #831e1e;
+  background-image: url("../../img/111.png");
+  box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .deck {
-    width: 200px;
-    height: 300px;
+  width: 200px;
+  height: 300px;
+  border-radius: 15px;
+  background-repeat: no-repeat;
+  background-size: 100px;
+  background-position: 50%;
+  &.open {
+    border: 1px dotted rgb(93, 93, 93);
+    background-color: #beb2b2;
+    background-size: 10px;
+    background-image: none;
+    transform: translate(-20px, 50px);
+    box-shadow: none;
+    position: relative;
+ 
+  }
+  & .takeBtn{
+    width: 150px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+}
+.takeBtn:hover{
+  color: red;
+}
+.open::after {
+  content: "?";
+  color: #3e3626;
+  position: absolute;
+  font-size: 50px;
+  font-weight: 100;
+  top: 50px;
+  left: 90px;
 }

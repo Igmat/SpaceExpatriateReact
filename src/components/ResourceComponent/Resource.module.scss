@@ -1,22 +1,26 @@
 .resource {
-  width: 25px;
+  // width: 25px;
   height: 25px;
+  color: rgb(224, 208, 162);
+  border: 1px solid  rgb(148, 97, 26);
 }
+
 .fuel {
-  background-color: purple;
+  background-color: rgb(102, 57, 102);
 }
 .minerals {
-  background-color: blue;
+  background-color: rgb(79, 79, 200);
 }
 .biotic-materials {
-  background-color: green;
+  background-color: rgb(56, 135, 56);
 }
 .machinery {
-  background-color: red;
+  background-color: rgb(185, 63, 63);
 }
 .nanotechnologies {
-  background-color: yellow;
+  background-color: rgb(225, 225, 52);
+  color: rgb(120, 86, 44);
 }
 .dark-matter {
-  background-color: black;
+  background-color: rgb(44, 44, 44);
 }

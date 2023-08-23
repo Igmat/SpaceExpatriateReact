@@ -3,6 +3,7 @@ import { deliveryCards } from "./CardDefinitions/delivery";
 import { militaryCards } from "./CardDefinitions/military";
 import { engineeringCards } from "./CardDefinitions/engineering";
 import { terraformingCards } from "./CardDefinitions/terraforming"; 
+import { PlayerModel } from "./PlayerModel";
 
 export const GameState = {
     deliveryDeck: new DeckModel('delivery', deliveryCards),
@@ -11,3 +12,7 @@ export const GameState = {
     militaryDeck: new DeckModel('military', militaryCards),
 };
 
+export const PlayerState = {
+    cards: new PlayerModel()
+
+}

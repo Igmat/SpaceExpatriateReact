@@ -23,6 +23,7 @@ export interface EngineeringCard {
 }
 
 export interface TerraformingCard {
+    name: string,
     id: number,
     type: 'terraforming',
     resources: Resource[],

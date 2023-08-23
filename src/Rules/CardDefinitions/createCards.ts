@@ -13,7 +13,6 @@ export function createCards<T extends CardDefinition>(type: T['type'], ...defini
         }
     }), {})
     */
-    
     return definitions
         .reduce((acc, { quantity = 1, ...el }) =>
             acc.push(...Array(quantity).fill(el))
@@ -26,4 +25,6 @@ export function createCards<T extends CardDefinition>(type: T['type'], ...defini
                 ...el,
             } as T ) && acc,
             {} as { [key: number]: T })
+
+         
 }

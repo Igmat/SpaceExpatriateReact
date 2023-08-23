@@ -1,20 +1,15 @@
-import { CardDefinition } from '../Rules/card-types';
+import { CardDefinition } from "../Rules/card-types";
 import { Hand } from "./Hand";
 import { Table } from "./Table";
+import { GameState, PlayerState } from "../Rules";
+import { DeckModel } from "../Rules/DeckModel";
 
 export const Player = () => {
-
-    const cards: CardDefinition[] = [
-        { id: 1, type: "delivery", resources: ["fuel"] },
-        { id: 2, type: "engineering", connection: "start", exitPoint: ["dark matter"], name: "BIOMASS-FUEL POWER STATION" },
-        { id: 2, type: "military", weapon: "intelligence" },
-        { id: 1, type: "terraforming", points: 1, resources: ["minerals", "nanotechnologies"] }
-    ];
-
-    return (
-        <div>
-            <Table />
-            <Hand cards={cards} />
-        </div>
-    )
-}
+  return (
+    <div>
+      <Table />
+      <Hand player={PlayerState.cards} state={GameState}/>
+   
+    </div>
+  );
+};
