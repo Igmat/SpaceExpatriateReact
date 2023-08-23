@@ -1,11 +1,13 @@
+import { observer } from "mobx-react-lite";
 import { DeckModel } from "../../Rules/DeckModel";
-import styles from "./Deck.module.scss";
 import { Card } from "../../components/Card";
 import { CardDefinition } from "../../Rules/card-types";
-import { observer } from "mobx-react-lite";
+import { HandModel } from "../../Rules/HandModel";
+import styles from "./Deck.module.scss";
 
 interface DeckProps {
   model: DeckModel<CardDefinition>;
+  hand: HandModel
 }
 
 export const Deck = observer((props: DeckProps) => {
@@ -13,11 +15,11 @@ export const Deck = observer((props: DeckProps) => {
     <>
       <div
         className={`${styles[props.model.type]} ${styles.deck}`}
-        onClick={props.model.takeCard}
-      ></div>
+        onClick={()=>props.hand.takeCard(props.model.takeCard())}
+      />
       <div
         className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
-        onClick={props.model.takeOpenedCardAndOpenNew}
+        onClick={()=>props.hand.takeCard(props.model.takeOpenedCardAndOpenNew())}
       >
         {props.model.openedCard && <Card {...props.model.openedCard} />}
       </div>
