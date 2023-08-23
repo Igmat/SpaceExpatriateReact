@@ -1,19 +1,62 @@
-.delivery {
-    background-color: #2cd423;
-}
 
-.engineering {
-    background-color: #f7ef01;
-}
-
-.terraforming {
-    background-color: #3f42f6;
-}
-
-.military {
-    background-color: #d80a0a;
-}
 .card{
     width:200px;
     height:300px;
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+    z-index: 111;
+    box-shadow: 0 0 5px 1px rgb(46, 45, 45);
+}
+.card::before {
+    position: absolute;
+    z-index: -2;
+    display: block;
+    top: 10px;
+    left: 10px;
+    width: 5px;
+    height: 0px;
+    border-right: 175px solid rgb(148, 97, 26);
+    border-bottom: 280px solid rgb(148, 97, 26);
+    border-radius: 15px;
+    content: '';
+ }
+ .card::after {
+    position: absolute;
+    display: block;
+    z-index: -1;
+    top: 12px;
+    left: 12px;
+    width: 5px;
+    height: 0px;
+    border-right: 171px solid #66a663;
+    border-bottom: 276px solid #66a663;
+    border-radius: 15px;
+    content: '';
+ }
+ .delivery {
+    background-color: #66a663;
+}
+
+.engineering {
+    background-color: #efea63;
+}
+.engineering::after{
+    border-right: 171px solid #efea63;
+    border-bottom: 276px solid  #efea63;
+}
+.terraforming {
+    background-color: #2e2f5d;
+}
+.terraforming::after{
+    border-right: 171px solid #2e2f5d;
+    border-bottom: 276px solid #2e2f5d;
+}
+.military {
+    background-color: #831e1e;
+}
+.military::after{
+    border-right: 171px solid #831e1e;
+    border-bottom: 276px solid  #831e1e;
+
 }

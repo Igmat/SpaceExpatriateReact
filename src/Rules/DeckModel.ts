@@ -21,10 +21,10 @@ export class DeckModel<T extends { id: number }> {
   openCard = () => {
     this.openedCard !== undefined && this.dropCards(this.openedCard.id);
     this.openedCard = this.takeCard();
-  };
 
+  };
+ 
   takeOpenedCard() {
-    console.log("takeOpenedCard");
     const result = this.openedCard;
     this.openedCard = undefined;
     return result;
@@ -34,6 +34,7 @@ export class DeckModel<T extends { id: number }> {
     console.log("takeOpenedCardandOpenNew");
     const result = this.takeOpenedCard();
     this.openCard();
+ 
     return result;
   };
 
@@ -50,20 +51,24 @@ export class DeckModel<T extends { id: number }> {
   }
 
   takeCard = (): T => {
-    console.log("takeCard");
-
     const idOfCard = this.activeCards.pop()!;
-
     if (this.activeCards.length === 0) {
       this.activeCards = this.droppedCards;
       this.droppedCards = [];
       this.mixCards();
     }
+    console.log('Im in takeCard')
     return this.cardsDefinitions[idOfCard];
+ 
   };
 
   dropCards = (...cards: number[]) => {
     this.droppedCards.push(...cards);
+    console.log('Im in  dropCards')
+  };
+
+  get restCount () {
+    return this.droppedCards.length;
   };
 }
 

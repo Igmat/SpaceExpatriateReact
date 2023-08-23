@@ -11,6 +11,8 @@ interface DeckProps {
 }
 
 export const Deck = observer((props: DeckProps) => {
+
+
   return (
     <>
       <div
@@ -21,7 +23,10 @@ export const Deck = observer((props: DeckProps) => {
         className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
         onClick={()=>props.hand.takeCard(props.model.takeOpenedCardAndOpenNew())}
       >
-        {props.model.openedCard && <Card {...props.model.openedCard} />}
+        {props.model.openedCard && (
+          <Card key={props.model.openedCard.id} {...props.model.openedCard} />
+        )}
+        
       </div>
     </>
   );
