@@ -1,6 +1,5 @@
-import styles from "./Resource.module.scss";
 import { Resource } from "../../Rules/card-types";
-import { log } from "console";
+import styles from "./Resource.module.scss";
 
 export interface ResourceComponentProps {
   type: Resource;
@@ -13,7 +12,7 @@ export const ResourceComponent = (props: ResourceComponentProps) => {
       : props.type.map((el) => el.split(" ").join("-"));
   return (
     <>
-    {normalisedType.map((el, ind) => <><div className={`${styles[el]} ${styles.resource}`}/> { ind !== normalisedType.length && "/"} </> ) }
+      {normalisedType.map((el, ind) => <><div key={ind} className={`${styles[el]} ${styles.resource}`} /> {ind !== normalisedType.length - 1 && "/"} </>)}
     </>
   );
 };

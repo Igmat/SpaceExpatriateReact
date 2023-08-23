@@ -32,7 +32,6 @@ export class DeckModel<T extends { id: number }> {
 
   takeOpenedCardAndOpenNew = () => {
     console.log("takeOpenedCardandOpenNew");
-    console.log(this.openedCard);
     const result = this.takeOpenedCard();
     this.openCard();
     return result;
@@ -57,6 +56,7 @@ export class DeckModel<T extends { id: number }> {
 
     if (this.activeCards.length === 0) {
       this.activeCards = this.droppedCards;
+      this.droppedCards = [];
       this.mixCards();
     }
     return this.cardsDefinitions[idOfCard];
@@ -68,8 +68,3 @@ export class DeckModel<T extends { id: number }> {
 }
 
 //https://mobx.js.org/README.html
-//Сделать отображение руки из актуальных данных
-//При взаимодействии с колодой логичным образом менять "руку"
-//Из колоды в руку, из руки в сброс
-//Описать полноценно delivery
-//(создать класс для "Руки")

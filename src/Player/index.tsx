@@ -1,20 +1,15 @@
 import { CardDefinition } from '../Rules/card-types';
+import { GameState } from '../Rules';
 import { Hand } from "./Hand";
 import { Table } from "./Table";
+import { observer } from 'mobx-react-lite';
 
-export const Player = () => {
-
-    const cards: CardDefinition[] = [
-        { id: 1, type: "delivery", resources: ["fuel"] },
-        { id: 2, type: "engineering", connection: "start", exitPoint: ["dark matter"], name: "BIOMASS-FUEL POWER STATION" },
-        { id: 2, type: "military", weapon: "intelligence" },
-        { id: 1, type: "terraforming", points: 1, resources: ["minerals", "nanotechnologies"] }
-    ];
+export const Player = observer(() => {
 
     return (
-        <div>
+        <>
             <Table />
-            <Hand cards={cards} />
-        </div>
+            <Hand model={GameState.hand} decks={GameState.decks}/>
+        </>
     )
-}
+})

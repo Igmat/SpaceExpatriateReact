@@ -5,10 +5,10 @@ import { GameState } from "../Rules"
 export const Board = () => {
     return (
         <div className={styles.board}>
-            <Deck model={GameState.deliveryDeck}/>
-            <Deck model={GameState.engineeringDeck}/>
-            <Deck model={GameState.terraformingDeck}/>
-            <Deck model={GameState.militaryDeck}/>
+            <Deck model={GameState.decks.delivery} hand={GameState.hand}/>
+            <Deck model={GameState.decks.engineering} hand={GameState.hand}/>
+            <Deck model={GameState.decks.terraforming} hand={GameState.hand}/>
+            <Deck model={GameState.decks.military} hand={GameState.hand}/>
         </div>
     )
 }
