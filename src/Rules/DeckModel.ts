@@ -9,6 +9,7 @@ export class DeckModel<T extends { id: number }> {
     this.cardsDefinitions = cardsDefinitions;
     this.activeCards = Object.keys(this.cardsDefinitions);
     this.mixCards();
+    this.openCard();
     makeAutoObservable(this);
   }
 

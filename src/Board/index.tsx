@@ -1,15 +1,15 @@
 import { Deck } from "./Deck"
 import styles from './Board.module.scss'
-import { GameState} from "../Rules"
+import { gameState} from "../Rules"
 
 export const Board = () => {
  
     return (
         <div className={styles.board}>
-            <Deck model={GameState.decks.delivery} hand={GameState.hand}/>
-            <Deck model={GameState.decks.engineering} hand={GameState.hand}/>
-            <Deck model={GameState.decks.terraforming} hand={GameState.hand}/>
-            <Deck model={GameState.decks.military} hand={GameState.hand}/>
+            <Deck model={gameState.decks.delivery} hand={gameState.hand} table={gameState.table} action={gameState.action}/>
+            <Deck model={gameState.decks.engineering} hand={gameState.hand} table={gameState.table} action={gameState.action}/>
+            <Deck model={gameState.decks.terraforming} hand={gameState.hand} table={gameState.table} action={gameState.action}/>
+            <Deck model={gameState.decks.military} hand={gameState.hand} table={gameState.table} action={gameState.action}/>
         </div>
     )
 }
