@@ -7,8 +7,8 @@ export const militaryCards = createCards<MilitaryCard>(
   ...Array(8).fill({ weapon: "intelligence" }),
   ...Array(8).fill({ weapon: "spaceborne" }),
   ...Array(8).fill({ weapon: "orbital" })*/
-  { weapon: "fighters", quantity:8},
-  { weapon: "spaceborne", quantity:8},
-  { weapon: "orbital", quantity:8},
-  { weapon: "intelligence", quantity:8},
+  { weapon: "fighters", quantity:8, name:"Fighters"},
+  { weapon: "spaceborne", quantity:8, name:"Spaceborne"},
+  { weapon: "orbital", quantity:8, name:"Orbital"},
+  { weapon: "intelligence", quantity:8, name:"Intelligence"},
 );

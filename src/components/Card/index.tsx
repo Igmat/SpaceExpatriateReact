@@ -27,7 +27,7 @@ export const Card = (props: CardProps) => {
         </div>
       )}
       {props.type === "military" && (
-        <div className={styles[props.weapon]}></div>
+        <div className={styles[props.weapon]}>{props.name}</div>
       )}
       {props.type === "terraforming" && (
         <>
