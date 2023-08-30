@@ -1,55 +1,47 @@
 .delivery {
-  background-color: #66a663;
+  background-color:rgb(3, 90, 79);
   background-image: url("../../img/111.png");
   box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .engineering {
-  background-color: #efea63;
+  background-color: rgb(159, 132, 87);
   background-image: url("../../img/111.png");
   box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .terraforming {
-  background-color: #2e2f5d;
+  background-color: rgb(45, 132, 152);
   background-image: url("../../img/111.png");
   box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .military {
-  background-color: #831e1e;
+  background-color: rgb(109, 54, 77);
   background-image: url("../../img/111.png");
   box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
 .deck {
-  width: 200px;
-  height: 300px;
+  width:120px;
+  height:200px;
   border-radius: 15px;
   background-repeat: no-repeat;
-  background-size: 100px;
+  background-size: 50px;
   background-position: 50%;
+  cursor: pointer;
   &.open {
     border: 1px dotted rgb(93, 93, 93);
     background-color: #beb2b2;
     background-size: 10px;
     background-image: none;
-    transform: translate(-20px, 50px);
+  //  transform: translate(-20px, 50px);
     box-shadow: none;
     position: relative;
  
   }
-  & .takeBtn{
-    width: 150px;
-    height: 50px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-  }
 }
-.takeBtn:hover{
-  color: red;
-}
+/*
 .open::after {
   content: "?";
   color: #3e3626;
@@ -57,5 +49,6 @@
   font-size: 50px;
   font-weight: 100;
   top: 50px;
-  left: 90px;
+  left: 50px;
 }
+*/

@@ -1,7 +1,15 @@
-.board {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: auto;
+.container{
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-items: center;
+    & .board {
+        display: grid;
+        grid-template-columns: repeat(4, 130px);
+        grid-template-rows: auto;
+        align-items: center;
+        justify-items: center;
+        margin: auto;
+        gap: 10px;
+    }
 }
