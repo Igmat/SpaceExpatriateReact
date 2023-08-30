@@ -10,22 +10,22 @@ interface TableProps {
 export const Table = observer((props: TableProps) => {
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.cardsContainer}>
         {props.model.delivery.map((card, ind) => (
           <Card key={ind} {...card} />
         ))}
       </div>
-      <div>
+      <div className={styles.cardsContainer}>
         {props.model.engineering.map((card, ind) => (
           <Card key={ind} {...card} />
         ))}
       </div>
-      <div>
+      <div className={styles.cardsContainer}>
         {props.model.terraforming.map((card, ind) => (
           <Card key={ind} {...card} />
         ))}
       </div>
-      <div>
+      <div className={styles.cardsContainer}>
         {props.model.military.map((card, ind) => (
           <Card key={ind} {...card} />
         ))}

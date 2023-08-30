@@ -27,10 +27,7 @@ export const Deck = observer((props: DeckProps) => {
 
   return (
     <>
-      <div
-        className={`${styles[props.model.type]} ${styles.deck}`}
-        onClick={() => props.action.activateDeck(props.model.type)}
-      />
+
       <div
         className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
         onClick={() => props.action.perform(props.model.openedCard)}
@@ -39,6 +36,10 @@ export const Deck = observer((props: DeckProps) => {
           <Card key={props.model.openedCard.id} {...props.model.openedCard} />
         )}
       </div>
+      <div
+        className={`${styles[props.model.type]} ${styles.deck}`}
+        onClick={() => props.action.activateDeck(props.model.type)}
+      />
     </>
   );
 });

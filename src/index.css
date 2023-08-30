@@ -5,8 +5,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 10px;
-  background-color: rgb(144, 123, 118);
+  background-color: rgb(177, 177, 177);
+
+  height: 100vh;
 }
 
 code {
@@ -17,4 +18,7 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.ReactModal__Overlay{
+  background-color: red;
 }

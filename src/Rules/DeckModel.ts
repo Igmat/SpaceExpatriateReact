@@ -58,14 +58,14 @@ export class DeckModel<T extends { id: number }> {
       this.droppedCards = [];
       this.mixCards();
     }
-    console.log('Im in takeCard')
+   // console.log('Im in takeCard')
     return this.cardsDefinitions[idOfCard];
  
   };
 
   dropCards = (...cards: number[]) => {
     this.droppedCards.push(...cards);
-    console.log('Im in  dropCards')
+  //  console.log('Im in  dropCards')
   };
 
   get restCount () {

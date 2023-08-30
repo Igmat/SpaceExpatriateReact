@@ -1,18 +1,23 @@
 
 .card{
-    width:200px;
-    height:300px;
+ //width:200px;
+//height:300px;
+width:120px;
+height:200px;
     border-radius: 15px;
     padding: 30px;
     position: relative;
-    z-index: 111;
-    box-shadow: 0 0 5px 1px rgb(46, 45, 45);
+  //  z-index: 111;
+    box-shadow: 0 0 5px 1px rgb(58, 58, 58);
+    cursor: pointer;
 }
+/*
 .card::before {
     position: absolute;
     z-index: -2;
     display: block;
     top: 10px;
+    //top: 
     left: 10px;
     width: 5px;
     height: 0px;
@@ -33,28 +38,31 @@
     border-bottom: 276px solid #66a663;
     border-radius: 15px;
     content: '';
- }
+ }*/
  .delivery {
-    background-color: #66a663;
+    background-color:rgb(3, 90, 79);
 }
 
 .engineering {
-    background-color: #efea63;
+    background-color: rgb(159, 132, 87);
 }
+
 .engineering::after{
     border-right: 171px solid #efea63;
     border-bottom: 276px solid  #efea63;
 }
 .terraforming {
-    background-color: #2e2f5d;
+    background-color: rgb(45, 132, 152);
 }
+
 .terraforming::after{
     border-right: 171px solid #2e2f5d;
     border-bottom: 276px solid #2e2f5d;
 }
 .military {
-    background-color: #831e1e;
+    background-color: rgb(109, 54, 77);
 }
+
 .military::after{
     border-right: 171px solid #831e1e;
     border-bottom: 276px solid  #831e1e;

@@ -1,0 +1,29 @@
+.container {
+  display: grid;
+  min-height: 550px;
+  grid-template-columns: repeat(4, 120px);
+  gap: 10px;
+  justify-items: center;
+  justify-content: center;
+  background: linear-gradient(
+      45deg,
+      rgba(0, 0, 0, 0) 48%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(0, 0, 0, 0) 52%
+    ),
+    linear-gradient(
+      -45deg,
+      rgba(0, 0, 0, 0) 48%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(0, 0, 0, 0) 52%
+    );
+  background-size: 2em 2em;
+  border-top: 1px solid rgb(170, 152, 152);
+  border-bottom: 1px solid rgb(170, 152, 152);
+  & .cardsContainer {
+    display: grid;
+    grid-template-rows: repeat(auto-fill,minmax(70px, 1fr));
+    max-height: 500px;
+    padding: 10px 0 170px;
+  }
+}

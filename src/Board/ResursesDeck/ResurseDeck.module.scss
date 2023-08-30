@@ -1,0 +1,25 @@
+.container{
+  width: 570px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto 60px;
+  gap: 50px;
+  & h2{
+    color: rgb(62, 61, 61);
+    font-size: 70px;
+  }
+  & .garage{
+    width:120px;
+    height:200px;
+        border-radius: 15px;
+        background-color: rgb(38, 38, 38);
+        color:  rgb(121, 137, 125);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        
+  }
+}

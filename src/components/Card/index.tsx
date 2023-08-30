@@ -13,7 +13,7 @@ export const Card = (props: CardProps) => {
       onClick={props.onClick}
     >
       {props.type === "delivery" &&
-        props.resources.map((el) => <ResourceComponent type={el} />)}
+        props.resources.map((el, ind) => <ResourceComponent key={ind} type={el} />)}
       {props.type === "engineering" && (
         <div className={styles[props.connection]}>
           <div className={styles.entryPoint}>
@@ -21,7 +21,7 @@ export const Card = (props: CardProps) => {
           </div>
           <div className={styles.exitPoint}>
             {props.exitPoint &&
-              props.exitPoint.map((el) => <ResourceComponent type={el} />)}
+              props.exitPoint.map((el, ind) => <ResourceComponent key={ind} type={el} />)}
             {props.points && <div>{props.points}</div>}
           </div>
         </div>
@@ -33,8 +33,8 @@ export const Card = (props: CardProps) => {
         <>
           <div>
             {/*props.resources.map(el => <div className={styles[el]}></div>)*/}
-            {props.resources.map((el) => (
-              <ResourceComponent type={el} />
+            {props.resources.map((el, ind) => (
+              <ResourceComponent key={ind}  type={el} />
             ))}
           </div>
           <div>{props.points}</div>
