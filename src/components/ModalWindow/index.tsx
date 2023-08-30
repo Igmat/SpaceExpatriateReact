@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./ModalWindow.module.scss";
 
 interface ModalWindowProps {
-  isModal: boolean;
+  isShowModal: boolean;
   closeModal: () => void;
   actionsArr: string[];
   acttionOnClick: () => void;
@@ -29,9 +29,9 @@ export const ModalWindow = (props: ModalWindowProps) => {
     props.closeModal();
   };
 
-  return !props.isModal ? null : (
+  return !props.isShowModal ? null : (
     <div className={styles.modal}>
-      <div className={styles.modalDialog}>
+      <div className={styles.modalDialog} onClick={e => e.stopPropagation()}>
         <button onClick={closeModal}>X</button>
         <div className={styles.actionsContainer} >
           {props.actionsArr.map((el: string, ind: number) => (
