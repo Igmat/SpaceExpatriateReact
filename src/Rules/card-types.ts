@@ -33,5 +33,6 @@ export interface TerraformingCard {
 export interface MilitaryCard {
     id: number,
     type: 'military',
-    weapon: 'orbital' | 'intelligence' | 'fighters' | 'spaceborne'
+    weapon: 'orbital' | 'intelligence' | 'fighters' | 'spaceborne',
+    name: string,
 }
