@@ -8,6 +8,8 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
+
+console.log('Table ')
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
