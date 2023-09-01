@@ -9,7 +9,10 @@ import styles from "./ModalWindow.module.scss";
 
 const modalContext = createContext({
   show: (content: React.ReactNode) => {},
-  hide: () => {},
+  hide: () => {
+    console.log("hide from modalContext");
+  },
+  // aaa: () => {},
 });
 
 interface ModalComponentProps {
@@ -39,8 +42,10 @@ const ModalComponent = (props: ModalComponentProps) => {
   return !props.showModal ? null : (
     <div className={styles.modal}>
       <div className={styles.modalDialog} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton}  onClick={closeModal}>X</button>
-      {props.content}
+        <button className={styles.closeButton} onClick={closeModal}>
+          X
+        </button>
+        {props.content}
       </div>
     </div>
   );
@@ -59,16 +64,18 @@ export function useModalWrapper(content: React.ReactNode) {
       show: (content: React.ReactNode) => {
         setShowModal(true);
         setModalContent(content);
+        console.log("show modal");
       },
       hide: () => {
         setShowModal(false);
         setModalContent(null);
+        console.log("hide");
       },
     }),
     []
   );
 
-  const Component = () => (
+  const Modal = () => (
     <ModalComponent
       content={modalContent}
       hide={modalService.hide}
@@ -89,8 +96,10 @@ export function useModalWrapper(content: React.ReactNode) {
   const memorisedContent = useMemo(() => content, []);
   return (
     <>
-      <Provider>{memorisedContent}</Provider>
-      <Component />
+      <Provider>
+        {memorisedContent}
+        <Modal />
+      </Provider>
     </>
   );
 }
