@@ -17,11 +17,16 @@ export class ActionManager {
   remaining = {
     activateDeck: 0,
     activateCard: 0,
-    selectOption: false,
   };
 
-  // missionType 
-  //const cardsToDrop = [];
+  cardsToDrop: CardDefinition[] = [];
+
+  missionType = {
+    delivery: false,
+    engineering: false,
+    military: false,
+    terraforming: false,
+  }
 
   perform = (card?: CardDefinition) => {
     if (!card) return;
@@ -51,7 +56,6 @@ export class ActionManager {
         this.round.step = "options";
         break;
       case "terraforming":
-        this.remaining.selectOption = true;
         this.round.step = "options";
         break;
     }
@@ -94,35 +98,29 @@ export class ActionManager {
     this.tryNext();
   };
 
-  tryBuildColony = (card: CardDefinition) => {
+  setMissionType = (card: CardType) => {
+    this.round.step = "performing";
+    this.missionType[card] = true;
+    console.log("missionType Delivery: " + this.missionType.delivery);
+  }
 
-    if (this.table[card.type].length < 3) {
-      console.log("Not enough cards to build colony");
-      console.log("You have just " + this.table[card.type].length);
-    }
+  chooseCardsToDrop = (...cards: CardDefinition[]) => {
+    this.round.phase === "terraforming" && this.round.step === "performing" &&
+    this.cardsToDrop.push(...cards);
+    console.log("cardsToDrop: " + this.cardsToDrop.length);
+  }
+
+  dropCards = () => {
+    this.round.phase === "terraforming" && this.round.step === "performing" &&
+    this.table.dropCards(...this.cardsToDrop);
+    this.cardsToDrop = [];
+    console.log("You have dropped cards and got 1 Colony");
     
-    if (this.table[card.type].length >= 3) {
-      this.table.dropCards(...this.table[card.type].splice(0, 3));
-      this.endAction();
-    }
+    this.round.next();
+  }
 
-  };
-
-  tryBuildColonyWithStationModule = () => {
-    
-
-    const activateCard = (card: CardDefinition) => {
-      //cardsToDrop.push(card);
-      this.table.takeCard(this.hand.dropCard(card.id));
-    };
-
-    /*
-    if (this.table.engineering.length >= 1 &&
-      this.table.military.length >= 1 &&
-      this.table.terraforming.length >= 1 &&
-      this.table.delivery.length >= 1) {
-     
-      };
-    */
+  reset = () => {
+    this.cardsToDrop = [];
+    console.log("cardsToDrop: " + this.cardsToDrop.length);
   }
 }
