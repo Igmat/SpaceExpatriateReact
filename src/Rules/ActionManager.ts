@@ -40,15 +40,19 @@ export class ActionManager {
 
     switch (card.type) {
       case "delivery":
+        this.round.step = "options";
         break;
       case "engineering":
         this.remaining.activateDeck = 1;
         this.remaining.activateCard = 1;
+        this.round.step = "performing";
         break;
       case "military":
+        this.round.step = "options";
         break;
       case "terraforming":
         this.remaining.selectOption = true;
+        this.round.step = "options";
         break;
     }
   };

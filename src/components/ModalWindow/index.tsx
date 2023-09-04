@@ -8,20 +8,24 @@ import React, {
 import styles from "./ModalWindow.module.scss";
 
 const modalContext = createContext({
-  show: (content: React.ReactNode) => {},
-  hide: () => {},
+  show: (content: React.ReactNode, persistant?:boolean) => {},
+  hide: () => {
+    console.log("hide from modalContext");
+  },
+  // aaa: () => {},
 });
 
 interface ModalComponentProps {
   hide: () => void;
   showModal: boolean;
   content: React.ReactNode;
+  persistant: boolean;
 }
 const ModalComponent = (props: ModalComponentProps) => {
   const keydownHandler = ({ key }: any) => {
     switch (key) {
       case "Escape":
-        props.hide();
+        if (!props.persistant) props.hide();
         break;
       default:
     }
@@ -33,14 +37,18 @@ const ModalComponent = (props: ModalComponentProps) => {
   });
 
   const closeModal = () => {
-    props.hide();
+    if (!props.persistant) props.hide();
   };
 
   return !props.showModal ? null : (
     <div className={styles.modal}>
       <div className={styles.modalDialog} onClick={(e) => e.stopPropagation()}>
-        <button className={styles.closeButton}  onClick={closeModal}>X</button>
-      {props.content}
+        {!props.persistant && (
+          <button className={styles.closeButton} onClick={closeModal}>
+            X
+          </button>
+        )}
+        {props.content}
       </div>
     </div>
   );
@@ -53,26 +61,31 @@ export function useModalService() {
 export function useModalWrapper(content: React.ReactNode) {
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [persistant, setPersistant] = useState(false);
 
   const modalService = useMemo(
     () => ({
-      show: (content: React.ReactNode) => {
+      show: (content: React.ReactNode, persistant: boolean = false) => {
         setShowModal(true);
+        setPersistant(persistant);
         setModalContent(content);
+        console.log("show modal");
       },
       hide: () => {
         setShowModal(false);
         setModalContent(null);
+        console.log("hide");
       },
     }),
     []
   );
 
-  const Component = () => (
+  const Modal = () => (
     <ModalComponent
       content={modalContent}
       hide={modalService.hide}
       showModal={showModal}
+      persistant={persistant}
     />
   );
 
@@ -89,8 +102,10 @@ export function useModalWrapper(content: React.ReactNode) {
   const memorisedContent = useMemo(() => content, []);
   return (
     <>
-      <Provider>{memorisedContent}</Provider>
-      <Component />
+      <Provider>
+        {memorisedContent}
+        <Modal />
+      </Provider>
     </>
   );
 }

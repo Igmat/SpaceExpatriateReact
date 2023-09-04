@@ -4,6 +4,7 @@ import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
 
 type Phase = "active" | CardType | "passive";
+type Step = "options" | "performing" | "done";
 
 export class RoundManager {
   constructor(
@@ -20,11 +21,13 @@ export class RoundManager {
   current = 1;
 
   phase: Phase = "active";
+  step?: Step;
 
   next = () => {
     this.current++;
     console.log("Round: " + this.current + " is started");
     this.phase = "active";
+    this.step = undefined;
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
