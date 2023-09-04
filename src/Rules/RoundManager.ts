@@ -18,14 +18,16 @@ export class RoundManager {
   }
 
   current = 1;
+
   phase: Phase = "active";
+
   next = () => {
     this.current++;
+    console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
   };
-  
 }

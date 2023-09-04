@@ -11,6 +11,8 @@ export class TableModel {
   terraforming: TerraformingCard[] = [];
   military: MilitaryCard[] = [];
 
-    dropCards = (...cards: (DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard)[]) => {}
+  dropCards = (...cards: (DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard)[]) => {
+      
+    } //
     takeCard = (card:CardDefinition)=>{this[card.type].push(card as any)} 
 }
