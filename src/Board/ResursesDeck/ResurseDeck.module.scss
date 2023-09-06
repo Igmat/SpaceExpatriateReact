@@ -1,4 +1,4 @@
-.container{
+.container {
   width: 570px;
   height: auto;
   display: flex;
@@ -6,20 +6,57 @@
   align-items: center;
   margin: 20px auto 60px;
   gap: 50px;
-  & h2{
-    color: rgb(62, 61, 61);
-    font-size: 70px;
-  }
-  & .garage{
-    width:120px;
-    height:200px;
-        border-radius: 15px;
-        background-color: rgb(38, 38, 38);
-        color:  rgb(121, 137, 125);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        
+
+  & .garage {
+    width: 100%;
+    height: 200px;
+    border-radius: 15px;
+    background-color: rgb(38, 38, 38);
+    color: rgb(121, 137, 125);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+    &::before {
+      content: "GARAGE";
+      position: absolute;
+      color: rgb(133, 133, 133, 0.1);
+      font-size: 130px;
+      top: -20px;
+      z-index: 0;
+    }
+    & div {
+      width: 50px;
+      height: 50px;
+      border: 2px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 25px;
+      position: relative;
+      z-index: 1;
+    }
+    & .biotic {
+      background-color: green;
+      transform: translate(0, 40px) rotate(10deg);
+    }
+    & .fuel {
+      background-color: purple;
+      transform: translate(0, 20px) rotate(340deg);
+    }
+    & .machinery {
+      background-color: red;
+      transform: translate(10px, 50px) rotate(10deg);
+    }
+    & .minerals {
+      background-color: blue;
+      transform: translate(10px, 10px) rotate(350deg);
+    }
+    & .nanotechnologies {
+      background-color: rgb(198, 198, 80);
+      transform: translate(0, 40px) rotate(10deg);
+    }
   }
 }

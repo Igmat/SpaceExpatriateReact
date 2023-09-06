@@ -1,10 +1,10 @@
 import React, { createContext, useState, useMemo } from "react";
 import { Board } from "../Board";
 import { Player } from "../Player";
-import { Enemy } from "../Enemy";
 import "./App.css";
-import { Rest } from "../components/Rest";
 import { useModalWrapper } from "../components/ModalWindow";
+import { ControlPanel } from "../ControlPanel";
+
 
 function App() {
  return useModalWrapper((
@@ -15,6 +15,8 @@ function App() {
       <div className="player">
         <Player />
       </div>
+
+      <ControlPanel/>
     </div>
   ));
 
@@ -22,7 +24,3 @@ function App() {
 }
 
 export default App;
-/*
-Сделать три модалки (на каждую карту)
-
-*/

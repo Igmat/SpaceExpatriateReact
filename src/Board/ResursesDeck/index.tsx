@@ -1,28 +1,38 @@
-import { useContext, useState } from "react";
 import styles from "./ResurseDeck.module.scss";
-import { useModalService } from "../../components/ModalWindow";
+import { RoundManager } from "../../Rules/RoundManager";
+import { ActionManager } from "../../Rules/ActionManager";
+import { observer } from "mobx-react-lite";
+import { ResourcesModel } from "../../Rules/ResourcesModel";
 
-export const ResursesDeck = () => {
-  // const [showModal, setShowModal] = useState(false);
-  //  const actionsArr = ["Build Colony", "Something", "Do nithing"];
+interface ResurseDeckProps {
+  round: RoundManager;
+  action: ActionManager;
+  resources: ResourcesModel;
+}
 
-  const modalService = useModalService();
+export const ResursesDeck = observer((props: ResurseDeckProps) => {
 
-  const content = (
-    <div className={styles.contentContainer}>
-      <div onClick={() => console.log('1')}>Build Colony</div>
-      <div onClick={() => console.log('2')}>Something</div>
-      <div onClick={() => console.log('3')}>Something</div>
-    </div>
-  );
-
-console.log(' ResursesDeck')
   return (
     <div className={styles.container}>
-      <h2>Resurses</h2>
-      <div className={styles.garage} onClick={() => modalService.show(content)}>
-        Garage
+      <div className={styles.garage}>
+      
+       <div className={styles.biotic}>
+            {props.resources.garbageResources["biotic materials"]}
+          </div>
+          <div className={styles.fuel}>
+            {props.resources.garbageResources.fuel}
+          </div>
+          <div className={styles.machinery}>
+            {props.resources.garbageResources.machinery}
+          </div>
+          <div className={styles.minerals}>
+            {props.resources.garbageResources.minerals}
+          </div>
+          <div className={styles.nanotechnologies}>
+            {props.resources.garbageResources.nanotechnologies}
+          </div>
       </div>
+
     </div>
   );
-};
+});

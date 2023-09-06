@@ -2,13 +2,16 @@ import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
+import { ResourcesModel } from "./ResourcesModel";
 
 type Phase = "active" | CardType | "passive";
+type Step = "options" | "performing" | "done";
 
 export class RoundManager {
   constructor(
     private readonly decks: DeckManager,
-    private readonly hand: HandModel
+    private readonly hand: HandModel,
+    private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
     this.hand.takeCard(this.decks.delivery.takeCard());
@@ -19,13 +22,22 @@ export class RoundManager {
 
   current = 1;
   phase: Phase = "active";
+  step?: Step;
+
+  nextPerformingStep = () => {
+    this.step = "performing";
+  };
+
   next = () => {
     this.current++;
     this.phase = "active";
+    this.resources.dropResources();
+    this.step = undefined;
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
+
   };
-  
+
 }

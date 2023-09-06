@@ -10,9 +10,18 @@ export const ResourceComponent = (props: ResourceComponentProps) => {
     typeof props.type === "string"
       ? [props.type.split(" ").join("-")]
       : props.type.map((el) => el.split(" ").join("-"));
+
+     
   return (
     <>
-      {normalisedType.map((el, ind) =>  <><div key={ind} className={`${styles[el]} ${styles.resource}`} >{el}</div>  {ind !== normalisedType.length - 1 && "/" } </> )}
+      {normalisedType.map((el, ind) => (
+        <>
+          <div key={ind} className={`${styles[el]} ${styles.resource}`}>
+           <div className={ styles.resName}> {el}</div> 
+          </div>{" "}
+          {ind !== normalisedType.length - 1 && "/"}{" "}
+        </>
+      ))}
     </>
   );
 };

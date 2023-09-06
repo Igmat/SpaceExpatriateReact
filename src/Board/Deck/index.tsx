@@ -6,31 +6,33 @@ import { HandModel } from "../../Rules/HandModel";
 import styles from "./Deck.module.scss";
 import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
+import { RoundManager } from "../../Rules/RoundManager";
+import { ResourcesModel } from "../../Rules/ResourcesModel";
+
 
 interface DeckProps {
   model: DeckModel<CardDefinition>;
   hand: HandModel;
   table: TableModel;
   action: ActionManager;
+  round: RoundManager;
+  resources: ResourcesModel;
 }
 
 export const Deck = observer((props: DeckProps) => {
-  /*const activateCard = () => {
-    if (gameState.round.current < 5 && gameState.round.phase === "active") {
-      const card = props.model.takeOpenedCard();
-      card && props.table.takeCard(card);
-      card && gameState.round.next();
-      return;
-    }
-    props.hand.takeCard(props.model.takeOpenedCard());
-  };*/
+
+  const onOpenCardClick = () => {
+   // console.log(props.model.type )
+   // console.log(props.round.phase)
+    props.action.perform(props.model.openedCard);
+  
+  };
 
   return (
     <>
-
       <div
         className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
-        onClick={() => props.action.perform(props.model.openedCard)}
+        onClick={() => onOpenCardClick()}
       >
         {props.model.openedCard && (
           <Card key={props.model.openedCard.id} {...props.model.openedCard} />

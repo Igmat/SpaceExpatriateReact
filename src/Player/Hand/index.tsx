@@ -4,7 +4,7 @@ import { HandModel } from "../../Rules/HandModel";
 import { DeckManager } from "../../Rules/DeckManager";
 import styles from "./Hand.module.scss";
 import { ActionManager } from "../../Rules/ActionManager";
-import hand from '../../img/Hand.png'
+
 
 
 interface HandProps {
