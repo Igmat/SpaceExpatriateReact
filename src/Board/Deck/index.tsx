@@ -38,6 +38,3 @@ export const Deck = observer((props: DeckProps) => {
   );
 });
 
-// 1 step - выбираем миссию 
-// 2 step - выбираем карты
-// 3 step - кнопка confirm

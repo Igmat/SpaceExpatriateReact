@@ -1,5 +1,4 @@
 import { gameState } from "../../Rules"
-import { deliveryCards } from "../../Rules/CardDefinitions/delivery"
 
 export const TerraformingModal = () => {
 
@@ -25,7 +24,6 @@ export const TerraformingModal = () => {
             <div className="modalDialog" onClick={onEngineeringMissionClick}>Engineering Mission</div>
             <div className="modalDialog" onClick={onTerraformingMissionClick}>Terraforming Mission</div>
             <div className="modalDialog" onClick={onMilitaryMissionClick}>Military Mission</div>
-            <div className="modalDialog" onClick={gameState.action.endAction}>Do nothing</div>
         </div>
     )
 }

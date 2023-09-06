@@ -4,12 +4,13 @@ import { ResourceComponent } from "../ResourceComponent";
 
 type CardProps = CardDefinition & {
   onClick?: () => void;
+  isSelected?: boolean;
 }; // & {}- передаем действия игрока
 
 export const Card = (props: CardProps) => {
   return (
     <div
-      className={`${styles[props.type]} ${styles.card}`}
+      className={`${styles[props.type]} ${styles.card} ${props.isSelected ? styles.selected : ""}`}
       onClick={props.onClick}
     >
       {props.type === "delivery" &&

@@ -9,15 +9,19 @@ height:200px;
     position: relative;
   //  z-index: 111;
     box-shadow: 0 0 5px 1px rgb(58, 58, 58);
+    transition: 0.1s;
     cursor: pointer;
     &:hover {
         box-shadow: 0 0 5px 1px rgb(255, 255, 255);
     }
     &:active {
         box-shadow: 0 0 5px 1px rgb(73, 44, 44);
-        transition: 0.1s;
         transform: scale(0.9);
     }
+}
+
+.selected {
+    box-shadow: 0 0 5px 5px rgb(73, 44, 44);
 }
 
  .delivery {

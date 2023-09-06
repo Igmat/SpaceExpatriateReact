@@ -15,29 +15,23 @@ export const Table = observer((props: TableProps) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.cardsContainer}>
-        {props.model.delivery.map((card, ind) => (
-          <Card key={ind} {...card} onClick={()=>props.action.chooseCardsToDrop(card)}/>
+      {(["delivery", "engineering", "terraforming", "military"] as const).map(el => 
+        <div className={styles.cardsContainer}>
+        {props.model[el].map((card, ind) => (
+          <Card key={ind} {...card} isSelected={props.action.cardsToDrop.includes(card)} onClick={()=>props.action.activateCardsOnTable(card)}/>
         ))}
       </div>
-      <div className={styles.cardsContainer}>
-        {props.model.engineering.map((card, ind) => (
-          <Card key={ind} {...card} onClick={()=>props.action.chooseCardsToDrop(card)}/>
-        ))}
-      </div>
-      <div className={styles.cardsContainer}>
-        {props.model.terraforming.map((card, ind) => (
-          <Card key={ind} {...card} onClick={()=>props.action.chooseCardsToDrop(card)}/>
-        ))}
-      </div>
-      <div className={styles.cardsContainer}>
-        {props.model.military.map((card, ind) => (
-          <Card key={ind} {...card} onClick={()=>props.action.chooseCardsToDrop(card)}/>
-        ))}
-      </div>
-      {props.round.step === "performing" && props.action.cardsToDrop.length > 0 && <button className={styles.resetButton} onClick={props.action.reset}>Reset</button>}
-      {props.round.step === "performing" && props.action.cardsToDrop.length === 4 && <button className={styles.confirmButton} onClick={props.action.dropCards}>Confirm</button>}
-      {props.round.step === "performing" && <button className={styles.giveUpButton} onClick={props.action.endAction}>Give up</button>}
+      )}
+
+      {/*buttons*/}
+      {props.round.step === "performing"
+        && props.action.cardsToDrop.length > 0
+        && <button className={styles.resetButton} onClick={props.action.reset}>Reset</button>}
+      {props.round.step === "performing"
+        && props.action.cardsToDrop.length >= 3
+        && <button className={styles.confirmButton} onClick={props.action.tryBuildColony}>Confirm</button>}
+      {props.round.step === "performing"
+        && <button className={styles.giveUpButton} onClick={props.action.endAction}>End my turn</button>}
     </div>
   );
 });
