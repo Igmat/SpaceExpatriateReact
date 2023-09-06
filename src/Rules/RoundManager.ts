@@ -19,11 +19,13 @@ export class RoundManager {
   }
 
   current = 1;
+
   phase: Phase = "active";
   step?: Step;
 
   next = () => {
     this.current++;
+    console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this.step = undefined;
     this.decks.delivery.openCard();

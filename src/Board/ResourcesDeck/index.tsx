@@ -1,11 +1,8 @@
 import { useContext, useState } from "react";
-import styles from "./ResurseDeck.module.scss";
+import styles from "./ResourcesDeck.module.scss";
 import { useModalService } from "../../components/ModalWindow";
 
-export const ResursesDeck = () => {
-  // const [showModal, setShowModal] = useState(false);
-  //  const actionsArr = ["Build Colony", "Something", "Do nithing"];
-
+export const ResourcesDeck = () => {
   const modalService = useModalService();
 
   const content = (
@@ -16,12 +13,12 @@ export const ResursesDeck = () => {
     </div>
   );
 
-console.log(' ResursesDeck')
+
   return (
     <div className={styles.container}>
-      <h2>Resurses</h2>
-      <div className={styles.garage} onClick={() => modalService.show(content)}>
-        Garage
+      <h2>Resources</h2>
+      <div className={styles.garbage} onClick={() => modalService.show(content)}>
+        Garbage
       </div>
     </div>
   );
