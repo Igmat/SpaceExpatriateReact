@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styles from "./DeliveryActionWindow.module.scss";
-import { DeliveryOption, RoundManager } from "../../../../Rules/RoundManager";
+import { DeliveryOption, RoundManager } from "../../../Rules/RoundManager";
 import {
   CardDefinition,
   ResourcePrimitive,
-} from "../../../../Rules/card-types";
-import { ActionManager } from "../../../../Rules/ActionManager";
-import { ResourcesModel } from "../../../../Rules/ResourcesModel";
+} from "../../../Rules/card-types";
+import { ActionManager } from "../../../Rules/ActionManager";
+import { ResourcesModel } from "../../../Rules/ResourcesModel";
 
 interface DeliveryActionWindowProps {
   action: ActionManager;

@@ -13,14 +13,8 @@
   animation-name: appear;
   animation-duration: 0.5s;
   & .modalDialog {
-    width: 70%;
+   width: 70%;
     height: 50%;
-    position: relative;
-    margin: 0 20px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    animation-duration: 1s; //не работает
     & .closeButton {
       width: 35px;
       height: 35px;

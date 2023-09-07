@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { gameState } from "../Rules";
 import { useModalService } from "../components/ModalWindow";
 import { observer } from "mobx-react-lite";
-import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionWindows/DeliveryActionWindow/DeliveryActionWindow";
-import { TerraformingModal } from "./TerraformingModal";
+import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionWindow/DeliveryActionWindow";
+import { TerraformingModal } from "../components/ModalWindows/TerraformingModal";
 
 const modalByPhase = {
   military: <div>military options</div>,
