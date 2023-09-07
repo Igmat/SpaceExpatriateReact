@@ -3,7 +3,6 @@ import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
-import { type } from "os";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "done";
@@ -31,7 +30,7 @@ export class RoundManager {
   nextPerformingStep = () => {
     this.step = "performing";
   };
-  сhooseDeliveryOption = (arg: DeliveryOption) => {
+  chooseDeliveryOption = (arg: DeliveryOption) => {
     this.deliveryOption = arg;
     console.log(this.deliveryOption);
   };
@@ -40,7 +39,6 @@ export class RoundManager {
     this.current++;
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
-  
     this.resources.dropResources();
     this.step = undefined;
     this.deliveryOption = undefined;

@@ -7,7 +7,7 @@ type CardProps = CardDefinition & {
   onClick?: () => void;
   isAvailable?: boolean;
   isSelected?: boolean;
-}; // & {}- передаем действия игрока
+}; 
 
 export const Card = observer((props: CardProps) => {
   return (
