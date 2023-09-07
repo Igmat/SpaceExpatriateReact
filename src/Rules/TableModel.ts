@@ -38,14 +38,18 @@ export class TableModel {
     this.military = this.military.filter((card) => !cards.includes(card));
   };
   tempDropCards = (...cards: CardDefinition[]) => {
-    this.tempDroppedCards.push(...cards)
+    this.tempDroppedCards.push(...cards);
+   this.dropCards(...cards)
   };
   dropTempCards = () => {
     if ((this.tempDroppedCards.length = 0)) return;
-    this.dropCards(...this.tempDroppedCards);
     this.tempDroppedCards = [];
   };
- 
+
+  resetTempDroppedCards = () => {
+    //this.tempDroppedCards.forEach((card) => this[card.type].push(card));
+  }
+
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);
   };

@@ -30,6 +30,16 @@ export class ResourcesModel {
     nanotechnologies: 0,
     "dark matter": 0,
   };
+
+  public tempPlayerResources: playerResources = {//не забывать очищать!
+    fuel: 0,
+    minerals: 0,
+    "biotic materials": 0,
+    machinery: 0,
+    nanotechnologies: 0,
+    "dark matter": 0,
+  };
+
   constructor(private readonly table: TableModel) {
     makeAutoObservable(this);
   }
@@ -54,10 +64,20 @@ export class ResourcesModel {
     for (let key in this.playerResources) {
       this.playerResources[key] = 0;
     }
+    for (let key in this.tempPlayerResources) {
+      this.tempPlayerResources[key] = 0;
+    }
   };
 
+  resetResources = () => {
+    for (let key in this.tempPlayerResources) {
+      this.playerResources[key] += this.tempPlayerResources[key];
+    }
+  }
   fillCard = (resources: ResourcePrimitive[]) => {
-    resources.map((resource) => this.playerResources[resource]--);
+    resources.map((resource) => {
+      this.playerResources[resource]--
+    this.tempPlayerResources[resource]++});
   };
 
   removeResourcesFromGarbage = (resource: ResourcePrimitive) => {
@@ -82,6 +102,10 @@ export class ResourcesModel {
       }
     });
     this.points.round = count;
+  };
+
+  resetPoints = () => {
+    this.points.total = 0;
   };
 
   /***engineeringMaps****************************************************************** */
@@ -112,6 +136,8 @@ export class ResourcesModel {
     );
   };
 
+ 
+
   /****Energy*************************************************************************** */
 
   public energy = {
@@ -125,6 +151,7 @@ export class ResourcesModel {
     ).reduce((acc, el) => acc + el, 0);
   };
 
+  
   /*
   countPoints = (arg: number[]) => {
     this.points.total = arg.reduce((acc, el) => acc + el, this.points.total);

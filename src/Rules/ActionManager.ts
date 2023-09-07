@@ -5,7 +5,6 @@ import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
 import { ResourcesModel } from "./ResourcesModel";
-import { deliveryCards } from "./CardDefinitions/delivery";
 
 export class ActionManager {
   constructor(
@@ -155,9 +154,8 @@ export class ActionManager {
 
     this.round.phase === "delivery" &&
       this.round.deliveryOption === "charter" &&
-      this.decks.dropCards(...this.table.tempDroppedCards)
-      this.table.dropTempCards()
-
+      this.decks.dropCards(...this.table.tempDroppedCards);
+    this.table.dropTempCards();
   };
   dropResources = () => {
     if (this.round.deliveryOption === "charter") this.resources.fillGarbege();
@@ -167,5 +165,12 @@ export class ActionManager {
   reset = () => {
     this.cardsToDrop = [];
     console.log("cardsToDrop: " + this.cardsToDrop.length);
+  };
+
+  resetActions = () => {
+    this.table.resetTempDroppedCards();
+    this.resources.resetResources();
+    this.resources.resetPoints();
+    this.resources.currentStartEnergy();
   };
 }
