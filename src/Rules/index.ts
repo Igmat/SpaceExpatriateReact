@@ -13,10 +13,10 @@ export class GameState {
 
   hand = new HandModel();
   decks = new DeckManager();
-  playerTable = new TableModel();
-  resources = new ResourcesModel(this.playerTable);
+  table = new TableModel();
+  resources = new ResourcesModel(this.table);
   round = new RoundManager(this.decks, this.hand, this.resources);
-  action = new ActionManager(this.decks, this.playerTable, this.round, this.hand);
+  action = new ActionManager(this.decks, this.table, this.round, this.hand,  this.resources);
 
 }
 

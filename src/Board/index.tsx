@@ -30,7 +30,7 @@ export const Board = observer(() => {
           model={gameState.decks.delivery}
           hand={gameState.hand}
           resources={gameState.resources}
-          table={gameState.playerTable}
+          table={gameState.table}
           action={gameState.action}
           round={gameState.round}
         />
@@ -38,7 +38,7 @@ export const Board = observer(() => {
           model={gameState.decks.engineering}
           hand={gameState.hand}
           resources={gameState.resources}
-          table={gameState.playerTable}
+          table={gameState.table}
           action={gameState.action}
           round={gameState.round}
         />
@@ -46,7 +46,7 @@ export const Board = observer(() => {
           model={gameState.decks.terraforming}
           hand={gameState.hand}
           resources={gameState.resources}
-          table={gameState.playerTable}
+          table={gameState.table}
           action={gameState.action}
           round={gameState.round}
         />
@@ -54,7 +54,7 @@ export const Board = observer(() => {
           model={gameState.decks.military}
           hand={gameState.hand}
           resources={gameState.resources}
-          table={gameState.playerTable}
+          table={gameState.table}
           action={gameState.action}
           round={gameState.round}
         />
