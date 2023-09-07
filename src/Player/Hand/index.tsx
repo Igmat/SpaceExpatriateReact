@@ -3,9 +3,7 @@ import { Card } from "../../components/Card";
 import { HandModel } from "../../Rules/HandModel";
 import { DeckManager } from "../../Rules/DeckManager";
 import { ActionManager } from "../../Rules/ActionManager";
-import styles from "./Hand.module.scss";
-import hand from '../../img/Hand.png'
-
+import styles from './Hand.module.scss'
 
 interface HandProps {
   decks: DeckManager;

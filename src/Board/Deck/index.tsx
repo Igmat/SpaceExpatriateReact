@@ -5,26 +5,33 @@ import { CardDefinition } from "../../Rules/card-types";
 import { HandModel } from "../../Rules/HandModel";
 import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
-import styles from "./Deck.module.scss";
+import { RoundManager } from "../../Rules/RoundManager";
+import { ResourcesModel } from "../../Rules/ResourcesModel";
+import styles from './Deck.module.scss'
 
 interface DeckProps {
   model: DeckModel<CardDefinition>;
   hand: HandModel;
   table: TableModel;
   action: ActionManager;
+  round: RoundManager;
+  resources: ResourcesModel;
 }
 
 export const Deck = observer((props: DeckProps) => {
 
-  const onOpenedCardClick = () => {
-    props.action.perform(props.model.openedCard)
-  }
+  const onOpenCardClick = () => {
+   // console.log(props.model.type )
+   // console.log(props.round.phase)
+    props.action.perform(props.model.openedCard);
+  
+  };
 
   return (
     <>
       <div
         className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
-        onClick={onOpenedCardClick}
+        onClick={onOpenCardClick}
       >
         {props.model.openedCard && (
           <Card key={props.model.openedCard.id} {...props.model.openedCard} />

@@ -8,103 +8,113 @@ export const terraformingCards = createCards<TerraformingCard>(
     name: "Power Station",
     resources: ["fuel", ["fuel", "biotic materials", "minerals"]],
     quantity: 2,
-    points: 0,
+    points: 2,
   },
   {
     name: "Bulk materials storage",
     resources: ["minerals", ["fuel", "biotic materials", "minerals"]],
     quantity: 2,
-    points: 0,
+    points: 2,
   },
   {
     name: "Hydroponic greenhouse",
     resources: ["biotic materials", ["fuel", "biotic materials", "minerals"]],
     quantity: 2,
-    points: 0,
+    points: 2,
   },
   {
     name: "Geospitial data collector",
     resources: ["fuel", ["fuel", "biotic materials", "minerals"]],
     quantity: 2,
-    points: 0,
+    points: 3,
   },
   {
     name: "Emergency shelter",
     resources: ["minerals", ["fuel", "biotic materials", "minerals"]],
     quantity: 2,
-    points: 0,
-  },
+    points: 3,
+  },/*
   {
     name: "Emergency shelter",
     resources: ["minerals", ["fuel", "biotic materials", "minerals"]],
     quantity: 2,
     points: 0,
-  },
+  },*/
   {
     name: "Oxygen generator",
     resources: ["biotic materials", ["fuel", "biotic materials", "minerals"]],
     quantity: 2,
-    points: 0,
+    points: 3,
   },
 
   {
     name: "Habitat unit",
     resources: ["fuel", "biotic materials", "minerals"],
-    points: 1,
     quantity: 2,
+    points: 3,
+  
   },
   {
     name: "Civil transporter",
     resources: ["fuel", "machinery"],
-    points: 1,
     quantity: 2,
+    points: 3,
+  
   },
   {
     name: "Recycling tank",
     resources: ["fuel", "nanotechnologies"],
-    points: 1,
     quantity: 2,
+    points: 3,
+  
   },
   {
-    name: "Workshop ",
+    name: "Workshop",
     resources: ["minerals", "machinery"],
-    points: 1,
     quantity: 2,
+    points: 3,
+ 
   },
   {
     name: "Chemical lab",
     resources: ["minerals", "nanotechnologies"],
-    points: 1,
     quantity: 2,
+    points: 3,
+  
   },
   {
     name: "Madical bay",
     resources: ["biotic materials", "machinery"],
-    points: 1,
     quantity: 2,
+    points: 3,
+  
   },
   {
     name: "BIOENHANCEMENT LAB",
     resources: ["biotic materials", "nanotechnologies"],
-    points: 1,
     quantity: 2,
+    points: 3,
+  
   },
   {
     name: "CONSTRUCTION UNIT",
     resources: ["machinery", "machinery"],
-    points: 1,
     quantity: 2,
+    points: 4,
+   
   },
   {
     name: "WATER SYNTHESIS LAB",
     resources: ["machinery", "nanotechnologies"],
-    points: 1,
     quantity: 2,
+    points: 4,
+
   },
   {
     name: "NANOREPLICATOR",
     resources: ["nanotechnologies", "nanotechnologies"],
-    points: 1,
     quantity: 2,
+    points: 4,
+   
   }
 );

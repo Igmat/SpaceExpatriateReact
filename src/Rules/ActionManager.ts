@@ -1,9 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType } from "./card-types";
+import { CardDefinition, CardType, ResourcePrimitive } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
+import { ResourcesModel } from "./ResourcesModel";
 import { deliveryCards } from "./CardDefinitions/delivery";
 
 export class ActionManager {
@@ -11,7 +12,8 @@ export class ActionManager {
     private readonly decks: DeckManager,
     private readonly table: TableModel,
     private readonly round: RoundManager,
-    private readonly hand: HandModel
+    private readonly hand: HandModel,
+    private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
   }
@@ -26,32 +28,35 @@ export class ActionManager {
 
   perform = (card?: CardDefinition) => {
     if (!card) return;
+
     if (this.round.phase !== "active") return;
 
     this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
 
     if (this.round.current < 5) {
       this.round.next();
+      //console.log("round" + this.round.current);
       return;
     }
 
     this.round.phase = card.type;
-
-    console.log("Phase: " + this.round.phase);
-
+    // console.log(this.round.phase);
     switch (card.type) {
-      case "delivery":
+      case "delivery": //my
         this.round.step = "options";
         break;
       case "engineering":
         this.remaining.activateDeck = 1;
         this.remaining.activateCard = 1;
         this.round.step = "performing";
+        console.log("engineering");
         break;
       case "military":
+        console.log("military");
         this.round.step = "options";
         break;
       case "terraforming":
+        console.log("terraforming");
         this.round.step = "options";
         break;
     }
@@ -66,6 +71,7 @@ export class ActionManager {
       console.log("This Round: " + this.round.current + " is over");
       this.round.next();
     }
+    this.resources.dropResources()
   };
 
   activateDeck = (type: CardType) => {
@@ -77,6 +83,10 @@ export class ActionManager {
     if (this.round.phase === "military") {
       this.hand.takeCard(this.decks[type].takeCard());
     }
+    if (this.round.phase === "delivery") {
+      //  this.table.shooseCard(card)
+      //  this.console(this.round.phase)
+    }
     this.tryNext();
   };
 
@@ -87,6 +97,8 @@ export class ActionManager {
     if (this.round.phase === "engineering") {
       this.table.takeCard(this.hand.dropCard(card));
     }
+    if (this.round.phase === "delivery") {
+    }
     this.tryNext();
   };
 
@@ -95,6 +107,21 @@ export class ActionManager {
       && this.cardsToDrop.push(cards);
     console.log("cardsToDrop: " + this.cardsToDrop.length);
   }
+
+  resourceAction = (resource: ResourcePrimitive) => {
+    if (this.round.deliveryOption === undefined) return;
+    if (this.round.deliveryOption === "charter") {
+      this.resources.getResources(resource);
+      this.round.nextPerformingStep();
+    }
+    if (this.round.deliveryOption === "garbage") {
+      this.resources.removeResourcesFromGarbage(resource);
+      console.log(resource)
+      this.tryNext();
+   
+    }
+
+  };
 
   endAction = () => {
     console.log("This Round: " + this.round.current + " is over");

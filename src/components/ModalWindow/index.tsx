@@ -8,11 +8,8 @@ import React, {
 import styles from "./ModalWindow.module.scss";
 
 const modalContext = createContext({
-  show: (content: React.ReactNode, persistant?:boolean) => {},
-  hide: () => {
-    console.log("hide from modalContext");
-  },
-  // aaa: () => {},
+  show: (content: React.ReactNode, persistant?: boolean) => {},
+  hide: () => {},
 });
 
 interface ModalComponentProps {
@@ -69,12 +66,10 @@ export function useModalWrapper(content: React.ReactNode) {
         setShowModal(true);
         setPersistant(persistant);
         setModalContent(content);
-        console.log("show modal");
       },
       hide: () => {
         setShowModal(false);
         setModalContent(null);
-        console.log("hide");
       },
     }),
     []

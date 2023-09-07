@@ -16,8 +16,7 @@
 - [X] -> посчитать количество входящих ресурсов
 
 
-
-## Drop Card from hand (вызывается при activateHandCard) (Maria)
+## Drop Card from hand (вызывается при activateCard) (Maria)
 - [ ] -> увеличить счетчик энергии
 - [ ] -> все значения для MiddleMap увелисчить на 1
 - [ ] -> значения для FinishCounter увелисчить на 1

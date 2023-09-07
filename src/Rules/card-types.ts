@@ -9,7 +9,7 @@ export type CardType = 'delivery' | 'engineering' | 'terraforming' | 'military'
 export interface DeliveryCard {
     id: number,
     type: 'delivery',
-    resources: Resource[],
+    resources: /*ResourcePrimitive | */ResourcePrimitive[],
 }
 
 export interface EngineeringCard {

@@ -1,55 +1,82 @@
-
-.card{
- //width:200px;
-//height:300px;
-width:120px;
-height:200px;
-    border-radius: 15px;
-    padding: 30px;
-    position: relative;
+.card {
+  width: 120px;
+  height: 200px;
+  border-radius: 15px;
+  padding: 30px;
+  position: relative;
   //  z-index: 111;
-    box-shadow: 0 0 5px 1px rgb(58, 58, 58);
-    transition: 0.1s;
-    cursor: pointer;
-    &:hover {
-        box-shadow: 0 0 5px 1px rgb(255, 255, 255);
-    }
-    &:active {
-        box-shadow: 0 0 5px 1px rgb(73, 44, 44);
-        transform: scale(0.9);
-    }
+  box-shadow: 0 0 5px 1px rgb(58, 58, 58);
+  transition: 0.1s;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0 5px 1px rgb(255, 255, 255);
+  }
+  &:active {
+    box-shadow: 0 0 5px 1px rgb(73, 44, 44);
+    transform: scale(0.9);
+  }
 }
-
 .selected {
-    box-shadow: 0 0 5px 5px rgb(73, 44, 44);
+  box-shadow: 0 0 5px 5px rgb(73, 44, 44);
 }
 
- .delivery {
-    background-color:rgb(3, 90, 79);
+.delivery {
+  background-color: rgb(3, 90, 79);
 }
 
 .engineering {
-    background-color: rgb(159, 132, 87);
+  background-color: rgb(159, 132, 87);
 }
 
-.engineering::after{
-    border-right: 171px solid #efea63;
-    border-bottom: 276px solid  #efea63;
+.engineering::after {//удалить - не работает
+  border-right: 171px solid #efea63;
+  border-bottom: 276px solid #efea63;
 }
 .terraforming {
-    background-color: rgb(45, 132, 152);
+  background-color: rgb(45, 132, 152);
 }
 
-.terraforming::after{
-    border-right: 171px solid #2e2f5d;
-    border-bottom: 276px solid #2e2f5d;
+.terraforming::after {
+  border-right: 171px solid #2e2f5d;
+  border-bottom: 276px solid #2e2f5d;
 }
 .military {
-    background-color: rgb(109, 54, 77);
+  background-color: rgb(109, 54, 77);
 }
 
-.military::after{
-    border-right: 171px solid #831e1e;
-    border-bottom: 276px solid  #831e1e;
+.military::after {
+  border-right: 171px solid #831e1e;
+  border-bottom: 276px solid #831e1e;
+}
+.infoWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  & .resourceWrapper {
+    width: 70%;
+  }
 
+  & .points {
+    width: 30px;
+    color: white;
+    background-color: #919191;
+  }
+  & .cardName {
+    color: white;
+    font-size: 10px;
+  }
+}
+.deliveryPerforming {
+  animation: radial-anakausug 1s infinite;
+}
+@keyframes radial-anakausug {
+  0% {
+    box-shadow: 0 0 0 0px rgba(244, 234, 99, 0.3);
+  }
+
+  100% {
+    box-shadow: 0 0 0 40px rgba(183, 194, 39, 0);
+  }
 }
