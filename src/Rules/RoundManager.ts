@@ -3,9 +3,11 @@ import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
+import { type } from "os";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "done";
+export type DeliveryOption = "charter" | "garbage";
 
 export class RoundManager {
   constructor(
@@ -23,16 +25,22 @@ export class RoundManager {
   current = 1;
   phase: Phase = "active";
   step?: Step;
+  deliveryOption?: DeliveryOption; 
 
   nextPerformingStep = () => {
     this.step = "performing";
   };
+  shooseDeliveryOption = (arg: DeliveryOption) => {
+this.deliveryOption = arg
+console.log(this.deliveryOption)
+  }
 
   next = () => {
     this.current++;
     this.phase = "active";
     this.resources.dropResources();
     this.step = undefined;
+    this.deliveryOption = undefined;
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styles from "./DeliveryActionWindow.module.scss";
-import { RoundManager } from "../../../../Rules/RoundManager";
+import { DeliveryOption, RoundManager } from "../../../../Rules/RoundManager";
 import {
+  CardDefinition,
   ResourcePrimitive,
 } from "../../../../Rules/card-types";
 import { ActionManager } from "../../../../Rules/ActionManager";
@@ -16,40 +17,25 @@ interface DeliveryActionWindowProps {
 export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
   const [chooseResource, setChooseResource] = useState(false);
 
-  const charterHandle = () => {
-
-    setChooseResource(true);
-   // console.log('charter')
-  };
-  const garbageHandle = () => {
-
+  const deliveriOptionHendler = (arg: DeliveryOption) => {
+props.round.shooseDeliveryOption(arg)
     setChooseResource(true);
   };
 
-  const handleChoose = (arg: ResourcePrimitive) => {
+
+  const handleChoose = (resource: ResourcePrimitive) => {
     setChooseResource(false);
-    props.action.tryNext();
-    /*!!! отсутствует deliveryBranch, будет переписан
-    props.round.nextPerformingStep()
-    if (props.round.deliveryBranch.charter) {
-      props.resources.getResources(arg);
-     // console.log('charter')
-    }
-    if (props.round.deliveryBranch.garbage) {
-      props.resources.removeResourcesFromGarbage(arg);
-      props.action.tryNext();
-     // console.log('Try next')
-    }*/
+    props.action.resourceAction(resource)
   };
 
   return (
     <div className={styles.container}>
       {!chooseResource ? (
         <>
-          <div className={styles.action} onClick={() => charterHandle()}>
+          <div className={styles.action} onClick={() => deliveriOptionHendler('charter')}>
             Charter Vessel
           </div>
-          <div className={styles.action} onClick={() => garbageHandle()}>
+          <div className={styles.action} onClick={() => deliveriOptionHendler('garbage')}>
             Garbage Collection
           </div>
         </>

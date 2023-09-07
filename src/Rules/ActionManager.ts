@@ -1,23 +1,24 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType } from "./card-types";
+import { CardDefinition, CardType, ResourcePrimitive } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
+import { ResourcesModel } from "./ResourcesModel";
 
 export class ActionManager {
   constructor(
     private readonly decks: DeckManager,
     private readonly table: TableModel,
     private readonly round: RoundManager,
-    private readonly hand: HandModel
+    private readonly hand: HandModel,
+    private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
   }
   remaining = {
     activateDeck: 0,
     activateCard: 0,
-
   };
 
   perform = (card?: CardDefinition) => {
@@ -62,6 +63,7 @@ export class ActionManager {
     ) {
       this.round.next();
     }
+    this.resources.dropResources()
   };
 
   activateDeck = (type: CardType) => {
@@ -87,18 +89,27 @@ export class ActionManager {
       this.table.takeCard(this.hand.dropCard(card));
     }
     if (this.round.phase === "delivery") {
-   
     }
     this.tryNext();
   };
 
   activateCardsOnTable = (card: CardDefinition) => {
-
     if (this.round.phase === "delivery") {
-      this.table.shooseCard(card.type);
-      this.round.nextPerformingStep()
-    }
-  }
 
- 
+    }
+  };
+  resourceAction = (resource: ResourcePrimitive) => {
+    if (this.round.deliveryOption === undefined) return;
+    if (this.round.deliveryOption === "charter") {
+      this.resources.getResources(resource);
+      this.round.nextPerformingStep();
+    }
+    if (this.round.deliveryOption === "garbage") {
+      this.resources.removeResourcesFromGarbage(resource);
+      console.log(resource)
+      this.tryNext();
+   
+    }
+
+  };
 }
