@@ -40,7 +40,6 @@ export class RoundManager {
     this.current++;
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
-  
     this.resources.dropResources();
     this.step = undefined;
     this.deliveryOption = undefined;

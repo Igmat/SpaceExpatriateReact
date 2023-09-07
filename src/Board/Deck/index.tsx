@@ -24,7 +24,6 @@ export const Deck = observer((props: DeckProps) => {
    // console.log(props.model.type )
    // console.log(props.round.phase)
     props.action.perform(props.model.openedCard);
-    props.table.dropTempCards()
   
   };
 

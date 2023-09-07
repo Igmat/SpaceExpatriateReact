@@ -112,7 +112,6 @@ export class ResourcesModel {
     );
   };
 
-  
   /****Energy*************************************************************************** */
 
   public energy = {
@@ -120,7 +119,11 @@ export class ResourcesModel {
     energy: 0,
   };
 
-  currentEnergy = () => {};
+  currentStartEnergy = () => {
+    this.energy.startEnergy = Object.values(
+      this.engineeringMaps.StartMap as { [key: number]: number }
+    ).reduce((acc, el) => acc + el, 0);
+  };
 
   /*
   countPoints = (arg: number[]) => {
