@@ -46,7 +46,7 @@ export class ResourcesModel {
   };
   fillGarbege = () => {//переписать (очистить и добавить ресурсы)
     for (let key in this.garbageResources) {
-      this.garbageResources[key] = this.playerResources[key];
+      this.garbageResources[key] += this.playerResources[key];
     }
   };
   dropResources = () => {
