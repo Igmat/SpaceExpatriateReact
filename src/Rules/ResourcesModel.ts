@@ -134,6 +134,9 @@ export class ResourcesModel {
       (acc, card) => (acc[card.id] = 2) && acc,
       {} as { [key: number]: number }
     );
+
+    console.log(this.engineeringMaps.StartMap)
+    console.log(this.engineeringMaps)
   };
 
  

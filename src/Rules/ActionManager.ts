@@ -43,6 +43,7 @@ export class ActionManager {
     switch (card.type) {
       case "delivery": //my
         this.round.step = "options";
+        this.resources.createEngineeringMap(this.table.engineering)
         break;
       case "engineering":
         this.remaining.activateDeck = 1;
