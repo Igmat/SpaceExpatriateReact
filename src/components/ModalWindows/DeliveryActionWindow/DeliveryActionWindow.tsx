@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./DeliveryActionWindow.module.scss";
 import { DeliveryOption, RoundManager } from "../../../Rules/RoundManager";
-import { CardDefinition, ResourcePrimitive } from "../../../Rules/card-types";
+import { ResourcePrimitive } from "../../../Rules/card-types";
 import { ActionManager } from "../../../Rules/ActionManager";
 import { ResourcesModel } from "../../../Rules/ResourcesModel";
 
@@ -15,7 +15,7 @@ export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
   const [chooseResource, setChooseResource] = useState(false);
 
   const deliveriOptionHendler = (arg: DeliveryOption) => {
-    props.round.shooseDeliveryOption(arg);
+    props.round.chooseDeliveryOption(arg);
     setChooseResource(true);
     /*
     const test = [
@@ -42,7 +42,7 @@ export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
    props.resources.currentRoundPoints(test)
   */
   
-
+   
   };
 
   const handleChoose = (resource: ResourcePrimitive) => {

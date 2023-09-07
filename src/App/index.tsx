@@ -1,4 +1,3 @@
-import React, { createContext, useState, useMemo } from "react";
 import { Board } from "../Board";
 import { Player } from "../Player";
 import "./App.css";

@@ -12,12 +12,10 @@ const modalByPhase = {
       action={gameState.action}
       resources={gameState.resources}
       round={gameState.round}
-
     />
-
   ),
 
-  terraforming:<TerraformingModal/>,
+  terraforming: <TerraformingModal />,
 } as const;
 
 export const ControlPanel = observer(() => {
@@ -29,7 +27,7 @@ export const ControlPanel = observer(() => {
         true
       );
     }
- //  console.log('im in close - ' + gameState.round.step)
+    //  console.log('im in close - ' + gameState.round.step)
     return modalService.hide;
   }, [gameState.round.step, modalService, gameState.round.phase]);
 

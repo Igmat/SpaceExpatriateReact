@@ -3,7 +3,6 @@ import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
-import { type } from "os";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "done";
@@ -26,19 +25,19 @@ export class RoundManager {
 
   phase: Phase = "active";
   step?: Step;
-  deliveryOption?: DeliveryOption; 
+  deliveryOption?: DeliveryOption;
 
   nextPerformingStep = () => {
     this.step = "performing";
   };
-  shooseDeliveryOption = (arg: DeliveryOption) => {
-this.deliveryOption = arg
-console.log(this.deliveryOption)
-  }
+  chooseDeliveryOption = (arg: DeliveryOption) => {
+    this.deliveryOption = arg;
+    console.log(this.deliveryOption);
+  };
 
   next = () => {
     this.current++;
-   // console.log("Round: " + this.current + " is started");
+    // console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this.resources.dropResources();
     this.step = undefined;
@@ -47,6 +46,5 @@ console.log(this.deliveryOption)
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
-
   };
 }
