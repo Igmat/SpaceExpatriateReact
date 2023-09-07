@@ -21,22 +21,28 @@ export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
     const test = [
       {
         id: 666,
-        connection: 'start'
+        connection: 'start',
+        points: 1
       },
       {
         id: 777,
-         connection: 'continue'
+         connection: 'continue',
       },
       {
         id: 111,
-         connection: 'end'
+         connection: 'end',
+         points: 2
       },
       {
         id: 222,
-        connection: 'end'
+        connection: 'end',
       },
     ];
-   props.resources.createEngineeringMap(test);*/
+   props.resources.createEngineeringMap(test);
+   props.resources.currentRoundPoints(test)
+  */
+  
+
   };
 
   const handleChoose = (resource: ResourcePrimitive) => {
