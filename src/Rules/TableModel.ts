@@ -38,8 +38,14 @@ export class TableModel {
     this.military = this.military.filter((card) => !cards.includes(card));
   };
   tempDropCards = (...cards: CardDefinition[]) => {
-    cards.forEach((card) => this.tempDroppedCards.push(card));
+    this.tempDroppedCards.push(...cards)
   };
+  dropTempCards = () => {
+    if ((this.tempDroppedCards.length = 0)) return;
+    this.dropCards(...this.tempDroppedCards);
+    this.tempDroppedCards = [];
+  };
+ 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);
   };

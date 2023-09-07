@@ -42,7 +42,6 @@ export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
    props.resources.currentRoundPoints(test)
   */
   
-
   };
 
   const handleChoose = (resource: ResourcePrimitive) => {

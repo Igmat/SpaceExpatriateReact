@@ -111,6 +111,8 @@ export class ResourcesModel {
       {} as { [key: number]: number }
     );
   };
+
+  
   /****Energy*************************************************************************** */
 
   public energy = {

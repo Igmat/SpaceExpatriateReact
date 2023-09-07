@@ -152,6 +152,12 @@ export class ActionManager {
     this.cardsToDrop = [];
     console.log("You have dropped cards and got 1 Colony");
     this.tryNext();
+
+    this.round.phase === "delivery" &&
+      this.round.deliveryOption === "charter" &&
+      this.decks.dropCards(...this.table.tempDroppedCards)
+      this.table.dropTempCards()
+
   };
   dropResources = () => {
     if (this.round.deliveryOption === "charter") this.resources.fillGarbege();
