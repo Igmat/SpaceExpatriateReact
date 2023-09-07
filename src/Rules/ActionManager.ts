@@ -106,6 +106,7 @@ export class ActionManager {
     this.round.phase === "terraforming" && this.round.step === "performing"
       && this.cardsToDrop.push(cards);
     console.log("cardsToDrop: " + this.cardsToDrop.length);
+
   }
 
   resourceAction = (resource: ResourcePrimitive) => {
@@ -116,7 +117,7 @@ export class ActionManager {
     }
     if (this.round.deliveryOption === "garbage") {
       this.resources.removeResourcesFromGarbage(resource);
-      console.log(resource)
+      //console.log(resource)
       this.tryNext();
    
     }
@@ -159,4 +160,6 @@ export class ActionManager {
     this.cardsToDrop = [];
     console.log("cardsToDrop: " + this.cardsToDrop.length);
   }
+
+
 }

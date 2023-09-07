@@ -1,10 +1,7 @@
 import { useState } from "react";
 import styles from "./DeliveryActionWindow.module.scss";
 import { DeliveryOption, RoundManager } from "../../../Rules/RoundManager";
-import {
-  CardDefinition,
-  ResourcePrimitive,
-} from "../../../Rules/card-types";
+import { CardDefinition, ResourcePrimitive } from "../../../Rules/card-types";
 import { ActionManager } from "../../../Rules/ActionManager";
 import { ResourcesModel } from "../../../Rules/ResourcesModel";
 
@@ -18,24 +15,49 @@ export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
   const [chooseResource, setChooseResource] = useState(false);
 
   const deliveriOptionHendler = (arg: DeliveryOption) => {
-props.round.shooseDeliveryOption(arg)
+    props.round.shooseDeliveryOption(arg);
     setChooseResource(true);
+    /*
+    const test = [
+      {
+        id: 666,
+        connection: 'start'
+      },
+      {
+        id: 777,
+         connection: 'continue'
+      },
+      {
+        id: 111,
+         connection: 'end'
+      },
+      {
+        id: 222,
+        connection: 'end'
+      },
+    ];
+   props.resources.createEngineeringMap(test);*/
   };
-
 
   const handleChoose = (resource: ResourcePrimitive) => {
     setChooseResource(false);
-    props.action.resourceAction(resource)
+    props.action.resourceAction(resource);
   };
 
   return (
     <div className={styles.container}>
       {!chooseResource ? (
         <>
-          <div className={styles.action} onClick={() => deliveriOptionHendler('charter')}>
+          <div
+            className={styles.action}
+            onClick={() => deliveriOptionHendler("charter")}
+          >
             Charter Vessel
           </div>
-          <div className={styles.action} onClick={() => deliveriOptionHendler('garbage')}>
+          <div
+            className={styles.action}
+            onClick={() => deliveriOptionHendler("garbage")}
+          >
             Garbage Collection
           </div>
         </>

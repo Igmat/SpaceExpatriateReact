@@ -38,7 +38,7 @@ console.log(this.deliveryOption)
 
   next = () => {
     this.current++;
-    console.log("Round: " + this.current + " is started");
+   // console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this.resources.dropResources();
     this.step = undefined;

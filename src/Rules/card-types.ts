@@ -10,6 +10,7 @@ export interface DeliveryCard {
     id: number,
     type: 'delivery',
     resources: /*ResourcePrimitive | */ResourcePrimitive[],
+   // points: number
 }
 
 export interface EngineeringCard {
@@ -35,4 +36,5 @@ export interface MilitaryCard {
     type: 'military',
     weapon: 'orbital' | 'intelligence' | 'fighters' | 'spaceborne',
     name: string,
+   // points: number
 }
