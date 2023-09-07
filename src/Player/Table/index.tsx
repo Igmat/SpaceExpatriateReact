@@ -16,7 +16,7 @@ interface TableProps {
 
 export const Table = observer((props: TableProps) => {
   const endTheRound = () => {
-     props.action.tryNext();
+     props.action.dropResources();
   };
 
 

@@ -68,10 +68,9 @@ export class ActionManager {
       this.remaining.activateCard === 0
     ) {
       this.missionType = undefined;
-      console.log("This Round: " + this.round.current + " is over");
+      // console.log("This Round: " + this.round.current + " is over");
       this.round.next();
     }
-    this.resources.dropResources()
   };
 
   activateDeck = (type: CardType) => {
@@ -84,8 +83,6 @@ export class ActionManager {
       this.hand.takeCard(this.decks[type].takeCard());
     }
     if (this.round.phase === "delivery") {
-      //  this.table.shooseCard(card)
-      //  this.console(this.round.phase)
     }
     this.tryNext();
   };
@@ -93,7 +90,7 @@ export class ActionManager {
   activateCard = (card: number) => {
     if (this.remaining.activateCard === 0) return;
     this.remaining.activateCard--;
-    console.log("activateCard" + this.remaining.activateCard)
+    console.log("activateCard" + this.remaining.activateCard);
     if (this.round.phase === "engineering") {
       this.table.takeCard(this.hand.dropCard(card));
     }
@@ -103,11 +100,11 @@ export class ActionManager {
   };
 
   activateCardsOnTable = (cards: CardDefinition) => {
-    this.round.phase === "terraforming" && this.round.step === "performing"
-      && this.cardsToDrop.push(cards);
+    this.round.phase === "terraforming" &&
+      this.round.step === "performing" &&
+      this.cardsToDrop.push(cards);
     console.log("cardsToDrop: " + this.cardsToDrop.length);
-
-  }
+  };
 
   resourceAction = (resource: ResourcePrimitive) => {
     if (this.round.deliveryOption === undefined) return;
@@ -119,9 +116,7 @@ export class ActionManager {
       this.resources.removeResourcesFromGarbage(resource);
       //console.log(resource)
       this.tryNext();
-   
     }
-
   };
 
   endAction = () => {
@@ -132,34 +127,39 @@ export class ActionManager {
   setMissionType = (card: CardType) => {
     this.round.step = "performing";
     this.missionType = card;
-  }
-
+  };
 
   tryBuildColony = () => {
-    this.cardsToDrop.length === 3
-      && this.cardsToDrop.filter((card) => card.type === this.missionType).length === 3
-      && this.dropCards();
-    this.cardsToDrop.length === 4
-      && (["delivery", "engineering", "terraforming", "military"] as const)
-        .map(el =>
-          this.cardsToDrop.filter((card) => card.type === el).length === 1)
-        .filter(Boolean).length === 4
-      && this.dropCards()
-  }
+    this.cardsToDrop.length === 3 &&
+      this.cardsToDrop.filter((card) => card.type === this.missionType)
+        .length === 3 &&
+      this.dropCards();
+    this.cardsToDrop.length === 4 &&
+      (["delivery", "engineering", "terraforming", "military"] as const)
+        .map(
+          (el) =>
+            this.cardsToDrop.filter((card) => card.type === el).length === 1
+        )
+        .filter(Boolean).length === 4 &&
+      this.dropCards();
+  };
 
   dropCards = () => {
-    this.round.phase === "terraforming" && this.round.step === "performing"
-      && this.table.dropCards(...this.cardsToDrop);
+    this.round.phase === "terraforming" &&
+      this.round.step === "performing" &&
+      this.table.dropCards(...this.cardsToDrop);
 
     this.cardsToDrop = [];
     console.log("You have dropped cards and got 1 Colony");
     this.tryNext();
-  }
+  };
+  dropResources = () => {
+    if (this.round.deliveryOption === "charter") this.resources.fillGarbege();
 
+    this.tryNext();
+  };
   reset = () => {
     this.cardsToDrop = [];
     console.log("cardsToDrop: " + this.cardsToDrop.length);
-  }
-
-
+  };
 }
