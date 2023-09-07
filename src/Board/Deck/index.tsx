@@ -3,12 +3,11 @@ import { DeckModel } from "../../Rules/DeckModel";
 import { Card } from "../../components/Card";
 import { CardDefinition } from "../../Rules/card-types";
 import { HandModel } from "../../Rules/HandModel";
-import styles from "./Deck.module.scss";
 import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-
+import styles from './Deck.module.scss'
 
 interface DeckProps {
   model: DeckModel<CardDefinition>;
@@ -32,7 +31,7 @@ export const Deck = observer((props: DeckProps) => {
     <>
       <div
         className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
-        onClick={() => onOpenCardClick()}
+        onClick={onOpenCardClick}
       >
         {props.model.openedCard && (
           <Card key={props.model.openedCard.id} {...props.model.openedCard} />
@@ -45,3 +44,4 @@ export const Deck = observer((props: DeckProps) => {
     </>
   );
 });
+

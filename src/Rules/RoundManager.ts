@@ -23,6 +23,7 @@ export class RoundManager {
   }
 
   current = 1;
+
   phase: Phase = "active";
   step?: Step;
   deliveryOption?: DeliveryOption; 
@@ -37,6 +38,7 @@ console.log(this.deliveryOption)
 
   next = () => {
     this.current++;
+    console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this.resources.dropResources();
     this.step = undefined;
@@ -47,5 +49,4 @@ console.log(this.deliveryOption)
     this.decks.terraforming.openCard();
 
   };
-
 }

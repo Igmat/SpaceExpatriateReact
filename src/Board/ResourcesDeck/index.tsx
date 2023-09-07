@@ -1,16 +1,16 @@
-import styles from "./ResurseDeck.module.scss";
+import styles from "./ResourcesDeck.module.scss";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ActionManager } from "../../Rules/ActionManager";
 import { observer } from "mobx-react-lite";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 
-interface ResurseDeckProps {
+interface ResourcesDeckProps {
   round: RoundManager;
   action: ActionManager;
   resources: ResourcesModel;
 }
 
-export const ResursesDeck = observer((props: ResurseDeckProps) => {
+export const ResourcesDeck = observer((props: ResourcesDeckProps) => {
 
   return (
     <div className={styles.container}>

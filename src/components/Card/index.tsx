@@ -6,12 +6,13 @@ import { observer } from "mobx-react-lite";
 type CardProps = CardDefinition & {
   onClick?: () => void;
   isAvailable?: boolean;
+  isSelected?: boolean;
 }; // & {}- передаем действия игрока
 
 export const Card = observer((props: CardProps) => {
   return (
     <div
-      className={`${styles[props.type]} ${styles.card} ${props.isAvailable ? styles.deliveryPerforming : ""}`}
+      className={`${styles[props.type]} ${styles.card} ${props.isAvailable ? styles.deliveryPerforming : ""}  ${props.isSelected ? styles.selected : ""}`}
       onClick={props.onClick}
     >
       {props.type === "delivery" &&

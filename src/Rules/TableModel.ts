@@ -18,19 +18,14 @@ export class TableModel {
   terraforming: TerraformingCard[] = [];
   military: MilitaryCard[] = [];
 
-  dropCards = (
-    ...cards: (
-      | DeliveryCard
-      | EngineeringCard
-      | TerraformingCard
-      | MilitaryCard
-    )[]
-  ) => {};
+  dropCards = (...cards: (DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard)[]) => {
+    this.delivery = this.delivery.filter((card) => !cards.includes(card));
+    this.engineering = this.engineering.filter((card) => !cards.includes(card));
+    this.terraforming = this.terraforming.filter((card) => !cards.includes(card));
+    this.military = this.military.filter((card) => !cards.includes(card));
+  } 
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
   //  console.log(card)
   };
-  shooseCard = (type: CardType) => {
-    console.log(type)
-  }
 }

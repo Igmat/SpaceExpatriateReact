@@ -2,11 +2,22 @@
   width: 120px;
   height: 200px;
   border-radius: 15px;
-  padding: 15px;
+  padding: 30px;
   position: relative;
+  //  z-index: 111;
   box-shadow: 0 0 5px 1px rgb(58, 58, 58);
+  transition: 0.1s;
   cursor: pointer;
-
+  &:hover {
+    box-shadow: 0 0 5px 1px rgb(255, 255, 255);
+  }
+  &:active {
+    box-shadow: 0 0 5px 1px rgb(73, 44, 44);
+    transform: scale(0.9);
+  }
+}
+.selected {
+  box-shadow: 0 0 5px 5px rgb(73, 44, 44);
 }
 
 .delivery {
@@ -17,7 +28,7 @@
   background-color: rgb(159, 132, 87);
 }
 
-.engineering::after {
+.engineering::after {//удалить - не работает
   border-right: 171px solid #efea63;
   border-bottom: 276px solid #efea63;
 }
@@ -52,16 +63,20 @@
     color: white;
     background-color: #919191;
   }
-  & .cardName{
+  & .cardName {
     color: white;
     font-size: 10px;
   }
 }
-.deliveryPerforming{
+.deliveryPerforming {
   animation: radial-anakausug 1s infinite;
 }
 @keyframes radial-anakausug {
-  0% { box-shadow: 0 0 0 0px rgba(244, 234, 99, 0.3); }  
-   
-  100% { box-shadow: 0 0 0 40px rgba(183, 194, 39, 0); }
+  0% {
+    box-shadow: 0 0 0 0px rgba(244, 234, 99, 0.3);
   }
+
+  100% {
+    box-shadow: 0 0 0 40px rgba(183, 194, 39, 0);
+  }
+}

@@ -1,29 +1,28 @@
 import { Deck } from "./Deck";
 import styles from "./Board.module.scss";
 import { gameState } from "../Rules";
-import { ResursesDeck } from "./ResursesDeck";
+
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-
+import { ResourcesDeck } from "./ResourcesDeck";
 
 export const Board = observer(() => {
   const [propmt, setPropmt] = useState("");
 
-
   useEffect(() => {
-    gameState.round.current >= 5 && setPropmt(`Choose a mission, round ${gameState.round.current}`);
+    gameState.round.current >= 5 &&
+      setPropmt(`Choose a mission, round ${gameState.round.current}`);
     setTimeout(() => setPropmt(" "), 2000);
   }, [gameState.round.current]);
 
   return (
     <div className={styles.container}>
-      <ResursesDeck
+      <ResourcesDeck
         round={gameState.round}
         action={gameState.action}
         resources={gameState.resources}
       />
       <p> {propmt} </p>
-
 
       <div className={styles.board}>
         <Deck

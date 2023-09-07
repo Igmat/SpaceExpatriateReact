@@ -3,7 +3,7 @@ import { gameState } from "../Rules";
 import { useModalService } from "../components/ModalWindow";
 import { observer } from "mobx-react-lite";
 import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionWindows/DeliveryActionWindow/DeliveryActionWindow";
-
+import { TerraformingModal } from "./TerraformingModal";
 
 const modalByPhase = {
   military: <div>military options</div>,
@@ -14,8 +14,10 @@ const modalByPhase = {
       round={gameState.round}
 
     />
+
   ),
-  terraforming: <div>terraforming options</div>,
+
+  terraforming:<TerraformingModal/>,
 } as const;
 
 export const ControlPanel = observer(() => {

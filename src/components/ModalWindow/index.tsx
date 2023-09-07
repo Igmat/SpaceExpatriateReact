@@ -64,6 +64,7 @@ export function useModalWrapper(content: React.ReactNode) {
     () => ({
       show: (content: React.ReactNode, persistant: boolean = false) => {
         setShowModal(true);
+        setPersistant(persistant);
         setModalContent(content);
       },
       hide: () => {
