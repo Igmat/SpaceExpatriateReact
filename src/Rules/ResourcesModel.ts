@@ -47,11 +47,10 @@ export class ResourcesModel {
   };
   fillGarbege = () => {
     for (let key in this.garbageResources) {
-      this.garbageResources[key] += this.playerResources[key];
+      this.garbageResources[key] = this.playerResources[key];
     }
   };
   dropResources = () => {
-    this.fillGarbege();
     for (let key in this.playerResources) {
       this.playerResources[key] = 0;
     }
@@ -65,15 +64,14 @@ export class ResourcesModel {
     this.garbageResources[resource] = 0;
   };
 
-/**********Points************************************************************************** */
+  /**********Points************************************************************************** */
   public points = {
     round: 0,
     total: 0,
   };
 
-  currentTotalPoints = (points: number) => {
-    this.points.total += points;
-    console.log(points);
+  currentTotalPoints = () => {
+    this.points.total += this.points.round;
   };
   //currentRoundPoints = (cards: any[]) => {/test is in DeliveryActionWindow
   currentRoundPoints = (cards: EngineeringCard[] | TerraformingCard[]) => {
@@ -86,10 +84,7 @@ export class ResourcesModel {
     this.points.round = count;
   };
 
-
-
- 
-/***engineeringMaps****************************************************************** */
+  /***engineeringMaps****************************************************************** */
   public engineeringMaps = {
     StartMap: {},
     MiddleMap: {},
@@ -116,16 +111,16 @@ export class ResourcesModel {
       {} as { [key: number]: number }
     );
   };
-/****Energy*************************************************************************** */
+  /****Energy*************************************************************************** */
 
-public energy = {
-  startEnergy: 0,
-  energy: 0,
-};
+  public energy = {
+    startEnergy: 0,
+    energy: 0,
+  };
 
-currentEnergy = () => {};  
+  currentEnergy = () => {};
 
-/*
+  /*
   countPoints = (arg: number[]) => {
     this.points.total = arg.reduce((acc, el) => acc + el, this.points.total);
   };*/

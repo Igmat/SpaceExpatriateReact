@@ -15,7 +15,7 @@ export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
   const [chooseResource, setChooseResource] = useState(false);
 
   const deliveriOptionHendler = (arg: DeliveryOption) => {
-    props.round.shooseDeliveryOption(arg);
+    props.round.сhooseDeliveryOption(arg);
     setChooseResource(true);
     /*
     const test = [
