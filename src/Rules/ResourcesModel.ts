@@ -90,11 +90,19 @@ export class ResourcesModel {
 
  
 /***engineeringMaps****************************************************************** */
-  public engineeringMaps = {
+  /*public engineeringMaps = {
     StartMap: {},
     MiddleMap: {},
     FinishCounter: 0,
   };
+
+  */
+  public engineeringMaps = {
+    StartMap: {} as { [key: number]: number },
+    MiddleMap: {} as { [key: number]: number },
+    FinishCounter: 0,
+  };
+  
 
   //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
   createEngineeringMap = (cards: EngineeringCard[]) => {

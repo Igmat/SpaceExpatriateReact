@@ -23,6 +23,7 @@ export class ActionManager {
   };
 
   cardsToDrop: CardDefinition[] = [];
+  temporaryCardsToDrop: CardDefinition[] = [];
 
   missionType?: CardType;
 
@@ -40,10 +41,11 @@ export class ActionManager {
     }
 
     this.round.phase = card.type;
-    // console.log(this.round.phase);
+    console.log(this.round.phase);
     switch (card.type) {
       case "delivery": //my
         this.round.step = "options";
+        this.remaining.activateCard = this.hand.cardsInHand.length; // +1 because of tryNext
         break;
       case "engineering":
         this.remaining.activateDeck = 1;
@@ -97,15 +99,31 @@ export class ActionManager {
     if (this.round.phase === "engineering") {
       this.table.takeCard(this.hand.dropCard(card));
     }
-    if (this.round.phase === "delivery") {
-    }
     this.tryNext();
+
+    if (this.round.phase === "delivery" && this.round.step === "performing") {
+      this.temporaryCardsToDrop.push(this.hand.dropCard(card))
+        && this.resources.energy.energy++
+        && this.resources.engineeringMaps.FinishCounter++
+        && this.increaseMiddleEnergyByDropCards() //? сейчас не работает потому что createEngineeringMap нигде не запускается
+      console.log("energy: " + this.resources.energy.energy);
+    }
   };
+
+  increaseMiddleEnergyByDropCards = () => {
+    for (const key in this.resources.engineeringMaps.MiddleMap) {
+      if (this.resources.engineeringMaps.MiddleMap.hasOwnProperty(key)) {
+        this.resources.engineeringMaps.MiddleMap[key]++;
+        console.log("MiddleMap: " + key + " " + this.resources.engineeringMaps.MiddleMap[key]);
+      }
+    }
+  }
+
 
   activateCardsOnTable = (cards: CardDefinition) => {
     this.round.phase === "terraforming" && this.round.step === "performing"
-      && this.cardsToDrop.push(cards);
-    console.log("cardsToDrop: " + this.cardsToDrop.length);
+      && this.cardsToDrop.push(cards)
+      && console.log("cardsToDrop: " + this.cardsToDrop.length);
 
   }
 
@@ -119,7 +137,7 @@ export class ActionManager {
       this.resources.removeResourcesFromGarbage(resource);
       //console.log(resource)
       this.tryNext();
-   
+
     }
 
   };
