@@ -22,6 +22,8 @@ export class ResourcesModel {
     "dark matter": 0,
   };
 
+  public charterResource?: ResourcePrimitive
+
   public garbageResources: playerResources = {
     fuel: 2,
     minerals: 0,
@@ -31,63 +33,57 @@ export class ResourcesModel {
     "dark matter": 0,
   };
 
-  public tempPlayerResources: playerResources = {//не забывать очищать!
-    fuel: 0,
-    minerals: 0,
-    "biotic materials": 0,
-    machinery: 0,
-    nanotechnologies: 0,
-    "dark matter": 0,
+  /**********Points************************************************************************** */
+  public points = {
+    round: 0,
+    total: 0,
+  };
+
+  public engineeringMaps = {
+    StartMap: {} as { [key: number]: number },
+    MiddleMap: {} as { [key: number]: number },
+    FinishCounter: 0,
   };
 
   constructor(private readonly table: TableModel) {
     makeAutoObservable(this);
   }
 
-  getResources = (resource: ResourcePrimitive) => {
-    this.playerResources[resource]++;
+  getResources = () => {
     this.table.delivery.map((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
     for (let key in this.playerResources) {
-      this.playerResources[key] =
-        this.playerResources[key] - this.garbageResources[key];
+      this.playerResources[key] -= this.garbageResources[key];
       if (this.playerResources[key] < 0) this.playerResources[key] = 0;
     }
+    this.charterResource && this.playerResources[this.charterResource]++;
   };
-  fillGarbege = () => {
+
+  addResource = (resource: ResourcePrimitive) => {
+    this.charterResource = resource
+  }
+
+  fillGarbage = () => {
     for (let key in this.garbageResources) {
       this.garbageResources[key] = this.playerResources[key];
     }
   };
+
   dropResources = () => {
     for (let key in this.playerResources) {
       this.playerResources[key] = 0;
     }
-    for (let key in this.tempPlayerResources) {
-      this.tempPlayerResources[key] = 0;
-    }
   };
 
-  resetResources = () => {
-    for (let key in this.tempPlayerResources) {
-      this.playerResources[key] += this.tempPlayerResources[key];
-    }
-  }
-  fillCard = (resources: ResourcePrimitive[]) => {
-    resources.map((resource) => {
+  payForCard = (resources: ResourcePrimitive[]) => {
+    resources.forEach((resource) => {
       this.playerResources[resource]--
-    this.tempPlayerResources[resource]++});
+    });
   };
 
   removeResourcesFromGarbage = (resource: ResourcePrimitive) => {
     this.garbageResources[resource] = 0;
-  };
-
-  /**********Points************************************************************************** */
-  public points = {
-    round: 0,
-    total: 0,
   };
 
   currentTotalPoints = () => {
@@ -107,25 +103,6 @@ export class ResourcesModel {
   resetPoints = () => {
     this.points.total = 0;
   };
-
-
- 
-/***engineeringMaps****************************************************************** */
-  /*public engineeringMaps = {
-  /***engineeringMaps****************************************************************** */
-  /*public engineeringMaps = {
-    StartMap: {},
-    MiddleMap: {},
-    FinishCounter: 0,
-  };
-  */
-
-  public engineeringMaps = {
-    StartMap: {} as { [key: number]: number },
-    MiddleMap: {} as { [key: number]: number },
-    FinishCounter: 0,
-  };
-  
 
   //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
   createEngineeringMap = (cards: EngineeringCard[]) => {
@@ -151,8 +128,6 @@ export class ResourcesModel {
     console.log(this.engineeringMaps)
   };
 
- 
-
   /****Energy*************************************************************************** */
 
   public energy = {
@@ -165,10 +140,4 @@ export class ResourcesModel {
       this.engineeringMaps.StartMap as { [key: number]: number }
     ).reduce((acc, el) => acc + el, 0);
   };
-
-  
-  /*
-  countPoints = (arg: number[]) => {
-    this.points.total = arg.reduce((acc, el) => acc + el, this.points.total);
-  };*/
 }

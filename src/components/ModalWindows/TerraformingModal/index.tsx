@@ -3,19 +3,19 @@ import styles from './TerraformingModal.module.scss'
 export const TerraformingModal = () => {
 
     const onDeliveryMissionClick = () => {
-        gameState.action.setMissionType("delivery")
+        gameState.action.select("delivery")
     }
 
     const onEngineeringMissionClick = () => {
-        gameState.action.setMissionType("engineering")
+        gameState.action.select("engineering")
     }
 
     const onTerraformingMissionClick = () => {
-        gameState.action.setMissionType("terraforming")
+        gameState.action.select("terraforming")
     }
 
     const onMilitaryMissionClick = () => {
-        gameState.action.setMissionType("military")
+        gameState.action.select("military")
     }
 
     return (

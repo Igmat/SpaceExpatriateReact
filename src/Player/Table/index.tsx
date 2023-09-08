@@ -5,6 +5,8 @@ import { Card } from "../../components/Card";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
+import { useState } from "react";
+import { CardDefinition } from "../../Rules/card-types";
 
 interface TableProps {
   model: TableModel;
@@ -14,9 +16,13 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-  const endTheRound = () => {
-    props.action.dropResources();
-  };
+
+  const [selectedCards, setSelectedCards] = useState([] as CardDefinition[])
+
+  const handleClick = (card: CardDefinition) => {
+    props.action.activateCardOnTable(card)
+    && setSelectedCards([...selectedCards, card])
+  }
 
   return (
     <div className={styles.container}>
@@ -25,8 +31,8 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={props.action.cardsToDrop.includes(card)}
-            onClick={() => props.action.activateCardsOnTable(card)}
+            isSelected={selectedCards.includes(card)}
+            onClick={() => handleClick(card)}
           />
         ))}
       </div>
@@ -35,12 +41,12 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={props.action.cardsToDrop.includes(card)}
+            isSelected={selectedCards.includes(card)}
             isAvailable={
               props.round.phase === "delivery" &&
               props.round.step === "performing"
             }
-            onClick={() => props.action.activateCardsOnTable(card)}
+            onClick={() => handleClick(card)}
           />
         ))}
       </div>
@@ -49,12 +55,12 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={props.action.cardsToDrop.includes(card)}
+            isSelected={selectedCards.includes(card)}
             isAvailable={
               props.round.phase === "delivery" &&
               props.round.step === "performing"
             }
-            onClick={() => props.action.activateCardsOnTable(card)}
+            onClick={() => handleClick(card)}
           />
         ))}
       </div>
@@ -63,13 +69,13 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={props.action.cardsToDrop.includes(card)}
-            onClick={() => props.action.activateCardsOnTable(card)}
+            isSelected={selectedCards.includes(card)}
+            onClick={() => handleClick(card)}
           />
         ))}
       </div>
       {props.round?.step === "performing" && (
-        <div className={styles.end} onClick={() => endTheRound()}>
+        <div className={styles.end} onClick={props.action.tryNext}>
           End the round
         </div>
       )}
@@ -87,16 +93,16 @@ export const Table = observer((props: TableProps) => {
 
       {/*buttons*/}
       {props.round.step === "performing" &&
-        props.action.cardsToDrop.length > 0 && (
+        selectedCards.length > 0 && (
           <button className={styles.resetButton} onClick={props.action.reset}>
             Reset
           </button>
         )}
       {props.round.step === "performing" &&
-        props.action.cardsToDrop.length >= 3 && (
+        selectedCards.length >= 3 && (
           <button
             className={styles.confirmButton}
-            onClick={props.action.tryBuildColony}
+            onClick={props.action.tryNext} //обнулить useState в пустой массив
           >
             Confirm
           </button>
@@ -104,9 +110,9 @@ export const Table = observer((props: TableProps) => {
       {props.round.step === "performing" && (
         <button
           className={styles.giveUpButton}
-          onClick={props.action.endAction}
+          onClick={props.action.tryNext} //обнулить useState в пустой массив
         >
-          End my turn
+          End turn
         </button>
       )}
     </div>

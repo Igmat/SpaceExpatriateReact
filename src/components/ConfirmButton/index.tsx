@@ -1,19 +1,13 @@
+import { observer } from 'mobx-react-lite';
 import { ActionManager } from '../../Rules/ActionManager';
-import { ResourcesModel } from '../../Rules/ResourcesModel';
 import styles from './ConfirmButton.module.scss'
 
 interface ConfirmButtonProps {
     action: ActionManager;
-    resources: ResourcesModel;
-
 }
 
-export const ConfirmButton= (props: ConfirmButtonProps) => {
-    const confirmAction = () => {
-props.action.dropCards()
-props.resources.currentTotalPoints()
-    }
+export const ConfirmButton = observer((props: ConfirmButtonProps) => {
     return (
-        <button className={styles.confirmButton} onClick={()=>confirmAction()}>Confirm</button>
+        <button className={styles.confirmButton} onClick={props.action.tryNext}>Confirm</button>
     )
-}
+})

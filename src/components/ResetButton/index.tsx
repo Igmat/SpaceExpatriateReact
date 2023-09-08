@@ -7,7 +7,7 @@ interface ResetButtonProps {
 
 export const ResetButton = (props: ResetButtonProps) => {
   return (
-    <button className={styles.resetButton} onClick={props.action.resetActions}>
+    <button className={styles.resetButton} onClick={props.action.reset}>
       Reset
     </button>
   );

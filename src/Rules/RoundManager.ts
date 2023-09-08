@@ -6,7 +6,6 @@ import { ResourcesModel } from "./ResourcesModel";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "done";
-export type DeliveryOption = "charter" | "garbage";
 
 export class RoundManager {
   constructor(
@@ -25,15 +24,6 @@ export class RoundManager {
 
   phase: Phase = "active";
   step?: Step;
-  deliveryOption?: DeliveryOption;
-
-  nextPerformingStep = () => {
-    this.step = "performing";
-  };
-  chooseDeliveryOption = (arg: DeliveryOption) => {
-    this.deliveryOption = arg;
-    console.log(this.deliveryOption);
-  };
 
   next = () => {
     this.current++;
@@ -41,7 +31,6 @@ export class RoundManager {
     this.phase = "active";
     this.resources.dropResources();
     this.step = undefined;
-    this.deliveryOption = undefined;
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
