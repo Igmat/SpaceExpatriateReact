@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType, ResourcePrimitive } from "./card-types";
+import { CardDefinition, CardType, Resource, ResourcePrimitive } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
@@ -22,9 +22,11 @@ export class ActionManager {
   };
 
   cardsToDrop: CardDefinition[] = [];
-  temporaryCardsToDrop: CardDefinition[] = [];
+  //temporaryCardsToDrop: CardDefinition[] = [];
 
   missionType?: CardType;
+
+
 
   perform = (card?: CardDefinition) => {
     if (!card) return;
@@ -98,11 +100,14 @@ export class ActionManager {
     }
     this.tryNext();
 
+    // убрала выше проверку на phase === "delivery" 
+    // потому что после сброса карты в delivery сразу идет tryNext - не знаю пока как решить
+
     if (this.round.phase === "delivery" && this.round.step === "performing") {
-      this.temporaryCardsToDrop.push(this.hand.dropCard(card))
+      this.table.tempDroppedCards.push(this.hand.dropCard(card))
         && this.resources.energy.energy++
         && this.resources.engineeringMaps.FinishCounter++
-        && this.increaseMiddleEnergyByDropCards() //? сейчас не работает потому что createEngineeringMap нигде не запускается
+        && this.increaseMiddleEnergyByDropCards() //? не уверена что работает правильно
       console.log("energy: " + this.resources.energy.energy);
     }
   };
@@ -116,12 +121,18 @@ export class ActionManager {
     }
   }
 
-
-  activateCardsOnTable = (cards: CardDefinition) => {
+  activateCardsOnTable = (card: CardDefinition) => {
     this.round.phase === "terraforming" && this.round.step === "performing"
-      && this.cardsToDrop.push(cards)
+      && this.cardsToDrop.push(card)
       && console.log("cardsToDrop: " + this.cardsToDrop.length);
 
+    console.log(this.resources.engineeringMaps.MiddleMap.hasOwnProperty(card.id))
+
+    // проверка: была ли использована выбранная карта, если да - ничего не делаем
+    // тут проблема в том, что нет карт терраформинга в мапах, только инжиниринга
+    this.round.phase === "delivery" && this.round.step === "performing" && this.round.deliveryOption === "charter"
+      && !this.resources.engineeringMaps.MiddleMap.hasOwnProperty(card.id)
+      && this.calculateResourcesCombination() //&& this.tryNext()
   }
 
   resourceAction = (resource: ResourcePrimitive) => {
@@ -137,6 +148,21 @@ export class ActionManager {
 
     }
   };
+
+  public calculatedResources: Resource[] = [];
+
+  // определить все комбинации ресурсов на столе
+  calculateResourcesCombination = () => {
+    this.table.terraforming.forEach((card) => {
+      this.calculatedResources.push(...card.resources);
+    })
+
+    console.log(this.calculatedResources);
+    
+  }
+  // когда вызывается calculateResourcesCombination()? 
+  // дальше не понимаю с каким из "playerResources" или "tempPlayerResources" нужно сравнивать 
+  // чтобы получить доступные комбинации ресурсов
 
   endAction = () => {
     console.log("This Round: " + this.round.current + " is over");
@@ -164,17 +190,17 @@ export class ActionManager {
   };
 
   dropCards = () => {
-    this.round.phase === "terraforming" &&
-      this.round.step === "performing" &&
-      this.table.dropCards(...this.cardsToDrop);
+    this.round.phase === "terraforming"
+      && this.round.step === "performing"
+      && this.table.dropCards(...this.cardsToDrop);
 
     this.cardsToDrop = [];
     console.log("You have dropped cards and got 1 Colony");
     this.tryNext();
 
-    this.round.phase === "delivery" &&
-      this.round.deliveryOption === "charter" &&
-      this.decks.dropCards(...this.table.tempDroppedCards);
+    this.round.phase === "delivery"
+      && this.round.deliveryOption === "charter"
+      && this.decks.dropCards(...this.table.tempDroppedCards);
     this.table.dropTempCards();
   };
   dropResources = () => {
