@@ -10,8 +10,6 @@ const modalByPhase = {
   delivery: (
     <DeliveryActionWindow
       action={gameState.action}
-      resources={gameState.resources}
-      round={gameState.round}
     />
   ),
 

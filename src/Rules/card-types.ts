@@ -1,5 +1,11 @@
 export type ResourcePrimitive = 'fuel' | 'minerals' | 'biotic materials' | 'machinery' | 'nanotechnologies' | 'dark matter';
 
+export const isResourcePrimitive = (option: string ): option is ResourcePrimitive => 
+    (['fuel', 'minerals', 'biotic materials', 'machinery', 'nanotechnologies', 'dark matter']).includes(option)
+
+export const isCardType = (option: string): option is CardType =>
+    (['delivery', 'engineering', 'terraforming', 'military']).includes(option)
+
 export type Resource = ResourcePrimitive | ResourcePrimitive[];
 
 export type CardDefinition = DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard;

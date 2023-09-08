@@ -36,6 +36,8 @@ export class TableModel {
       (card) => !cards.includes(card)
     );
     this.military = this.military.filter((card) => !cards.includes(card));
+
+    return cards;
   };
   tempDropCards = (...cards: CardDefinition[]) => {
     this.tempDroppedCards.push(...cards);

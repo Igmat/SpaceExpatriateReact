@@ -1,11 +1,9 @@
 import { observer } from "mobx-react-lite";
-import { ActionManager } from "../../Rules/ActionManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 import styles from "./PlayerMenu.module.scss";
 import energy from '../../img/energy.svg'
 
 interface PlayerMenuProps {
-  action: ActionManager;
   resources: ResourcesModel;
 }
 export const PlayerMenu = observer((props: PlayerMenuProps) => {
