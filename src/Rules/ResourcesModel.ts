@@ -40,8 +40,8 @@ export class ResourcesModel {
   };
 
   public engineeringMaps = {
-    StartMap: {} as { [key: number]: number },
-    MiddleMap: {} as { [key: number]: number },
+    Start: {} as { [key: number]: number },
+    Middle: {} as { [key: number]: number },
     FinishCounter: 0,
   };
 
@@ -50,7 +50,8 @@ export class ResourcesModel {
   }
 
   getResources = () => {
-    this.table.delivery.map((card) =>
+    if(this.table.delivery.length === 0) return 
+    this.table.delivery.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
     for (let key in this.playerResources) {
@@ -64,7 +65,7 @@ export class ResourcesModel {
     this.charterResource = resource
   }
 
-  fillGarbage = () => {
+  dropToGarbage = () => {
     for (let key in this.garbageResources) {
       this.garbageResources[key] = this.playerResources[key];
     }
@@ -86,13 +87,13 @@ export class ResourcesModel {
     this.garbageResources[resource] = 0;
   };
 
-  currentTotalPoints = () => {
+  calculateTotalPoints = () => {
     this.points.total += this.points.round;
   };
   //currentRoundPoints = (cards: any[]) => {/test is in DeliveryActionWindow
-  currentRoundPoints = (cards: EngineeringCard[] | TerraformingCard[]) => {
+  calculateRoundPoints = (cards: EngineeringCard[] | TerraformingCard[]) => {
     let count = 0;
-    cards.map((card) => {
+    cards.forEach((card) => {
       if (Object.keys(card).includes("points") && card.points !== undefined) {
         count += card.points;
       }
@@ -105,7 +106,7 @@ export class ResourcesModel {
   };
 
   //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
-  createEngineeringMap = (cards: EngineeringCard[]) => {
+  createEngineeringMaps = (cards: EngineeringCard[]) => {
     if (cards.length === 0) return;
     const startArr: EngineeringCard[] = [];
     const continueArr: EngineeringCard[] = [];
@@ -113,18 +114,17 @@ export class ResourcesModel {
     cards.forEach((card) => {
       if (card.connection === "start") startArr.push(card);
       if (card.connection === "continue") continueArr.push(card);
-      if (card.connection === "end") this.engineeringMaps.FinishCounter++;
     });
-    this.engineeringMaps.StartMap = startArr.reduce(
+    this.engineeringMaps.Start = startArr.reduce(
       (acc, card) => (acc[card.id] = 1) && acc,
       {} as { [key: number]: number }
     );
-    this.engineeringMaps.MiddleMap = continueArr.reduce(
-      (acc, card) => (acc[card.id] = 2) && acc,
+    this.engineeringMaps.Middle = continueArr.reduce(
+      (acc, card) => (acc[card.id] = 0) || acc,
       {} as { [key: number]: number }
     );
 
-    console.log(this.engineeringMaps.StartMap)
+    console.log(this.engineeringMaps.Start)
     console.log(this.engineeringMaps)
   };
 
@@ -135,9 +135,9 @@ export class ResourcesModel {
     energy: 0,
   };
 
-  currentStartEnergy = () => {
+  calculateStartEnergy = () => {
     this.energy.startEnergy = Object.values(
-      this.engineeringMaps.StartMap as { [key: number]: number }
+      this.engineeringMaps.Start as { [key: number]: number }
     ).reduce((acc, el) => acc + el, 0);
   };
 }

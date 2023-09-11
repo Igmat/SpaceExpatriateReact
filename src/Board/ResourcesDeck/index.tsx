@@ -14,7 +14,7 @@ export const ResourcesDeck = observer((props: ResourcesDeckProps) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.garage}>
+      <div className={styles.garbage}>
       
        <div className={styles.biotic}>
             {props.resources.garbageResources["biotic materials"]}

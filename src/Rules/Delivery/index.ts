@@ -26,7 +26,7 @@ export class ActionManager implements IActionManager {
     perform = (card: CardDefinition) => {
         this.round.step = "options";
         //this.remaining.activateCard = this.hand.cardsInHand.length;
-        this.resources.createEngineeringMap(this.table.engineering)
+        this.resources.createEngineeringMaps(this.table.engineering)
     }
 
     tryNext = () => {
@@ -48,7 +48,7 @@ export class ActionManager implements IActionManager {
 
 
     activateCardOnTable = (card: CardDefinition) => {
-        !this.resources.engineeringMaps.MiddleMap.hasOwnProperty(card.id)
+        !this.resources.engineeringMaps.Middle.hasOwnProperty(card.id)
             && this.calculateResourcesCombination() //&& this.tryNext()
         return false
     };
@@ -76,14 +76,14 @@ export class ActionManager implements IActionManager {
         this.table.resetTempDroppedCards();
         this.resources.getResources();
         this.resources.resetPoints();
-        this.resources.currentStartEnergy();
+        this.resources.calculateStartEnergy();
     }
 
     increaseMiddleEnergyByDropCards = () => {
-        for (const key in this.resources.engineeringMaps.MiddleMap) {
-            if (this.resources.engineeringMaps.MiddleMap.hasOwnProperty(key)) {
-                this.resources.engineeringMaps.MiddleMap[key]++;
-                console.log("MiddleMap: " + key + " " + this.resources.engineeringMaps.MiddleMap[key]);
+        for (const key in this.resources.engineeringMaps.Middle) {
+            if (this.resources.engineeringMaps.Middle.hasOwnProperty(key)) {
+                this.resources.engineeringMaps.Middle[key]++;
+                console.log("MiddleMap: " + key + " " + this.resources.engineeringMaps.Middle[key]);
             }
         }
     }
