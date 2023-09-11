@@ -4,16 +4,18 @@ import { useModalService } from "../components/ModalWindow";
 import { observer } from "mobx-react-lite";
 import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionWindow/DeliveryActionWindow";
 import { TerraformingModal } from "../components/ModalWindows/TerraformingModal";
+import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
+import { ChooseResourece } from "../components/ModalWindows/ChooseResource";
 
 const modalByPhase = {
-  military: <div>military options</div>,
+  military: <MillitaryModal />,
   delivery: (
     <DeliveryActionWindow
       action={gameState.action}
     />
   ),
-
   terraforming: <TerraformingModal />,
+  chooseResource: <ChooseResourece />,
 } as const;
 
 export const ControlPanel = observer(() => {
@@ -24,6 +26,11 @@ export const ControlPanel = observer(() => {
         modalByPhase[gameState.round.phase as keyof typeof modalByPhase],
         true
       );
+    }
+    if (gameState.round.step === "resources") {
+      modalService.show(
+        modalByPhase.chooseResource,true
+      )
     }
     //  console.log('im in close - ' + gameState.round.step)
     return modalService.hide;

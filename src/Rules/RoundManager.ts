@@ -5,7 +5,7 @@ import { CardType } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
 
 type Phase = "active" | CardType | "passive";
-type Step = "options" | "performing" | "done";
+type Step = "options" | "performing" | "resources"|"done";
 
 export class RoundManager {
   constructor(
