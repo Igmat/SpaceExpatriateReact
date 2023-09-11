@@ -18,11 +18,14 @@ export class TableModel {
   terraforming: TerraformingCard[] = [];
   military: MilitaryCard[] = [];
 
-  tempDroppedCards: CardDefinition[] = [];
+  tempDroppedCards: (DeliveryCard//временное хранилище для сброшеных карт
+  | EngineeringCard
+  | TerraformingCard
+  | MilitaryCard)[] = [];
 
-  usedTerraformingCards: TerraformingCard[] = [];
+  usedTerraformingCards: TerraformingCard[] = [];//использованные карты Terraforming
 
-  dropCards = (
+  dropCards = (//очистить сброшенные карты со стола
     ...cards: (
       | DeliveryCard
       | EngineeringCard
@@ -39,24 +42,26 @@ export class TableModel {
 
     return cards;
   };
-  
-  addTempDropCards = (...cards: CardDefinition[]) => {
+/*
+  dropCards = (...cards: CardDefinition[]) => {//??
+    cards.forEach((card) => {
+      this[card.type] = this[card.type].filter(card => !cards.includes(card));
+    })
+  }*/
+  addCardsToTempDrop = (...cards: CardDefinition[]) => {
     this.tempDroppedCards.push(...cards);
-   this.dropCards(...cards)
+    this.dropCards(...cards);
   };
 
-  /*
-  addTempDropCards = (ind: number) => {
-
-  }*/
   dropTempCards = () => {
     if ((this.tempDroppedCards.length = 0)) return;
     this.tempDroppedCards = [];
   };
 
   resetTempDroppedCards = () => {
-    //this.tempDroppedCards.forEach((card) => this[card.type].push(card));
-  }
+  //  this.tempDroppedCards.forEach((card) => this[card.type].push(card));//не работает...
+    this.tempDroppedCards = []
+  };
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);

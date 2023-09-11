@@ -53,7 +53,7 @@ export class ActionManager implements IActionManager {
     //зачем связывать первые шаги?
 
     //this.table.tempDroppedCards.push(this.hand.dropCard(card)) &&
-    this.hand.dropCard(card); //сброс карты с руки во временное хранилище
+    this.hand.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.energy.energy++ && //увеличение энергии после сброса карты
       this.resources.engineeringMaps.FinishCounter++; //увеличение FinishCounter после сброса карты
     //   && this.increaseMiddleEnergyByDropCards() //? не уверена что работает правильно (Маша)
@@ -87,6 +87,7 @@ export class ActionManager implements IActionManager {
 
   reset = () => {
     this.table.resetTempDroppedCards();
+    this.hand.resetTempDroppedCards()
     this.resources.getResources();
     this.resources.resetPoints();
     this.resources.calculateStartEnergy();
