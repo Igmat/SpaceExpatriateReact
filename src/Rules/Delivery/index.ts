@@ -11,6 +11,7 @@ import {
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
+import { DeckManager } from "../DeckManager";
 
 export type DeliveryOption = "charter" | "garbage";
 
@@ -19,7 +20,8 @@ export class ActionManager implements IActionManager {
     private readonly table: TableModel,
     private readonly round: RoundManager,
     private readonly hand: HandModel,
-    private readonly resources: ResourcesModel
+    private readonly resources: ResourcesModel,
+    private readonly decks: DeckManager
   ) {
     makeAutoObservable(this);
   }
@@ -36,19 +38,26 @@ export class ActionManager implements IActionManager {
 
   tryNext = () => {
     this.deliveryOption = undefined;
+    this.decks.dropCards(...this.table.tempDroppedCards);//сброс временных карт со стола в общий сброс
+    this.table.dropTempCards();//очистка временных крат на столе
+    this.decks.dropCards(...this.hand.tempDroppedCards);//сброс временных карт из руки в общий сброс
+    this.hand.dropTempCards();//очистка временных карт из руки
+    this.resources.dropToGarbage();// перемещение ресурсов от игрока в garbage
+    this.resources.dropResources();//очистка ресурсов игрока
     return true;
   };
 
   activateDeck = (type: CardType) => {};
 
-  activateCard = (card: number) => { //зачем связывать первые шаги?
-    this.table.tempDroppedCards.push(this.hand.dropCard(card)) &&
-      this.resources.energy.energy++ &&
-      this.resources.engineeringMaps.FinishCounter++;
-   //   && this.increaseMiddleEnergyByDropCards() //? не уверена что работает правильно (Маша)
-    this.increaseMiddleEnergyByDropCards(); //после && не работает 
-    console.log("energy: " + this.resources.energy.energy);
-    console.log(this.resources.engineeringMaps.FinishCounter)
+  activateCard = (card: number) => {
+    //зачем связывать первые шаги?
+
+    //this.table.tempDroppedCards.push(this.hand.dropCard(card)) &&
+    this.hand.dropCard(card); //сброс карты с руки во временное хранилище
+    this.resources.energy.energy++ && //увеличение энергии после сброса карты
+      this.resources.engineeringMaps.FinishCounter++; //увеличение FinishCounter после сброса карты
+    //   && this.increaseMiddleEnergyByDropCards() //? не уверена что работает правильно (Маша)
+    this.increaseMiddleEnergyByDropCards(); //увеличение всех Middle value после сброса карты после && не работает
   };
 
   activateCardOnTable = (card: CardDefinition) => {

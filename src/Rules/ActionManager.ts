@@ -25,7 +25,7 @@ export class ActionManager {
   private managers = {
     engineering: new EAM(this.round, this.table, this.decks, this.hand),
     terraforming: new TAM(this.round, this.table, this.decks),
-    delivery: new DAM(this.table, this.round, this.hand, this.resources),
+    delivery: new DAM(this.table, this.round, this.hand, this.resources, this.decks),
     military: new MAM(this.round, this.hand, this.decks)
   }
 

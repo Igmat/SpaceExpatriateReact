@@ -39,10 +39,16 @@ export class TableModel {
 
     return cards;
   };
-  tempDropCards = (...cards: CardDefinition[]) => {
+  
+  addTempDropCards = (...cards: CardDefinition[]) => {
     this.tempDroppedCards.push(...cards);
    this.dropCards(...cards)
   };
+
+  /*
+  addTempDropCards = (ind: number) => {
+
+  }*/
   dropTempCards = () => {
     if ((this.tempDroppedCards.length = 0)) return;
     this.tempDroppedCards = [];
