@@ -23,8 +23,8 @@ export interface EngineeringCard {
     id: number,
     type: 'engineering',
     connection: 'start' | 'continue' | 'end',
-    entryPoint?: Resource,
-    exitPoint?: Resource[],
+    entryPoint?: ResourcePrimitive,
+    exitPoint?: ResourcePrimitive[],
     points?: number,
     name: string
 }

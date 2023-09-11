@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
-import { CardType } from "./card-types";
+import { CardType, ResourcePrimitive } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
 
 type Phase = "active" | CardType | "passive";
@@ -24,6 +24,7 @@ export class RoundManager {
 
   phase: Phase = "active";
   step?: Step;
+  params?: ResourcePrimitive[];
 
   next = () => {
     this.current++;

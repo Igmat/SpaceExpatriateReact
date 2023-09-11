@@ -4,6 +4,7 @@ import { TableModel } from "../TableModel";
 import {
   CardDefinition,
   CardType,
+  EngineeringCard,
   Resource,
   ResourcePrimitive,
   isResourcePrimitive,
@@ -54,8 +55,8 @@ export class ActionManager implements IActionManager {
       if (
         card.connection === "start" &&
         this.resources.engineeringMaps.StartMap[card.id] !== 0 &&
-        card.entryPoint !== undefined &&
-        this.resources.playerResources[entryPoint] !== 0
+        entryPoint !== undefined &&
+        this.resources.playerResources[entryPoint] > 0
       ) {
         this.resources.engineeringMaps.StartMap[card.id] = 0;
         this.resources.playerResources[entryPoint]--;
@@ -68,39 +69,30 @@ export class ActionManager implements IActionManager {
         }
         this.resources.engineeringMaps.FinishCounter++;
       }
-
-      if (
-        card.connection === "continue" &&
-        this.resources.engineeringMaps.MiddleMap[card.id] !== 0 &&
-        this.resources.playerResources[entryPoint] !== 0
-      ) {
-        this.resources.playerResources[entryPoint]--;
-        this.resources.points.round++;
-        this.resources.engineeringMaps.MiddleMap[card.id]--;
-        if (card.exitPoint?.length === 1) {
-          this.resources.playerResources[
-            card.exitPoint[0] as ResourcePrimitive
-          ]++;
-        }
-        if (card.exitPoint?.length === 2) {
-          this.round.step = "resources";
+      if (card.connection === "continue" && this.resources.engineeringMaps.MiddleMap[card.id] > 0) {
+        if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
+          if (entryPoint !== undefined) {
+            this.resources.playerResources[entryPoint]--;
+          }
+        
+          this.resources.points.round++;
+          this.resources.engineeringMaps.MiddleMap[card.id]--;
+          this.gainResources(card as EngineeringCard);
+          console.log(card.entryPoint + " " + card.exitPoint);
         }
       }
       if (
         card.connection === "end" &&
-        this.resources.engineeringMaps.FinishCounter !== 0 &&
-        this.resources.playerResources[entryPoint] !== 0
+        this.resources.engineeringMaps.FinishCounter > 0
       ) {
-        this.resources.points.round++;
-        this.resources.playerResources[entryPoint]--;
-        this.resources.engineeringMaps.FinishCounter--;
-        if (card.exitPoint?.length === 1) {
-          this.resources.playerResources[
-            card.exitPoint[0] as ResourcePrimitive
-          ]++;
-        }
-        if (card.exitPoint?.length === 2) {
-          this.round.step = "resources";
+        if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
+          if (entryPoint !== undefined) {
+            this.resources.playerResources[entryPoint]--;
+          }
+          this.resources.points.round++;
+          this.resources.engineeringMaps.FinishCounter--;
+          this.gainResources(card as EngineeringCard);
+          console.log(card.entryPoint + " " + card.exitPoint);
         }
       }
     }
@@ -157,4 +149,14 @@ export class ActionManager implements IActionManager {
 
     console.log(this.calculatedResources);
   };
+
+  gainResources(card: EngineeringCard) {
+    if (card.exitPoint?.length === 1) {
+      this.resources.playerResources[card.exitPoint[0] as ResourcePrimitive]++;
+    } else {
+      this.round.step = "resources";
+      this.round.params = card.exitPoint;
+      
+    }
+  }
 }

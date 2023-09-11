@@ -15,7 +15,7 @@ const modalByPhase = {
     />
   ),
   terraforming: <TerraformingModal />,
-  chooseResource: <ChooseResourece />,
+  chooseResource: <ChooseResourece array={gameState.round.params!} />,
 } as const;
 
 export const ControlPanel = observer(() => {
