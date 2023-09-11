@@ -5,17 +5,12 @@ import { observer } from "mobx-react-lite";
 import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionWindow/DeliveryActionWindow";
 import { TerraformingModal } from "../components/ModalWindows/TerraformingModal";
 import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
-import { ChooseResourece } from "../components/ModalWindows/ChooseResource";
+import { ChooseResource } from "../components/ModalWindows/ChooseResource";
 
 const modalByPhase = {
   military: <MillitaryModal />,
-  delivery: (
-    <DeliveryActionWindow
-      action={gameState.action}
-    />
-  ),
+  delivery: <DeliveryActionWindow action={gameState.action} />,
   terraforming: <TerraformingModal />,
-  chooseResource: <ChooseResourece array={gameState.round.params!} />,
 } as const;
 
 export const ControlPanel = observer(() => {
@@ -29,8 +24,15 @@ export const ControlPanel = observer(() => {
     }
     if (gameState.round.step === "resources") {
       modalService.show(
-        modalByPhase.chooseResource,true
-      )
+        <ChooseResource
+          array={gameState.round.params!}
+          select={(resource) => {
+            gameState.resources.gainResource(resource);
+            gameState.round.step = "performing";
+          }}
+        />,
+        true
+      );
     }
     //  console.log('im in close - ' + gameState.round.step)
     return modalService.hide;

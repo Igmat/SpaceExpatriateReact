@@ -81,7 +81,9 @@ export class ResourcesModel {
       this.playerResources[resource]--
     });
   };
-
+  gainResource = (resource: ResourcePrimitive) => {
+    this.playerResources[resource]++;
+  }
   removeResourcesFromGarbage = (resource: ResourcePrimitive) => {
     this.garbageResources[resource] = 0;
   };

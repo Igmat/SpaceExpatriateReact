@@ -152,11 +152,11 @@ export class ActionManager implements IActionManager {
 
   gainResources(card: EngineeringCard) {
     if (card.exitPoint?.length === 1) {
-      this.resources.playerResources[card.exitPoint[0] as ResourcePrimitive]++;
+     this.resources.gainResource(card.exitPoint[0]);
     } else {
       this.round.step = "resources";
       this.round.params = card.exitPoint;
-      
     }
   }
+  
 }

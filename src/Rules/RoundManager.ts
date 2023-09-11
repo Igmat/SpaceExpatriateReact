@@ -26,6 +26,7 @@ export class RoundManager {
   step?: Step;
   params?: ResourcePrimitive[];
 
+
   next = () => {
     this.current++;
     // console.log("Round: " + this.current + " is started");
