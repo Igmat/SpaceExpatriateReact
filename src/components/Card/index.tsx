@@ -21,6 +21,7 @@ export const Card = observer((props: CardProps) => {
         ))}
       {props.type === "engineering" && (
         <div className={styles[props.connection]}>
+          <div>{props.connection}</div>
           <div className={styles.entryPoint}>
             {props.entryPoint && <ResourceComponent type={props.entryPoint} />}
           </div>

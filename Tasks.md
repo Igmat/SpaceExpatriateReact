@@ -16,10 +16,11 @@
 - [X] -> посчитать количество входящих ресурсов
 
 
-## Drop Card from hand (вызывается при activateCard) (Maria)
-- [ ] -> увеличить счетчик энергии
-- [ ] -> все значения для MiddleMap увелисчить на 1
-- [ ] -> значения для FinishCounter увелисчить на 1
+## Drop Card from hand (вызывается при activateCard) (Kira)
+- [X] -> увеличить счетчик энергии
+    - [X] -> Добавить отображение
+- [X] -> все значения для MiddleMap увеличить на 1
+- [X] -> значения для FinishCounter увеличить на 1
 - [ ] -> добавить карту во временный сброс
 
 ## Activate Terraforming (вызывается при activateCardsOnTable) ?(Maria)
