@@ -3,7 +3,8 @@ import { CardDefinition } from "../Rules/card-types";
 
 export class HandModel {
   public cardsInHand: CardDefinition[] = [];
-  public tempDroppedCards: CardDefinition[] = [];
+  public tempDroppedCards: CardDefinition[] = []
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -20,8 +21,9 @@ export class HandModel {
   };
   resetTempDroppedCards = () => {
     this.tempDroppedCards.forEach((card) => this.cardsInHand.push(card));
-    this.tempDroppedCards =[]
+    this.tempDroppedCards = []
   };
+
   takeCard(card?: CardDefinition) {
     //  console.log(`cards in the hand ${this.cardsInHand.length + 1}`);
     card && this.cardsInHand.push(card);

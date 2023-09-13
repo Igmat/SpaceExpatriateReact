@@ -1,11 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType, Resource, ResourcePrimitive } from "./card-types";
+import { CardDefinition, CardType } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
 import { ResourcesModel } from "./ResourcesModel";
-import { IActionManager } from "./IActionManager";
 import { ActionManager as EAM } from "./Engineering";
 import { ActionManager as TAM } from "./Terraforming";
 import { ActionManager as DAM } from "./Delivery";
@@ -37,7 +36,6 @@ export class ActionManager {
     if (this.round.phase !== "active") return;
 
     this.activeAction = card.type;
-
     this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
 
     if (this.round.current < 5) {

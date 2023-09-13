@@ -22,10 +22,10 @@ export class ResourcesModel {
     "dark matter": 0,
   };
 
-  public charterResource?: ResourcePrimitive
+  public charterResource?: ResourcePrimitive;
 
   public garbageResources: playerResources = {
-    fuel: 2,
+    fuel: 0,
     minerals: 0,
     "biotic materials": 0,
     machinery: 0,
@@ -33,6 +33,18 @@ export class ResourcesModel {
     "dark matter": 0,
   };
 
+  public tempGarbageResources: playerResources = {};
+
+  resetGarbage = () => {
+    for (let key in this.tempGarbageResources) {
+      this.garbageResources[key] = this.tempGarbageResources[key];
+    }
+  };
+  saveGarbage = () => {
+    for (let key in this.garbageResources) {
+      this.tempGarbageResources[key] = this.garbageResources[key];
+    }
+  };
   /**********Points************************************************************************** */
   public points = {
     round: 0,
@@ -50,7 +62,7 @@ export class ResourcesModel {
   }
 
   getResources = () => {
-    if(this.table.delivery.length === 0) return 
+    if (this.table.delivery.length === 0) return;
     this.table.delivery.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
@@ -62,15 +74,15 @@ export class ResourcesModel {
   };
 
   addResource = (resource: ResourcePrimitive) => {
-    this.charterResource = resource
-  }
+    this.charterResource = resource;
+  };
 
   dropToGarbage = () => {
     for (let key in this.garbageResources) {
       this.garbageResources[key] = this.playerResources[key];
     }
+    this.saveGarbage(); //сохранение состояния гаража в момент перехода на следующий раунд
   };
-
   dropResources = () => {
     for (let key in this.playerResources) {
       this.playerResources[key] = 0;
@@ -79,7 +91,7 @@ export class ResourcesModel {
 
   payForCard = (resources: ResourcePrimitive[]) => {
     resources.forEach((resource) => {
-      this.playerResources[resource]--
+      this.playerResources[resource]--;
     });
   };
 
@@ -124,8 +136,8 @@ export class ResourcesModel {
       {} as { [key: number]: number }
     );
 
-    console.log(this.engineeringMaps.Start)
-    console.log(this.engineeringMaps)
+    console.log(this.engineeringMaps.Start);
+    console.log(this.engineeringMaps);
   };
 
   /****Energy*************************************************************************** */
@@ -139,5 +151,9 @@ export class ResourcesModel {
     this.energy.startEnergy = Object.values(
       this.engineeringMaps.Start as { [key: number]: number }
     ).reduce((acc, el) => acc + el, 0);
+  };
+  resetEnergy = () => {
+    this.energy.energy = 0;
+    this.calculateStartEnergy();
   };
 }
