@@ -51,53 +51,9 @@ export class ActionManager implements IActionManager {
 
   activateCardOnTable = (card: CardDefinition) => {
     if (card.type === "engineering") {
-      const entryPoint = card.entryPoint as ResourcePrimitive;
-      if (
-        card.connection === "start" &&
-        this.resources.engineeringMaps.StartMap[card.id] !== 0 &&
-        entryPoint !== undefined &&
-        this.resources.playerResources[entryPoint] > 0
-      ) {
-        this.resources.engineeringMaps.StartMap[card.id] = 0;
-        this.resources.playerResources[entryPoint]--;
-        this.resources.energy.energy++;
-        this.resources.points.round++;
-        for (const key in this.resources.engineeringMaps.MiddleMap) {
-          if (this.resources.engineeringMaps.MiddleMap.hasOwnProperty(key)) {
-            this.resources.engineeringMaps.MiddleMap[key]++;
-          }
-        }
-        this.resources.engineeringMaps.FinishCounter++;
-      }
-      if (card.connection === "continue" && this.resources.engineeringMaps.MiddleMap[card.id] > 0) {
-        if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
-          if (entryPoint !== undefined) {
-            this.resources.playerResources[entryPoint]--;
-          }
-        
-          this.resources.points.round++;
-          this.resources.engineeringMaps.MiddleMap[card.id]--;
-          this.gainResources(card as EngineeringCard);
-          console.log(card.entryPoint + " " + card.exitPoint);
-        }
-      }
-      if (
-        card.connection === "end" &&
-        this.resources.engineeringMaps.FinishCounter > 0
-      ) {
-        if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
-          if (entryPoint !== undefined) {
-            this.resources.playerResources[entryPoint]--;
-          }
-          this.resources.points.round++;
-          this.resources.engineeringMaps.FinishCounter--;
-          this.gainResources(card as EngineeringCard);
-          console.log(card.entryPoint + " " + card.exitPoint);
-        }
-      }
+      this.activateEngineeringCard(card)
     }
-    !this.resources.engineeringMaps.MiddleMap.hasOwnProperty(card.id) &&
-      this.calculateResourcesCombination(); //&& this.tryNext()
+
     return false;
   };
 
@@ -150,6 +106,52 @@ export class ActionManager implements IActionManager {
     console.log(this.calculatedResources);
   };
 
+  activateEngineeringCard(card: EngineeringCard) { 
+    const entryPoint = card.entryPoint;
+    if (
+      card.connection === "start" &&
+      this.resources.engineeringMaps.StartMap[card.id] !== 0 &&
+      entryPoint !== undefined &&
+      this.resources.playerResources[entryPoint] > 0
+    ) {
+      this.resources.engineeringMaps.StartMap[card.id] = 0;
+      this.resources.playerResources[entryPoint]--;
+      this.resources.energy.energy++;
+      this.resources.points.round += card.points || 0;
+      for (const key in this.resources.engineeringMaps.MiddleMap) {
+        if (this.resources.engineeringMaps.MiddleMap.hasOwnProperty(key)) {
+          this.resources.engineeringMaps.MiddleMap[key]++;
+        }
+      }
+      this.resources.engineeringMaps.FinishCounter++;
+    }
+    if (card.connection === "continue" && this.resources.engineeringMaps.MiddleMap[card.id] > 0) {
+      if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
+        if (entryPoint !== undefined) {
+          this.resources.playerResources[entryPoint]--;
+        }
+        this.resources.points.round += card.points || 0;
+        this.resources.engineeringMaps.MiddleMap[card.id]--;
+        this.gainResources(card as EngineeringCard);
+        console.log(card.entryPoint + " " + card.exitPoint);
+      }
+    }
+    if (
+      card.connection === "end" &&
+      this.resources.engineeringMaps.FinishCounter > 0
+    ) {
+      if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
+        if (entryPoint !== undefined) {
+          this.resources.playerResources[entryPoint]--;
+        }
+        this.resources.points.round += card.points || 0;
+        this.resources.engineeringMaps.FinishCounter--;
+        this.gainResources(card as EngineeringCard);
+        console.log(card.entryPoint + " " + card.exitPoint);
+      }
+    }
+  }
+
   gainResources(card: EngineeringCard) {
     if (card.exitPoint?.length === 1) {
      this.resources.gainResource(card.exitPoint[0]);
@@ -158,5 +160,4 @@ export class ActionManager implements IActionManager {
       this.round.params = card.exitPoint;
     }
   }
-  
 }
