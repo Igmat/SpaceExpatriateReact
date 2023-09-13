@@ -30,6 +30,7 @@ export class ActionManager implements IActionManager {
   public calculatedResources: Resource[] = [];
   deliveryOption?: DeliveryOption;
   usedTerraformingCards: TerraformingCard[] = []; //использованные карты Terraforming
+ tempDroppedCards: CardDefinition[] = []
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);
@@ -44,7 +45,7 @@ export class ActionManager implements IActionManager {
   tryNext = () => {
     this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
-    this.hand.dropTempCards(); //очистка временных карт из руки
+    this.dropTempCards(); //очистка временных карт из руки
     this.resources.dropToGarbage(); // перемещение ресурсов от игрока в garbage
     this.resources.dropResources(); //очистка ресурсов игрока
     return true;
@@ -53,7 +54,7 @@ export class ActionManager implements IActionManager {
   activateDeck = (type: CardType) => {};
 
   activateCard = (card: number) => {
-    this.hand.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
+    this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.energy.energy++; //увеличение энергии после сброса карты
     this.resources.engineeringMaps.FinishCounter++; //увеличение FinishCounter после сброса карты
     this.increaseMiddleEnergyByDropCards(); //увеличение всех Middle value после сброса карты после && не работает
@@ -85,9 +86,17 @@ export class ActionManager implements IActionManager {
     }
   };
 
+  addCardsToTempDrop = (ind: number) => {
+    const card = this.hand.cardsInHand[ind];
+    this.tempDroppedCards.push(card); //пушим карту во временный сброс
+    this.hand.dropCards(ind) //вырезаем карту из руки
+    // console.log(this.tempDroppedCards)
+    return card;
+  };
+
   reset = () => {
     this.round.step = "options";
-    this.hand.resetTempDroppedCards();
+    this.resetTempDroppedCards();
     this.resources.resetGarbage();
     this.resources.dropResources();
     this.resources.resetPoints();
@@ -113,5 +122,13 @@ export class ActionManager implements IActionManager {
     });
 
     console.log(this.calculatedResources);
+  };
+
+  dropTempCards = () => {
+    this.tempDroppedCards = []; //очищаем временный сброс
+  };
+  resetTempDroppedCards = () => {
+    this.tempDroppedCards.forEach((card) => this.hand.cardsInHand.push(card));
+    this.tempDroppedCards = []
   };
 }

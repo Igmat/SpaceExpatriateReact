@@ -8,20 +8,10 @@ export class HandModel {
   constructor() {
     makeAutoObservable(this);
   }
-
-  addCardsToTempDrop = (ind: number) => {
+ dropCards = (ind: number) => {
     const card = this.cardsInHand[ind];
-    this.tempDroppedCards.push(card); //пушим карту во временный сброс
     this.cardsInHand.splice(ind, 1); //вырезаем карту из руки
-    // console.log(this.tempDroppedCards)
     return card;
-  };
-  dropTempCards = () => {
-    this.tempDroppedCards = []; //очищаем временный сброс
-  };
-  resetTempDroppedCards = () => {
-    this.tempDroppedCards.forEach((card) => this.cardsInHand.push(card));
-    this.tempDroppedCards = []
   };
 
   takeCard(card?: CardDefinition) {
