@@ -6,7 +6,6 @@ import {
   CardType,
   EngineeringCard,
   Resource,
-  ResourcePrimitive,
   isResourcePrimitive,
 } from "../card-types";
 import { ResourcesModel } from "../ResourcesModel";
@@ -51,7 +50,7 @@ export class ActionManager implements IActionManager {
 
   activateCardOnTable = (card: CardDefinition) => {
     if (card.type === "engineering") {
-      this.activateEngineeringCard(card)
+      this.activateEngineeringCard(card);
     }
 
     return false;
@@ -106,16 +105,26 @@ export class ActionManager implements IActionManager {
     console.log(this.calculatedResources);
   };
 
-  activateEngineeringCard(card: EngineeringCard) { 
-    const entryPoint = card.entryPoint;
-    if (
-      card.connection === "start" &&
-      this.resources.engineeringMaps.StartMap[card.id] !== 0 &&
-      entryPoint !== undefined &&
-      this.resources.playerResources[entryPoint] > 0
-    ) {
+  activateEngineeringCard(card: EngineeringCard) {
+    if (card.connection === "start") {
+      this.processStartConnection(card);
+    }
+    if (card.connection === "continue") {
+      this.processContinueConnection(card);
+    }
+    if (card.connection === "end") {
+      this.processEndConnection(card);
+    }
+  }
+
+  processStartConnection(card: EngineeringCard) {
+    
+    if (this.resources.engineeringMaps.StartMap[card.id] !== 0)
+     {
+      if (card.entryPoint !== undefined) {
+        this.consumeResources(card);
+      }
       this.resources.engineeringMaps.StartMap[card.id] = 0;
-      this.resources.playerResources[entryPoint]--;
       this.resources.energy.energy++;
       this.resources.points.round += card.points || 0;
       for (const key in this.resources.engineeringMaps.MiddleMap) {
@@ -125,39 +134,75 @@ export class ActionManager implements IActionManager {
       }
       this.resources.engineeringMaps.FinishCounter++;
     }
-    if (card.connection === "continue" && this.resources.engineeringMaps.MiddleMap[card.id] > 0) {
-      if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
-        if (entryPoint !== undefined) {
-          this.resources.playerResources[entryPoint]--;
-        }
-        this.resources.points.round += card.points || 0;
-        this.resources.engineeringMaps.MiddleMap[card.id]--;
-        this.gainResources(card as EngineeringCard);
-        console.log(card.entryPoint + " " + card.exitPoint);
+  }
+  processContinueConnection(card: EngineeringCard) {
+    if (this.resources.engineeringMaps.MiddleMap[card.id] > 0) {
+      if (card.entryPoint !== undefined) {
+        this.consumeResources(card);
       }
-    }
-    if (
-      card.connection === "end" &&
-      this.resources.engineeringMaps.FinishCounter > 0
-    ) {
-      if (entryPoint === undefined || this.resources.playerResources[entryPoint] > 0) {
-        if (entryPoint !== undefined) {
-          this.resources.playerResources[entryPoint]--;
-        }
-        this.resources.points.round += card.points || 0;
-        this.resources.engineeringMaps.FinishCounter--;
-        this.gainResources(card as EngineeringCard);
-        console.log(card.entryPoint + " " + card.exitPoint);
-      }
+      this.resources.points.round += card.points || 0;
+      this.resources.engineeringMaps.MiddleMap[card.id]--;
+      this.gainResources(card);
+      console.log(card.entryPoint + " " + card.exitPoint);
     }
   }
 
-  gainResources(card: EngineeringCard) {
-    if (card.exitPoint?.length === 1) {
-     this.resources.gainResource(card.exitPoint[0]);
-    } else {
-      this.round.step = "resources";
-      this.round.params = card.exitPoint;
+  processEndConnection(card: EngineeringCard) {
+    if (this.resources.engineeringMaps.FinishCounter > 0) {
+      if (card.entryPoint !== undefined) {
+        this.consumeResources(card);
+      }
+      this.resources.points.round += card.points || 0;
+      this.resources.engineeringMaps.FinishCounter--;
+      this.gainResources(card);
+      console.log(card.entryPoint + " " + card.exitPoint);
     }
+  }
+  
+  consumeResources(card: EngineeringCard) {
+    if (card.entryPoint !== undefined) {
+      if (typeof card.entryPoint === "string") {
+        if (this.resources.playerResources[card.entryPoint] === 0) return;
+        this.resources.playerResources[card.entryPoint]--;
+      }
+      if (Array.isArray(card.entryPoint)) {
+        card.entryPoint.forEach((el) => {
+          if (typeof el === "string") {
+            this.resources.playerResources[el]--;
+          }
+        });
+        const hasNegativeValues = Object.values(
+          this.resources.playerResources
+        ).some((value) => value < 0);
+
+        if (hasNegativeValues) {
+          card.entryPoint.forEach((el) => {
+            if (typeof el === "string") {
+              this.resources.playerResources[el]++;
+            }
+          });
+          return;
+        }
+      }
+    }
+  }
+  gainResources(card: EngineeringCard) {
+    if (card.exitPoint !== undefined) {
+      card.exitPoint.forEach((el) => {
+        if (typeof el === "string") {
+          this.resources.gainResource(el);
+        }
+        if (Array.isArray(el)) {
+          this.round.step = "resources";
+          // вот тут надо посчитать все возможные комбинации ресурсов и вывести их в окно.
+          // Моя модалка примет варианты
+        }
+      });
+    }
+    // if (card.exitPoint?.length === 1) {
+    //   this.resources.gainResource(card.exitPoint[0]);
+    // }
+    //   this.round.step = "resources";
+    //   this.round.params = card.exitPoint;
   }
 }
