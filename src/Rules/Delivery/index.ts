@@ -39,7 +39,7 @@ export class ActionManager implements IActionManager {
   perform = (card: CardDefinition) => {
     this.round.step = "options";
     this.resources.createEngineeringMaps(this.table.engineering);
-    this.resources.calculateStartEnergy();
+    //this.resources.calculateStartEnergy(); не тут? Не надо? Пока не понятно
   };
 
   tryNext = () => {
@@ -89,16 +89,13 @@ export class ActionManager implements IActionManager {
   addCardsToTempDrop = (ind: number) => {
     const card = this.hand.cardsInHand[ind];
     this.tempDroppedCards.push(card); //пушим карту во временный сброс
-    this.hand.dropCards(ind) //вырезаем карту из руки
+    this.hand.dropCard(ind) //вырезаем карту из руки
     // console.log(this.tempDroppedCards)
     return card;
   };
 
   reset = () => {
-    this.round.step = "options";
     this.resetTempDroppedCards();
-    this.resources.resetGarbage();
-    this.resources.dropResources();
     this.resources.resetPoints();
     this.resources.resetEnergy();
     console.log("!!");

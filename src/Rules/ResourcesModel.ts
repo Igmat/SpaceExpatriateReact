@@ -35,7 +35,7 @@ export class ResourcesModel {
 
   public tempGarbageResources: playerResources = {};
 
-  resetGarbage = () => {
+  resetGarbage = () => {//скорее всего не будет использоваться, было для ресета, пока оставлю
     for (let key in this.tempGarbageResources) {
       this.garbageResources[key] = this.tempGarbageResources[key];
     }
@@ -152,6 +152,7 @@ export class ResourcesModel {
       this.engineeringMaps.Start as { [key: number]: number }
     ).reduce((acc, el) => acc + el, 0);
   };
+  
   resetEnergy = () => {
     this.energy.energy = 0;
     this.calculateStartEnergy();

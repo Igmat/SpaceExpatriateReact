@@ -40,7 +40,7 @@ export class ActionManager implements IActionManager {
     activateCard = (card: number) => {
         if (this.remaining.activateCard === 0) return;
         this.remaining.activateCard--;
-        this.table.takeCard(this.hand.dropCards(card));
+        this.table.takeCard(this.hand.dropCard(card));
         this.tryNext() && this.round.next()
     };
     activateCardOnTable = (card: CardDefinition) => 

@@ -8,7 +8,7 @@ export class HandModel {
   constructor() {
     makeAutoObservable(this);
   }
- dropCards = (ind: number) => {
+ dropCard = (ind: number) => {
     const card = this.cardsInHand[ind];
     this.cardsInHand.splice(ind, 1); //вырезаем карту из руки
     return card;
