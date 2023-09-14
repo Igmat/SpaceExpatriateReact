@@ -52,7 +52,6 @@ export class ActionManager implements IActionManager {
     if (card.type === "engineering") {
       this.activateEngineeringCard(card);
     }
-
     return false;
   };
 
@@ -118,9 +117,8 @@ export class ActionManager implements IActionManager {
   }
 
   processStartConnection(card: EngineeringCard) {
-    
-    if (this.resources.engineeringMaps.StartMap[card.id] !== 0)
-     {
+    if (this.resources.engineeringMaps.StartMap[card.id] === 0) return;
+    if (this.resources.engineeringMaps.StartMap[card.id] !== 0) {
       if (card.entryPoint !== undefined) {
         if (!this.consumeResources(card)) return;
       }
@@ -135,7 +133,9 @@ export class ActionManager implements IActionManager {
       this.resources.engineeringMaps.FinishCounter++;
     }
   }
+
   processContinueConnection(card: EngineeringCard) {
+    if (this.resources.engineeringMaps.MiddleMap[card.id] === 0) return;
     if (this.resources.engineeringMaps.MiddleMap[card.id] > 0) {
       if (card.entryPoint !== undefined) {
         if (!this.consumeResources(card)) return;
@@ -147,6 +147,7 @@ export class ActionManager implements IActionManager {
   }
 
   processEndConnection(card: EngineeringCard) {
+    if (this.resources.engineeringMaps.FinishCounter === 0) return;
     if (this.resources.engineeringMaps.FinishCounter > 0) {
       if (card.entryPoint !== undefined) {
         if (!this.consumeResources(card)) return;
@@ -159,34 +160,21 @@ export class ActionManager implements IActionManager {
   }
 
   consumeResources(card: EngineeringCard) {
+    if (card.entryPoint === undefined) return;
     if (card.entryPoint !== undefined) {
       if (typeof card.entryPoint === "string") {
         if (this.resources.playerResources[card.entryPoint] === 0) return false;
         this.resources.playerResources[card.entryPoint]--;
       }
       if (Array.isArray(card.entryPoint)) {
-        card.entryPoint.forEach((el) => {
-          if (typeof el === "string") {
-            this.resources.playerResources[el]--;
-          }
-        });
-        const hasNegativeValues = Object.values(
-          this.resources.playerResources
-        ).some((value) => value < 0);
-
-        if (hasNegativeValues) {
-          card.entryPoint.forEach((el) => {
-            if (typeof el === "string") {
-              this.resources.playerResources[el]++;
-            }
-          });
-          return false;
-        }
+        //доделать логику
       }
     }
     return true;
   }
+
   gainResources(card: EngineeringCard) {
+    if (card.exitPoint === undefined) return;
     if (card.exitPoint !== undefined) {
       card.exitPoint.forEach((el) => {
         if (typeof el === "string") {
