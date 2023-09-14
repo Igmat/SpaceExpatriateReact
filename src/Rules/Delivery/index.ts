@@ -122,7 +122,7 @@ export class ActionManager implements IActionManager {
     if (this.resources.engineeringMaps.StartMap[card.id] !== 0)
      {
       if (card.entryPoint !== undefined) {
-        this.consumeResources(card);
+        if (!this.consumeResources(card)) return;
       }
       this.resources.engineeringMaps.StartMap[card.id] = 0;
       this.resources.energy.energy++;
@@ -138,19 +138,18 @@ export class ActionManager implements IActionManager {
   processContinueConnection(card: EngineeringCard) {
     if (this.resources.engineeringMaps.MiddleMap[card.id] > 0) {
       if (card.entryPoint !== undefined) {
-        this.consumeResources(card);
+        if (!this.consumeResources(card)) return;
       }
       this.resources.points.round += card.points || 0;
       this.resources.engineeringMaps.MiddleMap[card.id]--;
       this.gainResources(card);
-      console.log(card.entryPoint + " " + card.exitPoint);
     }
   }
 
   processEndConnection(card: EngineeringCard) {
     if (this.resources.engineeringMaps.FinishCounter > 0) {
       if (card.entryPoint !== undefined) {
-        this.consumeResources(card);
+        if (!this.consumeResources(card)) return;
       }
       this.resources.points.round += card.points || 0;
       this.resources.engineeringMaps.FinishCounter--;
@@ -158,11 +157,11 @@ export class ActionManager implements IActionManager {
       console.log(card.entryPoint + " " + card.exitPoint);
     }
   }
-  
+
   consumeResources(card: EngineeringCard) {
     if (card.entryPoint !== undefined) {
       if (typeof card.entryPoint === "string") {
-        if (this.resources.playerResources[card.entryPoint] === 0) return;
+        if (this.resources.playerResources[card.entryPoint] === 0) return false;
         this.resources.playerResources[card.entryPoint]--;
       }
       if (Array.isArray(card.entryPoint)) {
@@ -181,10 +180,11 @@ export class ActionManager implements IActionManager {
               this.resources.playerResources[el]++;
             }
           });
-          return;
+          return false;
         }
       }
     }
+    return true;
   }
   gainResources(card: EngineeringCard) {
     if (card.exitPoint !== undefined) {
