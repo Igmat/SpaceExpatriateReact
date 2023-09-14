@@ -147,14 +147,8 @@ export class ResourcesModel {
     energy: 0,
   };
 
-  calculateStartEnergy = () => {
-    this.energy.startEnergy = Object.values(
-      this.engineeringMaps.Start as { [key: number]: number }
-    ).reduce((acc, el) => acc + el, 0);
-  };
-  
   resetEnergy = () => {
     this.energy.energy = 0;
-    this.calculateStartEnergy();
+    this.energy.startEnergy = 0;
   };
 }

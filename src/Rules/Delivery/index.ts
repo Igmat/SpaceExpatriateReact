@@ -39,7 +39,6 @@ export class ActionManager implements IActionManager {
   perform = (card: CardDefinition) => {
     this.round.step = "options";
     this.resources.createEngineeringMaps(this.table.engineering);
-    //this.resources.calculateStartEnergy(); не тут? Не надо? Пока не понятно
   };
 
   tryNext = () => {
