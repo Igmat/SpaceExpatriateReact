@@ -13,6 +13,7 @@ type playerResources = {
 
 export class ResourcesModel {
   // будет разделение на PLayerModel & GarbageModel
+
   public playerResources: playerResources = {
     fuel: 0,
     minerals: 0,
@@ -34,6 +35,7 @@ export class ResourcesModel {
   };
 
   public tempGarbageResources: playerResources = {};
+  // public tempPlayerResources: playerResources = {};
 
   resetGarbage = () => {//скорее всего не будет использоваться, было для ресета, пока оставлю
     for (let key in this.tempGarbageResources) {
@@ -63,6 +65,7 @@ export class ResourcesModel {
 
   getResources = () => {
     if (this.table.delivery.length === 0) return;
+    this.dropResources();
     this.table.delivery.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
@@ -71,6 +74,7 @@ export class ResourcesModel {
       if (this.playerResources[key] < 0) this.playerResources[key] = 0;
     }
     this.charterResource && this.playerResources[this.charterResource]++;
+    // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
   };
 
   addResource = (resource: ResourcePrimitive) => {
@@ -88,7 +92,17 @@ export class ResourcesModel {
       this.playerResources[key] = 0;
     }
   };
-
+  /*
+  savePlayerResources = () => {//запасной вариант востановления ресурсов при ресете
+    for (let key in this.playerResources) {
+      this.tempPlayerResources[key] = this.playerResources[key];
+    }
+  };
+resetPlayerResources = () => {//запасной вариант востановления ресурсов при ресете
+  for (let key in this.tempPlayerResources) {
+    this.playerResources[key] = this.tempPlayerResources[key];
+  }
+}*/
   payForCard = (resources: ResourcePrimitive[]) => {
     resources.forEach((resource) => {
       this.playerResources[resource]--;

@@ -97,6 +97,8 @@ export class ActionManager implements IActionManager {
     this.resetTempDroppedCards();
     this.resources.resetPoints();
     this.resources.resetEnergy();
+    //this.resources.resetPlayerResources();//запасной вариант востановления ресурсов при ресете
+    this.resources.getResources();
     console.log("!!");
   };
 
