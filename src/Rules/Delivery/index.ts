@@ -47,6 +47,7 @@ export class ActionManager implements IActionManager {
     this.dropTempCards(); //очистка временных карт из руки
     this.resources.dropToGarbage(); // перемещение ресурсов от игрока в garbage
     this.resources.dropResources(); //очистка ресурсов игрока
+    this.resources.energy = 0 // обнуляем счетсик енергии
     return true;
   };
 
@@ -54,7 +55,7 @@ export class ActionManager implements IActionManager {
 
   activateCard = (card: number) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
-    this.resources.energy.energy++; //увеличение энергии после сброса карты
+    this.resources.energy++; //увеличение энергии после сброса карты
     this.resources.engineeringMaps.FinishCounter++; //увеличение FinishCounter после сброса карты
     this.increaseMiddleEnergyByDropCards(); //увеличение всех Middle value после сброса карты после && не работает
     console.log(this.resources.engineeringMaps.FinishCounter)
@@ -96,7 +97,7 @@ export class ActionManager implements IActionManager {
   reset = () => {
     this.resetTempDroppedCards();
     this.resources.resetPoints();
-    this.resources.resetEnergy();
+    this.resources.energy = 0; // обнуляем счетсик енергии
     //this.resources.resetPlayerResources();//запасной вариант востановления ресурсов при ресете
     this.resources.getResources();
     console.log("!!");

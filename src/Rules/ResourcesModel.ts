@@ -70,7 +70,7 @@ export class ResourcesModel {
     );
     for (let key in this.playerResources) {
       this.playerResources[key] -= this.garbageResources[key];
-      if (this.playerResources[key] < 0) this.playerResources[key] = 0;
+     if (this.playerResources[key] < 0) this.playerResources[key] = 0;
     }
     this.charterResource && this.playerResources[this.charterResource]++;
     // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
@@ -155,13 +155,5 @@ resetPlayerResources = () => {//запасной вариант востанов
 
   /****Energy*************************************************************************** */
 
-  public energy = {
-    startEnergy: 0,
-    energy: 0,
-  };
-
-  resetEnergy = () => {
-    this.energy.energy = 0;
-    this.energy.startEnergy = 0;
-  };
+  public energy = 0;
 }
