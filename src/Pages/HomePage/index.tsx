@@ -1,6 +1,6 @@
-import styles from './StartWindow.module.scss'
+import styles from './HomePage.module.scss'
 import { NavLink } from "react-router-dom";
-export const StartWindow = () => {
+export const HomePage = () => {
 
     return (
         <div className={styles.wrapper}>
