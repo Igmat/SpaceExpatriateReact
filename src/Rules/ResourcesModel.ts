@@ -26,22 +26,22 @@ export class ResourcesModel {
   public charterResource?: ResourcePrimitive;
 
   public garbageResources: playerResources = {
-    fuel: 0,
+     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
     machinery: 0,
-    nanotechnologies: 0,
-    "dark matter": 0,
+    nanotechnologies: 0
   };
 
   public tempGarbageResources: playerResources = {};
   // public tempPlayerResources: playerResources = {};
-
-  resetGarbage = () => {//скорее всего не будет использоваться, было для ресета, пока оставлю
+/*
+  resetGarbage = () => { //скорее всего не будет использоваться, было для ресета, пока оставлю
+   
     for (let key in this.tempGarbageResources) {
       this.garbageResources[key] = this.tempGarbageResources[key];
     }
-  };
+  };*/
   saveGarbage = () => {
     for (let key in this.garbageResources) {
       this.tempGarbageResources[key] = this.garbageResources[key];
@@ -69,8 +69,11 @@ export class ResourcesModel {
       card.resources.forEach((res) => this.playerResources[res]++)
     );
     for (let key in this.playerResources) {
-      this.playerResources[key] -= this.garbageResources[key];
-     if (this.playerResources[key] < 0) this.playerResources[key] = 0;
+      if (this.garbageResources.hasOwnProperty(key)) {
+        this.playerResources[key] -= this.garbageResources[key];
+      }
+
+      if (this.playerResources[key] < 0) this.playerResources[key] = 0;
     }
     this.charterResource && this.playerResources[this.charterResource]++;
     // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
