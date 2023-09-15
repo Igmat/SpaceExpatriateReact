@@ -32,7 +32,6 @@ export class DeckModel<T extends { id: number }> {
   }
 
   takeOpenedCardAndOpenNew = () => {
-    console.log("takeOpenedCardandOpenNew");
     const result = this.takeOpenedCard();
     this.openCard();
  

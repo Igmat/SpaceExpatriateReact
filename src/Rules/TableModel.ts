@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import {
   CardDefinition,
-  CardType,
   DeliveryCard,
   EngineeringCard,
   MilitaryCard,
@@ -18,11 +17,8 @@ export class TableModel {
   terraforming: TerraformingCard[] = [];
   military: MilitaryCard[] = [];
 
-  tempDroppedCards: CardDefinition[] = [];
 
-  usedTerraformingCards: TerraformingCard[] = [];
-
-  dropCards = (
+  dropCards = (//очистить сброшенные карты со стола
     ...cards: (
       | DeliveryCard
       | EngineeringCard
@@ -39,22 +35,7 @@ export class TableModel {
 
     return cards;
   };
-  tempDropCards = (...cards: CardDefinition[]) => {
-    this.tempDroppedCards.push(...cards);
-   this.dropCards(...cards)
-  };
-  dropTempCards = () => {
-    if ((this.tempDroppedCards.length = 0)) return;
-    this.tempDroppedCards = [];
-  };
 
-  resetTempDroppedCards = () => {
-    //this.tempDroppedCards.forEach((card) => this[card.type].push(card));
-  }
-
-  useTerraformingCard = (card: TerraformingCard) => {
-    this.usedTerraformingCards.push(card);
-  };
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
     //  console.log(card)
