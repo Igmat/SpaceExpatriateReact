@@ -29,13 +29,8 @@ export const PlayerMenu = observer((props: PlayerMenuProps) => {
         <div className={styles.dark}>
           {props.resources.playerResources["dark matter"]}
         </div>
-        {
-          <div className={styles.energy}>
-            StartEnergy: {props.resources.energy.startEnergy}
-          </div>
-        }
         <div className={styles.energy}>
-          Energy: {props.resources.energy.energy}
+          Energy: {props.resources.energy}
         </div>
         <div className={styles.points}>TPs{props.resources.points.total}</div>
       </div>
