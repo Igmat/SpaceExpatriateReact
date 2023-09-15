@@ -4,7 +4,7 @@ import { Player } from "../../Player";
 import { useModalWrapper } from "../../components/ModalWindow";
 import { ControlPanel } from "../../ControlPanel";
 
-export const GamePage = () => {
+export const Game = () => {
  return useModalWrapper((
     <div className="App">
       <div className="board">
