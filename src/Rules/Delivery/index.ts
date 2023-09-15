@@ -210,30 +210,12 @@ export class ActionManager implements IActionManager {
     console.log(combinations);
     if (combinations.length === 1) {
       combinations[0].forEach((resource) => {
-      this.resources.gainResource(resource);
-      })
+        this.resources.gainResource(resource);
+      });
       return;
     }
-   
+
     this.round.step = "resources";
     this.round.params = combinations;
-    
   }
-
-  // card.exitPoint.forEach((el) => {
-  //   if (typeof el === "string") {
-  //     this.resources.gainResource(el);
-  //   }
-  //   if (Array.isArray(el)) {
-  //     this.round.step = "resources";
-  //     // вот тут надо посчитать все возможные комбинации ресурсов и вывести их в окно.
-  //     // Моя модалка примет варианты
-  //   }
-  // });
-
-  // if (card.exitPoint?.length === 1) {
-  //   this.resources.gainResource(card.exitPoint[0]);
-  // }
-  //   this.round.step = "resources";
-  //   this.round.params = card.exitPoint;
 }
