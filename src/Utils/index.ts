@@ -1,12 +1,15 @@
-import { EngineeringCard, ResourcePrimitive } from "../Rules/card-types";
+import { Resource, ResourcePrimitive } from "../Rules/card-types";
 
-export const generateCombinations = (card: EngineeringCard) => {
-  let combinations: Array<ResourcePrimitive[]> = [[]];
-  card.exitPoint!.forEach((el) => {
-    const list: ResourcePrimitive[] = typeof el === "string" ? [el] : el;
-    let newCombinations: Array<ResourcePrimitive[]> = [];
+export const toArrayArray = (array: Resource[]): ResourcePrimitive[][] => {
+  return array.map((el) => (typeof el === "string" ? [el] : el));
+};
+
+export const generateCombinations = <T>(data: T[][]) => {
+  let combinations: T[][] = [[]];
+  data.forEach((el) => {
+    let newCombinations: T[][] = [];
     combinations.forEach((combination) => {
-      list.forEach((resource) => {
+      el.forEach((resource) => {
         newCombinations.push([...combination, resource]);
       });
     });
@@ -32,9 +35,7 @@ export const areCombinationsEqual = <T>(
   return true;
 };
 
-export const removeDuplicateCombinations = <T>(
-  combinations: Array<T[]>
-) => {
+export const removeDuplicateCombinations = <T>(combinations: Array<T[]>) => {
   const uniqueCombinations = [];
   for (const combination of combinations) {
     let isDuplicate = false;

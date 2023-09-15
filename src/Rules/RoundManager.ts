@@ -24,7 +24,8 @@ export class RoundManager {
 
   phase: Phase = "active";
   step?: Step;
-  params?: Array<ResourcePrimitive[]>;
+  params?: ResourcePrimitive[][];
+  onSelect?: (selected: ResourcePrimitive[]) => void;
 
 
   next = () => {

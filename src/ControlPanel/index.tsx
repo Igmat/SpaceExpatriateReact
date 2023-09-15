@@ -27,9 +27,9 @@ export const ControlPanel = observer(() => {
         <ChooseResource
           array={gameState.round.params!}
           select={(resource) => {
-            resource.forEach((res) => {
-            gameState.resources.gainResource(res)});
             gameState.round.step = "performing";
+            gameState.round.onSelect!(resource);
+            
           }}
         />,
         true

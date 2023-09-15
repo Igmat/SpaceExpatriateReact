@@ -12,7 +12,7 @@ export const ChooseResource = (props:ChooseResourceProps) => {
   return (
     <div className={styles.modal}>
       {props.array.map((resources) => (
-        <div className={styles.modalDialog} onClick={()=>props.select(resources)}>{resources}</div>
+        <div className={styles.modalDialog} onClick={()=>props.select(resources)}>{resources.join(" + ")}</div>
       ))}
     </div>
   );
