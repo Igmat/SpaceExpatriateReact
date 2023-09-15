@@ -208,6 +208,16 @@ export class ActionManager implements IActionManager {
       combinations = this.removeDuplicateCombinations(newCombinations);
     });
     console.log(combinations);
+    if (combinations.length === 1) {
+      combinations[0].forEach((resource) => {
+      this.resources.gainResource(resource);
+      })
+      return;
+    }
+   
+    this.round.step = "resources";
+    this.round.params = combinations;
+    
   }
 
   // card.exitPoint.forEach((el) => {
