@@ -64,7 +64,6 @@ export class ResourcesModel {
   }
 
   getResources = () => {
-    if (this.table.delivery.length === 0) return;
     this.dropResources();
     this.table.delivery.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
