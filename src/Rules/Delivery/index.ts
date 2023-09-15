@@ -14,6 +14,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
+import { generateCombinations } from "../../Utils";
 
 export type DeliveryOption = "charter" | "garbage";
 
@@ -184,53 +185,10 @@ export class ActionManager implements IActionManager {
     return true;
   }
 
-  areCombinationsEqual(
-    combination1: ResourcePrimitive[],
-    combination2: ResourcePrimitive[]
-  ) {
-    if (combination1.length !== combination2.length) {
-      return false;
-    }
-    const sortedCombination1 = combination1.slice().sort();
-    const sortedCombination2 = combination2.slice().sort();
-    for (let i = 0; i < sortedCombination1.length; i++) {
-      if (sortedCombination1[i] !== sortedCombination2[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  removeDuplicateCombinations(combinations: Array<ResourcePrimitive[]>) {
-    const uniqueCombinations = [];
-    for (const combination of combinations) {
-      let isDuplicate = false;
-      for (const uniqueCombination of uniqueCombinations) {
-        if (this.areCombinationsEqual(combination, uniqueCombination)) {
-          isDuplicate = true;
-          break;
-        }
-      }
-      if (!isDuplicate) {
-        uniqueCombinations.push(combination);
-      }
-    }
-    return uniqueCombinations;
-  }
 
   gainResources(card: EngineeringCard) {
     if (card.exitPoint === undefined) return;
-    let combinations: Array<ResourcePrimitive[]> = [[]];
-    card.exitPoint.forEach((el) => {
-      let list: ResourcePrimitive[] = typeof el === "string" ? [el] : el;
-      let newCombinations: Array<ResourcePrimitive[]> = [];
-      combinations.forEach((combination) => {
-        list.forEach((resource) => {
-          newCombinations.push([...combination, resource]);
-        });
-      });
-      combinations = this.removeDuplicateCombinations(newCombinations);
-    });
+    const combinations = generateCombinations(card);
     console.log(combinations);
     if (combinations.length === 1) {
       combinations[0].forEach((resource) => {
@@ -238,7 +196,6 @@ export class ActionManager implements IActionManager {
       });
       return;
     }
-
     this.round.step = "resources";
     this.round.params = combinations;
   }
