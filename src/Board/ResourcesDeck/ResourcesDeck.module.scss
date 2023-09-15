@@ -7,7 +7,7 @@
   margin: 20px auto 60px;
   gap: 50px;
 
-  & .garage {
+  & .garbage {
     width: 100%;
     height: 200px;
     border-radius: 15px;
@@ -19,11 +19,11 @@
     gap: 25px;
     position: relative;
     &::before {
-      content: "GARAGE";
+      content: "SPACE GARBAGE";
       position: absolute;
       color: rgb(133, 133, 133, 0.1);
-      font-size: 130px;
-      top: -20px;
+      font-size: 80px;
+      top: -10px;
       z-index: 0;
     }
     & div {
