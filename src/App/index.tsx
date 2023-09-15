@@ -3,8 +3,10 @@ import { Player } from "../Player";
 import "./App.css";
 import { useModalWrapper } from "../components/ModalWindow";
 import { ControlPanel } from "../ControlPanel";
+import { Outlet } from "react-router-dom";
 
 function App() {
+  /*
  return useModalWrapper((
     <div className="App">
       <div className="board">
@@ -15,7 +17,9 @@ function App() {
       </div>
       <ControlPanel/>
     </div>
-  ));
+  ));*/
+ return <Outlet />
+
 
 
 }
