@@ -15,7 +15,6 @@ import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
 import { generateCombinations, toArrayArray } from "../../Utils";
-import { on } from "events";
 
 export type DeliveryOption = "charter" | "garbage";
 
@@ -50,6 +49,7 @@ export class ActionManager implements IActionManager {
     this.dropTempCards(); //очистка временных карт из руки
     this.resources.dropToGarbage(); // перемещение ресурсов от игрока в garbage
     this.resources.dropResources(); //очистка ресурсов игрока
+    this.usedTerraformingCards = []; //очистка использованных карт Terraforming
     return true;
   };
 
