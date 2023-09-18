@@ -1,7 +1,8 @@
-import { Resource, ResourcePrimitive } from "../Rules/card-types";
 
-export const toArrayArray = (array: Resource[]): ResourcePrimitive[][] => {
-  return array.map((el) => (typeof el === "string" ? [el] : el));
+export const toArrayArray = <T>(
+  array: Array<T | T[]>
+): T[][] => {
+  return array.map((el) => (Array.isArray(el) ? el : [el]));
 };
 
 export const generateCombinations = <T>(data: T[][]) => {
