@@ -191,7 +191,6 @@ export class ActionManager implements IActionManager {
       onConsume();
     });
   }
-
   canConsumeResources(resources: ResourcePrimitive[]) {// перевіряємо чи є в гравця кошти для виконання карти (списали /не зайшли в мінус?/повернули)
     this.resources.consumeResources(resources);
     const hasNegativeValues = Object.values(
