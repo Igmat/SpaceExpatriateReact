@@ -121,14 +121,8 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.points.total += this.points.round;
   };
 
-  calculateRoundPoints = (cards: EngineeringCard[] | TerraformingCard[]) => {
-    // let count = 0;
-    // cards.forEach((card) => {
-    //   if (Object.keys(card).includes("points") && card.points !== undefined) {
-    //     count += card.points;
-    //   }
-    // });
-    // this.points.round = count;
+  calculateRoundPoints = (card: EngineeringCard | TerraformingCard) => {
+    this.points.round += card.points || 0;
   };
 
   resetPoints = () => {

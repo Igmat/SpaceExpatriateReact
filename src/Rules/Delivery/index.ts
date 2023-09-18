@@ -72,7 +72,7 @@ export class ActionManager implements IActionManager {
       if (!this.usedTerraformingCards.includes(card)) {
         this.useTerraformingCard(card);
         this.tryConsumeResources(card.resources, () => {
-          this.resources.points.round += card.points || 0;
+          this.resources.calculateRoundPoints(card);
         });
       }
     }
@@ -157,7 +157,7 @@ export class ActionManager implements IActionManager {
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
       this.resources.engineeringMaps.Start[card.id] = 0;
       this.resources.energy++;
-      this.resources.points.round += card.points || 0;
+      this.resources.calculateRoundPoints(card);
       for (const key in this.resources.engineeringMaps.Middle) {
         if (this.resources.engineeringMaps.Middle.hasOwnProperty(key)) {
           this.resources.engineeringMaps.Middle[key]++;
@@ -170,7 +170,7 @@ export class ActionManager implements IActionManager {
   processContinueConnection(card: EngineeringCard) {
     if (this.resources.engineeringMaps.Middle[card.id] <= 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
-      this.resources.points.round += card.points || 0;
+      this.resources.calculateRoundPoints(card);
       this.resources.engineeringMaps.Middle[card.id]--;
       this.gainResources(card);
     });
@@ -179,7 +179,7 @@ export class ActionManager implements IActionManager {
   processEndConnection(card: EngineeringCard) {
     if (this.resources.engineeringMaps.FinishCounter <= 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
-      this.resources.points.round += card.points || 0;
+      this.resources.calculateRoundPoints(card);
       this.resources.engineeringMaps.FinishCounter--;
       this.gainResources(card);
     });
