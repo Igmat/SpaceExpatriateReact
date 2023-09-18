@@ -28,8 +28,11 @@ export const ControlPanel = observer(() => {
           array={gameState.round.params!}
           select={(resource) => {
             gameState.round.step = "performing";
-            gameState.round.onSelect!(resource);
-            
+            if (gameState.round.onSelect === undefined) {
+              modalService.hide();
+              return;
+            }
+            gameState.round.onSelect(resource);
           }}
         />,
         true
