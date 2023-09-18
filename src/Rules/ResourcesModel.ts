@@ -26,16 +26,16 @@ export class ResourcesModel {
   public charterResource?: ResourcePrimitive;
 
   public garbageResources: playerResources = {
-     fuel: 0,
+    fuel: 0,
     minerals: 0,
     "biotic materials": 0,
     machinery: 0,
-    nanotechnologies: 0
+    nanotechnologies: 0,
   };
 
   public tempGarbageResources: playerResources = {};
   // public tempPlayerResources: playerResources = {};
-/*
+  /*
   resetGarbage = () => { //скорее всего не будет использоваться, было для ресета, пока оставлю
    
     for (let key in this.tempGarbageResources) {
@@ -112,7 +112,7 @@ resetPlayerResources = () => {//запасной вариант востанов
   };
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
-  }
+  };
   removeResourcesFromGarbage = (resource: ResourcePrimitive) => {
     this.garbageResources[resource] = 0;
   };
@@ -120,21 +120,24 @@ resetPlayerResources = () => {//запасной вариант востанов
   calculateTotalPoints = () => {
     this.points.total += this.points.round;
   };
-  //currentRoundPoints = (cards: any[]) => {/test is in DeliveryActionWindow
+
   calculateRoundPoints = (cards: EngineeringCard[] | TerraformingCard[]) => {
-    let count = 0;
-    cards.forEach((card) => {
-      if (Object.keys(card).includes("points") && card.points !== undefined) {
-        count += card.points;
-      }
-    });
-    this.points.round = count;
+    // let count = 0;
+    // cards.forEach((card) => {
+    //   if (Object.keys(card).includes("points") && card.points !== undefined) {
+    //     count += card.points;
+    //   }
+    // });
+    // this.points.round = count;
   };
 
   resetPoints = () => {
     this.points.total = 0;
   };
-
+  resetRoundPoints = () => {
+    this.points.round = 0;
+  };
+  
   //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
   createEngineeringMaps = (cards: EngineeringCard[]) => {
     if (cards.length === 0) return;
