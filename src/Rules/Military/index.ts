@@ -4,7 +4,6 @@ import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
-import { log } from "console";
 
 export type Militaryoption = "political" | "exploration";
 
@@ -22,7 +21,7 @@ export class ActionManager implements IActionManager {
     activateDeck: 0,
   };
   perform = (card: CardDefinition) => {
-    this.round.step = "options";
+    this.round.setStep("options");
   };
 
   tryNext = () => true;
@@ -51,7 +50,7 @@ export class ActionManager implements IActionManager {
       this.tryNext() && this.round.next();
     }
     if (this.militaryoption === "exploration") {
-      this.round.step = "performing";
+      this.round.setStep ("performing");
       this.remaining.activateDeck++;
     }
     console.log("militaryoption: " + this.militaryoption);

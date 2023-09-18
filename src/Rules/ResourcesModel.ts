@@ -105,11 +105,13 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.playerResources[key] = this.tempPlayerResources[key];
   }
 }*/
-  payForCard = (resources: ResourcePrimitive[]) => {
+  consumeResources = (resources: ResourcePrimitive[]) => {
+    //потребление ресурсов
     resources.forEach((resource) => {
       this.playerResources[resource]--;
     });
   };
+
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
   };
@@ -131,7 +133,7 @@ resetPlayerResources = () => {//запасной вариант востанов
   resetRoundPoints = () => {
     this.points.round = 0;
   };
-  
+
   //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
   createEngineeringMaps = (cards: EngineeringCard[]) => {
     if (cards.length === 0) return;
@@ -154,8 +156,18 @@ resetPlayerResources = () => {//запасной вариант востанов
     console.log(this.engineeringMaps.Start);
     console.log(this.engineeringMaps);
   };
+  changeFinishCounter(increment: number) {
+    this.engineeringMaps.FinishCounter += increment;
+  }
 
   /****Energy*************************************************************************** */
 
   public energy = 0;
+
+  resetEnergy = () => {
+    this.energy = 0;
+  };
+  increaseEnergy = () => {
+    this.energy++;
+  }
 }

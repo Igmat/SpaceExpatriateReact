@@ -5,7 +5,7 @@ import { CardType, ResourcePrimitive } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
 
 type Phase = "active" | CardType | "passive";
-type Step = "options" | "performing" | "resources"|"done";
+type Step = "options" | "performing" | "resources" | "done";
 
 export class RoundManager {
   constructor(
@@ -21,23 +21,29 @@ export class RoundManager {
   }
 
   current = 1;
-
   phase: Phase = "active";
-  step?: Step;
   params?: ResourcePrimitive[][];
   onSelect?: (selected: ResourcePrimitive[]) => void;
 
+  get step(){
+    return this._step;
+  }
+  private _step?: Step; 
 
   next = () => {
     this.current++;
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this.resources.calculateTotalPoints()
-    this.step = undefined;
+    this._step = undefined;
     this.resources.resetRoundPoints() //обнуляем очки раунда
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
   };
+  setStep(step: Step) {
+    this._step = step;
+  }
+  
 }
