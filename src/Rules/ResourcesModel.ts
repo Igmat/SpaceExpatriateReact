@@ -89,6 +89,7 @@ export class ResourcesModel {
     }
     this.saveGarbage(); //сохранение состояния гаража в момент перехода на следующий раунд
   };
+
   dropResources = () => {
     for (let key in this.playerResources) {
       this.playerResources[key] = 0;
@@ -115,6 +116,7 @@ resetPlayerResources = () => {//запасной вариант востанов
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
   };
+
   removeResourcesFromGarbage = (resource: ResourcePrimitive) => {
     this.garbageResources[resource] = 0;
   };
@@ -130,6 +132,7 @@ resetPlayerResources = () => {//запасной вариант востанов
   resetPoints = () => {
     this.points.total = 0;
   };
+
   resetRoundPoints = () => {
     this.points.round = 0;
   };
@@ -156,6 +159,23 @@ resetPlayerResources = () => {//запасной вариант востанов
     console.log(this.engineeringMaps.Start);
     console.log(this.engineeringMaps);
   };
+
+  setStartValueToZero(card: EngineeringCard) {
+    this.engineeringMaps.Start[card.id] = 0;
+  }
+
+  increaseAllMiddleValues() {
+    for (const key in this.engineeringMaps.Middle) {
+      if (this.engineeringMaps.Middle.hasOwnProperty(key)) {
+        this.engineeringMaps.Middle[key]++;
+      }
+    }
+  }
+
+  decreaseMiddleValue(card: EngineeringCard) {
+    this.engineeringMaps.Middle[card.id]--;
+  }
+
   changeFinishCounter(increment: number) {
     this.engineeringMaps.FinishCounter += increment;
   }
@@ -167,7 +187,8 @@ resetPlayerResources = () => {//запасной вариант востанов
   resetEnergy = () => {
     this.energy = 0;
   };
+
   increaseEnergy = () => {
     this.energy++;
-  }
+  };
 }

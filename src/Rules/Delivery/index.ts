@@ -58,9 +58,9 @@ export class ActionManager implements IActionManager {
 
   activateCard = (card: number) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
-    this.resources.energy++; //увеличение энергии после сброса карты
-    this.resources.engineeringMaps.FinishCounter++; //увеличение FinishCounter после сброса карты
-    this.increaseMiddleEnergyByDropCards(); //увеличение всех Middle value после сброса карты после && не работает
+    this.resources.increaseEnergy() //увеличение энергии после сброса карты
+    this.resources.changeFinishCounter(1) //увеличение FinishCounter после сброса карты
+    this.resources.increaseAllMiddleValues() //увеличение всех Middle value после сброса карты после && не работает
     console.log(this.resources.engineeringMaps.FinishCounter);
   };
 
@@ -114,16 +114,7 @@ export class ActionManager implements IActionManager {
     console.log("!!");
   };
 
-  increaseMiddleEnergyByDropCards = () => {
-    for (const key in this.resources.engineeringMaps.Middle) {
-      if (this.resources.engineeringMaps.Middle.hasOwnProperty(key)) {
-        this.resources.engineeringMaps.Middle[key]++;
-        console.log(
-          "MiddleMap: " + key + " " + this.resources.engineeringMaps.Middle[key]
-        );
-      }
-    }
-  };
+
 
   // определить все комбинации ресурсов на столе
   // calculateResourcesCombination = () => {
@@ -156,14 +147,10 @@ export class ActionManager implements IActionManager {
   processStartConnection(card: EngineeringCard) {
     if (this.resources.engineeringMaps.Start[card.id] === 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
-      this.resources.engineeringMaps.Start[card.id] = 0;
+      this.resources.setStartValueToZero(card);
       this.resources.increaseEnergy();
       this.resources.calculateRoundPoints(card);
-      for (const key in this.resources.engineeringMaps.Middle) {
-        if (this.resources.engineeringMaps.Middle.hasOwnProperty(key)) {
-          this.resources.engineeringMaps.Middle[key]++;
-        }
-      }
+      this.resources.increaseAllMiddleValues();
       this.resources.changeFinishCounter(1);
     });
   }
@@ -172,7 +159,7 @@ export class ActionManager implements IActionManager {
     if (this.resources.engineeringMaps.Middle[card.id] <= 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
       this.resources.calculateRoundPoints(card);
-      this.resources.engineeringMaps.Middle[card.id]--;
+      this.resources.decreaseMiddleValue(card);
       this.gainResources(card);
     });
   }
@@ -199,15 +186,13 @@ export class ActionManager implements IActionManager {
       this.resources.consumeResources(validCombinations[0]);
       return onConsume();
     }
-    this.round.setStep("resources");
-    this.round.params = validCombinations;
-    this.round.onSelect = (selected) => {
+    this.round.setRoundResourceStep(validCombinations, (selected) => {
       this.resources.consumeResources(selected);
       onConsume();
-    };
+    });
   }
 
-  canConsumeResources(resources: ResourcePrimitive[]) {
+  canConsumeResources(resources: ResourcePrimitive[]) {// перевіряємо чи є в гравця кошти для виконання карти (списали /не зайшли в мінус?/повернули)
     this.resources.consumeResources(resources);
     const hasNegativeValues = Object.values(
       this.resources.playerResources
@@ -230,12 +215,10 @@ export class ActionManager implements IActionManager {
       });
       return;
     }
-    this.round.setStep("resources");
-    this.round.params = combinations;
-    this.round.onSelect = (selected) => {
+    this.round.setRoundResourceStep(combinations, (selected) => {
       selected.forEach((resource) => {
         this.resources.gainResource(resource);
       });
-    };
+    });
   }
 }

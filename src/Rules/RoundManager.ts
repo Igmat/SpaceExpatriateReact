@@ -22,13 +22,20 @@ export class RoundManager {
 
   current = 1;
   phase: Phase = "active";
-  params?: ResourcePrimitive[][];
-  onSelect?: (selected: ResourcePrimitive[]) => void;
+  private _step?: Step; 
+  private _params?: ResourcePrimitive[][];
+  private _onSelect?: (selected: ResourcePrimitive[]) => void;
 
   get step(){
     return this._step;
   }
-  private _step?: Step; 
+  get params(){
+    return this._params;
+  }
+  get onSelect(){
+    return this._onSelect;
+  }
+ 
 
   next = () => {
     this.current++;
@@ -45,5 +52,15 @@ export class RoundManager {
   setStep(step: Step) {
     this._step = step;
   }
+  setParams(params: ResourcePrimitive[][]) {
+    this._params = params;
+  }
+  setRoundResourceStep(params: ResourcePrimitive[][], onSelect: (selected: ResourcePrimitive[]) => void) {
+    this.setStep("resources");
+    this.setParams(params);
+    this._onSelect = onSelect;
+  }
+
+
   
 }
