@@ -32,9 +32,9 @@ export class RoundManager {
     this.current++;
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
-  
     this.resources.calculateTotalPoints()
     this.step = undefined;
+    this.resources.resetRoundPoints() //обнуляем очки раунда
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
