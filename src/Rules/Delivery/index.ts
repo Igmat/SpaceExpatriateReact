@@ -156,7 +156,7 @@ export class ActionManager implements IActionManager {
     if (this.resources.engineeringMaps.Start[card.id] === 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
       this.resources.engineeringMaps.Start[card.id] = 0;
-      this.resources.energy.energy++;
+      this.resources.energy++;
       this.resources.points.round += card.points || 0;
       for (const key in this.resources.engineeringMaps.Middle) {
         if (this.resources.engineeringMaps.Middle.hasOwnProperty(key)) {
