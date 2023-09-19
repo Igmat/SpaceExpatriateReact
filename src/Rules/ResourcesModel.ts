@@ -113,6 +113,18 @@ resetPlayerResources = () => {//запасной вариант востанов
     });
   };
 
+  canConsumeResources(resources: ResourcePrimitive[]) {
+    // перевіряємо чи є в гравця кошти для виконання карти (списали /не зайшли в мінус?/повернули)
+    this.consumeResources(resources);
+    const hasNegativeValues = Object.values(this.playerResources).some(
+      (value) => value < 0
+    );
+    resources.forEach((resource) => {
+      this.gainResource(resource);
+    });
+    return !hasNegativeValues;
+  }
+  
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
   };
@@ -137,11 +149,11 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.points.round = 0;
   };
 
-  resetRoundState =() => {
+  resetRoundState = () => {
     this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
     this.resetEnergy(); // обнуляем счетчик энергии
     this.getResources();
-  }
+  };
 
   //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
   createEngineeringMaps = (cards: EngineeringCard[]) => {
@@ -177,7 +189,6 @@ resetPlayerResources = () => {//запасной вариант востанов
       }
     }
   }
-  
 
   decreaseMiddleValue(card: EngineeringCard) {
     this.engineeringMaps.Middle[card.id]--;
@@ -203,5 +214,5 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.increaseEnergy();
     this.increaseAllMiddleValues();
     this.changeFinishCounter(1);
-  }
+  };
 }
