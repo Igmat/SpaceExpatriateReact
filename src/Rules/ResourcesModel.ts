@@ -124,7 +124,7 @@ resetPlayerResources = () => {//запасной вариант востанов
     });
     return !hasNegativeValues;
   }
-  
+
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
   };
@@ -141,9 +141,9 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.points.round += card.points || 0;
   };
 
-  resetPoints = () => {
-    this.points.total = 0;
-  };
+  // resetPoints = () => {
+  //   this.points.total = 0;
+  // }; ...не нужен
 
   resetRoundPoints = () => {
     this.points.round = 0;
@@ -176,6 +176,19 @@ resetPlayerResources = () => {//запасной вариант востанов
 
     console.log(this.engineeringMaps.Start);
     console.log(this.engineeringMaps);
+  };
+
+  useCardConnection = (card: EngineeringCard) => {
+    if (card.connection === "start") {
+      this.setStartValueToZero(card);
+      this.increaseEnergyAndMapValues();
+    }
+    if (card.connection === "continue") {
+      this.decreaseMiddleValue(card);
+    }
+    if (card.connection === "end") {
+      this.changeFinishCounter(-1);
+    }
   };
 
   setStartValueToZero(card: EngineeringCard) {

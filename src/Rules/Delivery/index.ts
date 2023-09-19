@@ -132,8 +132,7 @@ export class ActionManager implements IActionManager {
   processStartConnection(card: EngineeringCard) {
     if (this.resources.engineeringMaps.Start[card.id] === 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
-      this.resources.setStartValueToZero(card);
-      this.resources.increaseEnergyAndMapValues();
+      this.resources.useCardConnection(card);
       this.resources.calculateRoundPoints(card);
     });
   }
@@ -142,7 +141,7 @@ export class ActionManager implements IActionManager {
     if (this.resources.engineeringMaps.Middle[card.id] <= 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
       this.resources.calculateRoundPoints(card);
-      this.resources.decreaseMiddleValue(card);
+      this.resources.useCardConnection(card);
       this.gainResources(card);
     });
   }
@@ -151,7 +150,7 @@ export class ActionManager implements IActionManager {
     if (this.resources.engineeringMaps.FinishCounter <= 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
       this.resources.calculateRoundPoints(card);
-      this.resources.changeFinishCounter(-1);
+      this.resources.useCardConnection(card);
       this.gainResources(card);
     });
   }
