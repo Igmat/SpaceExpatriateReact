@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { CardDefinition, CardType } from "./card-types";
 import { TableModel } from "./TableModel";
@@ -9,7 +9,7 @@ import { ActionManager as EAM } from "./Engineering";
 import { ActionManager as TAM } from "./Terraforming";
 import { ActionManager as DAM } from "./Delivery";
 import { ActionManager as MAM } from "./Military";
-
+import localStorage from "mobx-localstorage";
 export class ActionManager {
   constructor(
     private readonly decks: DeckManager,
@@ -19,6 +19,9 @@ export class ActionManager {
     private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
+    autorun(() => {
+      localStorage.setItem("activeAction", this.activeAction);
+    });
   }
 
   private managers = {
@@ -28,7 +31,7 @@ export class ActionManager {
     military: new MAM(this.round, this.hand, this.decks)
   }
 
-  activeAction?: CardType;
+  activeAction?: CardType = localStorage.getItem("activeAction") || undefined;
 
   perform = (card?: CardDefinition) => {
     if (!card) return;
@@ -40,6 +43,7 @@ export class ActionManager {
 
     if (this.round.current < 5) {
       this.round.next();
+      
       return;
     }
 
@@ -50,8 +54,11 @@ export class ActionManager {
   };
 
   tryNext = () => {
+
     if (!this.activeAction) return;
+    console.log('Im trying next in Action')
     this.managers[this.activeAction].tryNext() && this.round.next();
+
   };
 
   activateDeck = (type: CardType) => {

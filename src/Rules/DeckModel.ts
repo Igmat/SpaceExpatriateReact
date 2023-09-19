@@ -1,28 +1,32 @@
 import { CardType } from "./card-types";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
+import localStorage from "mobx-localstorage";
 
 export class DeckModel<T extends { id: number }> {
   constructor(
     public readonly type: CardType,
-    cardsDefinitions: { [key: number]: T }
+    cardsDefinitions: { [key: number]: T },
   ) {
     this.cardsDefinitions = cardsDefinitions;
-    this.activeCards = Object.keys(this.cardsDefinitions);
+    this.activeCards = localStorage.getItem("activeCards") || Object.keys(this.cardsDefinitions);
     this.mixCards();
-    this.openCard();
     makeAutoObservable(this);
+    autorun(()=>{
+     localStorage.setItem("activeCards", this.activeCards)
+    localStorage.setItem(this.type, this.openedCard)
+    localStorage.setItem("droppedCards", this.droppedCards)
+    })
   }
 
-  private activeCards: number[];
+  private activeCards: number[] = localStorage.getItem("activeCards") || []
   private cardsDefinitions: { [key: number]: T };
-  private droppedCards: number[] = [];
+  private droppedCards: number[] =  localStorage.getItem("droppedCards") || [];
 
-  openedCard?: T;
+  openedCard?: T = localStorage.getItem(this.type) || undefined;
 
   openCard = () => {
     this.openedCard !== undefined && this.dropCards(this.openedCard.id);
     this.openedCard = this.takeCard();
-
   };
  
   takeOpenedCard() {

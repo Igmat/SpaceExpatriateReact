@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
 import { IActionManager } from "../IActionManager";
 import { TableModel } from "../TableModel";
 import {
@@ -13,6 +13,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
+import localStorage from "mobx-localstorage";
 
 export type DeliveryOption = "charter" | "garbage";
 
@@ -25,12 +26,21 @@ export class ActionManager implements IActionManager {
     private readonly decks: DeckManager
   ) {
     makeAutoObservable(this);
+    autorun(() => {
+      localStorage.setItem("calculatedResources", this.calculatedResources);
+      localStorage.setItem("deliveryOption", this.deliveryOption);
+      localStorage.setItem("sedTerraformingCards", this.usedTerraformingCards);
+      localStorage.setItem("tempDroppedCards", this.tempDroppedCards);
+    });
   }
 
-  public calculatedResources: Resource[] = [];
-  deliveryOption?: DeliveryOption;
-  usedTerraformingCards: TerraformingCard[] = []; //использованные карты Terraforming
- tempDroppedCards: CardDefinition[] = []
+  public calculatedResources: Resource[] =
+    localStorage.getItem("calculatedResources") || [];
+  deliveryOption?: DeliveryOption =
+    localStorage.getItem("deliveryOption") || undefined;
+  usedTerraformingCards: TerraformingCard[] =
+    localStorage.getItem("localStorage") || []; //использованные карты Terraforming
+  tempDroppedCards: CardDefinition[] = localStorage.getItem("tempDroppedCards") || [];
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);
@@ -47,7 +57,8 @@ export class ActionManager implements IActionManager {
     this.dropTempCards(); //очистка временных карт из руки
     this.resources.dropToGarbage(); // перемещение ресурсов от игрока в garbage
     this.resources.dropResources(); //очистка ресурсов игрока
-    this.resources.energy = 0 // обнуляем счетсик енергии
+    this.resources.energy = 0; // обнуляем счетсик енергии
+    console.log("tryNext");
     return true;
   };
 
@@ -58,7 +69,7 @@ export class ActionManager implements IActionManager {
     this.resources.energy++; //увеличение энергии после сброса карты
     this.resources.engineeringMaps.FinishCounter++; //увеличение FinishCounter после сброса карты
     this.increaseMiddleEnergyByDropCards(); //увеличение всех Middle value после сброса карты после && не работает
-    console.log(this.resources.engineeringMaps.FinishCounter)
+    console.log(this.resources.engineeringMaps.FinishCounter);
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -89,7 +100,7 @@ export class ActionManager implements IActionManager {
   addCardsToTempDrop = (ind: number) => {
     const card = this.hand.cardsInHand[ind];
     this.tempDroppedCards.push(card); //пушим карту во временный сброс
-    this.hand.dropCard(ind) //вырезаем карту из руки
+    this.hand.dropCard(ind); //вырезаем карту из руки
     // console.log(this.tempDroppedCards)
     return card;
   };
@@ -128,6 +139,6 @@ export class ActionManager implements IActionManager {
   };
   resetTempDroppedCards = () => {
     this.tempDroppedCards.forEach((card) => this.hand.cardsInHand.push(card));
-    this.tempDroppedCards = []
+    this.tempDroppedCards = [];
   };
 }

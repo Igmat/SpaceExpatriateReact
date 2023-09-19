@@ -4,6 +4,8 @@ import { ActionManager } from "../../Rules/ActionManager";
 import { observer } from "mobx-react-lite";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { NavLink } from "react-router-dom";
+
+
 interface ResourcesDeckProps {
   round: RoundManager;
   action: ActionManager;
@@ -11,10 +13,17 @@ interface ResourcesDeckProps {
 }
 
 export const ResourcesDeck = observer((props: ResourcesDeckProps) => {
+  const clear = () => {
+    props.round.startNewGame()
+
+    localStorage.clear()
+   
+  
+  }
 
   return (
     <div className={styles.container}>
-       <NavLink to="/"> <div className={styles.startBtn}>END GAME</div></NavLink>
+       <NavLink to="/"> <button className={styles.startBtn} onClick={()=>clear()}>END GAME</button></NavLink>
       <div className={styles.garbage}>
       
        <div className={styles.biotic}>

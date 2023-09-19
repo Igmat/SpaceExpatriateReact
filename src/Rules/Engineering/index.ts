@@ -1,11 +1,11 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
 import { IActionManager } from "../IActionManager";
 import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
-
+import localStorage from "mobx-localstorage";
 export class ActionManager implements IActionManager {
     constructor(
         private readonly round: RoundManager,
@@ -14,9 +14,14 @@ export class ActionManager implements IActionManager {
         private readonly hand: HandModel,
     ) {
         makeAutoObservable(this);
+        autorun(() => {
+            localStorage.setItem("remaining", this.remaining);
+          });
     }
 
-    private remaining = {
+    private remaining = localStorage.getItem(
+        "remaining"
+      ) || {
         activateDeck: 0,
         activateCard: 0,
     };

@@ -1,10 +1,11 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
 import {
   EngineeringCard,
   ResourcePrimitive,
   TerraformingCard,
 } from "./card-types";
 import { TableModel } from "./TableModel";
+import localStorage from "mobx-localstorage";
 
 type playerResources = {
   [key in ResourcePrimitive | any]: number;
@@ -14,7 +15,21 @@ type playerResources = {
 export class ResourcesModel {
   // будет разделение на PLayerModel & GarbageModel
 
-  public playerResources: playerResources = {
+  constructor(private readonly table: TableModel) {
+    makeAutoObservable(this);
+    autorun(() => {
+      localStorage.setItem("garbageResources", this.garbageResources);
+      localStorage.setItem("playerResources", this.playerResources);
+      localStorage.setItem("tempGarbageResources", this.tempGarbageResources);
+      localStorage.setItem("charterResource", this.charterResource);
+      localStorage.setItem("engineeringMaps", this.engineeringMaps);
+      localStorage.setItem("points", this.points);
+      localStorage.setItem("energy", this.energy);
+    });
+  }
+  public playerResources: playerResources = localStorage.getItem(
+    "playerResources"
+  ) || {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
@@ -23,45 +38,40 @@ export class ResourcesModel {
     "dark matter": 0,
   };
 
-  public charterResource?: ResourcePrimitive;
+  public charterResource?: ResourcePrimitive = localStorage.getItem(
+    "charterResource"
+  ) || undefined;
 
-  public garbageResources: playerResources = {
-     fuel: 0,
+  public garbageResources: playerResources = localStorage.getItem(
+    "garbageResources"
+  ) || {
+    fuel: 0,
     minerals: 0,
     "biotic materials": 0,
     machinery: 0,
-    nanotechnologies: 0
+    nanotechnologies: 0,
   };
 
-  public tempGarbageResources: playerResources = {};
-  // public tempPlayerResources: playerResources = {};
-/*
-  resetGarbage = () => { //скорее всего не будет использоваться, было для ресета, пока оставлю
-   
-    for (let key in this.tempGarbageResources) {
-      this.garbageResources[key] = this.tempGarbageResources[key];
-    }
-  };*/
+  public tempGarbageResources: playerResources = localStorage.getItem(
+    "tempGarbageResources"
+  ) || {};
+  
   saveGarbage = () => {
     for (let key in this.garbageResources) {
       this.tempGarbageResources[key] = this.garbageResources[key];
     }
   };
   /**********Points************************************************************************** */
-  public points = {
+  public points = localStorage.getItem("points") || {
     round: 0,
     total: 0,
   };
 
-  public engineeringMaps = {
+  public engineeringMaps = localStorage.getItem("engineeringMaps") || {
     Start: {} as { [key: number]: number },
     Middle: {} as { [key: number]: number },
     FinishCounter: 0,
   };
-
-  constructor(private readonly table: TableModel) {
-    makeAutoObservable(this);
-  }
 
   getResources = () => {
     this.dropResources();
@@ -158,5 +168,7 @@ resetPlayerResources = () => {//запасной вариант востанов
 
   /****Energy*************************************************************************** */
 
-  public energy = 0;
+  public energy = localStorage.getItem(
+    "energy"
+  ) || 0;
 }

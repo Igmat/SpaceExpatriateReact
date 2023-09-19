@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
 import {
   CardDefinition,
   DeliveryCard,
@@ -6,19 +6,27 @@ import {
   MilitaryCard,
   TerraformingCard,
 } from "./card-types";
-
+import localStorage from "mobx-localstorage";
 export class TableModel {
   constructor() {
     makeAutoObservable(this);
+    autorun(() => {
+      localStorage.setItem("tableDelivery", this.delivery);
+      localStorage.setItem("tableEngineering", this.engineering);
+      localStorage.setItem("tableTerraforming", this.terraforming);
+      localStorage.setItem("tableMilitary", this.military);
+    });
   }
 
-  delivery: DeliveryCard[] = [];
-  engineering: EngineeringCard[] = [];
-  terraforming: TerraformingCard[] = [];
-  military: MilitaryCard[] = [];
+  delivery: DeliveryCard[] = localStorage.getItem("tableDelivery") || [];
+  engineering: EngineeringCard[] =
+    localStorage.getItem("tableEngineering") || [];
+  terraforming: TerraformingCard[] =
+    localStorage.getItem("tableTerraforming") || [];
+  military: MilitaryCard[] = localStorage.getItem("tableMilitary") || [];
 
-
-  dropCards = (//очистить сброшенные карты со стола
+  dropCards = (
+    //очистить сброшенные карты со стола
     ...cards: (
       | DeliveryCard
       | EngineeringCard
