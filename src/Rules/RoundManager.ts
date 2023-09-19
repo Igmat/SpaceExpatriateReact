@@ -8,10 +8,10 @@ type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
 
 export class RoundManager {
+
   constructor(
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
-    private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
     this.hand.takeCard(this.decks.delivery.takeCard());
@@ -40,13 +40,12 @@ export class RoundManager {
     this.current++;
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
-    this.resources.calculateTotalPoints();
     this._step = undefined;
-    this.resources.resetRoundPoints(); //обнуляем очки раунда
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
+  
   };
   
   private setStep(step: Step) {
