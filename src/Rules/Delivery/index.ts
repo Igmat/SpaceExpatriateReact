@@ -39,7 +39,7 @@ export class ActionManager implements IActionManager {
   };
 
   perform = (card: CardDefinition) => {
-    this.round.setStep("options");
+    this.round.startOptionsStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
 
@@ -58,10 +58,7 @@ export class ActionManager implements IActionManager {
 
   activateCard = (card: number) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
-    this.resources.increaseEnergy() //увеличение энергии после сброса карты
-    this.resources.changeFinishCounter(1) //увеличение FinishCounter после сброса карты
-    this.resources.increaseAllMiddleValues() //увеличение всех Middle value после сброса карты после && не работает
-    console.log(this.resources.engineeringMaps.FinishCounter);
+    this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -93,7 +90,7 @@ export class ActionManager implements IActionManager {
         this.resources.removeResourcesFromGarbage(option);
       }
       this.resources.getResources();
-      this.round.setStep("performing");
+      this.round.startPerformingStep();
     }
   };
 
@@ -107,22 +104,10 @@ export class ActionManager implements IActionManager {
 
   reset = () => {
     this.resetTempDroppedCards();
-    this.resources.resetRoundPoints(); // был ресет всех очков, а надо только раунда
-    this.resources.resetEnergy(); // обнуляем счетсик енергии
-    //this.resources.resetPlayerResources();//запасной вариант востановления ресурсов при ресете
-    this.resources.getResources();
-    console.log("!!");
+    this.usedTerraformingCards = []
+    this.resources.resetRoundState();
+    this.resources.createEngineeringMaps(this.table.engineering);// потеряли в прошлой версии, что мы обнуляем счетчики
   };
-
-
-
-  // определить все комбинации ресурсов на столе
-  // calculateResourcesCombination = () => {
-  //   this.table.terraforming.forEach((card) => {
-  //     this.calculatedResources.push(...card.resources);
-  //   });
-  // };
-  // этот метод кажется не нужным, ни где не используется и не вызывается
 
   dropTempCards = () => {
     this.tempDroppedCards = []; //очищаем временный сброс
@@ -148,10 +133,8 @@ export class ActionManager implements IActionManager {
     if (this.resources.engineeringMaps.Start[card.id] === 0) return;
     this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
       this.resources.setStartValueToZero(card);
-      this.resources.increaseEnergy();
+      this.resources.increaseEnergyAndMapValues();
       this.resources.calculateRoundPoints(card);
-      this.resources.increaseAllMiddleValues();
-      this.resources.changeFinishCounter(1);
     });
   }
 
@@ -179,29 +162,17 @@ export class ActionManager implements IActionManager {
     const validCombinations = combinations.filter(
       (
         combination //проверка все ли кобинации ресурсов с карт валидны и покажу только валидные
-      ) => this.canConsumeResources(combination)
+      ) => this.resources.canConsumeResources(combination)
     );
     if (validCombinations.length === 0) return;
     if (validCombinations.length === 1) {
       this.resources.consumeResources(validCombinations[0]);
       return onConsume();
     }
-    this.round.setRoundResourceStep(validCombinations, (selected) => {
+    this.round.startResourceStep(validCombinations, (selected) => {
       this.resources.consumeResources(selected);
       onConsume();
     });
-  }
-  canConsumeResources(resources: ResourcePrimitive[]) {// перевіряємо чи є в гравця кошти для виконання карти (списали /не зайшли в мінус?/повернули)
-    this.resources.consumeResources(resources);
-    const hasNegativeValues = Object.values(
-      this.resources.playerResources
-    ).some((value) => value < 0);
-
-    resources.forEach((resource) => {
-      this.resources.gainResource(resource);
-    });
-    
-    return !hasNegativeValues;
   }
 
   gainResources(card: EngineeringCard) {
@@ -214,7 +185,7 @@ export class ActionManager implements IActionManager {
       });
       return;
     }
-    this.round.setRoundResourceStep(combinations, (selected) => {
+    this.round.startResourceStep(combinations, (selected) => {
       selected.forEach((resource) => {
         this.resources.gainResource(resource);
       });

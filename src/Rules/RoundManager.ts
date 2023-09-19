@@ -22,45 +22,53 @@ export class RoundManager {
 
   current = 1;
   phase: Phase = "active";
-  private _step?: Step; 
+  private _step?: Step;
   private _params?: ResourcePrimitive[][];
   private _onSelect?: (selected: ResourcePrimitive[]) => void;
 
-  get step(){
+  get step() {
     return this._step;
   }
-  get params(){
+  get params() {
     return this._params;
   }
-  get onSelect(){
+  get onSelect() {
     return this._onSelect;
   }
- 
 
   next = () => {
     this.current++;
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
-    this.resources.calculateTotalPoints()
+    this.resources.calculateTotalPoints();
     this._step = undefined;
-    this.resources.resetRoundPoints() //обнуляем очки раунда
+    this.resources.resetRoundPoints(); //обнуляем очки раунда
     this.decks.delivery.openCard();
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
   };
-  setStep(step: Step) {
+  
+  private setStep(step: Step) {
     this._step = step;
   }
-  setParams(params: ResourcePrimitive[][]) {
-    this._params = params;
+  
+  startOptionsStep() {
+    this.setStep("options");
   }
-  setRoundResourceStep(params: ResourcePrimitive[][], onSelect: (selected: ResourcePrimitive[]) => void) {
+  startPerformingStep() {
+    this.setStep("performing");
+  }
+  startResourcesStep() {
     this.setStep("resources");
-    this.setParams(params);
+  }
+
+  startResourceStep(
+    params: ResourcePrimitive[][],
+    onSelect: (selected: ResourcePrimitive[]) => void
+  ) {
+    this.setStep("resources");
+    this._params = params;
     this._onSelect = onSelect;
   }
-
-
-  
 }

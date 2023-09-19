@@ -21,7 +21,7 @@ export class ActionManager implements IActionManager {
     activateDeck: 0,
   };
   perform = (card: CardDefinition) => {
-    this.round.setStep("options");
+    this.round.startOptionsStep();
   };
 
   tryNext = () => true;
@@ -50,7 +50,7 @@ export class ActionManager implements IActionManager {
       this.tryNext() && this.round.next();
     }
     if (this.militaryoption === "exploration") {
-      this.round.setStep ("performing");
+      this.round.startPerformingStep();
       this.remaining.activateDeck++;
     }
     console.log("militaryoption: " + this.militaryoption);

@@ -137,6 +137,12 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.points.round = 0;
   };
 
+  resetRoundState =() => {
+    this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
+    this.resetEnergy(); // обнуляем счетчик энергии
+    this.getResources();
+  }
+
   //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
   createEngineeringMaps = (cards: EngineeringCard[]) => {
     if (cards.length === 0) return;
@@ -164,13 +170,14 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.engineeringMaps.Start[card.id] = 0;
   }
 
-  increaseAllMiddleValues() {
+  private increaseAllMiddleValues() {
     for (const key in this.engineeringMaps.Middle) {
       if (this.engineeringMaps.Middle.hasOwnProperty(key)) {
         this.engineeringMaps.Middle[key]++;
       }
     }
   }
+  
 
   decreaseMiddleValue(card: EngineeringCard) {
     this.engineeringMaps.Middle[card.id]--;
@@ -191,4 +198,10 @@ resetPlayerResources = () => {//запасной вариант востанов
   increaseEnergy = () => {
     this.energy++;
   };
+
+  increaseEnergyAndMapValues = () => {
+    this.increaseEnergy();
+    this.increaseAllMiddleValues();
+    this.changeFinishCounter(1);
+  }
 }

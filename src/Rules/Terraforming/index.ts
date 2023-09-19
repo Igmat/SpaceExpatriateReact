@@ -20,7 +20,7 @@ export class ActionManager implements IActionManager {
     }
 
     perform = (card: CardDefinition) => {
-        this.round.setStep("options");
+        this.round.startOptionsStep();
     };
     tryNext = () => {
         return true
@@ -41,7 +41,7 @@ export class ActionManager implements IActionManager {
 
     select = (option: string) => {
         if (isCardType(option)) {
-            this.round.setStep("performing");
+            this.round.startPerformingStep();
             this.missionType = option;
         }
     }

@@ -27,7 +27,7 @@ export const ControlPanel = observer(() => {
         <ChooseResource
           array={gameState.round.params!}
           select={(resource) => {
-            gameState.round.setStep ("performing");
+            gameState.round.startPerformingStep();
             if (gameState.round.onSelect === undefined) {
               modalService.hide();
               return;
