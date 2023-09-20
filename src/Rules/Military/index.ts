@@ -4,35 +4,58 @@ import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
+import { log } from "console";
+
+export type Militaryoption = "political" | "exploration";
 
 export class ActionManager implements IActionManager {
-    constructor(
-        private readonly round: RoundManager,
-        private readonly hand: HandModel,
-        private readonly decks: DeckManager,
+  constructor(
+    private readonly round: RoundManager,
+    private readonly hand: HandModel,
+    private readonly decks: DeckManager
   ) {
     makeAutoObservable(this);
   }
-    perform = (card: CardDefinition) => {
-        this.round.step = "options";
-    };
+  militaryoption?: Militaryoption;
 
-    tryNext = () => true;
+  private remaining = {
+    activateDeck: 0,
+  };
+  perform = (card: CardDefinition) => {
+    this.round.step = "options";
+  };
 
-    activateDeck = (type: CardType) => this.hand.takeCard(this.decks[type].takeCard());
+  tryNext = () => true;
 
-    activateCard = (card: number) => {
+  activateDeck = (type: CardType) => {
+    if (
+      this.round.step === "performing" &&
+      this.militaryoption === "exploration"
+    )
+      this.hand.takeCard(this.decks[type].takeCard());
+    this.remaining.activateDeck = 0;
 
-    };
-    activateCardOnTable = (card: CardDefinition) => {
-        return false
-    };
+    this.tryNext() && this.round.next();
+  };
 
-    select = (option: string) => {
-        
+  activateCard = (card: number) => {};
+  activateCardOnTable = (card: CardDefinition) => {
+    return false;
+  };
+
+  select = (option: string) => {
+    if (option === "political" || option === "exploration") {
+      this.militaryoption = option;
     }
-
-    reset = () => {
-
+    if (this.militaryoption === "political") {
+      this.tryNext() && this.round.next();
     }
+    if (this.militaryoption === "exploration") {
+      this.round.step = "performing";
+      this.remaining.activateDeck++;
+    }
+    console.log("militaryoption: " + this.militaryoption);
+  };
+
+  reset = () => {};
 }

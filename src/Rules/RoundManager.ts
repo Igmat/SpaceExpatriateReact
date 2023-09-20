@@ -1,12 +1,12 @@
 import { makeAutoObservable, autorun } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
-import { CardType } from "./card-types";
+import { CardType, ResourcePrimitive } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
 import { writeToLS, readFromLS } from "../utils";
 
 type Phase = "active" | CardType | "passive";
-type Step = "options" | "performing" | "done";
+type Step = "options" | "performing" | "resources"|"done";
 
 export class RoundManager {
   constructor(
@@ -28,11 +28,13 @@ export class RoundManager {
 
   phase: Phase =readFromLS("phase") || "active";
   step?: Step =readFromLS("step") || undefined;
+  params?: ResourcePrimitive[][];
+  onSelect?: (selected: ResourcePrimitive[]) => void;
+  
   startNewGame = () => {
     this.current = 1
   }
   takeCardsToHand = () => {
-   // if (this.hand.cardsInHand.length === 0) {
     if (this.current === 1) {
       this.hand.cardsInHand = []
       this.hand.takeCard(this.decks.delivery.takeCard());
@@ -42,13 +44,16 @@ export class RoundManager {
     }
   };
 
+
   next = () => {
     this.current++;
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
-    this.resources.calculateTotalPoints();
+    this.resources.calculateTotalPoints()
     this.step = undefined;
-    this.decks.openCards()
+    this.resources.resetRoundPoints() //обнуляем очки раунда
+      this.decks.openCards()//вместо четырех вызовов 
+   
   };
 
 
