@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import {
   CardDefinition,
   DeliveryCard,
@@ -6,16 +6,24 @@ import {
   MilitaryCard,
   TerraformingCard,
 } from "./card-types";
-
+import { writeToLS, readFromLS } from "../utils";
 export class TableModel {
   constructor() {
     makeAutoObservable(this);
+    autorun(() => {
+      writeToLS("tableDelivery", this.delivery);
+      writeToLS("tableEngineering", this.engineering);
+      writeToLS("tableTerraforming", this.terraforming);
+      writeToLS("tableMilitary", this.military);
+    });
   }
 
-  delivery: DeliveryCard[] = [];
-  engineering: EngineeringCard[] = [];
-  terraforming: TerraformingCard[] = [];
-  military: MilitaryCard[] = [];
+  delivery: DeliveryCard[] = readFromLS ("tableDelivery") || [];
+  engineering: EngineeringCard[] =
+    readFromLS ("tableEngineering") || [];
+  terraforming: TerraformingCard[] =
+    readFromLS ("tableTerraforming") || [];
+  military: MilitaryCard[] = readFromLS ("tableMilitary") || [];
 
 
   dropCards = (//очистить сброшенные карты со стола

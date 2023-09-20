@@ -1,15 +1,12 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
 import { CardDefinition, CardType, isCardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
+import { writeToLS, readFromLS } from "../../utils";
 
 export class ActionManager implements IActionManager {
-
-    cardsToDrop: CardDefinition[] = [];
-
-    missionType?: CardType;
 
     constructor(
         private readonly round: RoundManager,
@@ -17,7 +14,14 @@ export class ActionManager implements IActionManager {
         private readonly decks: DeckManager,
     ) {
         makeAutoObservable(this);
+        autorun(() => {
+           writeToLS("cardsToDrop", this.cardsToDrop);
+           writeToLS("missionType", this.missionType);
+          });
     }
+    cardsToDrop: CardDefinition[] = readFromLS("cardsToDrop") || [];
+
+    missionType?: CardType = readFromLS("missionType");
 
     perform = (card: CardDefinition) => {
         this.round.startOptionsStep();

@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import {
   EngineeringCard,
   Resource,
@@ -6,24 +6,31 @@ import {
   TerraformingCard,
 } from "./card-types";
 import { TableModel } from "./TableModel";
+import { writeToLS, readFromLS } from "../utils";
 import { RoundManager } from "./RoundManager";
-import { generateCombinations, toArrayArray } from "../Utils";
+import { generateCombinations, toArrayArray } from "../Utils/index";
 
 type playerResources = {
   [key in ResourcePrimitive | any]: number;
   //[key: any]: number;
 };
-
 export class ResourcesModel {
   constructor(
     private readonly table: TableModel,
     private readonly round: RoundManager
   ) {
     makeAutoObservable(this);
+    autorun(() => {
+      writeToLS("garbageResources", this.garbageResources);
+      writeToLS("playerResources", this.playerResources);
+      writeToLS("tempGarbageResources", this.tempGarbageResources);
+      writeToLS("charterResource", this.charterResource);
+      writeToLS("engineeringMaps", this.engineeringMaps);
+      writeToLS("points", this.points);
+      writeToLS("energy", this.energy);
+    });
   }
-
-  // будет разделение на PLayerModel & GarbageModel
-  public playerResources: playerResources = {
+  public playerResources: playerResources = readFromLS("playerResources") || {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
@@ -32,9 +39,9 @@ export class ResourcesModel {
     "dark matter": 0,
   };
 
-  public charterResource?: ResourcePrimitive;
+  public charterResource?: ResourcePrimitive = readFromLS("charterResource");
 
-  public garbageResources: playerResources = {
+  public garbageResources: playerResources =readFromLS("garbageResources") || {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
@@ -42,27 +49,20 @@ export class ResourcesModel {
     nanotechnologies: 0,
   };
 
-  public tempGarbageResources: playerResources = {};
-  // public tempPlayerResources: playerResources = {};
-  /*
-  resetGarbage = () => { //скорее всего не будет использоваться, было для ресета, пока оставлю
-   
-    for (let key in this.tempGarbageResources) {
-      this.garbageResources[key] = this.tempGarbageResources[key];
-    }
-  };*/
+  public tempGarbageResources: playerResources = readFromLS("tempGarbageResources") || {};
+  
   saveGarbage = () => {
     for (let key in this.garbageResources) {
       this.tempGarbageResources[key] = this.garbageResources[key];
     }
   };
   /**********Points************************************************************************** */
-  public points = {
+  public points = readFromLS("points") || {
     round: 0,
     total: 0,
   };
 
-  public engineeringMaps = {
+  public engineeringMaps = readFromLS("engineeringMaps") || {
     Start: {} as { [key: number]: number },
     Middle: {} as { [key: number]: number },
     FinishCounter: 0,
@@ -264,7 +264,8 @@ resetPlayerResources = () => {//запасной вариант востанов
 
   /****Energy*************************************************************************** */
 
-  private _energy = 0;
+  private _energy  = readFromLS("energy") || 0;
+
 
   get energy() {
     return this._energy;

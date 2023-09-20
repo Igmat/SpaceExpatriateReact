@@ -15,7 +15,14 @@ export class DeckManager {
   engineering = new DeckModel("engineering", engineeringCards);
   terraforming = new DeckModel("terraforming", terraformingCards);
   military = new DeckModel("military", militaryCards);
-
+ 
+  openCards = () => {
+    this.delivery.openCard();
+    this.engineering.openCard();
+    this.military.openCard();
+    this.terraforming.openCard();
+  }
+  
   dropCards = (...cards: CardDefinition[]) => {
     cards.forEach((card) => this[card.type].dropCards(card.id));
   };

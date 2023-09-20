@@ -1,30 +1,51 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
-import { CardType, ResourcePrimitive } from "./card-types";
-import { ResourcesModel } from "./ResourcesModel";
+import { CardDefinition, CardType, ResourcePrimitive } from "./card-types";
+import { writeToLS, readFromLS } from "../utils";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
 
 export class RoundManager {
-
   constructor(
     private readonly decks: DeckManager,
-    private readonly hand: HandModel,
+    private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
-    this.hand.takeCard(this.decks.delivery.takeCard());
-    this.hand.takeCard(this.decks.engineering.takeCard());
-    this.hand.takeCard(this.decks.military.takeCard());
-    this.hand.takeCard(this.decks.terraforming.takeCard());
+    this.takeCardsToHand();
+    if (this.current === 1) this.decks.openCards();
+    autorun(() => {
+      writeToLS("current", this.current);
+      writeToLS("phase", this.phase);
+      writeToLS("step", this._step);
+      writeToLS("params", this._params);
+
+    });
   }
 
-  current = 1;
-  phase: Phase = "active";
-  private _step?: Step;
-  private _params?: ResourcePrimitive[][];
+  current = readFromLS("current") || 1;
+
+  phase: Phase = readFromLS("phase") || "active";
+  private _step?: Step = readFromLS("step");
+  private _params?: ResourcePrimitive[][] = readFromLS("params");
   private _onSelect?: (selected: ResourcePrimitive[]) => void;
+
+
+
+  startNewGame = () => {
+    this.current = 1;
+  };
+  takeCardsToHand = () => {
+    if (this.current === 1) {
+      this.decks.dropCards(...this.hand.cardsInHand);
+      this.hand.cardsInHand = [];
+      this.hand.takeCard(this.decks.delivery.takeCard());
+      this.hand.takeCard(this.decks.engineering.takeCard());
+      this.hand.takeCard(this.decks.military.takeCard());
+      this.hand.takeCard(this.decks.terraforming.takeCard());
+    }
+  };
 
   get step() {
     return this._step;
@@ -41,17 +62,13 @@ export class RoundManager {
     // console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this._step = undefined;
-    this.decks.delivery.openCard();
-    this.decks.engineering.openCard();
-    this.decks.military.openCard();
-    this.decks.terraforming.openCard();
-  
+    this.decks.openCards();
   };
-  
+
   private setStep(step: Step) {
     this._step = step;
   }
-  
+
   startOptionsStep() {
     this.setStep("options");
   }
@@ -64,10 +81,13 @@ export class RoundManager {
 
   startResourceStep(
     params: ResourcePrimitive[][],
-    onSelect: (selected: ResourcePrimitive[]) => void
+  //  onSelect: (selected: ResourcePrimitive[]) => void
+  onSelect: (selected: ResourcePrimitive[]) => void
   ) {
     this.setStep("resources");
     this._params = params;
     this._onSelect = onSelect;
+   
   }
+  
 }
