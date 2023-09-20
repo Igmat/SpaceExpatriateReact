@@ -14,7 +14,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
-import { writeToLS, readFromLS } from "../../utils";
+import { writeToLS, readFromLS } from "../../utils";//new
 import { generateCombinations, toArrayArray } from "../../Utils/index";
 
 export type DeliveryOption = "charter" | "garbage";

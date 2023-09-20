@@ -1,4 +1,4 @@
-import localStorage from "mobx-localstorage";
+import localStorage from "mobx-localstorage";//new
 
 export const writeToLS = (key: string, value: any) =>{
     localStorage.setItem(key, value);

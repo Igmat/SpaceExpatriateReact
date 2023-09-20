@@ -3,7 +3,7 @@ import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType, ResourcePrimitive } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
-import { writeToLS, readFromLS } from "../utils";
+import { writeToLS, readFromLS } from "../utils";//new
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources"|"done";

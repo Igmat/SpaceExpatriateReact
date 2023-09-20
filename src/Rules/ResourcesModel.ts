@@ -5,7 +5,7 @@ import {
   TerraformingCard,
 } from "./card-types";
 import { TableModel } from "./TableModel";
-import { writeToLS, readFromLS } from "../utils";
+import { writeToLS, readFromLS } from "../utils";//new
 
 type playerResources = {
   [key in ResourcePrimitive | any]: number;

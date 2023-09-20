@@ -6,7 +6,7 @@ import {
   MilitaryCard,
   TerraformingCard,
 } from "./card-types";
-import { writeToLS, readFromLS } from "../utils";
+import { writeToLS, readFromLS } from "../utils";//new
 export class TableModel {
   constructor() {
     makeAutoObservable(this);
