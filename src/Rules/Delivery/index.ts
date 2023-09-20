@@ -102,7 +102,7 @@ export class ActionManager implements IActionManager {
     this.resetTempDroppedCards();
     this.usedTerraformingCards = [];
     this.resources.resetRoundState();
-    this.resources.createEngineeringMaps(this.table.engineering); // потеряли в прошлой версии, что мы обнуляем счетчики
+    
   };
 
   dropTempCards = () => {
@@ -115,48 +115,17 @@ export class ActionManager implements IActionManager {
 
   activateEngineeringCard(card: EngineeringCard) {
     if (card.connection === "start") {
-      this.processStartConnection(card);
+      if (this.resources.engineeringMaps.Start[card.id] === 0) return;
     }
     if (card.connection === "continue") {
-      this.processContinueConnection(card);
+      if (this.resources.engineeringMaps.Middle[card.id] <= 0) return;
     }
     if (card.connection === "end") {
-      this.processEndConnection(card);
+      if (this.resources.engineeringMaps.FinishCounter <= 0) return;
     }
-  }
-
-  processStartConnection(card: EngineeringCard) {
-    if (this.resources.engineeringMaps.Start[card.id] === 0) return;
     this.resources.tryConsumeResources(
       card.entryPoint ? [card.entryPoint] : [],
-      () => {
-        this.resources.useCardConnection(card);
-        this.resources.calculateRoundPoints(card);
-      }
-    );
-  }
-
-  processContinueConnection(card: EngineeringCard) {
-    if (this.resources.engineeringMaps.Middle[card.id] <= 0) return;
-    this.resources.tryConsumeResources(
-      card.entryPoint ? [card.entryPoint] : [],
-      () => {
-        this.resources.calculateRoundPoints(card);
-        this.resources.useCardConnection(card);
-        this.resources.gainResources(card);
-      }
-    );
-  }
-
-  processEndConnection(card: EngineeringCard) {
-    if (this.resources.engineeringMaps.FinishCounter <= 0) return;
-    this.resources.tryConsumeResources(
-      card.entryPoint ? [card.entryPoint] : [],
-      () => {
-        this.resources.calculateRoundPoints(card);
-        this.resources.useCardConnection(card);
-        this.resources.gainResources(card);
-      }
+      () => this.resources.handleCardProcessing(card)
     );
   }
 }

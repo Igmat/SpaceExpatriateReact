@@ -130,7 +130,14 @@ resetPlayerResources = () => {//запасной вариант востанов
     return !hasNegativeValues;
   }
 
+  handleCardProcessing = (card: EngineeringCard) => {
+    this.calculateRoundPoints(card);
+    this.useCardConnection(card);
+    this.gainResources(card);
+  };
+
   tryConsumeResources(resources: Resource[], onConsume: () => void) {
+    
     if (resources === undefined) return onConsume();
     const combinations = generateCombinations(toArrayArray(resources));
     const validCombinations = combinations.filter(
@@ -190,6 +197,7 @@ resetPlayerResources = () => {//запасной вариант востанов
   resetRoundState = () => {
     this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
     this.resetEnergy(); // обнуляем счетчик энергии
+    this.createEngineeringMaps(this.table.engineering); 
     this.getResources();
   };
   
@@ -237,7 +245,7 @@ resetPlayerResources = () => {//запасной вариант востанов
   };
 
   increaseEnergyAndMapValues = () => {
-    this.energy++;
+    this._energy++;
     this.increaseAllMiddleValues();
     this.changeFinishCounter(1);
   };
@@ -256,10 +264,13 @@ resetPlayerResources = () => {//запасной вариант востанов
 
   /****Energy*************************************************************************** */
 
-  public energy = 0;
+  private _energy = 0;
 
+  get energy() {
+    return this._energy;
+  }
   resetEnergy = () => {
-    this.energy = 0;
+    this._energy = 0;
   };
 
  
