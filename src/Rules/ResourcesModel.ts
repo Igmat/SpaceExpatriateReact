@@ -198,6 +198,7 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.dropResources(); //очистка ресурсов игрока
     this.resetEnergy(); // обнуляем счетчик енергии
     this.calculateTotalPoints(); //подсчет общих очков
+    this.charterResource = undefined; //обнуление чартера
   };
 
   createEngineeringMaps = (cards: EngineeringCard[]) => {
