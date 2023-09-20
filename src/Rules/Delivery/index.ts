@@ -114,15 +114,9 @@ export class ActionManager implements IActionManager {
   };
 
   activateEngineeringCard(card: EngineeringCard) {
-    if (card.connection === "start") {
-      if (this.resources.engineeringMaps.Start[card.id] === 0) return;
-    }
-    if (card.connection === "continue") {
-      if (this.resources.engineeringMaps.Middle[card.id] <= 0) return;
-    }
-    if (card.connection === "end") {
-      if (this.resources.engineeringMaps.FinishCounter <= 0) return;
-    }
+    if (card.connection === "start" && this.resources.engineeringMaps.Start[card.id] === 0) return;
+    if (card.connection === "continue" && this.resources.engineeringMaps.Middle[card.id] <= 0) return;
+    if (card.connection === "end" && this.resources.engineeringMaps.FinishCounter <= 0) return;
     this.resources.tryConsumeResources(
       card.entryPoint ? [card.entryPoint] : [],
       () => this.resources.handleCardProcessing(card)
