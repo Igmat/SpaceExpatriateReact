@@ -26,7 +26,7 @@ export class ActionManager implements IActionManager {
     missionType?: CardType = readFromLS("missionType");
 
     perform = (card: CardDefinition) => {
-        this.round.step = "options";
+        this.round.startOptionsStep();
     };
     tryNext = () => {
         return true
@@ -47,7 +47,7 @@ export class ActionManager implements IActionManager {
 
     select = (option: string) => {
         if (isCardType(option)) {
-            this.round.step = "performing";
+            this.round.startPerformingStep();
             this.missionType = option;
         }
     }
