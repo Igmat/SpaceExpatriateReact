@@ -1,6 +1,6 @@
 import { CardType } from "./card-types";
 import { makeAutoObservable, autorun } from "mobx";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../utils";
 
 export class DeckModel<T extends { id: number }> {
   constructor(
@@ -8,21 +8,21 @@ export class DeckModel<T extends { id: number }> {
     cardsDefinitions: { [key: number]: T },
   ) {
     this.cardsDefinitions = cardsDefinitions;
-    this.activeCards = localStorage.getItem("activeCards") || Object.keys(this.cardsDefinitions);
+    this.activeCards = readFromLS("activeCards") || Object.keys(this.cardsDefinitions);
     this.mixCards();
     makeAutoObservable(this);
     autorun(()=>{
-     localStorage.setItem("activeCards", this.activeCards)
-    localStorage.setItem(this.type, this.openedCard)
-    localStorage.setItem("droppedCards", this.droppedCards)
+      writeToLS("activeCards", this.activeCards)
+      writeToLS(this.type, this.openedCard)
+      writeToLS("droppedCards", this.droppedCards)
     })
   }
 
-  private activeCards: number[] = localStorage.getItem("activeCards") || []
+  private activeCards: number[] = readFromLS("activeCards") || []
   private cardsDefinitions: { [key: number]: T };
-  private droppedCards: number[] =  localStorage.getItem("droppedCards") || [];
+  private droppedCards: number[] = readFromLS("droppedCards") || [];
 
-  openedCard?: T = localStorage.getItem(this.type) || undefined;
+  openedCard?: T = readFromLS(this.type) || undefined;//если не присваетать  undefined скатывается в null и выдает ошибку результат выполнения openCard 
 
   openCard = () => {
     this.openedCard !== undefined && this.dropCards(this.openedCard.id);

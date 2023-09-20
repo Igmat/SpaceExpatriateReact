@@ -3,7 +3,7 @@ import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
 import { ResourcesModel } from "./ResourcesModel";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../utils";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "done";
@@ -18,16 +18,16 @@ export class RoundManager {
     this.takeCardsToHand();
     if(this.current === 1) this.decks.openCards();
     autorun(() => {
-      localStorage.setItem("current", this.current);
-      localStorage.setItem("phase", this.phase);
-      localStorage.setItem("step", this.step);
+      writeToLS("current", this.current);
+      writeToLS("phase", this.phase);
+      writeToLS("step", this.step);
     });
   }
 
-  current = localStorage.getItem("current") || 1;
+  current =readFromLS("current") || 1;
 
-  phase: Phase = localStorage.getItem("phase") || "active";
-  step?: Step = localStorage.getItem("step") || undefined;
+  phase: Phase =readFromLS("phase") || "active";
+  step?: Step =readFromLS("step") || undefined;
   startNewGame = () => {
     this.current = 1
   }

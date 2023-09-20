@@ -9,7 +9,7 @@ import { ActionManager as EAM } from "./Engineering";
 import { ActionManager as TAM } from "./Terraforming";
 import { ActionManager as DAM } from "./Delivery";
 import { ActionManager as MAM } from "./Military";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../utils";
 export class ActionManager {
   constructor(
     private readonly decks: DeckManager,
@@ -20,7 +20,7 @@ export class ActionManager {
   ) {
     makeAutoObservable(this);
     autorun(() => {
-      localStorage.setItem("activeAction", this.activeAction);
+      writeToLS("activeAction", this.activeAction);
     });
   }
 
@@ -31,7 +31,7 @@ export class ActionManager {
     military: new MAM(this.round, this.hand, this.decks)
   }
 
-  activeAction?: CardType = localStorage.getItem("activeAction") || undefined;
+  activeAction?: CardType = readFromLS("activeAction");
 
   perform = (card?: CardDefinition) => {
     if (!card) return;

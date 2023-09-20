@@ -13,7 +13,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../../utils";
 
 export type DeliveryOption = "charter" | "garbage";
 
@@ -27,20 +27,20 @@ export class ActionManager implements IActionManager {
   ) {
     makeAutoObservable(this);
     autorun(() => {
-      localStorage.setItem("calculatedResources", this.calculatedResources);
-      localStorage.setItem("deliveryOption", this.deliveryOption);
-      localStorage.setItem("sedTerraformingCards", this.usedTerraformingCards);
-      localStorage.setItem("tempDroppedCards", this.tempDroppedCards);
+      writeToLS("calculatedResources", this.calculatedResources);
+      writeToLS("deliveryOption", this.deliveryOption);
+      writeToLS("usedTerraformingCards", this.usedTerraformingCards);
+      writeToLS("tempDroppedCards", this.tempDroppedCards);
     });
   }
 
   public calculatedResources: Resource[] =
-    localStorage.getItem("calculatedResources") || [];
+    readFromLS("calculatedResources") || [];
   deliveryOption?: DeliveryOption =
-    localStorage.getItem("deliveryOption") || undefined;
+    readFromLS("deliveryOption");
   usedTerraformingCards: TerraformingCard[] =
-    localStorage.getItem("localStorage") || []; //использованные карты Terraforming
-  tempDroppedCards: CardDefinition[] = localStorage.getItem("tempDroppedCards") || [];
+    readFromLS("usedTerraformingCards") || []; //использованные карты Terraforming
+  tempDroppedCards: CardDefinition[] = readFromLS("tempDroppedCards") || [];
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);

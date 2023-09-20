@@ -5,31 +5,28 @@ import {
   TerraformingCard,
 } from "./card-types";
 import { TableModel } from "./TableModel";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../utils";
 
 type playerResources = {
   [key in ResourcePrimitive | any]: number;
   //[key: any]: number;
 };
-
 export class ResourcesModel {
   // будет разделение на PLayerModel & GarbageModel
 
   constructor(private readonly table: TableModel) {
     makeAutoObservable(this);
     autorun(() => {
-      localStorage.setItem("garbageResources", this.garbageResources);
-      localStorage.setItem("playerResources", this.playerResources);
-      localStorage.setItem("tempGarbageResources", this.tempGarbageResources);
-      localStorage.setItem("charterResource", this.charterResource);
-      localStorage.setItem("engineeringMaps", this.engineeringMaps);
-      localStorage.setItem("points", this.points);
-      localStorage.setItem("energy", this.energy);
+      writeToLS("garbageResources", this.garbageResources);
+      writeToLS("playerResources", this.playerResources);
+      writeToLS("tempGarbageResources", this.tempGarbageResources);
+      writeToLS("charterResource", this.charterResource);
+      writeToLS("engineeringMaps", this.engineeringMaps);
+      writeToLS("points", this.points);
+      writeToLS("energy", this.energy);
     });
   }
-  public playerResources: playerResources = localStorage.getItem(
-    "playerResources"
-  ) || {
+  public playerResources: playerResources = readFromLS("playerResources") || {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
@@ -38,13 +35,9 @@ export class ResourcesModel {
     "dark matter": 0,
   };
 
-  public charterResource?: ResourcePrimitive = localStorage.getItem(
-    "charterResource"
-  ) || undefined;
+  public charterResource?: ResourcePrimitive = readFromLS("charterResource");
 
-  public garbageResources: playerResources = localStorage.getItem(
-    "garbageResources"
-  ) || {
+  public garbageResources: playerResources =readFromLS("garbageResources") || {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
@@ -52,9 +45,7 @@ export class ResourcesModel {
     nanotechnologies: 0,
   };
 
-  public tempGarbageResources: playerResources = localStorage.getItem(
-    "tempGarbageResources"
-  ) || {};
+  public tempGarbageResources: playerResources = readFromLS("tempGarbageResources") || {};
   
   saveGarbage = () => {
     for (let key in this.garbageResources) {
@@ -62,12 +53,12 @@ export class ResourcesModel {
     }
   };
   /**********Points************************************************************************** */
-  public points = localStorage.getItem("points") || {
+  public points = readFromLS("points") || {
     round: 0,
     total: 0,
   };
 
-  public engineeringMaps = localStorage.getItem("engineeringMaps") || {
+  public engineeringMaps = readFromLS("engineeringMaps") || {
     Start: {} as { [key: number]: number },
     Middle: {} as { [key: number]: number },
     FinishCounter: 0,
@@ -168,7 +159,5 @@ resetPlayerResources = () => {//запасной вариант востанов
 
   /****Energy*************************************************************************** */
 
-  public energy = localStorage.getItem(
-    "energy"
-  ) || 0;
+  public energy = readFromLS("energy") || 0;
 }

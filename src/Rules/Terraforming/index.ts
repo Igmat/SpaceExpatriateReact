@@ -4,7 +4,7 @@ import { CardDefinition, CardType, isCardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../../utils";
 
 export class ActionManager implements IActionManager {
 
@@ -17,17 +17,13 @@ export class ActionManager implements IActionManager {
     ) {
         makeAutoObservable(this);
         autorun(() => {
-            localStorage.setItem("cardsToDrop", this.cardsToDrop);
-            localStorage.setItem("missionType", this.missionType);
+           writeToLS("cardsToDrop", this.cardsToDrop);
+           writeToLS("missionType", this.missionType);
           });
     }
-    cardsToDrop: CardDefinition[] =localStorage.getItem(
-        "cardsToDrop"
-      ) || [];
+    cardsToDrop: CardDefinition[] = readFromLS("cardsToDrop") || [];
 
-    missionType?: CardType = localStorage.getItem(
-        "missionType"
-      ) || undefined;
+    missionType?: CardType = readFromLS("missionType");
 
     perform = (card: CardDefinition) => {
         this.round.step = "options";

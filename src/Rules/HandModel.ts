@@ -1,17 +1,17 @@
 import { makeAutoObservable, autorun } from "mobx";
 import { CardDefinition } from "../Rules/card-types";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../utils";
 
 export class HandModel {
   constructor() {
     makeAutoObservable(this);
     autorun(() => {
-      localStorage.setItem("cardsInHand", this.cardsInHand);
-      localStorage.setItem("tempDroppedCards", this.tempDroppedCards);
+     writeToLS("cardsInHand", this.cardsInHand);
+     writeToLS("tempDroppedCards", this.tempDroppedCards);
     });
   }
-  public cardsInHand: CardDefinition[] = localStorage.getItem("cardsInHand") || [];
-  public tempDroppedCards: CardDefinition[] = localStorage.getItem("tempDroppedCards") || [];
+  public cardsInHand: CardDefinition[] = readFromLS("cardsInHand") || [];
+  public tempDroppedCards: CardDefinition[] = readFromLS("tempDroppedCards") || [];
 
 
  dropCard = (ind: number) => {

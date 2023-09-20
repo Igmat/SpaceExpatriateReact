@@ -6,24 +6,24 @@ import {
   MilitaryCard,
   TerraformingCard,
 } from "./card-types";
-import localStorage from "mobx-localstorage";
+import { writeToLS, readFromLS } from "../utils";
 export class TableModel {
   constructor() {
     makeAutoObservable(this);
     autorun(() => {
-      localStorage.setItem("tableDelivery", this.delivery);
-      localStorage.setItem("tableEngineering", this.engineering);
-      localStorage.setItem("tableTerraforming", this.terraforming);
-      localStorage.setItem("tableMilitary", this.military);
+      writeToLS("tableDelivery", this.delivery);
+      writeToLS("tableEngineering", this.engineering);
+      writeToLS("tableTerraforming", this.terraforming);
+      writeToLS("tableMilitary", this.military);
     });
   }
 
-  delivery: DeliveryCard[] = localStorage.getItem("tableDelivery") || [];
+  delivery: DeliveryCard[] = readFromLS ("tableDelivery") || [];
   engineering: EngineeringCard[] =
-    localStorage.getItem("tableEngineering") || [];
+    readFromLS ("tableEngineering") || [];
   terraforming: TerraformingCard[] =
-    localStorage.getItem("tableTerraforming") || [];
-  military: MilitaryCard[] = localStorage.getItem("tableMilitary") || [];
+    readFromLS ("tableTerraforming") || [];
+  military: MilitaryCard[] = readFromLS ("tableMilitary") || [];
 
   dropCards = (
     //очистить сброшенные карты со стола

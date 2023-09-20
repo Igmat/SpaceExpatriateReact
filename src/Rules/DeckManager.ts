@@ -5,7 +5,6 @@ import { militaryCards } from "./CardDefinitions/military";
 import { terraformingCards } from "./CardDefinitions/terraforming";
 import { DeckModel } from "./DeckModel";
 import { CardDefinition } from "./card-types";
-import localStorage from "mobx-localstorage";
 
 export class DeckManager {
   constructor() {
