@@ -1,5 +1,5 @@
 import { ResourceComponent } from "./index";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 test("renders resource component for biotic materials", () => {
     const {container} = render(<ResourceComponent type={"biotic materials"} />);

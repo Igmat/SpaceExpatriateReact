@@ -1,59 +1,227 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders player 1`] = `
-<div>
-  123
-  <div />
+Array [
   <div
     className="container"
   >
     <div
-      className="delivery card"
-    >
-      <div
-        className="fuel resource"
-      />
-    </div>
+      className="cardsContainer"
+    />
     <div
-      className="engineering card"
+      className="cardsContainer"
+    />
+    <div
+      className="cardsContainer"
+    />
+    <div
+      className="cardsContainer"
+    />
+    <div
+      className="round"
     >
-      <div
-        className="start"
-      >
-        <div
-          className="entryPoint"
-        />
-        <div
-          className="exitPoint"
-        >
+      Round: 1
+    </div>
+  </div>,
+  <div
+    className="container"
+  >
+    <div
+      className="delivery card   "
+      onClick={[Function]}
+    >
+      <div>
+        <div>
           <div
-            className="dark-matter resource"
-          />
+            className="machinery resource"
+          >
+            <div
+              className="resName"
+            >
+               
+              machinery
+            </div>
+          </div>
+           
+           
+          <div />
         </div>
       </div>
     </div>
     <div
-      className="military card"
+      className="engineering card   "
+      onClick={[Function]}
     >
       <div
-        className="intelligence"
-      />
+        className="continue"
+      >
+        <div>
+          continue
+        </div>
+        <div
+          className="entryPoint"
+        >
+          <div>
+            <div>
+              <div
+                className="machinery resource"
+              >
+                <div
+                  className="resName"
+                >
+                   
+                  machinery
+                </div>
+              </div>
+               
+               
+              <div />
+            </div>
+          </div>
+        </div>
+        <div
+          className="exitPoint"
+        >
+          <div>
+            <div>
+              <div
+                className="dark-matter resource"
+              >
+                <div
+                  className="resName"
+                >
+                   
+                  dark-matter
+                </div>
+              </div>
+               
+               
+              <div />
+            </div>
+          </div>
+          <div>
+            2
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="terraforming card"
+      className="military card   "
+      onClick={[Function]}
     >
-      <div>
-        <div
-          className="minerals resource"
-        />
-        <div
-          className="nanotechnologies resource"
-        />
-      </div>
-      <div>
-        1
+      <div
+        className="fighters"
+      >
+        Fighters
       </div>
     </div>
-  </div>
-</div>
+    <div
+      className="terraforming card   "
+      onClick={[Function]}
+    >
+      <div
+        className="infoWrapper"
+      >
+        <div
+          className="resourceWrapper"
+        >
+          <div>
+            <div>
+              <div
+                className="minerals resource"
+              >
+                <div
+                  className="resName"
+                >
+                   
+                  minerals
+                </div>
+              </div>
+               
+               
+              <div />
+            </div>
+          </div>
+          <div>
+            <div>
+              <div
+                className="machinery resource"
+              >
+                <div
+                  className="resName"
+                >
+                   
+                  machinery
+                </div>
+              </div>
+               
+               
+              <div />
+            </div>
+          </div>
+        </div>
+        <div
+          className="points"
+        >
+          3
+        </div>
+        <p
+          className="cardName"
+        >
+          Workshop
+        </p>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="container"
+  >
+    <div
+      className="playerResources"
+    >
+      <div
+        className="biotic"
+      >
+        0
+      </div>
+      <div
+        className="fuel"
+      >
+        0
+      </div>
+      <div
+        className="machinery"
+      >
+        0
+      </div>
+      <div
+        className="minerals"
+      >
+        0
+      </div>
+      <div
+        className="nanotechnologies"
+      >
+        0
+      </div>
+      <div
+        className="dark"
+      >
+        0
+      </div>
+      <div
+        className="energy"
+      >
+        Energy: 
+        0
+      </div>
+      <div
+        className="points"
+      >
+        TPs
+        0
+      </div>
+    </div>
+  </div>,
+]
 `;

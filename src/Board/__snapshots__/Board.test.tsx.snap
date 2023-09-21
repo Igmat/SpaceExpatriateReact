@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Board renders correctly 1`] = `
+<div
+  className="wrapper"
+>
+  <a
+    className=""
+    href="/game"
+    onClick={[Function]}
+  >
+     
+    <div
+      className="start"
+    >
+      START GAME
+    </div>
+  </a>
+</div>
+`;
