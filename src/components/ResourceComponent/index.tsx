@@ -11,17 +11,21 @@ export const ResourceComponent = (props: ResourceComponentProps) => {
       ? [props.type.split(" ").join("-")]
       : props.type.map((el) => el.split(" ").join("-"));
 
-     
+
   return (
-    <>
-      {normalisedType.map((el, ind) => (
-        <>
-          <div key={ind} className={`${styles[el]} ${styles.resource}`}>
-           <div className={ styles.resName}> {el}</div> 
-          </div>{" "}
-          {ind !== normalisedType.length - 1 && "/"}{" "}
-        </>
-      ))}
-    </>
+    <div>
+      {normalisedType.map((el, ind) => {
+        return (
+          <div key={ind}>
+            <div className={`${styles[el]} ${styles.resource}`}>
+              <div className={styles.resName}> {el}</div>
+            </div>{" "}
+            {ind !== normalisedType.length - 1 && "/"}{" "}
+            <div />
+          </div>
+        );
+      }
+      )}
+    </div>
   );
-};
+}
