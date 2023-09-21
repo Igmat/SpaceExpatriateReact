@@ -58,9 +58,6 @@ export class RoundManager {
   startPerformingStep() {
     this.setStep("performing");
   }
-  startResourcesStep() {
-    this.setStep("resources");
-  }
 
   startResourceStep(
     params: ResourcePrimitive[][],
