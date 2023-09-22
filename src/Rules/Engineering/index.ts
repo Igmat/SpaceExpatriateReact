@@ -23,7 +23,7 @@ export class ActionManager implements IActionManager {
 
     perform = (card: CardDefinition) => {
         this.remaining.activateDeck = 1;
-        this.remaining.activateCard = 1;
+        this.remaining.activateCard = this.hand.cardsInHand.length > 0 ? 1 : 0;
         this.round.startPerformingStep();
     };
 
