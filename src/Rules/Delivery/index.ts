@@ -63,9 +63,9 @@ export class ActionManager implements IActionManager {
     }
     if (card.type === "terraforming") {
       if (!this.usedTerraformingCards.includes(card)) {
-        this.useTerraformingCard(card);
         this.resources.tryConsumeResources(card.resources, () => {
           this.resources.calculateRoundPoints(card);
+          this.useTerraformingCard(card);
         });
       }
     }
