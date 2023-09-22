@@ -1,11 +1,13 @@
 import { Deck } from "./Deck";
 import styles from "./Board.module.scss";
-import { gameState } from "../Rules";
+import { useGameState } from "../Rules";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ResourcesDeck } from "./ResourcesDeck";
 
 export const Board = observer(() => {
+  const gameState = useGameState();
+  
   const [propmt, setPropmt] = useState("");
 
   useEffect(() => {

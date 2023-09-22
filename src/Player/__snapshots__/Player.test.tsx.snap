@@ -33,13 +33,13 @@ Array [
       <div>
         <div>
           <div
-            className="machinery resource"
+            className="nanotechnologies resource"
           >
             <div
               className="resName"
             >
                
-              machinery
+              nanotechnologies
             </div>
           </div>
            
@@ -53,10 +53,10 @@ Array [
       onClick={[Function]}
     >
       <div
-        className="continue"
+        className="start"
       >
         <div>
-          continue
+          start
         </div>
         <div
           className="entryPoint"
@@ -64,13 +64,13 @@ Array [
           <div>
             <div>
               <div
-                className="machinery resource"
+                className="biotic-materials resource"
               >
                 <div
                   className="resName"
                 >
                    
-                  machinery
+                  biotic-materials
                 </div>
               </div>
                
@@ -83,24 +83,7 @@ Array [
           className="exitPoint"
         >
           <div>
-            <div>
-              <div
-                className="dark-matter resource"
-              >
-                <div
-                  className="resName"
-                >
-                   
-                  dark-matter
-                </div>
-              </div>
-               
-               
-              <div />
-            </div>
-          </div>
-          <div>
-            2
+            1
           </div>
         </div>
       </div>
@@ -110,9 +93,9 @@ Array [
       onClick={[Function]}
     >
       <div
-        className="fighters"
+        className="intelligence"
       >
-        Fighters
+        Intelligence
       </div>
     </div>
     <div
@@ -128,13 +111,13 @@ Array [
           <div>
             <div>
               <div
-                className="minerals resource"
+                className="nanotechnologies resource"
               >
                 <div
                   className="resName"
                 >
                    
-                  minerals
+                  nanotechnologies
                 </div>
               </div>
                
@@ -145,13 +128,13 @@ Array [
           <div>
             <div>
               <div
-                className="machinery resource"
+                className="nanotechnologies resource"
               >
                 <div
                   className="resName"
                 >
                    
-                  machinery
+                  nanotechnologies
                 </div>
               </div>
                
@@ -163,12 +146,12 @@ Array [
         <div
           className="points"
         >
-          3
+          4
         </div>
         <p
           className="cardName"
         >
-          Workshop
+          NANOREPLICATOR
         </p>
       </div>
     </div>

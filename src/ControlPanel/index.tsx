@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { gameState } from "../Rules";
+import { useGameState } from "../Rules";
 import { useModalService } from "../components/ModalWindow";
 import { observer } from "mobx-react-lite";
 import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionWindow/DeliveryActionWindow";
@@ -9,11 +9,13 @@ import { ChooseResource } from "../components/ModalWindows/ChooseResource";
 
 const modalByPhase = {
   military: <MillitaryModal />,
-  delivery: <DeliveryActionWindow action={gameState.action} />,
+  delivery: <DeliveryActionWindow />,
   terraforming: <TerraformingModal />,
 } as const;
 
 export const ControlPanel = observer(() => {
+  const gameState = useGameState();
+
   const modalService = useModalService();
   useEffect(() => {
     if (gameState.round.step === "options") {
