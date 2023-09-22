@@ -97,9 +97,7 @@ export class ResourcesModel {
 
   dropResources = () => {
     for (let key in this.playerResources) {
-      if (key !== "dark matter") {
       this.playerResources[key] = 0;
-      }
     }
   };
   /*
