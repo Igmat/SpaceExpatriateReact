@@ -135,11 +135,16 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.useCardConnection(card);
     this.gainResources(card);
   };
-
+  
   tryConsumeResources(resources: Resource[], onConsume: () => void) {
-    
     if (resources === undefined) return onConsume();
-    const combinations = generateCombinations(toArrayArray(resources));
+    const variants = toArrayArray(resources);
+    const darkMatterVariants:ResourcePrimitive[][] = variants.map((variant) => [//добавление варианта с темной материей
+      ...variant,
+      "dark matter",
+    ]);
+    
+    const combinations = generateCombinations(darkMatterVariants);
     const validCombinations = combinations.filter(
       (
         combination //проверка все ли кобинации ресурсов с карт валидны и покажу только валидные
