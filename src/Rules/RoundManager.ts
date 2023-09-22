@@ -1,7 +1,7 @@
 import { autorun, makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
-import { CardDefinition, CardType, ResourcePrimitive } from "./card-types";
+import { CardType, ResourcePrimitive } from "./card-types";
 import { writeToLS, readFromLS } from "../utils";
 
 type Phase = "active" | CardType | "passive";
@@ -18,24 +18,22 @@ export class RoundManager {
     autorun(() => {
       writeToLS("current", this.current);
       writeToLS("phase", this.phase);
-      writeToLS("step", this._step);
-      writeToLS("params", this._params);
-
+      writeToLS("step",this._step !== "resources" ? this._step : readFromLS("step"));
+      console.log(this._step);
     });
   }
 
   current = readFromLS("current") || 1;
 
   phase: Phase = readFromLS("phase") || "active";
-  private _step?: Step = readFromLS("step");
-  private _params?: ResourcePrimitive[][] = readFromLS("params");
+  private _step?: Step = readFromLS("step"); 
+  private _params?: ResourcePrimitive[][]; 
   private _onSelect?: (selected: ResourcePrimitive[]) => void;
-
-
 
   startNewGame = () => {
     this.current = 1;
   };
+
   takeCardsToHand = () => {
     if (this.current === 1) {
       this.decks.dropCards(...this.hand.cardsInHand);
@@ -75,19 +73,13 @@ export class RoundManager {
   startPerformingStep() {
     this.setStep("performing");
   }
-  startResourcesStep() {
-    this.setStep("resources");
-  }
 
   startResourceStep(
     params: ResourcePrimitive[][],
-  //  onSelect: (selected: ResourcePrimitive[]) => void
-  onSelect: (selected: ResourcePrimitive[]) => void
+    onSelect: (selected: ResourcePrimitive[]) => void
   ) {
     this.setStep("resources");
     this._params = params;
     this._onSelect = onSelect;
-   
   }
-  
 }

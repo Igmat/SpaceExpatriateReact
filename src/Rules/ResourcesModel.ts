@@ -81,7 +81,6 @@ export class ResourcesModel {
       if (this.playerResources[key] < 0) this.playerResources[key] = 0;
     }
     this.charterResource && this.playerResources[this.charterResource]++;
-    // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
   };
 
   addResource = (resource: ResourcePrimitive) => {
@@ -100,17 +99,7 @@ export class ResourcesModel {
       this.playerResources[key] = 0;
     }
   };
-  /*
-  savePlayerResources = () => {//запасной вариант востановления ресурсов при ресете
-    for (let key in this.playerResources) {
-      this.tempPlayerResources[key] = this.playerResources[key];
-    }
-  };
-resetPlayerResources = () => {//запасной вариант востановления ресурсов при ресете
-  for (let key in this.tempPlayerResources) {
-    this.playerResources[key] = this.tempPlayerResources[key];
-  }
-}*/
+ 
   consumeResources = (resources: ResourcePrimitive[]) => {
     //потребление ресурсов
     resources.forEach((resource) => {
@@ -135,15 +124,12 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.useCardConnection(card);
     this.gainResources(card);
   };
-
+  
   tryConsumeResources(resources: Resource[], onConsume: () => void) {
-    
     if (resources === undefined) return onConsume();
     const combinations = generateCombinations(toArrayArray(resources));
     const validCombinations = combinations.filter(
-      (
-        combination //проверка все ли кобинации ресурсов с карт валидны и покажу только валидные
-      ) => this.canConsumeResources(combination)
+      (combination) => this.canConsumeResources(combination) //проверка все ли кобинации ресурсов с карт валидны и покажу только валидные
     );
     if (validCombinations.length === 0) return;
     if (validCombinations.length === 1) {

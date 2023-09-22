@@ -60,14 +60,11 @@ export class ActionManager {
   activateDeck = (type: CardType) => {
     if (!this.activeAction) return;
      this.managers[this.activeAction].activateDeck(type)
-    //this.tryNext();
   };
 
   activateCard = (card: number) => {
     if (!this.activeAction) return;
     this.managers[this.activeAction].activateCard(card)
-    
-    // this.tryNext();
   };
 
   activateCardOnTable = (card: CardDefinition) => {

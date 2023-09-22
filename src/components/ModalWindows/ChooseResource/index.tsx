@@ -8,7 +8,7 @@ interface ChooseResourceProps {
 
 export const ChooseResource = (props:ChooseResourceProps) => {
 
-  console.log(props.array);
+ // console.log(props.array);
   return (
     <div className={styles.modal}>
       {props.array && props.array.map((resources) => (

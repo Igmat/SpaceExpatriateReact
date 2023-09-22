@@ -23,16 +23,22 @@ export const ControlPanel = observer(() => {
       );
     }
     if (gameState.round.step === "resources") {
+      console.log("im in resourcesModal")
       modalService.show(
         <ChooseResource
           array={gameState.round.params!}
           select={(resource) => {
             gameState.round.startPerformingStep();
+       
             if (gameState.round.onSelect === undefined) {
+             // gameState.resources.tryConsumeResources(resource, () => {})
+              console.log("ControlPanel dont have a onSelect")
               modalService.hide();
               return;
             }
+            console.log("I see onSelect in ControlPannel")
             gameState.round.onSelect(resource);
+           
           }}
         />,
         true

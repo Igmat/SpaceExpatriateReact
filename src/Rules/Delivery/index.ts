@@ -31,19 +31,13 @@ export class ActionManager implements IActionManager {
       writeToLS("deliveryOption", this.deliveryOption);
       writeToLS("usedTerraformingCards", this.usedTerraformingCards);
       writeToLS("tempDroppedCards", this.tempDroppedCards);
-      writeToLS("selectedCard", this.selectedCard);
     });
   }
 
-  public calculatedResources: Resource[] =
-    readFromLS("calculatedResources") || [];
-  deliveryOption?: DeliveryOption =
-    readFromLS("deliveryOption");
-  usedTerraformingCards: TerraformingCard[] =
-    readFromLS("usedTerraformingCards") || []; //использованные карты Terraforming
+  public calculatedResources: Resource[] = readFromLS("calculatedResources") || [];
+  deliveryOption?: DeliveryOption = readFromLS("deliveryOption");
+  usedTerraformingCards: TerraformingCard[] = readFromLS("usedTerraformingCards") || []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = readFromLS("tempDroppedCards") || [];
-  selectedCard?: CardDefinition | any = readFromLS("selectedCard");//change
-
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);
@@ -71,14 +65,14 @@ export class ActionManager implements IActionManager {
   };
 
   activateCardOnTable = (card: CardDefinition) => {
-    this.selectedCard = card;
+    
     if (card.type === "engineering") {
       this.activateEngineeringCard(card);
     }
     if (card.type === "terraforming") {
       if (!this.usedTerraformingCards.includes(card)) {
         this.useTerraformingCard(card);
-        this.resources.tryConsumeResources(this.selectedCard.resources, () => {//change
+        this.resources.tryConsumeResources(card.resources, () => {
           this.resources.calculateRoundPoints(card);
         });
       }
@@ -132,8 +126,8 @@ export class ActionManager implements IActionManager {
     if (card.connection === "continue" && this.resources.engineeringMaps.Middle[card.id] <= 0) return;
     if (card.connection === "end" && this.resources.engineeringMaps.FinishCounter <= 0) return;
     this.resources.tryConsumeResources(
-      this.selectedCard.entryPoint ? [this.selectedCard.entryPoint] : [],//change
-      () => this.resources.handleCardProcessing(this.selectedCard)//change
+      card.entryPoint ? [card.entryPoint] : [],
+      () => this.resources.handleCardProcessing(card)
     );
   }
 }

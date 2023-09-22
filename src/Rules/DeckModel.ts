@@ -22,7 +22,7 @@ export class DeckModel<T extends { id: number }> {
   private cardsDefinitions: { [key: number]: T };
   private droppedCards: number[] = readFromLS("droppedCards") || [];
 
-  openedCard?: T = readFromLS(this.type) || undefined;//если не присваетать  undefined скатывается в null и выдает ошибку результат выполнения openCard 
+  openedCard?: T = readFromLS(this.type);
 
   openCard = () => {
     this.openedCard !== undefined && this.dropCards(this.openedCard.id);
