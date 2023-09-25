@@ -7,6 +7,7 @@ import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
+import { ResetButton } from "../../components/ResetButton";
 
 interface TableProps {
   model: TableModel;
@@ -16,13 +17,12 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-
-  const [selectedCards, setSelectedCards] = useState([] as CardDefinition[])
+  const [selectedCards, setSelectedCards] = useState([] as CardDefinition[]);
 
   const handleClick = (card: CardDefinition) => {
-    props.action.activateCardOnTable(card)
-    && setSelectedCards([...selectedCards, card])
-  }
+    props.action.activateCardOnTable(card) &&
+      setSelectedCards([...selectedCards, card]);
+  };
 
   return (
     <div className={styles.container}>
@@ -92,22 +92,23 @@ export const Table = observer((props: TableProps) => {
       )}*/}
 
       {/*buttons*/}
-      {props.round.step === "performing" &&
-        selectedCards.length > 0 && (
-          <button className={styles.resetButton} onClick={props.action.reset}>
-            Reset
-          </button>
+      {props.round.step === "performing" && selectedCards.length > 0 && (
+        <ResetButton action={props.action} />
+      )}
+      {props.round.phase === "delivery" &&
+        props.round.step === "performing" && (
+          <ResetButton action={props.action} />
         )}
-      {props.round.step === "performing" &&
-        selectedCards.length >= 3 && (
-          <button
-            className={styles.confirmButton}
-            onClick={props.action.tryNext} //обнулить useState в пустой массив
-          >
-            Confirm
-          </button>
-        )}
-      {props.round.step === "performing" && (
+      {props.round.step === "performing" && selectedCards.length >= 3 && (
+        <button
+          className={styles.confirmButton}
+          onClick={props.action.tryNext} //обнулить useState в пустой массив
+        >
+          Confirm
+        </button>
+      )}
+
+      {props.round.step === "performing" &&  (
         <button
           className={styles.giveUpButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив
