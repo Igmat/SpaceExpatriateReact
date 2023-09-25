@@ -31,7 +31,7 @@ export class ActionManager {
     military: new MAM(this.round, this.hand, this.decks)
   }
 
-  activeAction?: CardType = readFromLS("activeAction");
+  activeAction?: CardType = readFromLS("activeAction", undefined);
 
   perform = (card?: CardDefinition) => {
     if (!card) return;

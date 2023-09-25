@@ -18,15 +18,15 @@ export class RoundManager {
     autorun(() => {
       writeToLS("current", this.current);
       writeToLS("phase", this.phase);
-      writeToLS("step",this._step !== "resources" ? this._step : readFromLS("step"));
+      writeToLS("step",this._step !== "resources" ? this._step : readFromLS("step", undefined));
       console.log(this._step);
     });
   }
 
-  current = readFromLS("current") || 1;
+  current = readFromLS("current", 1);
 
-  phase: Phase = readFromLS("phase") || "active";
-  private _step?: Step = readFromLS("step"); 
+  phase: Phase = readFromLS("phase", "active");
+  private _step?: Step = readFromLS("step", undefined); 
   private _params?: ResourcePrimitive[][]; 
   private _onSelect?: (selected: ResourcePrimitive[]) => void;
 

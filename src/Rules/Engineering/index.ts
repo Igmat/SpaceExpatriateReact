@@ -19,10 +19,10 @@ export class ActionManager implements IActionManager {
           });
     }
 
-    private remaining =  readFromLS ("remaining") || {
+    private remaining =  readFromLS ("remaining", {
         activateDeck: 0,
         activateCard: 0,
-    };
+    })
 
     perform = (card: CardDefinition) => {
         this.remaining.activateDeck = 1;

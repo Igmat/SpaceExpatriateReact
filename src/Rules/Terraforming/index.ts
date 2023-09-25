@@ -19,9 +19,9 @@ export class ActionManager implements IActionManager {
            writeToLS("missionType", this.missionType);
           });
     }
-    cardsToDrop: CardDefinition[] = readFromLS("cardsToDrop") || [];
+    cardsToDrop: CardDefinition[] = readFromLS("cardsToDrop", []);
 
-    missionType?: CardType = readFromLS("missionType");
+    missionType?: CardType = readFromLS("missionType", undefined);
 
     perform = (card: CardDefinition) => {
         this.round.startOptionsStep();

@@ -30,26 +30,26 @@ export class ResourcesModel {
       writeToLS("energy", this.energy);
     });
   }
-  public playerResources: playerResources = readFromLS("playerResources") || {
+  public playerResources: playerResources = readFromLS("playerResources", {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
     machinery: 0,
     nanotechnologies: 0,
     "dark matter": 0,
-  };
+  })
 
-  public charterResource?: ResourcePrimitive = readFromLS("charterResource");
+  public charterResource?: ResourcePrimitive = readFromLS("charterResource", undefined);
 
-  public garbageResources: playerResources =readFromLS("garbageResources") || {
+  public garbageResources: playerResources =readFromLS("garbageResources", {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
     machinery: 0,
     nanotechnologies: 0,
-  };
+  })
 
-  public tempGarbageResources: playerResources = readFromLS("tempGarbageResources") || {};
+  public tempGarbageResources: playerResources = readFromLS("tempGarbageResources", {});
   
   saveGarbage = () => {
     for (let key in this.garbageResources) {
@@ -57,16 +57,16 @@ export class ResourcesModel {
     }
   };
   /**********Points************************************************************************** */
-  public points = readFromLS("points") || {
+  public points = readFromLS("points", {
     round: 0,
     total: 0,
-  };
+  })
 
-  public engineeringMaps = readFromLS("engineeringMaps") || {
+  public engineeringMaps = readFromLS("engineeringMaps", {
     Start: {} as { [key: number]: number },
     Middle: {} as { [key: number]: number },
     FinishCounter: 0,
-  };
+  })
 
   getResources = () => {
     this.dropResources();
@@ -250,7 +250,7 @@ export class ResourcesModel {
 
   /****Energy*************************************************************************** */
 
-  private _energy  = readFromLS("energy") || 0;
+  private _energy  = readFromLS("energy", 0);
 
 
   get energy() {

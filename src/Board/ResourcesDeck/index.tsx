@@ -12,14 +12,10 @@ interface ResourcesDeckProps {
 
 export const ResourcesDeck = observer((props: ResourcesDeckProps) => {
 
-  const endGame = () => {
-    localStorage.clear();
-    props.round.startNewGame()
-  }
+
 
   return (
     <div className={styles.container}>
-       <NavLink to="/"> <div className={styles.startBtn} onClick={endGame}>END GAME</div></NavLink>
       <div className={styles.garbage}>
       
        <div className={styles.biotic}>

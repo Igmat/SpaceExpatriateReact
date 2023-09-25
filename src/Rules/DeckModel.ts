@@ -8,7 +8,7 @@ export class DeckModel<T extends { id: number }> {
     cardsDefinitions: { [key: number]: T }
   ) {
     this.cardsDefinitions = cardsDefinitions;
-    this.activeCards = readFromLS("activeCards") || Object.keys(this.cardsDefinitions);
+    this.activeCards = readFromLS("activeCards", Object.keys(this.cardsDefinitions));
     this.mixCards();
     makeAutoObservable(this);
     autorun(()=>{
@@ -18,11 +18,11 @@ export class DeckModel<T extends { id: number }> {
     })
   }
 
-  private activeCards: number[] = readFromLS("activeCards") || []
+  private activeCards: number[] = readFromLS("activeCards", [])
   private cardsDefinitions: { [key: number]: T };
-  private droppedCards: number[] = readFromLS("droppedCards") || [];
+  private droppedCards: number[] = readFromLS("droppedCards", []);
 
-  openedCard?: T = readFromLS(this.type);
+  openedCard?: T = readFromLS(this.type, undefined);
 
   openCard = () => {
     this.openedCard !== undefined && this.dropCards(this.openedCard.id);

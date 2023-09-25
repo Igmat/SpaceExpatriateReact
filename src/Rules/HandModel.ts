@@ -11,8 +11,8 @@ export class HandModel {
      writeToLS("tempDroppedCards", this.tempDroppedCards);
     });
   }
-  public cardsInHand: CardDefinition[] = readFromLS("cardsInHand") || [];
-  public tempDroppedCards: CardDefinition[] = readFromLS("tempDroppedCards") || [];
+  public cardsInHand: CardDefinition[] = readFromLS("cardsInHand",[]);
+  public tempDroppedCards: CardDefinition[] = readFromLS("tempDroppedCards", []);
 
 
  dropCard = (ind: number) => {

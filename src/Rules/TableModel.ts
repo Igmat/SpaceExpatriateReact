@@ -18,12 +18,12 @@ export class TableModel {
     });
   }
 
-  delivery: DeliveryCard[] = readFromLS ("tableDelivery") || [];
+  delivery: DeliveryCard[] = readFromLS ("tableDelivery", []);
   engineering: EngineeringCard[] =
-    readFromLS ("tableEngineering") || [];
+    readFromLS ("tableEngineering", []);
   terraforming: TerraformingCard[] =
-    readFromLS ("tableTerraforming") || [];
-  military: MilitaryCard[] = readFromLS ("tableMilitary") || [];
+    readFromLS ("tableTerraforming", []);
+  military: MilitaryCard[] = readFromLS ("tableMilitary", []);
 
 
   dropCards = (//очистить сброшенные карты со стола

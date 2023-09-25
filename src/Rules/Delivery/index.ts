@@ -34,10 +34,10 @@ export class ActionManager implements IActionManager {
     });
   }
 
-  public calculatedResources: Resource[] = readFromLS("calculatedResources") || [];
-  deliveryOption?: DeliveryOption = readFromLS("deliveryOption");
-  usedTerraformingCards: TerraformingCard[] = readFromLS("usedTerraformingCards") || []; //использованные карты Terraforming
-  tempDroppedCards: CardDefinition[] = readFromLS("tempDroppedCards") || [];
+  public calculatedResources: Resource[] = readFromLS("calculatedResources", []);
+  deliveryOption?: DeliveryOption = readFromLS("deliveryOption", undefined);
+  usedTerraformingCards: TerraformingCard[] = readFromLS("usedTerraformingCards", []); //использованные карты Terraforming
+  tempDroppedCards: CardDefinition[] = readFromLS("tempDroppedCards", []);
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);
