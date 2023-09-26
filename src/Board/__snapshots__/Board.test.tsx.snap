@@ -1,20 +1,244 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Board renders correctly 1`] = `
-<div
-  className="wrapper"
->
-  <a
-    className=""
-    href="/game"
-    onClick={[Function]}
+exports[`Board snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="container"
   >
-     
     <div
-      className="start"
+      class="container"
     >
-      START GAME
+      <a
+        aria-current="page"
+        class="active"
+        href="/"
+      >
+         
+        <div
+          class="startBtn"
+        >
+          END GAME
+        </div>
+      </a>
+      <div
+        class="garbage"
+      >
+        <div
+          class="biotic"
+        >
+          0
+        </div>
+        <div
+          class="fuel"
+        >
+          0
+        </div>
+        <div
+          class="machinery"
+        >
+          0
+        </div>
+        <div
+          class="minerals"
+        >
+          0
+        </div>
+        <div
+          class="nanotechnologies"
+        >
+          0
+        </div>
+      </div>
     </div>
-  </a>
-</div>
+    <p>
+        
+    </p>
+    <div
+      class="board"
+    >
+      <div
+        class="delivery deck open"
+      >
+        <div
+          class="delivery card   "
+        >
+          <div>
+            <div>
+              <div
+                class="fuel resource"
+              >
+                <div
+                  class="resName"
+                >
+                   fuel
+                </div>
+              </div>
+                
+              <div />
+            </div>
+          </div>
+          <div>
+            <div>
+              <div
+                class="fuel resource"
+              >
+                <div
+                  class="resName"
+                >
+                   fuel
+                </div>
+              </div>
+                
+              <div />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="delivery deck"
+      />
+      <div
+        class="engineering deck open"
+      >
+        <div
+          class="engineering card   "
+        >
+          <div
+            class="continue"
+          >
+            <div>
+              continue
+            </div>
+            <div
+              class="entryPoint"
+            />
+            <div
+              class="exitPoint"
+            >
+              <div>
+                <div>
+                  <div
+                    class="fuel resource"
+                  >
+                    <div
+                      class="resName"
+                    >
+                       fuel
+                    </div>
+                  </div>
+                    
+                  <div />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="engineering deck"
+      />
+      <div
+        class="terraforming deck open"
+      >
+        <div
+          class="terraforming card   "
+        >
+          <div
+            class="infoWrapper"
+          >
+            <div
+              class="resourceWrapper"
+            >
+              <div>
+                <div>
+                  <div
+                    class="fuel resource"
+                  >
+                    <div
+                      class="resName"
+                    >
+                       fuel
+                    </div>
+                  </div>
+                    
+                  <div />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <div
+                    class="fuel resource"
+                  >
+                    <div
+                      class="resName"
+                    >
+                       fuel
+                    </div>
+                  </div>
+                   / 
+                  <div />
+                </div>
+                <div>
+                  <div
+                    class="biotic-materials resource"
+                  >
+                    <div
+                      class="resName"
+                    >
+                       biotic-materials
+                    </div>
+                  </div>
+                   / 
+                  <div />
+                </div>
+                <div>
+                  <div
+                    class="minerals resource"
+                  >
+                    <div
+                      class="resName"
+                    >
+                       minerals
+                    </div>
+                  </div>
+                    
+                  <div />
+                </div>
+              </div>
+            </div>
+            <div
+              class="points"
+            >
+              2
+            </div>
+            <p
+              class="cardName"
+            >
+              Power Station
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="terraforming deck"
+      />
+      <div
+        class="military deck open"
+      >
+        <div
+          class="military card   "
+        >
+          <div
+            class="fighters"
+          >
+            Fighters
+          </div>
+        </div>
+      </div>
+      <div
+        class="military deck"
+      />
+    </div>
+  </div>
+</DocumentFragment>
 `;
