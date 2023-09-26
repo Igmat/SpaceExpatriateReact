@@ -7,16 +7,16 @@ import { ActionManager } from "./ActionManager";
 import { ResourcesModel } from "./ResourcesModel";
 
 export class GameState {
-  constructor() {
+  constructor(gameId: string) {
     makeAutoObservable(this);
   }
 
-  hand = new HandModel();
-  decks = new DeckManager();
-  table = new TableModel();
-  round = new RoundManager(this.decks, this.hand);
-  resources = new ResourcesModel(this.table, this.round);
-  action = new ActionManager(this.decks, this.table, this.round, this.hand, this.resources);
+  hand = new HandModel(gameId);
+  decks = new DeckManager(gameId);
+  table = new TableModel(gameId);
+  round = new RoundManager(this.decks, this.hand,gameId);
+  resources = new ResourcesModel(this.table, this.round, gameId);
+  action = new ActionManager(this.decks, this.table, this.round, this.hand, this.resources, gameId);
 
 }
 

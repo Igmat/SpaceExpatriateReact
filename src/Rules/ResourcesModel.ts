@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import {
   EngineeringCard,
   Resource,
@@ -8,18 +8,30 @@ import {
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
+import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 type playerResources = {
   [key in ResourcePrimitive | any]: number;
   //[key: any]: number;
 };
 
+
 export class ResourcesModel {
   constructor(
     private readonly table: TableModel,
-    private readonly round: RoundManager
+    private readonly round: RoundManager,
+    gameId: string
   ) {
     makeAutoObservable(this);
+    makeAutoSavable(this, gameId, "resorces",[
+      "garbageResources",
+      "playerResources",
+      "tempGarbageResources",
+      "charterResource",
+      "engineeringMaps",
+      "points",
+      "_energy" as any,
+    ]);
   }
 
   // будет разделение на PLayerModel & GarbageModel
@@ -135,15 +147,18 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.useCardConnection(card);
     this.gainResources(card);
   };
-  
+
   tryConsumeResources(resources: Resource[], onConsume: () => void) {
     if (resources === undefined) return onConsume();
     const variants = toArrayArray(resources);
-    const darkMatterVariants:ResourcePrimitive[][] = variants.map((variant) => [//добавление варианта с темной материей
-      ...variant,
-      "dark matter",
-    ]);
-    
+    const darkMatterVariants: ResourcePrimitive[][] = variants.map(
+      (variant) => [
+        //добавление варианта с темной материей
+        ...variant,
+        "dark matter",
+      ]
+    );
+
     const combinations = generateCombinations(darkMatterVariants);
     const validCombinations = combinations.filter(
       (
@@ -202,10 +217,10 @@ resetPlayerResources = () => {//запасной вариант востанов
   resetRoundState = () => {
     this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
     this.resetEnergy(); // обнуляем счетчик энергии
-    this.createEngineeringMaps(this.table.engineering); 
+    this.createEngineeringMaps(this.table.engineering);
     this.getResources();
   };
-  
+
   confirmRoundResourceActions = () => {
     this.dropToGarbage(); // перемещение ресурсов от игрока в garbage
     this.dropResources(); //очистка ресурсов игрока
@@ -277,6 +292,4 @@ resetPlayerResources = () => {//запасной вариант востанов
   resetEnergy = () => {
     this._energy = 0;
   };
-
- 
 }
