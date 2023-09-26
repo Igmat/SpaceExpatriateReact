@@ -13,6 +13,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
+import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export type DeliveryOption = "charter" | "garbage";
 
@@ -22,9 +23,16 @@ export class ActionManager implements IActionManager {
     private readonly round: RoundManager,
     private readonly hand: HandModel,
     private readonly resources: ResourcesModel,
-    private readonly decks: DeckManager
+    private readonly decks: DeckManager,
+    gameId: string
   ) {
     makeAutoObservable(this);
+    makeAutoSavable(this, gameId, "deliveryManager", [
+      "calculatedResources",
+      "deliveryOption",
+      "usedTerraformingCards",
+      "tempDroppedCards",
+    ]);
   }
 
   public calculatedResources: Resource[] = [];
@@ -46,7 +54,7 @@ export class ActionManager implements IActionManager {
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
     this.usedTerraformingCards = []; //очистка использованных карт Terraforming
-    this.resources.confirmRoundResourceActions();// считаем очки, перемещаем ресы в мусор, сбрасываем счетчик энергии, обнуляем ресы
+    this.resources.confirmRoundResourceActions(); // считаем очки, перемещаем ресы в мусор, сбрасываем счетчик энергии, обнуляем ресы
     return true;
   };
 
@@ -73,6 +81,7 @@ export class ActionManager implements IActionManager {
   };
 
   select = (option: string) => {
+    console.log(option)
     if (option === "charter" || option === "garbage") {
       this.deliveryOption = option;
       return;
@@ -87,6 +96,7 @@ export class ActionManager implements IActionManager {
       }
       this.resources.getResources();
       this.round.startPerformingStep();
+      console.log("we are here")
     }
   };
 
@@ -102,7 +112,6 @@ export class ActionManager implements IActionManager {
     this.resetTempDroppedCards();
     this.usedTerraformingCards = [];
     this.resources.resetRoundState();
-    
   };
 
   dropTempCards = () => {
@@ -114,9 +123,21 @@ export class ActionManager implements IActionManager {
   };
 
   activateEngineeringCard(card: EngineeringCard) {
-    if (card.connection === "start" && this.resources.engineeringMaps.Start[card.id] === 0) return;
-    if (card.connection === "continue" && this.resources.engineeringMaps.Middle[card.id] <= 0) return;
-    if (card.connection === "end" && this.resources.engineeringMaps.FinishCounter <= 0) return;
+    if (
+      card.connection === "start" &&
+      this.resources.engineeringMaps.Start[card.id] === 0
+    )
+      return;
+    if (
+      card.connection === "continue" &&
+      this.resources.engineeringMaps.Middle[card.id] <= 0
+    )
+      return;
+    if (
+      card.connection === "end" &&
+      this.resources.engineeringMaps.FinishCounter <= 0
+    )
+      return;
     this.resources.tryConsumeResources(
       card.entryPoint ? [card.entryPoint] : [],
       () => this.resources.handleCardProcessing(card)

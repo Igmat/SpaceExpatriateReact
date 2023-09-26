@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType, ResourcePrimitive } from "./card-types";
-import { ResourcesModel } from "./ResourcesModel";
+import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
@@ -12,12 +12,21 @@ export class RoundManager {
   constructor(
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
+    gameId: string,
   ) {
     makeAutoObservable(this);
+    const isLoaded = makeAutoSavable(this, gameId, "round",[
+      "current",
+      "phase",
+       {key:"_step" as any, condition: (value) => value !== "resources"},
+    
+    ]);
+    if (!isLoaded){
     this.hand.takeCard(this.decks.delivery.takeCard());
     this.hand.takeCard(this.decks.engineering.takeCard());
     this.hand.takeCard(this.decks.military.takeCard());
     this.hand.takeCard(this.decks.terraforming.takeCard());
+    }
   }
 
   current = 1;

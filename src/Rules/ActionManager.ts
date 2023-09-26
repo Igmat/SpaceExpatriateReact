@@ -9,6 +9,7 @@ import { ActionManager as EAM } from "./Engineering";
 import { ActionManager as TAM } from "./Terraforming";
 import { ActionManager as DAM } from "./Delivery";
 import { ActionManager as MAM } from "./Military";
+import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 export class ActionManager {
   constructor(
@@ -16,21 +17,37 @@ export class ActionManager {
     private readonly table: TableModel,
     private readonly round: RoundManager,
     private readonly hand: HandModel,
-    private readonly resources: ResourcesModel
+    private readonly resources: ResourcesModel,
+    private readonly gameId: string
   ) {
     makeAutoObservable(this);
+    makeAutoSavable(this, gameId, `action`, [`activeAction`]);
   }
 
   private managers = {
-    engineering: new EAM(this.round, this.table, this.decks, this.hand),
-    terraforming: new TAM(this.round, this.table, this.decks),
-    delivery: new DAM(this.table, this.round, this.hand, this.resources, this.decks),
-    military: new MAM(this.round, this.hand, this.decks)
-  }
+    engineering: new EAM(
+      this.round,
+      this.table,
+      this.decks,
+      this.hand,
+      this.gameId
+    ),
+    terraforming: new TAM(this.round, this.table, this.decks, this.gameId),
+    delivery: new DAM(
+      this.table,
+      this.round,
+      this.hand,
+      this.resources,
+      this.decks,
+      this.gameId
+    ),
+    military: new MAM(this.round, this.hand, this.decks),
+  };
 
   activeAction?: CardType;
 
   perform = (card?: CardDefinition) => {
+    console.log(this);
     if (!card) return;
 
     if (this.round.phase !== "active") return;
@@ -46,7 +63,7 @@ export class ActionManager {
     this.round.phase = card.type;
     console.log(this.round.phase);
 
-    this.managers[card.type].perform(card)
+    this.managers[card.type].perform(card);
   };
 
   tryNext = () => {
@@ -56,29 +73,29 @@ export class ActionManager {
 
   activateDeck = (type: CardType) => {
     if (!this.activeAction) return;
-     this.managers[this.activeAction].activateDeck(type)
+    this.managers[this.activeAction].activateDeck(type);
     //this.tryNext();
   };
 
   activateCard = (card: number) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateCard(card)
-    
+    this.managers[this.activeAction].activateCard(card);
+
     // this.tryNext();
   };
 
   activateCardOnTable = (card: CardDefinition) => {
     if (!this.activeAction) return;
-    return this.managers[this.activeAction].activateCardOnTable(card)
-  }
+    return this.managers[this.activeAction].activateCardOnTable(card);
+  };
 
   select = (option: string) => {
     if (!this.activeAction) return;
-     this.managers[this.activeAction].select(option)
-  }
+    this.managers[this.activeAction].select(option);
+  };
 
   reset = () => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].reset()
+    this.managers[this.activeAction].reset();
   };
 }

@@ -6,10 +6,18 @@ import {
   MilitaryCard,
   TerraformingCard,
 } from "./card-types";
+import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 export class TableModel {
-  constructor() {
+  constructor(gameId: string) {
     makeAutoObservable(this);
+    makeAutoSavable(this, gameId, "table",[
+      "delivery",
+      "engineering",
+      "terraforming",
+      "military",
+ 
+    ]);
   }
 
   delivery: DeliveryCard[] = [];
