@@ -12,11 +12,13 @@ export const DeliveryActionWindow = () => {
   const handleDeliveryOption = (option: DeliveryOption) => {
     gameState.action.select(option);
     setIsOptionSelected(true);
+    console.log(gameState.gameId);
   };
 
   const handleResource = (resource: ResourcePrimitive) => {
     setIsOptionSelected(false);
     gameState.action.select(resource);
+    console.log(gameState.gameId);
   };
 
   return (
