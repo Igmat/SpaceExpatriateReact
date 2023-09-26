@@ -14,7 +14,7 @@ export const Board = observer(() => {
     gameState.round.current >= 5 &&
       setPropmt(`Choose a mission, round ${gameState.round.current}`);
     setTimeout(() => setPropmt(" "), 2000);
-  }, [gameState.round.current]);
+  }, [gameState.round]);
 
   return (
     <div className={styles.container}>
