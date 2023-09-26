@@ -5,6 +5,7 @@ import { makeAutoObservable } from "mobx";
 import { RoundManager } from "./RoundManager";
 import { ActionManager } from "./ActionManager";
 import { ResourcesModel } from "./ResourcesModel";
+import { createContext, useContext } from "react";
 
 export class GameState {
   constructor() {
@@ -20,4 +21,6 @@ export class GameState {
 
 }
 
-export const gameState = new GameState();
+const gameStateContext = createContext(new GameState())
+export const { Provider } = gameStateContext;
+export const useGameState = () => useContext(gameStateContext);

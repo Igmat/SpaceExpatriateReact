@@ -1,6 +1,8 @@
-import { gameState } from "../../../Rules"
+import { useGameState } from "../../../Rules"
 import styles from './TerraformingModal.module.scss'
 export const TerraformingModal = () => {
+
+    const gameState = useGameState();
 
     const onDeliveryMissionClick = () => {
         gameState.action.select("delivery")
