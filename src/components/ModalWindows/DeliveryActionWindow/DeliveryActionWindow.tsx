@@ -1,24 +1,22 @@
 import { useState } from "react";
 import styles from "./DeliveryActionWindow.module.scss";
 import { ResourcePrimitive } from "../../../Rules/card-types";
-import { ActionManager } from "../../../Rules/ActionManager";
 import { DeliveryOption } from "../../../Rules/Delivery";
+import { useGameState } from "../../../Rules";
 
-interface DeliveryActionWindowProps {
-  action: ActionManager;
-}
+export const DeliveryActionWindow = () => {
+  const gameState = useGameState();
 
-export const DeliveryActionWindow = (props: DeliveryActionWindowProps) => {
   const [isOptionSelected, setIsOptionSelected] = useState(false);
 
   const handleDeliveryOption = (option: DeliveryOption) => {
-    props.action.select(option);
+    gameState.action.select(option);
     setIsOptionSelected(true);
   };
 
   const handleResource = (resource: ResourcePrimitive) => {
     setIsOptionSelected(false);
-    props.action.select(resource);
+    gameState.action.select(resource);
   };
 
   return (

@@ -69,13 +69,6 @@ export class DeckModel<T extends { id: number }> {
   get restCount () {
     return this.droppedCards.length;
   };
-
-  a = 1;
-  b = 2;
-  
-  get sum() {
-    return this.a + this.b
-  }
 }
 
 //https://mobx.js.org/README.html

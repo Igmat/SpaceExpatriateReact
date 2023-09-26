@@ -1,10 +1,12 @@
 import React from "react";
 import styles from "./Military.module.scss";
-import { gameState } from "../../../Rules";
+import { useGameState } from "../../../Rules";
 
 
 
 export const MillitaryModal = () => {
+  const gameState = useGameState();
+
   const handleOption = (option:string) => {
     gameState.action.select(option);
 }
