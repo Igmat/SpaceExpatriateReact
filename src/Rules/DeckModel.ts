@@ -45,7 +45,7 @@ export class DeckModel<T extends { id: number }> {
     while (restCards.length > 0) {
       const randomIndex = Math.floor(Math.random() * restCards.length);
       result.push(restCards[randomIndex]);
-      restCards.splice(randomIndex, 1);     
+      restCards.splice(randomIndex, 1);
     }
     this.activeCards = result;
   }
@@ -69,13 +69,6 @@ export class DeckModel<T extends { id: number }> {
   get restCount () {
     return this.droppedCards.length;
   };
-
-  a = 1;
-  b = 2;
-  
-  get sum() {
-    return this.a + this.b
-  }
 }
 
 //https://mobx.js.org/README.html

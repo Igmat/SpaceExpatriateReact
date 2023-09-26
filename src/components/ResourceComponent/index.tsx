@@ -19,7 +19,7 @@ export const ResourceComponent = (props: ResourceComponentProps) => {
           <div key={ind}>
             <div className={`${styles[el]} ${styles.resource}`}>
               <div className={styles.resName}> {el}</div>
-            </div>{" "}
+            </div>
             {ind !== normalisedType.length - 1 && "/"}{" "}
             <div />
           </div>
