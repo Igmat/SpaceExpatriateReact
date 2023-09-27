@@ -1,5 +1,6 @@
 {
   "name": "react-game-with-testing",
+  "homepage": "${PUBLIC_URL}",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -22,7 +23,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env PUBLIC_URL='/' react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@types/react-test-renderer": "^18.0.0",
+    "cross-env": "^7.0.3",
     "react-test-renderer": "^18.2.0",
     "sass": "^1.64.2"
   }

@@ -7,6 +7,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./Pages/Home";
 import { Game } from "./Pages/Game";
 
+const link = document.querySelector("base") as HTMLBaseElement;
+const basenameLink = link.getAttribute("href") as string;
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,7 +26,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+], {basename: basenameLink});
 
 
 const root = ReactDOM.createRoot(
