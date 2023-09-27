@@ -6,8 +6,8 @@ export function createCards<T extends CardDefinition>(type: T['type'], ...defini
 
     return definitions
         .reduce((acc, { quantity = 1, ...el }) =>
-            acc.push(...Array(quantity).fill(el))
-                && acc || acc, // "|| acc" need for TS
+            (acc.push(...Array(quantity).fill(el))
+                && acc) || acc, // "|| acc" need for TS
             [] as Omit<T, 'type' | 'id'>[])
         .reduce((acc, el, id) => 
             (acc[id] = {
