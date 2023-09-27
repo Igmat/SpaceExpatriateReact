@@ -1,7 +1,6 @@
 import { Player } from ".";
 import renderer from 'react-test-renderer';
 import { GameState, Provider } from "../Rules";
-import { mockedId } from '../Pages/Home/__mocks__/uuid'; 
 
 const originalRandom = Math.random;
 
@@ -11,7 +10,7 @@ afterAll(() => Math.random = originalRandom);
 
 test('renders player', () => {
 
-  const stateMock = new GameState(mockedId());
+  const stateMock = new GameState("dd20421b-4c5f-40ca-a1d9-301dd44d6fcb");
 
   const tree = renderer.create(
     <Provider value={stateMock}>

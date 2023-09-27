@@ -15,7 +15,7 @@ export class DeckModel<T extends { id: number }> {
       "openedCard",
     ]);
     if (!isLoaded) {
-      this.itialize();
+      this.initialize();
     }
   }
 
@@ -23,7 +23,7 @@ export class DeckModel<T extends { id: number }> {
   private _droppedCards: number[] = [];
   openedCard?: T;
 
-  itialize = () => {
+  initialize = () => {
     this._activeCards = Object.keys(this.cardsDefinitions);
     this.mixCards();
     this.openCard();
