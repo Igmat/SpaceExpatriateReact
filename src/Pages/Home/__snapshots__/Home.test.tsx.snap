@@ -16,5 +16,17 @@ exports[`renders Home 1`] = `
       START GAME
     </div>
   </a>
+  <a
+    className=""
+    href="/loadgame"
+    onClick={[Function]}
+  >
+     
+    <div
+      className="start"
+    >
+      LOAD GAME
+    </div>
+  </a>
 </div>
 `;
