@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./Pages/Home";
 import { Game } from "./Pages/Game";
+import { LoadGame } from "./Pages/LoadGame";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
         element: <Game />,
         children: [{ path: ":gameId", element: <Game /> }],
       },
+      {
+        path:"/loadgame",
+        element: <LoadGame />,
+      }
     ],
   },
 ]);
