@@ -1,6 +1,6 @@
-import { render } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import { Board } from '.';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
 import { Provider } from '../Rules';
 import { GameState } from '../Rules';
 
@@ -11,31 +11,16 @@ beforeEach(() => Math.random = () => 1 / 2);
 afterAll(() => Math.random = originalRandom);
 
 test('Board snapshot', () => {
-  
-  const stateMock = new GameState();
 
-  const { asFragment } = render(
+  const stateMock = new GameState("dd20421b-4c5f-40ca-a1d9-301dd44d6fcb");
+
+  const tree = renderer.create(
     <Provider value={stateMock}>
       <Router>
         <Board />
       </Router>
     </Provider>
-  );
+  ).toJSON();
 
-  expect(asFragment()).toMatchSnapshot();
+  expect(tree).toMatchSnapshot();
 });
-/*
-const gameStateMock = {
-    round: { current: 5 },
-    decks: {
-        delivery: {},
-        engineering: {},
-        terraforming: {},
-        military: {},
-    },
-    hand: stateMock.hand,
-    resources: stateMock.resources,
-    table: stateMock.table,
-    action: stateMock.action,
-};
-*/

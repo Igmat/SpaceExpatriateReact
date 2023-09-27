@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders Home 1`] = `
+<div
+  className="wrapper"
+>
+  <a
+    className=""
+    href="/game/dd20421b-4c5f-40ca-a1d9-301dd44d6fcb"
+    onClick={[Function]}
+  >
+     
+    <div
+      className="start"
+    >
+      START GAME
+    </div>
+  </a>
+</div>
+`;

@@ -42,7 +42,7 @@ export const ControlPanel = observer(() => {
     }
     //  console.log('im in close - ' + gameState.round.step)
     return modalService.hide;
-  }, [gameState.round.step, modalService, gameState.round.phase]);
+  }, [gameState.round, gameState.round.step, modalService, gameState.round.phase]);
 
   return <></>;
 });
