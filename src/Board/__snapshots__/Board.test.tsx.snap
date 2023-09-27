@@ -1,244 +1,261 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Board snapshot 1`] = `
-<DocumentFragment>
+<div
+  className="container"
+>
   <div
-    class="container"
+    className="container"
   >
-    <div
-      class="container"
+    <a
+      aria-current="page"
+      className="active"
+      href="/"
+      onClick={[Function]}
     >
-      <a
-        aria-current="page"
-        class="active"
-        href="/"
-      >
-         
-        <div
-          class="startBtn"
-        >
-          END GAME
-        </div>
-      </a>
+       
       <div
-        class="garbage"
+        className="startBtn"
       >
-        <div
-          class="biotic"
-        >
-          0
-        </div>
-        <div
-          class="fuel"
-        >
-          0
-        </div>
-        <div
-          class="machinery"
-        >
-          0
-        </div>
-        <div
-          class="minerals"
-        >
-          0
-        </div>
-        <div
-          class="nanotechnologies"
-        >
-          0
-        </div>
+        END GAME
       </div>
-    </div>
-    <p>
-        
-    </p>
+    </a>
     <div
-      class="board"
+      className="garbage"
     >
       <div
-        class="delivery deck open"
+        className="biotic"
       >
-        <div
-          class="delivery card   "
-        >
-          <div>
-            <div>
-              <div
-                class="fuel resource"
-              >
-                <div
-                  class="resName"
-                >
-                   fuel
-                </div>
-              </div>
-                
-              <div />
-            </div>
-          </div>
-          <div>
-            <div>
-              <div
-                class="fuel resource"
-              >
-                <div
-                  class="resName"
-                >
-                   fuel
-                </div>
-              </div>
-                
-              <div />
-            </div>
-          </div>
-        </div>
+        0
       </div>
       <div
-        class="delivery deck"
-      />
-      <div
-        class="engineering deck open"
+        className="fuel"
       >
-        <div
-          class="engineering card   "
-        >
-          <div
-            class="continue"
-          >
-            <div>
-              continue
-            </div>
-            <div
-              class="entryPoint"
-            />
-            <div
-              class="exitPoint"
-            >
-              <div>
-                <div>
-                  <div
-                    class="fuel resource"
-                  >
-                    <div
-                      class="resName"
-                    >
-                       fuel
-                    </div>
-                  </div>
-                    
-                  <div />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        0
       </div>
       <div
-        class="engineering deck"
-      />
-      <div
-        class="terraforming deck open"
+        className="machinery"
       >
-        <div
-          class="terraforming card   "
-        >
-          <div
-            class="infoWrapper"
-          >
-            <div
-              class="resourceWrapper"
-            >
-              <div>
-                <div>
-                  <div
-                    class="fuel resource"
-                  >
-                    <div
-                      class="resName"
-                    >
-                       fuel
-                    </div>
-                  </div>
-                    
-                  <div />
-                </div>
-              </div>
-              <div>
-                <div>
-                  <div
-                    class="fuel resource"
-                  >
-                    <div
-                      class="resName"
-                    >
-                       fuel
-                    </div>
-                  </div>
-                   / 
-                  <div />
-                </div>
-                <div>
-                  <div
-                    class="biotic-materials resource"
-                  >
-                    <div
-                      class="resName"
-                    >
-                       biotic-materials
-                    </div>
-                  </div>
-                   / 
-                  <div />
-                </div>
-                <div>
-                  <div
-                    class="minerals resource"
-                  >
-                    <div
-                      class="resName"
-                    >
-                       minerals
-                    </div>
-                  </div>
-                    
-                  <div />
-                </div>
-              </div>
-            </div>
-            <div
-              class="points"
-            >
-              2
-            </div>
-            <p
-              class="cardName"
-            >
-              Power Station
-            </p>
-          </div>
-        </div>
+        0
       </div>
       <div
-        class="terraforming deck"
-      />
-      <div
-        class="military deck open"
+        className="minerals"
       >
-        <div
-          class="military card   "
-        >
-          <div
-            class="fighters"
-          >
-            Fighters
-          </div>
-        </div>
+        0
       </div>
       <div
-        class="military deck"
-      />
+        className="nanotechnologies"
+      >
+        0
+      </div>
     </div>
   </div>
-</DocumentFragment>
+  <p>
+     
+     
+  </p>
+  <div
+    className="board"
+  >
+    <div
+      className="delivery deck open"
+      onClick={[Function]}
+    >
+      <div
+        className="delivery card   "
+      >
+        <div>
+          <div>
+            <div
+              className="fuel resource"
+            >
+              <div
+                className="resName"
+              >
+                 
+                fuel
+              </div>
+            </div>
+             
+            <div />
+          </div>
+        </div>
+        <div>
+          <div>
+            <div
+              className="fuel resource"
+            >
+              <div
+                className="resName"
+              >
+                 
+                fuel
+              </div>
+            </div>
+             
+            <div />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="delivery deck"
+      onClick={[Function]}
+    />
+    <div
+      className="engineering deck open"
+      onClick={[Function]}
+    >
+      <div
+        className="engineering card   "
+      >
+        <div
+          className="continue"
+        >
+          <div>
+            continue
+          </div>
+          <div
+            className="entryPoint"
+          />
+          <div
+            className="exitPoint"
+          >
+            <div>
+              <div>
+                <div
+                  className="fuel resource"
+                >
+                  <div
+                    className="resName"
+                  >
+                     
+                    fuel
+                  </div>
+                </div>
+                 
+                <div />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="engineering deck"
+      onClick={[Function]}
+    />
+    <div
+      className="terraforming deck open"
+      onClick={[Function]}
+    >
+      <div
+        className="terraforming card   "
+      >
+        <div
+          className="infoWrapper"
+        >
+          <div
+            className="resourceWrapper"
+          >
+            <div>
+              <div>
+                <div
+                  className="fuel resource"
+                >
+                  <div
+                    className="resName"
+                  >
+                     
+                    fuel
+                  </div>
+                </div>
+                 
+                <div />
+              </div>
+            </div>
+            <div>
+              <div>
+                <div
+                  className="fuel resource"
+                >
+                  <div
+                    className="resName"
+                  >
+                     
+                    fuel
+                  </div>
+                </div>
+                /
+                 
+                <div />
+              </div>
+              <div>
+                <div
+                  className="biotic-materials resource"
+                >
+                  <div
+                    className="resName"
+                  >
+                     
+                    biotic-materials
+                  </div>
+                </div>
+                /
+                 
+                <div />
+              </div>
+              <div>
+                <div
+                  className="minerals resource"
+                >
+                  <div
+                    className="resName"
+                  >
+                     
+                    minerals
+                  </div>
+                </div>
+                 
+                <div />
+              </div>
+            </div>
+          </div>
+          <div
+            className="points"
+          >
+            2
+          </div>
+          <p
+            className="cardName"
+          >
+            Power Station
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      className="terraforming deck"
+      onClick={[Function]}
+    />
+    <div
+      className="military deck open"
+      onClick={[Function]}
+    >
+      <div
+        className="military card   "
+      >
+        <div
+          className="fighters"
+        >
+          Fighters
+        </div>
+      </div>
+    </div>
+    <div
+      className="military deck"
+      onClick={[Function]}
+    />
+  </div>
+</div>
 `;

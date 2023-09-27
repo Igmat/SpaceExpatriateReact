@@ -1,6 +1,7 @@
 import { Player } from ".";
 import renderer from 'react-test-renderer';
 import { GameState, Provider } from "../Rules";
+import { mockedId } from '../Pages/Home/__mocks__/uuid'; 
 
 const originalRandom = Math.random;
 
@@ -10,12 +11,13 @@ afterAll(() => Math.random = originalRandom);
 
 test('renders player', () => {
 
-  const mockedGameState = new GameState()
+  const stateMock = new GameState(mockedId());
 
   const tree = renderer.create(
-    <Provider value={mockedGameState}>
+    <Provider value={stateMock}>
       <Player />
     </Provider>
   ).toJSON();
   expect(tree).toMatchSnapshot();
 });
+
