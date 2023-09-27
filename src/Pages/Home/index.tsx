@@ -7,11 +7,9 @@ export const Home = () => {
   return (
     <div className={styles.wrapper}>
       <NavLink to={`/game/${gameId}`}>
-        {" "}
         <div className={styles.start}>START GAME</div>
       </NavLink>
       <NavLink to={`/loadgame`}>
-        {" "}
         <div className={styles.start}>LOAD GAME</div>
       </NavLink>
     </div>
