@@ -8,13 +8,12 @@ import {
   TerraformingCard,
   EngineeringCard,
   isResourcePrimitive,
-  ResourcePrimitive,
 } from "../card-types";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
-import { generateCombinations, toArrayArray } from "../../Utils";
+import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export type DeliveryOption = "charter" | "garbage";
 
@@ -24,9 +23,16 @@ export class ActionManager implements IActionManager {
     private readonly round: RoundManager,
     private readonly hand: HandModel,
     private readonly resources: ResourcesModel,
-    private readonly decks: DeckManager
+    private readonly decks: DeckManager,
+    gameId: string
   ) {
     makeAutoObservable(this);
+    makeAutoSavable(this, gameId, "deliveryManager", [
+      "calculatedResources",
+      "deliveryOption",
+      "usedTerraformingCards",
+      "tempDroppedCards",
+    ]);
   }
 
   public calculatedResources: Resource[] = [];
@@ -39,7 +45,7 @@ export class ActionManager implements IActionManager {
   };
 
   perform = (card: CardDefinition) => {
-    this.round.step = "options";
+    this.round.startOptionsStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
 
@@ -47,10 +53,8 @@ export class ActionManager implements IActionManager {
     this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
-    this.resources.dropToGarbage(); // перемещение ресурсов от игрока в garbage
-    this.resources.dropResources(); //очистка ресурсов игрока
-    this.resources.energy = 0 // обнуляем счетсик енергии
     this.usedTerraformingCards = []; //очистка использованных карт Terraforming
+    this.resources.confirmRoundResourceActions(); // считаем очки, перемещаем ресы в мусор, сбрасываем счетчик энергии, обнуляем ресы
     return true;
   };
 
@@ -58,10 +62,7 @@ export class ActionManager implements IActionManager {
 
   activateCard = (card: number) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
-    this.resources.energy++; //увеличение энергии после сброса карты
-    this.resources.engineeringMaps.FinishCounter++; //увеличение FinishCounter после сброса карты
-    this.increaseMiddleEnergyByDropCards(); //увеличение всех Middle value после сброса карты после && не работает
-    console.log(this.resources.engineeringMaps.FinishCounter);
+    this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -70,9 +71,9 @@ export class ActionManager implements IActionManager {
     }
     if (card.type === "terraforming") {
       if (!this.usedTerraformingCards.includes(card)) {
-        this.useTerraformingCard(card);
-        this.tryConsumeResources(card.resources, () => {
+        this.resources.tryConsumeResources(card.resources, () => {
           this.resources.calculateRoundPoints(card);
+          this.useTerraformingCard(card);
         });
       }
     }
@@ -80,6 +81,7 @@ export class ActionManager implements IActionManager {
   };
 
   select = (option: string) => {
+    console.log(option)
     if (option === "charter" || option === "garbage") {
       this.deliveryOption = option;
       return;
@@ -93,7 +95,8 @@ export class ActionManager implements IActionManager {
         this.resources.removeResourcesFromGarbage(option);
       }
       this.resources.getResources();
-      this.round.step = "performing";
+      this.round.startPerformingStep();
+      console.log("we are here")
     }
   };
 
@@ -107,29 +110,8 @@ export class ActionManager implements IActionManager {
 
   reset = () => {
     this.resetTempDroppedCards();
-    this.resources.resetPoints();
-    this.resources.energy = 0; // обнуляем счетсик енергии
-    //this.resources.resetPlayerResources();//запасной вариант востановления ресурсов при ресете
-    this.resources.getResources();
-    console.log("!!");
-  };
-
-  increaseMiddleEnergyByDropCards = () => {
-    for (const key in this.resources.engineeringMaps.Middle) {
-      if (this.resources.engineeringMaps.Middle.hasOwnProperty(key)) {
-        this.resources.engineeringMaps.Middle[key]++;
-        console.log(
-          "MiddleMap: " + key + " " + this.resources.engineeringMaps.Middle[key]
-        );
-      }
-    }
-  };
-
-  // определить все комбинации ресурсов на столе
-  calculateResourcesCombination = () => {
-    this.table.terraforming.forEach((card) => {
-      this.calculatedResources.push(...card.resources);
-    });
+    this.usedTerraformingCards = [];
+    this.resources.resetRoundState();
   };
 
   dropTempCards = () => {
@@ -141,108 +123,24 @@ export class ActionManager implements IActionManager {
   };
 
   activateEngineeringCard(card: EngineeringCard) {
-    if (card.connection === "start") {
-      this.processStartConnection(card);
-    }
-    if (card.connection === "continue") {
-      this.processContinueConnection(card);
-    }
-    if (card.connection === "end") {
-      this.processEndConnection(card);
-    }
-  }
-
-  processStartConnection(card: EngineeringCard) {
-    if (this.resources.engineeringMaps.Start[card.id] === 0) return;
-    this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
-      this.resources.engineeringMaps.Start[card.id] = 0;
-      this.resources.energy++;
-      this.resources.calculateRoundPoints(card);
-      for (const key in this.resources.engineeringMaps.Middle) {
-        if (this.resources.engineeringMaps.Middle.hasOwnProperty(key)) {
-          this.resources.engineeringMaps.Middle[key]++;
-        }
-      }
-      this.resources.engineeringMaps.FinishCounter++;
-    });
-  }
-
-  processContinueConnection(card: EngineeringCard) {
-    if (this.resources.engineeringMaps.Middle[card.id] <= 0) return;
-    this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
-      this.resources.calculateRoundPoints(card);
-      this.resources.engineeringMaps.Middle[card.id]--;
-      this.gainResources(card);
-    });
-  }
-
-  processEndConnection(card: EngineeringCard) {
-    if (this.resources.engineeringMaps.FinishCounter <= 0) return;
-    this.tryConsumeResources(card.entryPoint ? [card.entryPoint] : [], () => {
-      this.resources.calculateRoundPoints(card);
-      this.resources.engineeringMaps.FinishCounter--;
-      this.gainResources(card);
-    });
-
-    console.log(card.entryPoint + " " + card.exitPoint);
-  }
-
-  tryConsumeResources(resources: Resource[], onConsume: () => void) {
-    if (resources === undefined) return onConsume();
-    const combinations = generateCombinations(toArrayArray(resources));
-    const validCombinations = combinations.filter((combination) => //проверка все ли кобинации ресурсов с карт валидны и покажу только валидные
-      this.canConsumeResources(combination)
-    );
-    if (validCombinations.length === 0) return;
-    if (validCombinations.length === 1) {
-      this.consumeResources(validCombinations[0]);
-      return onConsume();
-    }
-    this.round.step = "resources";
-    this.round.params = validCombinations;
-    this.round.onSelect = (selected) => {
-      this.consumeResources(selected);
-      onConsume();
-    };
-  }
-
-  consumeResources(resources: ResourcePrimitive[]) { //потребление ресурсов
-    resources.forEach((resource) => {
-      this.resources.playerResources[resource]--;
-    });
-  }
-
-  canConsumeResources(resources: ResourcePrimitive[]) { //проверка на наличие ресурсов для потребления для одной комбинации
-    resources.forEach((resource) => {
-      this.resources.playerResources[resource]--;
-    });
-
-    const hasNegativeValues = Object.values(
-      this.resources.playerResources
-    ).some((value) => value < 0);
-
-    resources.forEach((resource) => {
-      this.resources.playerResources[resource]++;
-    });
-
-    return !hasNegativeValues;
-  }
-
-  gainResources(card: EngineeringCard) { //получение ресурсов
-    if (card.exitPoint === undefined) return;
-    const combinations = generateCombinations(toArrayArray(card.exitPoint));
-    if (combinations.length === 1) {
-      combinations[0].forEach((resource) => {
-        this.resources.gainResource(resource);
-      });
+    if (
+      card.connection === "start" &&
+      this.resources.engineeringMaps.Start[card.id] === 0
+    )
       return;
-    }
-    this.round.step = "resources";
-    this.round.params = combinations;
-    this.round.onSelect = (selected) => {
-      selected.forEach((resource) => {
-        this.resources.gainResource(resource);
-      });
-    };
+    if (
+      card.connection === "continue" &&
+      this.resources.engineeringMaps.Middle[card.id] <= 0
+    )
+      return;
+    if (
+      card.connection === "end" &&
+      this.resources.engineeringMaps.FinishCounter <= 0
+    )
+      return;
+    this.resources.tryConsumeResources(
+      card.entryPoint ? [card.entryPoint] : [],
+      () => this.resources.handleCardProcessing(card)
+    );
   }
 }

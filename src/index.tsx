@@ -19,10 +19,12 @@ const router = createBrowserRouter([
       {
         path: "/game",
         element: <Game />,
+        children: [{ path: ":gameId", element: <Game /> }],
       },
     ],
   },
 ]);
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

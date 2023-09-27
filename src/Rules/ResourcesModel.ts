@@ -1,19 +1,40 @@
-import { makeAutoObservable } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 import {
   EngineeringCard,
+  Resource,
   ResourcePrimitive,
   TerraformingCard,
 } from "./card-types";
 import { TableModel } from "./TableModel";
+import { RoundManager } from "./RoundManager";
+import { generateCombinations, toArrayArray } from "../Utils";
+import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 type playerResources = {
   [key in ResourcePrimitive | any]: number;
   //[key: any]: number;
 };
 
-export class ResourcesModel {
-  // будет разделение на PLayerModel & GarbageModel
 
+export class ResourcesModel {
+  constructor(
+    private readonly table: TableModel,
+    private readonly round: RoundManager,
+    gameId: string
+  ) {
+    makeAutoObservable(this);
+    makeAutoSavable(this, gameId, "resorces",[
+      "garbageResources",
+      "playerResources",
+      "tempGarbageResources",
+      "charterResource",
+      "engineeringMaps",
+      "points",
+      "_energy" as any,
+    ]);
+  }
+
+  // будет разделение на PLayerModel & GarbageModel
   public playerResources: playerResources = {
     fuel: 0,
     minerals: 0,
@@ -59,10 +80,6 @@ export class ResourcesModel {
     FinishCounter: 0,
   };
 
-  constructor(private readonly table: TableModel) {
-    makeAutoObservable(this);
-  }
-
   getResources = () => {
     this.dropResources();
     this.table.delivery.forEach((card) =>
@@ -89,6 +106,7 @@ export class ResourcesModel {
     }
     this.saveGarbage(); //сохранение состояния гаража в момент перехода на следующий раунд
   };
+
   dropResources = () => {
     for (let key in this.playerResources) {
       this.playerResources[key] = 0;
@@ -105,34 +123,112 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.playerResources[key] = this.tempPlayerResources[key];
   }
 }*/
-  payForCard = (resources: ResourcePrimitive[]) => {
+  consumeResources = (resources: ResourcePrimitive[]) => {
+    //потребление ресурсов
     resources.forEach((resource) => {
       this.playerResources[resource]--;
     });
   };
+
+  canConsumeResources(resources: ResourcePrimitive[]) {
+    // перевіряємо чи є в гравця кошти для виконання карти (списали /не зайшли в мінус?/повернули)
+    this.consumeResources(resources);
+    const hasNegativeValues = Object.values(this.playerResources).some(
+      (value) => value < 0
+    );
+    resources.forEach((resource) => {
+      this.gainResource(resource);
+    });
+    return !hasNegativeValues;
+  }
+
+  handleCardProcessing = (card: EngineeringCard) => {
+    this.calculateRoundPoints(card);
+    this.useCardConnection(card);
+    this.gainResources(card);
+  };
+
+  tryConsumeResources(resources: Resource[], onConsume: () => void) {
+    if (resources === undefined) return onConsume();
+    const variants = toArrayArray(resources);
+    const darkMatterVariants: ResourcePrimitive[][] = variants.map(
+      (variant) => [
+        //добавление варианта с темной материей
+        ...variant,
+        "dark matter",
+      ]
+    );
+
+    const combinations = generateCombinations(darkMatterVariants);
+    const validCombinations = combinations.filter(
+      (
+        combination //проверка все ли кобинации ресурсов с карт валидны и покажу только валидные
+      ) => this.canConsumeResources(combination)
+    );
+    if (validCombinations.length === 0) return;
+    if (validCombinations.length === 1) {
+      this.consumeResources(validCombinations[0]);
+      return onConsume();
+    }
+    this.round.startResourceStep(validCombinations, (selected) => {
+      this.consumeResources(selected);
+      onConsume();
+    });
+  }
+
+  gainResources(card: EngineeringCard) {
+    //получение ресурсов
+    if (card.exitPoint === undefined) return;
+    const combinations = generateCombinations(toArrayArray(card.exitPoint));
+    if (combinations.length === 1) {
+      combinations[0].forEach((resource) => {
+        this.gainResource(resource);
+      });
+      return;
+    }
+    this.round.startResourceStep(combinations, (selected) => {
+      selected.forEach((resource) => {
+        this.gainResource(resource);
+      });
+    });
+  }
+
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
   };
+
   removeResourcesFromGarbage = (resource: ResourcePrimitive) => {
     this.garbageResources[resource] = 0;
   };
 
   calculateTotalPoints = () => {
     this.points.total += this.points.round;
+    this.resetRoundPoints();
   };
 
   calculateRoundPoints = (card: EngineeringCard | TerraformingCard) => {
     this.points.round += card.points || 0;
   };
 
-  resetPoints = () => {
-    this.points.total = 0;
-  };
   resetRoundPoints = () => {
     this.points.round = 0;
   };
-  
-  //createEngineeringMap = (cards: any[]) => {//test is in DeliveryActionWindow
+
+  resetRoundState = () => {
+    this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
+    this.resetEnergy(); // обнуляем счетчик энергии
+    this.createEngineeringMaps(this.table.engineering);
+    this.getResources();
+  };
+
+  confirmRoundResourceActions = () => {
+    this.dropToGarbage(); // перемещение ресурсов от игрока в garbage
+    this.dropResources(); //очистка ресурсов игрока
+    this.resetEnergy(); // обнуляем счетчик енергии
+    this.calculateTotalPoints(); //подсчет общих очков
+    this.charterResource = undefined; //обнуление чартера
+  };
+
   createEngineeringMaps = (cards: EngineeringCard[]) => {
     if (cards.length === 0) return;
     const startArr: EngineeringCard[] = [];
@@ -155,7 +251,45 @@ resetPlayerResources = () => {//запасной вариант востанов
     console.log(this.engineeringMaps);
   };
 
+  useCardConnection = (card: EngineeringCard) => {
+    if (card.connection === "start") {
+      this.engineeringMaps.Start[card.id] = 0;
+      this.increaseEnergyAndMapValues();
+    }
+    if (card.connection === "continue") {
+      this.engineeringMaps.Middle[card.id]--;
+    }
+    if (card.connection === "end") {
+      this.changeFinishCounter(-1);
+    }
+  };
+
+  increaseEnergyAndMapValues = () => {
+    this._energy++;
+    this.increaseAllMiddleValues();
+    this.changeFinishCounter(1);
+  };
+
+  private increaseAllMiddleValues() {
+    for (const key in this.engineeringMaps.Middle) {
+      if (this.engineeringMaps.Middle.hasOwnProperty(key)) {
+        this.engineeringMaps.Middle[key]++;
+      }
+    }
+  }
+
+  private changeFinishCounter(increment: number) {
+    this.engineeringMaps.FinishCounter += increment;
+  }
+
   /****Energy*************************************************************************** */
 
-  public energy = 0;
+  private _energy = 0;
+
+  get energy() {
+    return this._energy;
+  }
+  resetEnergy = () => {
+    this._energy = 0;
+  };
 }

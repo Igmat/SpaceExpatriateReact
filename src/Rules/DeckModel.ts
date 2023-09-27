@@ -1,22 +1,29 @@
+import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
 
 export class DeckModel<T extends { id: number }> {
   constructor(
     public readonly type: CardType,
-    cardsDefinitions: { [key: number]: T }
+    private readonly cardsDefinitions: { [key: number]: T },
+    gameId: string,
   ) {
-    this.cardsDefinitions = cardsDefinitions;
-    this.activeCards = Object.keys(this.cardsDefinitions);
+    makeAutoObservable(this);
+    const isLoaded = makeAutoSavable(this, gameId, `deckmodel_${type}`,[
+      "_activeCards" as any,
+      "_droppedCards" as any,
+      "openedCard",
+    ]);
+    if (!isLoaded) {
+    this._activeCards = Object.keys(this.cardsDefinitions);
     this.mixCards();
     this.openCard();
-    makeAutoObservable(this);
+    }
+
   }
 
-  private activeCards: number[];
-  private cardsDefinitions: { [key: number]: T };
-  private droppedCards: number[] = [];
-
+  private _activeCards: number[] = [];
+  private _droppedCards: number[] = [];
   openedCard?: T;
 
   openCard = () => {
@@ -40,21 +47,21 @@ export class DeckModel<T extends { id: number }> {
 
   private mixCards() {
     const result: number[] = [];
-    const restCards = [...this.activeCards];
+    const restCards = [...this._activeCards];
 
     while (restCards.length > 0) {
       const randomIndex = Math.floor(Math.random() * restCards.length);
       result.push(restCards[randomIndex]);
       restCards.splice(randomIndex, 1);
     }
-    this.activeCards = result;
+    this._activeCards = result;
   }
 
   takeCard = (): T => {
-    const idOfCard = this.activeCards.pop()!;
-    if (this.activeCards.length === 0) {
-      this.activeCards = this.droppedCards;
-      this.droppedCards = [];
+    const idOfCard = this._activeCards.pop()!;
+    if (this._activeCards.length === 0) {
+      this._activeCards = this._droppedCards;
+      this._droppedCards = [];
       this.mixCards();
     }
     return this.cardsDefinitions[idOfCard];
@@ -62,20 +69,13 @@ export class DeckModel<T extends { id: number }> {
   };
 
   dropCards = (...cards: number[]) => {
-    this.droppedCards.push(...cards);
+    this._droppedCards.push(...cards);
   //  console.log('Im in  dropCards')
   };
 
   get restCount () {
-    return this.droppedCards.length;
+    return this._droppedCards.length;
   };
-
-  a = 1;
-  b = 2;
-  
-  get sum() {
-    return this.a + this.b
-  }
 }
 
 //https://mobx.js.org/README.html

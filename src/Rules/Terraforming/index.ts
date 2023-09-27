@@ -4,6 +4,7 @@ import { CardDefinition, CardType, isCardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
+import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class ActionManager implements IActionManager {
 
@@ -15,12 +16,17 @@ export class ActionManager implements IActionManager {
         private readonly round: RoundManager,
         private readonly table: TableModel,
         private readonly decks: DeckManager,
+        gameId: string
     ) {
         makeAutoObservable(this);
+        makeAutoSavable(this, gameId, "terraformingManager",[
+            "cardsToDrop",
+            "missionType"
+          ]);
     }
 
     perform = (card: CardDefinition) => {
-        this.round.step = "options";
+        this.round.startOptionsStep();
     };
     tryNext = () => {
         return true
@@ -41,7 +47,7 @@ export class ActionManager implements IActionManager {
 
     select = (option: string) => {
         if (isCardType(option)) {
-            this.round.step = "performing";
+            this.round.startPerformingStep();
             this.missionType = option;
         }
     }
