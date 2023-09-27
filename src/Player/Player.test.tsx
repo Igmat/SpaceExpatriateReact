@@ -10,12 +10,13 @@ afterAll(() => Math.random = originalRandom);
 
 test('renders player', () => {
 
-  const mockedGameState = new GameState()
+  const stateMock = new GameState("dd20421b-4c5f-40ca-a1d9-301dd44d6fcb");
 
   const tree = renderer.create(
-    <Provider value={mockedGameState}>
+    <Provider value={stateMock}>
       <Player />
     </Provider>
   ).toJSON();
   expect(tree).toMatchSnapshot();
 });
+

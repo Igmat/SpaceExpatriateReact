@@ -15,16 +15,19 @@ export class DeckModel<T extends { id: number }> {
       "openedCard",
     ]);
     if (!isLoaded) {
-    this._activeCards = Object.keys(this.cardsDefinitions);
-    this.mixCards();
-    this.openCard();
+      this.initialize();
     }
-
   }
 
   private _activeCards: number[] = [];
   private _droppedCards: number[] = [];
   openedCard?: T;
+
+  initialize = () => {
+    this._activeCards = Object.keys(this.cardsDefinitions);
+    this.mixCards();
+    this.openCard();
+  }
 
   openCard = () => {
     this.openedCard !== undefined && this.dropCards(this.openedCard.id);

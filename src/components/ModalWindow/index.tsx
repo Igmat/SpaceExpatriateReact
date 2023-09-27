@@ -94,7 +94,7 @@ export function useModalWrapper(content: React.ReactNode) {
     [modalService]
   );
 
-  const memorisedContent = useMemo(() => content, []);
+  const memorisedContent = useMemo(() => content, [content]);
   return (
     <>
       <Provider>

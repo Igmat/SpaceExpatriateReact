@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 import styles from "./PlayerMenu.module.scss";
-import energy from "../../img/energy.svg";
 
 interface PlayerMenuProps {
   resources: ResourcesModel;
