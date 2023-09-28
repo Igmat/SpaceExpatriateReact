@@ -7,8 +7,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./Pages/Home";
 import { Game } from "./Pages/Game";
 
-const link = document.querySelector("base") as HTMLBaseElement;
-const basenameLink = link.getAttribute("href") as string;
+const link = document.querySelector("base")?.getAttribute("href") || "/";
+
+const baseURL = new URL(link, "https://igmat.github.io")
 
 const router = createBrowserRouter([
   {
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-], {basename: basenameLink});
+], {basename: baseURL.pathname});
 
 
 const root = ReactDOM.createRoot(
