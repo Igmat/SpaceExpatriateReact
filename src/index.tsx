@@ -8,8 +8,9 @@ import { Home } from "./Pages/Home";
 import { Game } from "./Pages/Game";
 import { LoadGame } from "./Pages/LoadGame";
 
-const link = document.querySelector("base") as HTMLBaseElement;
-const basenameLink = link.getAttribute("href") as string;
+const link = document.querySelector("base")?.getAttribute("href") || "/";
+
+const baseURL = new URL(link, "https://igmat.github.io")
 
 const router = createBrowserRouter([
   {
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
       }
     ],
   },
-], {basename: basenameLink});
+], {basename: baseURL.pathname});
 
 
 const root = ReactDOM.createRoot(
