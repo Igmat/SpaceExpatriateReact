@@ -9,11 +9,21 @@ exports[`renders Home 1`] = `
     href="/game/dd20421b-4c5f-40ca-a1d9-301dd44d6fcb"
     onClick={[Function]}
   >
-     
     <div
       className="start"
     >
       START GAME
+    </div>
+  </a>
+  <a
+    className=""
+    href="/loadgame"
+    onClick={[Function]}
+  >
+    <div
+      className="start"
+    >
+      LOAD GAME
     </div>
   </a>
 </div>

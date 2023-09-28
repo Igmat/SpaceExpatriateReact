@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./Pages/Home";
 import { Game } from "./Pages/Game";
+import { LoadGame } from "./Pages/LoadGame";
 
 const link = document.querySelector("base") as HTMLBaseElement;
 const basenameLink = link.getAttribute("href") as string;
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         element: <Game />,
         children: [{ path: ":gameId", element: <Game /> }],
       },
+      {
+        path:"/loadgame",
+        element: <LoadGame />,
+      }
     ],
   },
 ], {basename: basenameLink});
