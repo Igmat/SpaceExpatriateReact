@@ -7,7 +7,6 @@ import { ResourcesDeck } from "./ResourcesDeck";
 
 export const Board = observer(() => {
   const gameState = useGameState();
-  
   const [propmt, setPropmt] = useState("");
 
   useEffect(() => {

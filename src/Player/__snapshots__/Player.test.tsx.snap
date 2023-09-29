@@ -162,31 +162,49 @@ Array [
         className="biotic"
       >
         0
+        <div
+          className="notification"
+        />
       </div>
       <div
         className="fuel"
       >
         0
+        <div
+          className="notification"
+        />
       </div>
       <div
         className="machinery"
       >
         0
+        <div
+          className="notification"
+        />
       </div>
       <div
         className="minerals"
       >
         0
+        <div
+          className="notification"
+        />
       </div>
       <div
         className="nanotechnologies"
       >
         0
+        <div
+          className="notification"
+        />
       </div>
       <div
         className="dark"
       >
         0
+        <div
+          className="notification"
+        />
       </div>
       <div
         className="energy"
