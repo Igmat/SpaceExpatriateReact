@@ -44,3 +44,11 @@ export interface MilitaryCard {
     name: string,
    // points: number
 }
+
+export interface ColonyCard {
+    id: number,
+    type: 'colony',
+    whenIsActivated: 'before' | 'after' | 'during',
+    mutateAction: CardType,
+    name: string,
+}
