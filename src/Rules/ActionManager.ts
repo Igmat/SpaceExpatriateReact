@@ -100,7 +100,7 @@ export class ActionManager {
     this.managers[this.activeAction].reset();
   };
   
-  @computed
+  // @computed
   get isDisabled(): (card: CardDefinition) => boolean {
     return (card: CardDefinition) => {
       if (!this.activeAction) return false;
