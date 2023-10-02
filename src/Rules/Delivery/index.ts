@@ -8,6 +8,7 @@ import {
   TerraformingCard,
   EngineeringCard,
   isResourcePrimitive,
+  ResourcePrimitive,
 } from "../card-types";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
@@ -91,7 +92,7 @@ export class ActionManager implements IActionManager {
         this.resources.addResource(option);
       }
       if (this.deliveryOption === "garbage") {
-        this.resources.removeResourcesFromGarbage(option);
+        this.resources.removeResourcesFromGarbage(option as Exclude<ResourcePrimitive, "dark matter">);
       }
       this.resources.getResources();
       this.round.startPerformingStep();
