@@ -58,4 +58,7 @@ export class ActionManager implements IActionManager {
     reset = () => {
         
     }
+    isDisabled = (card: CardDefinition):boolean => {
+    return false
+    }
 }

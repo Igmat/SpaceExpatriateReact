@@ -68,9 +68,12 @@
     font-size: 10px;
   }
 }
-.deliveryPerforming {
-  animation: radial-anakausug 1s infinite;
-}
+  .disabled {
+    filter: grayscale(50%) brightness(
+      50%
+    );
+    cursor: not-allowed;
+  }
 @keyframes radial-anakausug {
   0% {
     box-shadow: 0 0 0 0px rgba(244, 234, 99, 0.3);

@@ -9,6 +9,7 @@ import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 
+
 interface TableProps {
   model: TableModel;
   round: RoundManager;
@@ -23,6 +24,10 @@ export const Table = observer((props: TableProps) => {
     props.action.activateCardOnTable(card) &&
       setSelectedCards([...selectedCards, card]);
   };
+  // const [version, setVersion] = useState(0);
+  // useEffect(() => {
+  //   setVersion((prev) => prev + 1);
+  // },[props.action.deliveryManager.usedTerraformingCards] )
 
   return (
     <div className={styles.container}>
@@ -33,6 +38,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled(card)}
           />
         ))}
       </div>
@@ -42,11 +48,8 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             isSelected={selectedCards.includes(card)}
-            isAvailable={
-              props.round.phase === "delivery" &&
-              props.round.step === "performing"
-            }
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled(card)}
           />
         ))}
       </div>
@@ -56,11 +59,9 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             isSelected={selectedCards.includes(card)}
-            isAvailable={
-              props.round.phase === "delivery" &&
-              props.round.step === "performing"
-            }
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled(card)}
+          
           />
         ))}
       </div>
@@ -71,6 +72,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled(card)}
           />
         ))}
       </div>
@@ -108,7 +110,7 @@ export const Table = observer((props: TableProps) => {
         </button>
       )}
 
-      {props.round.step === "performing" &&  (
+      {props.round.step === "performing" && (
         <button
           className={styles.giveUpButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив

@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { computed, makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { CardDefinition, CardType } from "./card-types";
 import { TableModel } from "./TableModel";
@@ -45,9 +45,11 @@ export class ActionManager {
   };
 
   activeAction?: CardType;
+  get deliveryManager(): DAM {
+    return this.managers.delivery;
+  }
 
   perform = (card?: CardDefinition) => {
-    console.log(this);
     if (!card) return;
 
     if (this.round.phase !== "active") return;
@@ -62,7 +64,6 @@ export class ActionManager {
 
     this.round.phase = card.type;
     console.log(this.round.phase);
-
     this.managers[card.type].perform(card);
   };
 
@@ -98,4 +99,13 @@ export class ActionManager {
     if (!this.activeAction) return;
     this.managers[this.activeAction].reset();
   };
+  
+  @computed
+  get isDisabled(): (card: CardDefinition) => boolean {
+    return (card: CardDefinition) => {
+      if (!this.activeAction) return false;
+      return this.managers[this.activeAction].isDisabled(card);
+    };
+  }
+
 }

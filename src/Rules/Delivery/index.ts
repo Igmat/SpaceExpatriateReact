@@ -81,7 +81,6 @@ export class ActionManager implements IActionManager {
   };
 
   select = (option: string) => {
-    console.log(option)
     if (option === "charter" || option === "garbage") {
       this.deliveryOption = option;
       return;
@@ -96,7 +95,6 @@ export class ActionManager implements IActionManager {
       }
       this.resources.getResources();
       this.round.startPerformingStep();
-      console.log("we are here")
     }
   };
 
@@ -143,4 +141,19 @@ export class ActionManager implements IActionManager {
       () => this.resources.handleCardProcessing(card)
     );
   }
+
+  isDisabled = (card: CardDefinition): boolean => {
+    if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
+      return true;
+    }
+    if (
+      this.round.phase === "delivery" &&
+      card.type === "engineering" &&
+      card.connection === "start" &&
+      this.resources.engineeringMaps.Start[card.id] === 0
+    )
+      return true;
+
+    return false;
+  };
 }
