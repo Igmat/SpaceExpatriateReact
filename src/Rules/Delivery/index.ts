@@ -146,34 +146,33 @@ export class ActionManager implements IActionManager {
   }
 
   isDisabledTable = (card: CardDefinition): boolean => {
-    if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
-      return true;
-    }
-    if (this.round.phase === "delivery" && card.type === "engineering") {
-      if (
-        (card.connection === "start" &&
-          this.resources.engineeringMaps.Start[card.id] === 0) ||
-        (card.connection === "continue" &&
-          this.resources.engineeringMaps.Middle[card.id] <= 0) ||
-        (card.connection === "end" &&
-          this.resources.engineeringMaps.FinishCounter <= 0)
-      )
+    if (this.round.phase === "delivery") {
+      if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
         return true;
+      }
+      if (card.type === "engineering") {
+        if (
+          (card.connection === "start" &&
+            this.resources.engineeringMaps.Start[card.id] === 0) ||
+          (card.connection === "continue" &&
+            this.resources.engineeringMaps.Middle[card.id] <= 0) ||
+          (card.connection === "end" &&
+            this.resources.engineeringMaps.FinishCounter <= 0)
+        )
+          return true;
+      }
+      if (card.type === "military") return true;
+      if (card.type === "delivery") return true;
     }
-    if (this.round.phase === "delivery" && card.type === "military")
-      return true;
-    if (this.round.phase === "delivery" && card.type === "delivery")
-      return true;
-
     return false;
   };
-  
+
   isDisabledHand = (card: CardDefinition): boolean => {
     return false;
-  }
+  };
 
   isDisabledDeck = (type: CardType): boolean => {
     if (this.round.phase === "delivery") return true;
     return false;
-  }
+  };
 }
