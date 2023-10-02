@@ -114,4 +114,11 @@ export class ActionManager {
       return this.managers[this.activeAction].isDisabledHand(card);
     }
   }
+
+  get isDisabledDeck(): (type: CardType) => boolean {
+    return (type: CardType) => {
+      if (!this.activeAction) return false;
+      return this.managers[this.activeAction].isDisabledDeck(type);
+    }
+  }
 }

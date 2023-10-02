@@ -171,4 +171,9 @@ export class ActionManager implements IActionManager {
   isDisabledHand = (card: CardDefinition): boolean => {
     return false;
   }
+
+  isDisabledDeck = (type: CardType): boolean => {
+    if (this.round.phase === "delivery") return true;
+    return false;
+  }
 }

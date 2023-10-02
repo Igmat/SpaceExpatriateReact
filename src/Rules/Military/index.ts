@@ -66,4 +66,8 @@ export class ActionManager implements IActionManager {
     if (this.round.phase === "military") return true;
     return false;
   }
+
+  isDisabledDeck = (type: CardType): boolean => {
+    return false;
+  }
 }

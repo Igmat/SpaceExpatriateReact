@@ -76,6 +76,7 @@ export class ActionManager implements IActionManager {
   };
 
   isDisabledTable = (card: CardDefinition): boolean => {
+    //тут надо доделать логику
     return false;
   };
   
@@ -83,4 +84,8 @@ export class ActionManager implements IActionManager {
     if (this.round.phase === "terraforming") return true;
     return false;
   };
+
+  isDisabledDeck = (type: CardType): boolean => {
+    return false;
+  }
 }
