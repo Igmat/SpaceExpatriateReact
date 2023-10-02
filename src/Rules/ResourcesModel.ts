@@ -10,7 +10,7 @@ import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
-type playerResources = {
+export type PlayerResources = {
   [key in ResourcePrimitive]: number;
 };
 
@@ -34,7 +34,7 @@ export class ResourcesModel {
   }
 
   // будет разделение на PLayerModel & GarbageModel
-  public playerResources: playerResources = {
+  public playerResources: PlayerResources = {
     "biotic materials": 0,
     fuel: 0,
     machinery: 0,
@@ -45,14 +45,13 @@ export class ResourcesModel {
 
   public charterResource?: ResourcePrimitive;
 
-  public garbageResources: Omit<playerResources, "dark matter"> = {
+  public garbageResources: Omit<PlayerResources, "dark matter"> = {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
     machinery: 0,
     nanotechnologies: 0,
   };
-
 
   /**********Points************************************************************************** */
   public points = {
@@ -86,7 +85,6 @@ export class ResourcesModel {
   };
 
   dropToGarbage = () => {
-
     Object.keys(this.garbageResources)
     .forEach(key=>this.garbageResources[key] = this.playerResources[key])
   };
