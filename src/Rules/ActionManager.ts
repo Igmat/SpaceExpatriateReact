@@ -47,7 +47,6 @@ export class ActionManager {
   activeAction?: CardType;
 
   perform = (card?: CardDefinition) => {
-    console.log(this);
     if (!card) return;
 
     if (this.round.phase !== "active") return;

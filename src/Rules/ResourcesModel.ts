@@ -10,9 +10,8 @@ import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
-type playerResources = {
-  [key in ResourcePrimitive | any]: number;
-  //[key: any]: number;
+export type PlayerResources = {
+  [key in ResourcePrimitive]: number;
 };
 
 
@@ -35,18 +34,18 @@ export class ResourcesModel {
   }
 
   // будет разделение на PLayerModel & GarbageModel
-  public playerResources: playerResources = {
-    fuel: 0,
-    minerals: 0,
+  public playerResources: PlayerResources = {
     "biotic materials": 0,
+    fuel: 0,
     machinery: 0,
+    minerals: 0,
     nanotechnologies: 0,
     "dark matter": 0,
   };
 
   public charterResource?: ResourcePrimitive;
 
-  public garbageResources: playerResources = {
+  public garbageResources: Omit<PlayerResources, "dark matter"> = {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
@@ -54,20 +53,6 @@ export class ResourcesModel {
     nanotechnologies: 0,
   };
 
-  public tempGarbageResources: playerResources = {};
-  // public tempPlayerResources: playerResources = {};
-  /*
-  resetGarbage = () => { //скорее всего не будет использоваться, было для ресета, пока оставлю
-   
-    for (let key in this.tempGarbageResources) {
-      this.garbageResources[key] = this.tempGarbageResources[key];
-    }
-  };*/
-  saveGarbage = () => {
-    for (let key in this.garbageResources) {
-      this.tempGarbageResources[key] = this.garbageResources[key];
-    }
-  };
   /**********Points************************************************************************** */
   public points = {
     round: 0,
@@ -85,13 +70,12 @@ export class ResourcesModel {
     this.table.delivery.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
-    for (let key in this.playerResources) {
-      if (this.garbageResources.hasOwnProperty(key)) {
-        this.playerResources[key] -= this.garbageResources[key];
-      }
-
-      if (this.playerResources[key] < 0) this.playerResources[key] = 0;
-    }
+    Object.keys(this.garbageResources)
+      .forEach(key => {
+        this.playerResources[key] -= this.garbageResources[key]
+        if (this.playerResources[key] < 0) this.playerResources[key] = 0;
+      })
+    
     this.charterResource && this.playerResources[this.charterResource]++;
     // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
   };
@@ -101,16 +85,13 @@ export class ResourcesModel {
   };
 
   dropToGarbage = () => {
-    for (let key in this.garbageResources) {
-      this.garbageResources[key] = this.playerResources[key];
-    }
-    this.saveGarbage(); //сохранение состояния гаража в момент перехода на следующий раунд
+    Object.keys(this.garbageResources)
+    .forEach(key=>this.garbageResources[key] = this.playerResources[key])
   };
 
   dropResources = () => {
-    for (let key in this.playerResources) {
-      this.playerResources[key] = 0;
-    }
+    Object.keys(this.playerResources)
+    .forEach(key=>this.playerResources[key] = 0)
   };
   /*
   savePlayerResources = () => {//запасной вариант востановления ресурсов при ресете
@@ -197,7 +178,7 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.playerResources[resource]++;
   };
 
-  removeResourcesFromGarbage = (resource: ResourcePrimitive) => {
+  removeResourcesFromGarbage = (resource: Exclude<ResourcePrimitive, "dark matter">) => {
     this.garbageResources[resource] = 0;
   };
 
@@ -246,9 +227,6 @@ resetPlayerResources = () => {//запасной вариант востанов
       (acc, card) => (acc[card.id] = 0) || acc,
       {} as { [key: number]: number }
     );
-
-    console.log(this.engineeringMaps.Start);
-    console.log(this.engineeringMaps);
   };
 
   useCardConnection = (card: EngineeringCard) => {
