@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from './Notification.module.scss';
 
 interface NotificationProps {
-    diff: number | undefined;
+    diff?: number;
 }
 
 export const Notification = (props: NotificationProps) => {
