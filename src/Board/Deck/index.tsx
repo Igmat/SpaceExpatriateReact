@@ -7,7 +7,7 @@ import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import styles from './Deck.module.scss'
+import styles from "./Deck.module.scss";
 
 interface DeckProps {
   model: DeckModel<CardDefinition>;
@@ -19,12 +19,21 @@ interface DeckProps {
 }
 
 export const Deck = observer((props: DeckProps) => {
-
   const onOpenCardClick = () => {
-   // console.log(props.model.type )
-   // console.log(props.round.phase)
+    // console.log(props.model.type )
+    // console.log(props.round.phase)
     props.action.perform(props.model.openedCard);
-  
+  };
+
+  const isDisabled = () => {
+    if (
+      props.round.phase === "delivery" ||
+      props.round.phase === "engineering" ||
+      props.round.phase === "terraforming"||
+      props.round.phase === "military"
+    ) {
+      return true;
+    }
   };
 
   return (
@@ -34,7 +43,11 @@ export const Deck = observer((props: DeckProps) => {
         onClick={onOpenCardClick}
       >
         {props.model.openedCard && (
-          <Card key={props.model.openedCard.id} {...props.model.openedCard} />
+          <Card
+            key={props.model.openedCard.id}
+            {...props.model.openedCard}
+            isDisabled={isDisabled()}
+          />
         )}
       </div>
       <div
@@ -44,4 +57,3 @@ export const Deck = observer((props: DeckProps) => {
     </>
   );
 });
-

@@ -1,4 +1,4 @@
-import { computed, makeAutoObservable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { CardDefinition, CardType } from "./card-types";
 import { TableModel } from "./TableModel";
