@@ -1,38 +1,32 @@
 import { useEffect, useState } from "react";
 import styles from './Notification.module.scss';
-import { ResourcePrimitive } from "../../../Rules/card-types";
-
-type playerResources = {
-    [key in ResourcePrimitive]: number;
-};
 
 interface NotificationProps {
-    diff: Partial<playerResources>;
-    resource: string;
+    diff: number | undefined;
 }
 
 export const Notification = (props: NotificationProps) => {
-    const [notification, setNotifications] = useState({} as Partial<playerResources>);
-
+    const [notification, setNotification] = useState<number | undefined>(undefined);
 
     useEffect(() => {
-        if (props.diff.hasOwnProperty(props.resource as ResourcePrimitive)) {
-            setNotifications(props.diff);
+        if (props.diff) {
+            setNotification(props.diff)
 
-            setTimeout(() => {
-                setNotifications({});
+            const timeout = setTimeout(() => {
+                setNotification(undefined)
             }, 3000);
-        }
-    }, [props.diff, props.resource]);
 
-    const notify = notification[props.resource as ResourcePrimitive]
+            return () => clearTimeout(timeout);
+        }
+    }, [props.diff]);
 
     return (
         <div className={styles.notification}>
-            {notify &&
-                <span className={`${notify > 0 ? styles.notificationGreen : styles.notificationRed}`}>
-                    {notify < 0 ? notify : `+${notify}`}
+            {notification &&
+                <span className={`${notification > 0 ? styles.notificationGreen : styles.notificationRed}`}>
+                    {notification < 0 ? notification : `+${notification}`}
                 </span >}
+
         </div>
     );
 };
