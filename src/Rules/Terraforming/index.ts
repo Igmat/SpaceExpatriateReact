@@ -86,6 +86,7 @@ export class ActionManager implements IActionManager {
   };
 
   isDisabledDeck = (type: CardType): boolean => {
+    if (this.round.phase === "terraforming") return true;
     return false;
   }
 }

@@ -64,7 +64,13 @@ export class ActionManager implements IActionManager {
       return true;
     return false;
   };
+  
   isDisabledDeck = (type: CardType): boolean => {
+    if (
+      this.round.phase === "engineering" &&
+      this._remaining.activateDeck === 0
+    )
+      return true;
     return false;
   };
 }
