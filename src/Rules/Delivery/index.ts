@@ -146,13 +146,24 @@ export class ActionManager implements IActionManager {
     if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
       return true;
     }
-    if (
-      this.round.phase === "delivery" &&
-      card.type === "engineering" &&
-      card.connection === "start" &&
-      this.resources.engineeringMaps.Start[card.id] === 0
-    )
-      return true;
+   
+    if (this.round.phase === "delivery" && card.type === "engineering") {
+      if (
+        card.connection === "start" &&
+        this.resources.engineeringMaps.Start[card.id] === 0
+      )
+        return true;
+      if (
+        card.connection === "continue" &&
+        this.resources.engineeringMaps.Middle[card.id] <= 0
+      )
+        return true;
+      if (
+        card.connection === "end" &&
+        this.resources.engineeringMaps.FinishCounter <= 0
+      )
+        return true;
+    }
 
     return false;
   };
