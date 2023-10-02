@@ -76,7 +76,7 @@ export class ActionManager implements IActionManager {
   };
 
   isDisabledTable = (card: CardDefinition): boolean => {
-    //тут надо доделать логику
+    //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
     return false;
   };
   
