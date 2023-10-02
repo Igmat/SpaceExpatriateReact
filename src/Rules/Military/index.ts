@@ -57,7 +57,13 @@ export class ActionManager implements IActionManager {
   };
 
   reset = () => {};
-  isDisabled = (card: CardDefinition):boolean => {
+
+  isDisabledTable = (card: CardDefinition): boolean => {
+    if (this.round.phase === "military") return true;
+    return false;
+  };
+  isDisabledHand = (card: CardDefinition): boolean => {
+    if (this.round.phase === "military") return true;
     return false;
   }
 }

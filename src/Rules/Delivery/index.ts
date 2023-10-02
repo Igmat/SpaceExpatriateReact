@@ -92,7 +92,9 @@ export class ActionManager implements IActionManager {
         this.resources.addResource(option);
       }
       if (this.deliveryOption === "garbage") {
-        this.resources.removeResourcesFromGarbage(option as Exclude<ResourcePrimitive, "dark matter">);
+        this.resources.removeResourcesFromGarbage(
+          option as Exclude<ResourcePrimitive, "dark matter">
+        );
       }
       this.resources.getResources();
       this.round.startPerformingStep();
@@ -143,24 +145,30 @@ export class ActionManager implements IActionManager {
     );
   }
 
-  isDisabled = (card: CardDefinition): boolean => {
+  isDisabledTable = (card: CardDefinition): boolean => {
     if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
       return true;
     }
-   
     if (this.round.phase === "delivery" && card.type === "engineering") {
       if (
         (card.connection === "start" &&
-        this.resources.engineeringMaps.Start[card.id] === 0) ||
+          this.resources.engineeringMaps.Start[card.id] === 0) ||
         (card.connection === "continue" &&
-        this.resources.engineeringMaps.Middle[card.id] <= 0)||
+          this.resources.engineeringMaps.Middle[card.id] <= 0) ||
         (card.connection === "end" &&
-        this.resources.engineeringMaps.FinishCounter <= 0))
+          this.resources.engineeringMaps.FinishCounter <= 0)
+      )
         return true;
     }
-    if (this.round.phase === "delivery" && card.type === "military") return true;
-    if (this.round.phase === "delivery" && card.type === "delivery") return true;
+    if (this.round.phase === "delivery" && card.type === "military")
+      return true;
+    if (this.round.phase === "delivery" && card.type === "delivery")
+      return true;
 
     return false;
   };
+  
+  isDisabledHand = (card: CardDefinition): boolean => {
+    return false;
+  }
 }

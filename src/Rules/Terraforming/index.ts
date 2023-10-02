@@ -74,8 +74,13 @@ export class ActionManager implements IActionManager {
       this.dropCards();
     //сделать возврат true / false
   };
+
+  isDisabledTable = (card: CardDefinition): boolean => {
+    return false;
+  };
   
-  isDisabled = (card: CardDefinition): boolean => {
+  isDisabledHand = (card: CardDefinition): boolean => {
+    if (this.round.phase === "terraforming") return true;
     return false;
   };
 }

@@ -99,13 +99,19 @@ export class ActionManager {
     if (!this.activeAction) return;
     this.managers[this.activeAction].reset();
   };
-  
+
   // @computed
-  get isDisabled(): (card: CardDefinition) => boolean {
+  get isDisabledTable(): (card: CardDefinition) => boolean {
     return (card: CardDefinition) => {
       if (!this.activeAction) return false;
-      return this.managers[this.activeAction].isDisabled(card);
+      return this.managers[this.activeAction].isDisabledTable(card);
     };
   }
 
+  get isDisabledHand(): (card: CardDefinition) => boolean {
+    return (card: CardDefinition) => {
+      if (!this.activeAction) return false;
+      return this.managers[this.activeAction].isDisabledHand(card);
+    }
+  }
 }

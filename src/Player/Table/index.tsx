@@ -9,7 +9,6 @@ import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 
-
 interface TableProps {
   model: TableModel;
   round: RoundManager;
@@ -38,7 +37,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card)}
+            isDisabled={props.action.isDisabledTable(card)}
           />
         ))}
       </div>
@@ -49,7 +48,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card)}
+            isDisabled={props.action.isDisabledTable(card)}
           />
         ))}
       </div>
@@ -60,8 +59,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card)}
-          
+            isDisabled={props.action.isDisabledTable(card)}
           />
         ))}
       </div>
@@ -72,7 +70,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card)}
+            isDisabled={props.action.isDisabledTable(card)}
           />
         ))}
       </div>
