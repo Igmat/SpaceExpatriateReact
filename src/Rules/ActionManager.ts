@@ -100,18 +100,10 @@ export class ActionManager {
     this.managers[this.activeAction].reset();
   };
 
-  // @computed
-  get isDisabledTable(): (card: CardDefinition) => boolean {
-    return (card: CardDefinition) => {
+  get isDisabled(): (card: CardDefinition, place:string) => boolean {
+    return (card: CardDefinition, place) => {
       if (!this.activeAction) return false;
-      return this.managers[this.activeAction].isDisabledTable(card);
-    };
-  }
-
-  get isDisabledHand(): (card: CardDefinition) => boolean {
-    return (card: CardDefinition) => {
-      if (!this.activeAction) return false;
-      return this.managers[this.activeAction].isDisabledHand(card);
+      return this.managers[this.activeAction].isDisabled(card,place);
     };
   }
 
@@ -122,14 +114,5 @@ export class ActionManager {
     };
   }
 
-  isOpenedDisabled = () => {
-    if (
-      this.round.phase === "delivery" ||
-      this.round.phase === "engineering" ||
-      this.round.phase === "terraforming" ||
-      this.round.phase === "military"
-    ) {
-      return true;
-    }
-  };
+  
 }

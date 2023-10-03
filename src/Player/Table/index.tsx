@@ -23,11 +23,7 @@ export const Table = observer((props: TableProps) => {
     props.action.activateCardOnTable(card) &&
       setSelectedCards([...selectedCards, card]);
   };
-  // const [version, setVersion] = useState(0);
-  // useEffect(() => {
-  //   setVersion((prev) => prev + 1);
-  // },[props.action.deliveryManager.usedTerraformingCards] )
-
+ 
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
@@ -37,7 +33,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabledTable(card)}
+            isDisabled={props.action.isDisabled(card,"table")}
           />
         ))}
       </div>
@@ -48,7 +44,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabledTable(card)}
+            isDisabled={props.action.isDisabled(card,"table")}
           />
         ))}
       </div>
@@ -59,7 +55,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabledTable(card)}
+            isDisabled={props.action.isDisabled(card,"table")}
           />
         ))}
       </div>
@@ -70,7 +66,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabledTable(card)}
+            isDisabled={props.action.isDisabled(card,"table")}
           />
         ))}
       </div>

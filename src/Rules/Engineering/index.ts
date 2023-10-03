@@ -50,21 +50,16 @@ export class ActionManager implements IActionManager {
   select = (option: string) => {};
 
   reset = () => {};
-
-  isDisabledTable = (card: CardDefinition): boolean => {
-    if (this.round.phase === "engineering") return true;
+  isDisabled(card: CardDefinition, type: string): boolean {
+    if (this.round.phase === "engineering") {
+      if (type === "table") return true;
+      if (type === "hand" && this._remaining.activateCard === 0) return true;
+      // if (type === "deck") return this.isDisabledDeck(card.type);
+      if (type === "opened") return true;
+    }
     return false;
-  };
+  }
 
-  isDisabledHand = (card: CardDefinition): boolean => {
-    if (
-      this.round.phase === "engineering" &&
-      this._remaining.activateCard === 0
-    )
-      return true;
-    return false;
-  };
-  
   isDisabledDeck = (type: CardType): boolean => {
     if (
       this.round.phase === "engineering" &&
@@ -73,4 +68,5 @@ export class ActionManager implements IActionManager {
       return true;
     return false;
   };
+
 }
