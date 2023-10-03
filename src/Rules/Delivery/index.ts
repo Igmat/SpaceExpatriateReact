@@ -144,38 +144,34 @@ export class ActionManager implements IActionManager {
       () => this.resources.handleCardProcessing(card)
     );
   }
-  isDisabled(card: CardDefinition, type: string): boolean {
+  
+  isDisabled(place: string, card: CardDefinition, ): boolean {
     if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
       return true;
     }
     if (this.round.phase === "delivery") {
-      if (type === "table") return this.isDisabledTable(card);
-      if (type === "hand") return false;
-      // if (type === "deck") return this.isDisabledDeck(card.type);
-      if (type === "opened") return true;
+      if (place === "table") {
+        if (card.type === "engineering") {
+          if (
+            (card.connection === "start" &&
+              this.resources.engineeringMaps.Start[card.id] === 0) ||
+            (card.connection === "continue" &&
+              this.resources.engineeringMaps.Middle[card.id] <= 0) ||
+            (card.connection === "end" &&
+              this.resources.engineeringMaps.FinishCounter <= 0)
+          )
+            return true;
+        }
+        if (card.type === "military") return true;
+        if (card.type === "delivery") return true;
+      }
+      if (place === "hand") return false;
+      if (place === "opened") return true;
     }
     return false;
   }
 
-  isDisabledTable = (card: CardDefinition): boolean => {
-    if (card.type === "engineering") {
-      if (
-        (card.connection === "start" &&
-          this.resources.engineeringMaps.Start[card.id] === 0) ||
-        (card.connection === "continue" &&
-          this.resources.engineeringMaps.Middle[card.id] <= 0) ||
-        (card.connection === "end" &&
-          this.resources.engineeringMaps.FinishCounter <= 0)
-      )
-        return true;
-    }
-    if (card.type === "military") return true;
-    if (card.type === "delivery") return true;
-
-    return false;
-  };
-
-  isDisabledDeck = (type: CardType): boolean => {
+  isDisabledDeck = (type:CardType): boolean => {
     if (this.round.phase === "delivery") return true;
     return false;
   };

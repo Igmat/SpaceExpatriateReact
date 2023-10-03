@@ -33,7 +33,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card,"table")}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -44,7 +44,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card,"table")}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -55,7 +55,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card,"table")}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -66,7 +66,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled(card,"table")}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>

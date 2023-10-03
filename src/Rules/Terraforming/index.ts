@@ -75,11 +75,13 @@ export class ActionManager implements IActionManager {
     //сделать возврат true / false
   };
 
-  isDisabled(card:CardDefinition,type:string): boolean {
-    if (type === "table") return this.isDisabledTable(card);
-    if (type === "hand") return this.isDisabledHand(card);
-    // if (type === "deck") return this.isDisabledDeck(card.type);
-    if (type === "opened") return this.isOpenedDisabled();
+  isDisabled( place: string, card: CardDefinition,): boolean {
+    if (this.round.phase === "terraforming") {
+      if (place === "table") return this.isDisabledTable(card);
+      if (place === "hand") return true;
+      // if (type === "deck") return this.isDisabledDeck(card.type);
+      if (place === "opened") return true;
+    }
     return false;
   }
 
@@ -87,21 +89,9 @@ export class ActionManager implements IActionManager {
     //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
     return false;
   };
-  
-  isDisabledHand = (card: CardDefinition): boolean => {
-    if (this.round.phase === "terraforming") return true;
-    return false;
-  };
 
   isDisabledDeck = (type: CardType): boolean => {
     if (this.round.phase === "terraforming") return true;
     return false;
-  }
-
-  isOpenedDisabled = ():boolean => {
-    if (this.round.phase === "terraforming") {
-      return true;
-    }
-    return false;
-  }
+  };
 }

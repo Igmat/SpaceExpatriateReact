@@ -100,19 +100,16 @@ export class ActionManager {
     this.managers[this.activeAction].reset();
   };
 
-  get isDisabled(): (card: CardDefinition, place:string) => boolean {
-    return (card: CardDefinition, place) => {
+  get isDisabled(): (place: string, card: CardDefinition) => boolean {
+    return (place: string, card: CardDefinition) => {
       if (!this.activeAction) return false;
-      return this.managers[this.activeAction].isDisabled(card,place);
+      return this.managers[this.activeAction].isDisabled(place, card);
     };
   }
-
   get isDisabledDeck(): (type: CardType) => boolean {
     return (type: CardType) => {
       if (!this.activeAction) return false;
       return this.managers[this.activeAction].isDisabledDeck(type);
     };
   }
-
-  
 }
