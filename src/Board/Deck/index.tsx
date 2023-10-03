@@ -26,18 +26,6 @@ export const Deck = observer((props: DeckProps) => {
     props.action.perform(props.model.openedCard);
   };
 
-  const isOpenedDisabled = () => {
-    if (
-      props.round.phase === "delivery" ||
-      props.round.phase === "engineering" ||
-      props.round.phase === "terraforming"||
-      props.round.phase === "military"
-    ) {
-      return true;
-    }
-  };
-
-
   return (
     <>
       <div
@@ -48,7 +36,7 @@ export const Deck = observer((props: DeckProps) => {
           <Card
             key={props.model.openedCard.id}
             {...props.model.openedCard}
-            isDisabled={isOpenedDisabled()}
+            isDisabled={props.action.isOpenedDisabled()}
           />
         )}
       </div>

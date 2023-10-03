@@ -112,13 +112,24 @@ export class ActionManager {
     return (card: CardDefinition) => {
       if (!this.activeAction) return false;
       return this.managers[this.activeAction].isDisabledHand(card);
-    }
+    };
   }
 
   get isDisabledDeck(): (type: CardType) => boolean {
     return (type: CardType) => {
       if (!this.activeAction) return false;
       return this.managers[this.activeAction].isDisabledDeck(type);
-    }
+    };
   }
+
+  isOpenedDisabled = () => {
+    if (
+      this.round.phase === "delivery" ||
+      this.round.phase === "engineering" ||
+      this.round.phase === "terraforming" ||
+      this.round.phase === "military"
+    ) {
+      return true;
+    }
+  };
 }
