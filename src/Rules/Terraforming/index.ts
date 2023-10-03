@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, isCardType } from "../card-types";
+import { CardDefinition, CardType, ColonyCard, isCardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -8,7 +8,7 @@ import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class ActionManager implements IActionManager {
 
-    cardsToDrop: CardDefinition[] = [];
+    cardsToDrop: Exclude<CardDefinition, ColonyCard>[] = [];
 
     missionType?: CardType;
 
@@ -19,10 +19,10 @@ export class ActionManager implements IActionManager {
         gameId: string
     ) {
         makeAutoObservable(this);
-        makeAutoSavable(this, gameId, "terraformingManager",[
+        makeAutoSavable(this, gameId, "terraformingManager", [
             "cardsToDrop",
             "missionType"
-          ]);
+        ]);
     }
 
     perform = (card: CardDefinition) => {
@@ -39,7 +39,7 @@ export class ActionManager implements IActionManager {
     activateCard = (card: number) => {
 
     };
-    activateCardOnTable = (card: CardDefinition) => {
+    activateCardOnTable = (card: Exclude<CardDefinition, ColonyCard>) => {
         //проверка на наличие в массиве
         this.cardsToDrop.push(card)
         return true
@@ -58,7 +58,7 @@ export class ActionManager implements IActionManager {
     }
 
     dropCards = () => {
-        this.decks.dropCards(...this.table.dropCards(...this.cardsToDrop)) ;
+        this.decks.dropCards(...this.table.dropCards(...this.cardsToDrop));
         this.cardsToDrop = [];
         console.log("You have dropped cards and got 1 Colony");
         this.tryNext();

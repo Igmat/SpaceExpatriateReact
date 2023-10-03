@@ -6,7 +6,7 @@ import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { useState } from "react";
-import { CardDefinition } from "../../Rules/card-types";
+import { CardDefinition, ColonyCard } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 
 interface TableProps {
@@ -19,7 +19,7 @@ interface TableProps {
 export const Table = observer((props: TableProps) => {
   const [selectedCards, setSelectedCards] = useState([] as CardDefinition[]);
 
-  const handleClick = (card: CardDefinition) => {
+  const handleClick = (card: Exclude<CardDefinition, ColonyCard>) => {
     props.action.activateCardOnTable(card) &&
       setSelectedCards([...selectedCards, card]);
   };
@@ -108,7 +108,7 @@ export const Table = observer((props: TableProps) => {
         </button>
       )}
 
-      {props.round.step === "performing" &&  (
+      {props.round.step === "performing" && (
         <button
           className={styles.giveUpButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив

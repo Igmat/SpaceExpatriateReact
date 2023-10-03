@@ -4,7 +4,7 @@ import { engineeringCards } from "./CardDefinitions/engineering";
 import { militaryCards } from "./CardDefinitions/military";
 import { terraformingCards } from "./CardDefinitions/terraforming";
 import { DeckModel } from "./DeckModel";
-import { CardDefinition } from "./card-types";
+import { CardDefinition, ColonyCard } from "./card-types";
 
 export class DeckManager {
   constructor(private readonly gameId: string) {
@@ -16,7 +16,7 @@ export class DeckManager {
   terraforming = new DeckModel("terraforming", terraformingCards, this.gameId);
   military = new DeckModel("military", militaryCards, this.gameId);
 
-  dropCards = (...cards: CardDefinition[]) => {
+  dropCards = (...cards: Exclude<CardDefinition, ColonyCard>[]) => {
     cards.forEach((card) => this[card.type].dropCards(card.id));
   };
   get dropLength() {

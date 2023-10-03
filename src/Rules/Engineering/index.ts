@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType } from "../card-types";
+import { CardDefinition, CardType, ColonyCard } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -16,12 +16,12 @@ export class ActionManager implements IActionManager {
         gameId: string
     ) {
         makeAutoObservable(this);
-        makeAutoSavable(this, gameId, "engineeringManager",[
+        makeAutoSavable(this, gameId, "engineeringManager", [
             "_remaining" as any
-          ]);
+        ]);
     }
 
-    private _remaining = { 
+    private _remaining = {
         activateDeck: 0,
         activateCard: 0,
     };
@@ -48,7 +48,7 @@ export class ActionManager implements IActionManager {
         this.table.takeCard(this.hand.dropCard(card));
         this.tryNext() && this.round.next()
     };
-    activateCardOnTable = (card: CardDefinition) => 
+    activateCardOnTable = (card: Exclude<CardDefinition, ColonyCard>) =>
         false;
 
     select = (option: string) => {
@@ -56,6 +56,6 @@ export class ActionManager implements IActionManager {
     }
 
     reset = () => {
-        
+
     }
 }

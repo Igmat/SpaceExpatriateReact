@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { DeckModel } from "../../Rules/DeckModel";
 import { Card } from "../../components/Card";
-import { CardDefinition } from "../../Rules/card-types";
+import { CardDefinition, ColonyCard } from "../../Rules/card-types";
 import { HandModel } from "../../Rules/HandModel";
 import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
@@ -10,7 +10,7 @@ import { ResourcesModel } from "../../Rules/ResourcesModel";
 import styles from './Deck.module.scss'
 
 interface DeckProps {
-  model: DeckModel<CardDefinition>;
+  model: DeckModel<Exclude<CardDefinition, ColonyCard>>;
   hand: HandModel;
   table: TableModel;
   action: ActionManager;
@@ -21,10 +21,7 @@ interface DeckProps {
 export const Deck = observer((props: DeckProps) => {
 
   const onOpenCardClick = () => {
-   // console.log(props.model.type )
-   // console.log(props.round.phase)
     props.action.perform(props.model.openedCard);
-  
   };
 
   return (
