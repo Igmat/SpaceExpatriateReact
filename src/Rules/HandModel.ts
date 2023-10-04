@@ -1,10 +1,10 @@
 import { makeAutoObservable } from "mobx";
-import { CardDefinition, ColonyCard } from "../Rules/card-types";
+import { CardDefinition } from "../Rules/card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 export class HandModel {
-  public cardsInHand: Exclude<CardDefinition, ColonyCard>[] = [];
-  public tempDroppedCards: Exclude<CardDefinition, ColonyCard>[] = []
+  public cardsInHand: CardDefinition[] = [];
+  public tempDroppedCards: CardDefinition[] = []
 
   constructor(gameId: string) {
     makeAutoObservable(this);
@@ -19,7 +19,7 @@ export class HandModel {
     return card;
   };
 
-  takeCard(card?: Exclude<CardDefinition, ColonyCard>) {
+  takeCard(card?: CardDefinition) {
     //  console.log(`cards in the hand ${this.cardsInHand.length + 1}`);
     card && this.cardsInHand.push(card);
   }

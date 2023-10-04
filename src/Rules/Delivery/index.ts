@@ -9,7 +9,6 @@ import {
   EngineeringCard,
   isResourcePrimitive,
   ResourcePrimitive,
-  ColonyCard,
 } from "../card-types";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
@@ -40,7 +39,7 @@ export class ActionManager implements IActionManager {
   public calculatedResources: Resource[] = [];
   deliveryOption?: DeliveryOption;
   usedTerraformingCards: TerraformingCard[] = []; //использованные карты Terraforming
-  tempDroppedCards: Exclude<CardDefinition, ColonyCard>[] = [];
+  tempDroppedCards: CardDefinition[] = [];
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card);

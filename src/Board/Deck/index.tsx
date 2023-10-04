@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { DeckModel } from "../../Rules/DeckModel";
 import { Card } from "../../components/Card";
-import { CardDefinition, ColonyCard } from "../../Rules/card-types";
+import { CardDefinition } from "../../Rules/card-types";
 import { HandModel } from "../../Rules/HandModel";
 import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
@@ -10,7 +10,7 @@ import { ResourcesModel } from "../../Rules/ResourcesModel";
 import styles from './Deck.module.scss'
 
 interface DeckProps {
-  model: DeckModel<Exclude<CardDefinition, ColonyCard>>;
+  model: DeckModel<CardDefinition>;
   hand: HandModel;
   table: TableModel;
   action: ActionManager;

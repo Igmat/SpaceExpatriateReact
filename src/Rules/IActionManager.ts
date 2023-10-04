@@ -1,11 +1,11 @@
-import { CardDefinition, CardType, ColonyCard } from "./card-types";
+import { CardDefinition, CardType } from "./card-types";
 
 export interface IActionManager {
-    perform: (card: Exclude<CardDefinition, ColonyCard>) => void
+    perform: (card: CardDefinition) => void
     tryNext: () => boolean
     activateDeck: (type: CardType) => void
     activateCard: (card: number) => void
-    activateCardOnTable: (card: Exclude<CardDefinition, ColonyCard>) => boolean
+    activateCardOnTable: (card: CardDefinition) => boolean
     select: (option: string) => void
     reset: () => void
 }

@@ -8,7 +8,7 @@ export const isCardType = (option: string): option is CardType =>
 
 export type Resource = ResourcePrimitive | ResourcePrimitive[];
 
-export type CardDefinition = DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard | ColonyCard;
+export type CardDefinition = DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard;
 
 export type CardType = 'delivery' | 'engineering' | 'terraforming' | 'military'
 

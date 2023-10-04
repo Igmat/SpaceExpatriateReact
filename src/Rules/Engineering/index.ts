@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, ColonyCard } from "../card-types";
+import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -48,7 +48,7 @@ export class ActionManager implements IActionManager {
         this.table.takeCard(this.hand.dropCard(card));
         this.tryNext() && this.round.next()
     };
-    activateCardOnTable = (card: Exclude<CardDefinition, ColonyCard>) =>
+    activateCardOnTable = (card: CardDefinition) =>
         false;
 
     select = (option: string) => {

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, ColonyCard, isCardType } from "../card-types";
+import { CardDefinition, CardType, isCardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -8,7 +8,7 @@ import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class ActionManager implements IActionManager {
 
-    cardsToDrop: Exclude<CardDefinition, ColonyCard>[] = [];
+    cardsToDrop: CardDefinition[] = [];
 
     missionType?: CardType;
 
@@ -39,7 +39,7 @@ export class ActionManager implements IActionManager {
     activateCard = (card: number) => {
 
     };
-    activateCardOnTable = (card: Exclude<CardDefinition, ColonyCard>) => {
+    activateCardOnTable = (card: CardDefinition) => {
         //проверка на наличие в массиве
         this.cardsToDrop.push(card)
         return true

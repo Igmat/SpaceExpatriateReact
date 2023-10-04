@@ -15,7 +15,7 @@ export class GameState {
   hand = new HandModel(this.gameId);
   decks = new DeckManager(this.gameId);
   table = new TableModel(this.gameId);
-  round = new RoundManager(this.decks, this.hand,this.gameId);
+  round = new RoundManager(this.decks, this.hand, this.gameId);
   resources = new ResourcesModel(this.table, this.round, this.gameId);
   action = new ActionManager(this.decks, this.table, this.round, this.hand, this.resources, this.gameId);
 

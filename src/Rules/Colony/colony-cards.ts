@@ -1,12 +1,8 @@
-import { ColonyCard } from "../card-types";
-import { createCards } from "./createCards";
 
-export const colonyCards = createCards<ColonyCard>(
-
-    "colony",
+export const colonyCards = [
 
     // -------------- Delivery ----------------
-    {
+    /*{
         benefit: "On Delivery ignores all fuel in Space Garbage",
         whenIsActivated: "before",
         mutateAction: "delivery",
@@ -27,6 +23,7 @@ export const colonyCards = createCards<ColonyCard>(
         players: 3,
         name: "MANUFACTURING MEGAPOLIS"
     },
+    */
     {
         benefit: "On Delivery one of your Delivery Station Modules ignores Space Garbage",
         whenIsActivated: "during",
@@ -41,8 +38,10 @@ export const colonyCards = createCards<ColonyCard>(
         name: "SPACE LIFT"
     },
 
+
+
     // -------------- Engineering ----------------
-    {
+    /*{
         benefit: "Before Engineering dock a Station Module from Delivery supply",
         whenIsActivated: "before",
         mutateAction: "engineering",
@@ -70,6 +69,7 @@ export const colonyCards = createCards<ColonyCard>(
         players: 3,
         name: "MILITARY ENGINEERING"
     },
+    */
     {
         benefit: "After Engineering dock a Station Module(from supply) of any type of which you have fewer on your Station than the other types",
         whenIsActivated: "after",
@@ -92,7 +92,7 @@ export const colonyCards = createCards<ColonyCard>(
     },
 
     // -------------- Military ----------------
-    {
+    /*{
         benefit: "Empowers Spaceborne Forces, and wins the tie when comparing military power for this Combat Arms forces",
         whenIsActivated: "during",
         mutateAction: "military",
@@ -120,6 +120,7 @@ export const colonyCards = createCards<ColonyCard>(
         players: 3,
         name: "MISSILE GUIDANCE",
     },
+    */
     {
         benefit: "Tactical Nanorobotics", //Добавляется новый модуль в милитари
         whenIsActivated: "during",
@@ -141,7 +142,7 @@ export const colonyCards = createCards<ColonyCard>(
     },
 
     // -------------- Terraforming ----------------
-    {
+    /*{
         benefit: "On Terraforming gain 2 points if the Mission Type is not Delivery",
         whenIsActivated: "during",
         mutateAction: "terraforming",
@@ -169,6 +170,7 @@ export const colonyCards = createCards<ColonyCard>(
         players: 3,
         name: "SCIENTIFIC COMMITTEE",
     },
+    */
     {
         benefit: "On Terraforming gain 2 points if you have at least 1 Station Module card of the mission Type in your Hand",
         whenIsActivated: "during",
@@ -176,6 +178,7 @@ export const colonyCards = createCards<ColonyCard>(
         players: 2,
         name: "OPERATIONS SUPPORT COMMAND",
     },
+
     {
         benefit: "After Terraforming dock a Station Module of the Mission Type from supply",
         whenIsActivated: "after",
@@ -188,5 +191,5 @@ export const colonyCards = createCards<ColonyCard>(
         mutateAction: "terraforming",
         name: "FIELD RESEARCH HEADQUARTERS",
     },
-)
+]
 

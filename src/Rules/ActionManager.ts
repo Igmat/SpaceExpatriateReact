@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType, ColonyCard } from "./card-types";
+import { CardDefinition, CardType } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
@@ -46,7 +46,7 @@ export class ActionManager {
 
   activeAction?: CardType;
 
-  perform = (card?: Exclude<CardDefinition, ColonyCard>) => {
+  perform = (card?: CardDefinition) => {
     if (!card) return;
 
     if (this.round.phase !== "active") return;
@@ -83,7 +83,7 @@ export class ActionManager {
     // this.tryNext();
   };
 
-  activateCardOnTable = (card: Exclude<CardDefinition, ColonyCard>) => {
+  activateCardOnTable = (card: CardDefinition) => {
     if (!this.activeAction) return;
     return this.managers[this.activeAction].activateCardOnTable(card);
   };
