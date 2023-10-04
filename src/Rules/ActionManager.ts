@@ -103,12 +103,14 @@ export class ActionManager {
   get isDisabled(): (place: string, card: CardDefinition) => boolean {
     return (place: string, card: CardDefinition) => {
       if (!this.activeAction) return false;
+      if (this.round.phase === "active" && (place === "table"|| place === "hand")) return true;
       return this.managers[this.activeAction].isDisabled(place, card);
     };
   }
   get isDisabledDeck(): (type: CardType) => boolean {
     return (type: CardType) => {
       if (!this.activeAction) return false;
+      if (this.round.phase === "active") return true;
       return this.managers[this.activeAction].isDisabledDeck(type);
     };
   }
