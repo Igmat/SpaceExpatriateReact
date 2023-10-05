@@ -194,4 +194,4 @@ export const colonyCards = createColonyCards (
     },
     
 )
-console.log(colonyCards) 
+//console.log(colonyCards) 
