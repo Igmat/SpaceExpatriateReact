@@ -7,6 +7,39 @@ Array [
   >
     <div
       className="cardsContainer"
+    >
+      <div
+        className="card"
+      >
+        <div
+          className="mutateAction"
+        >
+          terraforming
+        </div>
+        <div
+          className="benefit"
+        >
+          Rerum voluptatum optio voluptatem a quae saepe. Cumque quibusdam placeat corporis.
+        </div>
+        <p
+          className="points"
+        >
+          2
+        </p>
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          tra la la la la la
+        </p>
+      </div>
+    </div>
+    <div
+      className="cardsContainer"
     />
     <div
       className="cardsContainer"

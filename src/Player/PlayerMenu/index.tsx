@@ -6,6 +6,7 @@ import { Notification } from "./Notification";
 import { PlayerResources } from "../../Rules/ResourcesModel";
 import styles from "./PlayerMenu.module.scss";
 
+
 interface PlayerMenuProps {
   resources: ResourcesModel;
 }
@@ -61,6 +62,7 @@ export const PlayerMenu = observer((props: PlayerMenuProps) => {
         </div>
         <div className={styles.points}>TPs{props.resources.points.total}</div>
       </div>
+   
     </div>
   );
 });

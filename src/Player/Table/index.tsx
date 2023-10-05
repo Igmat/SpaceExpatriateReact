@@ -8,6 +8,7 @@ import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
+import { CCard } from "../../components/ColonyCard";
 
 interface TableProps {
   model: TableModel;
@@ -26,6 +27,9 @@ export const Table = observer((props: TableProps) => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.cardsContainer}>
+        <CCard />
+      </div>
       <div className={styles.cardsContainer}>
         {props.model.delivery.map((card, ind) => (
           <Card

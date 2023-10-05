@@ -4,12 +4,10 @@
     align-items: center;
     justify-items: center;
     position: relative;
-    & p{
-        width: 100%;
-        font-size: 25px;
-        height: 50px;
-    }
-  
+    gap: 20px;
+  & .colonyContainer{
+    margin-top: -100px ;
+  }
     & .board {
         display: grid;
         grid-template-columns: repeat(4, 130px);
