@@ -7,19 +7,6 @@ exports[`Board snapshot 1`] = `
   <div
     className="container"
   >
-    <a
-      aria-current="page"
-      className="active"
-      href="/"
-      onClick={[Function]}
-    >
-       
-      <div
-        className="startBtn"
-      >
-        END GAME
-      </div>
-    </a>
     <div
       className="garbage"
     >
@@ -50,10 +37,102 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
   </div>
-  <p>
+  <div
+    className="colonyContainer"
+  >
+    <div
+      className="colonyCards"
+    >
+      <div
+        className="card"
+      >
+        <div
+          className="mutateAction"
+        >
+          terraforming
+        </div>
+        <div
+          className="benefit"
+        >
+          Rerum voluptatum optio voluptatem a quae saepe. Cumque quibusdam placeat corporis.
+        </div>
+        <p
+          className="points"
+        >
+          2
+        </p>
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          tra la la la la la
+        </p>
+      </div>
+      <div
+        className="card"
+      >
+        <div
+          className="mutateAction"
+        >
+          terraforming
+        </div>
+        <div
+          className="benefit"
+        >
+          Rerum voluptatum optio voluptatem a quae saepe. Cumque quibusdam placeat corporis.
+        </div>
+        <p
+          className="points"
+        >
+          2
+        </p>
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          tra la la la la la
+        </p>
+      </div>
+      <div
+        className="card"
+      >
+        <div
+          className="mutateAction"
+        >
+          terraforming
+        </div>
+        <div
+          className="benefit"
+        >
+          Rerum voluptatum optio voluptatem a quae saepe. Cumque quibusdam placeat corporis.
+        </div>
+        <p
+          className="points"
+        >
+          2
+        </p>
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          tra la la la la la
+        </p>
+      </div>
+    </div>
      
-     
-  </p>
+  </div>
   <div
     className="board"
   >
