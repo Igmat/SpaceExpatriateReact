@@ -1,3 +1,4 @@
+import { colonyCards } from "../Colony/colony-cards";// не забыть удалить
 import { DeliveryCard } from "../card-types";
 import { createCards } from "./createCards";
 
@@ -12,3 +13,5 @@ export const deliveryCards = createCards<DeliveryCard>(
     { resources: [ 'machinery'], quantity: 4 },
     { resources: [ 'nanotechnologies'], quantity: 4 },
 )
+
+console.log(colonyCards) 

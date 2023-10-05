@@ -1,5 +1,6 @@
+import { createColonyCards } from './createColonyCards';
 
-export const colonyCards = [
+export const colonyCards = createColonyCards (
 
     // -------------- Delivery ----------------
     /*{
@@ -24,7 +25,7 @@ export const colonyCards = [
         name: "MANUFACTURING MEGAPOLIS"
     },
     */
-    {
+    {  
         benefit: "On Delivery one of your Delivery Station Modules ignores Space Garbage",
         whenIsActivated: "during",
         mutateAction: "delivery",
@@ -191,5 +192,6 @@ export const colonyCards = [
         mutateAction: "terraforming",
         name: "FIELD RESEARCH HEADQUARTERS",
     },
-]
-
+    
+)
+console.log(colonyCards) 
