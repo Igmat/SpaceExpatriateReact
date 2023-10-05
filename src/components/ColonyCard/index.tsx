@@ -1,10 +1,6 @@
-import { ColonyCard } from "../../Rules/card-types";
 import styles from "./colonyCard.module.scss";
 import { observer } from "mobx-react-lite";
 
-type CardProps = ColonyCard & {
-  onClick?: () => void;
-};
 /*
 
 export const CCard = observer((props: CardProps) => {

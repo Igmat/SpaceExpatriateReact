@@ -1,7 +1,6 @@
 import { Deck } from "./Deck";
 import styles from "./Board.module.scss";
 import { useGameState } from "../Rules";
-import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ResourcesDeck } from "./ResourcesDeck";
 import { ColonyDeck } from "./ColonyDeck";
