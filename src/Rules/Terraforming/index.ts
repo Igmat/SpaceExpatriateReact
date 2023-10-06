@@ -26,10 +26,10 @@ export class ActionManager implements IActionManager {
   perform = (card: CardDefinition) => {
     this.round.startOptionsStep();
   };
-  
+
   tryNext = () => {
     this.decks.dropCards(...this.cardsToDrop);
-    this.cardsToDrop = []
+    this.cardsToDrop = [];
     return true;
   };
 
@@ -49,31 +49,46 @@ export class ActionManager implements IActionManager {
   };
 
   reset = () => {
-    this.cardsToDrop.forEach((card) => this.table.takeCard(card));
+    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
+      this.cardsToDrop.forEach((card) => this.table.takeCard(card));
+    }
     this.cardsToDrop = [];
     console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
+  
 
   dropCards = () => {
     this.table.dropCards(...this.cardsToDrop);
     console.log("You have dropped cards and got 1 Colony");
-    // this.tryNext();
   };
 
   tryBuildColony = () => {
-    this.cardsToDrop.length === 3 &&
-      this.cardsToDrop.filter((card) => card.type === this.missionType)
-        .length === 3 &&
-      this.dropCards();
+    this.isThreeCardsOfSameType() && this.dropCards();
 
-    this.cardsToDrop.length === 4 &&
+    this.isOneCardOfEachType() && this.dropCards();
+  };
+
+  isThreeCardsOfSameType = () => {
+    if (
+      this.cardsToDrop.length === 3 &&
+      this.cardsToDrop.filter((card) => card.type === this.missionType)
+        .length === 3
+    ) {
+      return true;
+    }
+  };
+
+  isOneCardOfEachType = () => {
+    if (
+      this.cardsToDrop.length === 4 &&
       (["delivery", "engineering", "terraforming", "military"] as const)
         .map(
           (el) =>
             this.cardsToDrop.filter((card) => card.type === el).length === 1
         )
-        .filter(Boolean).length === 4 &&
-      this.dropCards();
-    //сделать возврат true / false
+        .filter(Boolean).length === 4
+    ) {
+      return true;
+    }
   };
 }
