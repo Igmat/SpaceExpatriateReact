@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import {
   CardDefinition,
+  ColonyCard,
   DeliveryCard,
   EngineeringCard,
   MilitaryCard,
@@ -16,7 +17,7 @@ export class TableModel {
       "engineering",
       "terraforming",
       "military",
-
+      //"colony",
     ]);
   }
 
@@ -24,7 +25,7 @@ export class TableModel {
   engineering: EngineeringCard[] = [];
   terraforming: TerraformingCard[] = [];
   military: MilitaryCard[] = [];
-
+  colony: ColonyCard[] = [];
 
   dropCards = (//очистить сброшенные карты со стола
     ...cards: (
@@ -40,7 +41,6 @@ export class TableModel {
       (card) => !cards.includes(card)
     );
     this.military = this.military.filter((card) => !cards.includes(card));
-
     return cards;
   };
 

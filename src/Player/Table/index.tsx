@@ -9,6 +9,7 @@ import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { CCard } from "../../components/ColonyCard";
+import { ColonyDeckModel } from "../../Rules/Colony/ColonyDeckModel";
 
 interface TableProps {
   model: TableModel;
@@ -28,7 +29,11 @@ export const Table = observer((props: TableProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
-        <CCard />
+        {props.model.colony.map((card, ind) => (
+          <CCard
+            key={ind}
+            {...card}
+          />))}
       </div>
       <div className={styles.cardsContainer}>
         {props.model.delivery.map((card, ind) => (

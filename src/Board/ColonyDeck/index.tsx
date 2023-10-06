@@ -1,15 +1,24 @@
+import { ColonyDeckModel } from '../../Rules/Colony/ColonyDeckModel';
+import { ColonyCard } from '../../Rules/card-types';
 import { CCard } from "../../components/ColonyCard";
 import styles from "./ColonyDeck.module.scss";
 import { observer } from "mobx-react-lite";
 
-export const ColonyDeck = observer(() => {
-  return (
-    <div className={styles.colonyCards}>
-      {/*props.colony.openedCard && (<CCard {...props.colony.openedCard}/>)*/}
-      <CCard />
-      <CCard />
+interface ColonyDeckProps {
+    colony: ColonyDeckModel<ColonyCard>;
+}
 
-      <CCard />
-    </div>
-  );
+export const ColonyDeck = observer((props: ColonyDeckProps) => {
+
+    return (
+        <div className={styles.colonyCards}>
+            {props.colony.openedCards.map((card, ind) => (
+                <CCard
+                    key={ind}
+                    {...card}
+                    onOpenCardClick={() => console.log("clicked")}
+                />))
+            }
+        </div>
+    );
 });
