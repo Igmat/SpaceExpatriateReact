@@ -48,4 +48,6 @@ export class TableModel {
     this[card.type].push(card as any);
     //  console.log(card)
   };
+
+
 }
