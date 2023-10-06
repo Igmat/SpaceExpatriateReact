@@ -45,16 +45,17 @@ exports[`Board snapshot 1`] = `
     >
       <div
         className="card"
+        onClick={[Function]}
       >
         <div
           className="mutateAction"
         >
-          terraforming
+          military
         </div>
         <div
           className="benefit"
         >
-          Rerum voluptatum optio voluptatem a quae saepe. Cumque quibusdam placeat corporis.
+          Tactical Nanorobotics
         </div>
         <p
           className="points"
@@ -69,21 +70,22 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          tra la la la la la
+          TACTICAL NANOROBOTICS
         </p>
       </div>
       <div
         className="card"
+        onClick={[Function]}
       >
         <div
           className="mutateAction"
         >
-          terraforming
+          military
         </div>
         <div
           className="benefit"
         >
-          Rerum voluptatum optio voluptatem a quae saepe. Cumque quibusdam placeat corporis.
+          On Military gain 1 point for each card drawn by you during the Action, but not more than 3 points
         </div>
         <p
           className="points"
@@ -98,21 +100,22 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          tra la la la la la
+          COMMAND CENTER
         </p>
       </div>
       <div
         className="card"
+        onClick={[Function]}
       >
         <div
           className="mutateAction"
         >
-          terraforming
+          engineering
         </div>
         <div
           className="benefit"
         >
-          Rerum voluptatum optio voluptatem a quae saepe. Cumque quibusdam placeat corporis.
+          {connection: 'end',  exitPoint: ['fuel', 'biotic material', 'minerals'], points: 2, name: 'HELIOSTAT DESERT'}
         </div>
         <p
           className="points"
@@ -127,11 +130,10 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          tra la la la la la
+          HELIOSTAT DESERT
         </p>
       </div>
     </div>
-     
   </div>
   <div
     className="board"
