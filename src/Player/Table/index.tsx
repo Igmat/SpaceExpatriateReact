@@ -9,7 +9,6 @@ import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { CCard } from "../../components/ColonyCard";
-import { ColonyDeckModel } from "../../Rules/Colony/ColonyDeckModel";
 
 interface TableProps {
   model: TableModel;
