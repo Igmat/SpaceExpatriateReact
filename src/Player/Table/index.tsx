@@ -107,7 +107,7 @@ export const Table = observer((props: TableProps) => {
         props.round.step === "performing" && (
           <ResetButton action={props.action} />
         )}
-      {props.round.step === "performing" && selectedCards.length >= 3 && (
+      {props.round.step === "performing"&& props.round.phase === "terraforming" && selectedCards.length >= 3 && (
         <button
           className={styles.confirmButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив
