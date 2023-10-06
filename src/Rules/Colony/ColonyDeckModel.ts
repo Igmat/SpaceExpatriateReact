@@ -1,38 +1,40 @@
 import { makeAutoObservable } from "mobx";
-import { ColonyCard } from "../card-types";
 
-export class ColonyModel<T extends { id: number }> {
+export class ColonyDeckModel<T extends { id: number }> {
     constructor(
-        public readonly type: ColonyCard,
+
         private readonly cardsDefinitions: { [key: number]: T },
+        gameId: string,
     ) {
         makeAutoObservable(this)
+        this.initialize();
     }
 
     private _activeCards: number[] = [];
-    openedCard?: T;
+    openedCards: T[] = [];
 
     initialize = () => {
         this._activeCards = Object.keys(this.cardsDefinitions);
         this.mixCards();
-        this.openCard();
+        this.openedCards = this._activeCards.splice(0, 3).map(id => this.cardsDefinitions[id]);
+        console.log(this.openedCards);
     }
 
     openCard() {
-        this.openedCard = this.takeCard();
+        this.openedCards.push(this.takeCard());
     }
-
-    takeOpenedCard() {
-        const result = this.openedCard;
-        this.openedCard = undefined;
-        return result;
-    }
+    /*
+        takeOpenedCard() {
+            const result = this.openedCard;
+            this.openedCard = undefined;
+            return result;
+        }
+    */
 
     takeCard = (): T => {
         const idOfCard = this._activeCards.pop()!;
         if (this._activeCards.length === 0) {
             //игра заканчивается, подсчитываются очки - метод нужен позже
-            // this.mixCards();
         }
         return this.cardsDefinitions[idOfCard];
     };
