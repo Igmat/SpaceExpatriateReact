@@ -17,7 +17,7 @@ export class TableModel {
       "engineering",
       "terraforming",
       "military",
-      //"colony",
+      "colony",
     ]);
   }
 
