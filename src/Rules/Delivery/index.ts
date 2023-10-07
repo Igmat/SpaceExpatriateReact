@@ -62,8 +62,10 @@ export class ActionManager implements IActionManager {
   activateDeck = (type: CardType) => { };
 
   activateCard = (card: number) => {
+    if(this.round.phase === "delivery"){// без этого карты с руки скидываются когда попало
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
+    }
   };
 
   activateCardOnTable = (card: CardDefinition) => {

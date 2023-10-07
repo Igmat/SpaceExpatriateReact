@@ -5,6 +5,7 @@ import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+import { ColonyManager } from "../Colony/ColonyManager";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
@@ -14,7 +15,8 @@ export class ActionManager implements IActionManager {
     private readonly round: RoundManager,
     private readonly table: TableModel,
     private readonly decks: DeckManager,
-    gameId: string
+    gameId: string,
+    private readonly colony: ColonyManager
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -28,13 +30,20 @@ export class ActionManager implements IActionManager {
   };
 
   tryNext = () => {
-    this.decks.dropCards(...this.cardsToDrop);
-    this.cardsToDrop = [];
+    this.cardsToDrop = [];// чистим масив сбрасываемых карт
     return true;
   };
 
   activateDeck = (type: CardType) => {};
-  activateCard = (card: number) => {};
+
+  activateCard = (card: number) => {
+    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {//если выполняется условие для постройки колонии
+      this.buildColony();//строим колонию
+      this.decks.dropCards(...this.cardsToDrop);//сбрасываем карты в колоду постоянного сброса 
+      this.cardsToDrop = []; //чистим масив сбрасываемых карт
+    }
+  };
+
   activateCardOnTable = (card: CardDefinition) => {
     this.cardsToDrop.push(card);
     this.tryBuildColony();
@@ -55,17 +64,20 @@ export class ActionManager implements IActionManager {
     this.cardsToDrop = [];
     console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
-  
 
   dropCards = () => {
     this.table.dropCards(...this.cardsToDrop);
     console.log("You have dropped cards and got 1 Colony");
   };
 
-  tryBuildColony = () => {
-    this.isThreeCardsOfSameType() && this.dropCards();
+  tryBuildColony = () => {//проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
+    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
+      this.dropCards();
+    }
+  };
 
-    this.isOneCardOfEachType() && this.dropCards();
+  buildColony = () => { //постройка колонии
+    this.table.takeColonyCard(this.colony.colonyDeck.takeCard());
   };
 
   isThreeCardsOfSameType = () => {
@@ -77,7 +89,7 @@ export class ActionManager implements IActionManager {
       return true;
     }
   };
-
+ 
   isOneCardOfEachType = () => {
     if (
       this.cardsToDrop.length === 4 &&
@@ -91,4 +103,6 @@ export class ActionManager implements IActionManager {
       return true;
     }
   };
+
+ 
 }

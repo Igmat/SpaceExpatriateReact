@@ -27,7 +27,8 @@ export class TableModel {
   military: MilitaryCard[] = [];
   colony: ColonyCard[] = [];
 
-  dropCards = (//очистить сброшенные карты со стола
+  dropCards = (
+    //очистить сброшенные карты со стола
     ...cards: (
       | DeliveryCard
       | EngineeringCard
@@ -48,6 +49,7 @@ export class TableModel {
     this[card.type].push(card as any);
     //  console.log(card)
   };
-
-
+  takeColonyCard = (card: ColonyCard) => {
+    this.colony.push(card);
+  };
 }
