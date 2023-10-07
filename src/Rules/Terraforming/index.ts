@@ -30,16 +30,17 @@ export class ActionManager implements IActionManager {
   };
 
   tryNext = () => {
-    this.cardsToDrop = [];// чистим масив сбрасываемых карт
+    this.cardsToDrop = []; // чистим масив сбрасываемых карт
     return true;
   };
 
   activateDeck = (type: CardType) => {};
 
   activateCard = (card: number) => {
-    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {//если выполняется условие для постройки колонии
-      this.buildColony();//строим колонию
-      this.decks.dropCards(...this.cardsToDrop);//сбрасываем карты в колоду постоянного сброса 
+    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
+      //если выполняется условие для постройки колонии
+      this.buildColony(card); //строим колонию
+      this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
       this.cardsToDrop = []; //чистим масив сбрасываемых карт
     }
   };
@@ -70,14 +71,22 @@ export class ActionManager implements IActionManager {
     console.log("You have dropped cards and got 1 Colony");
   };
 
-  tryBuildColony = () => {//проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
+  tryBuildColony = () => {
+    //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
     if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
       this.dropCards();
     }
   };
 
-  buildColony = () => { //постройка колонии
-    this.table.takeColonyCard(this.colony.colonyDeck.takeCard());
+  buildColony = (selectedCardIndex: number) => {
+    const selectedCard =
+      this.colony.colonyDeck.takeOpenedCard(selectedCardIndex);
+
+    if (selectedCard) {
+      this.table.takeColonyCard(selectedCard);
+    } else {
+      console.log("No more colony cards available.");
+    }
   };
 
   isThreeCardsOfSameType = () => {
@@ -89,7 +98,7 @@ export class ActionManager implements IActionManager {
       return true;
     }
   };
- 
+
   isOneCardOfEachType = () => {
     if (
       this.cardsToDrop.length === 4 &&
@@ -103,6 +112,4 @@ export class ActionManager implements IActionManager {
       return true;
     }
   };
-
- 
 }
