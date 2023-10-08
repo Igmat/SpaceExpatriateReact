@@ -30,7 +30,7 @@ export class ActionManager implements IActionManager {
   };
 
   tryNext = () => {
-    this.cardsToDrop = []; // чистим масив сбрасываемых карт
+    this.reset() // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     return true;
   };
 
@@ -40,8 +40,7 @@ export class ActionManager implements IActionManager {
     if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
       //если выполняется условие для постройки колонии
       this.buildColony(card); //строим колонию
-      this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
-      this.cardsToDrop = []; //чистим масив сбрасываемых карт
+      
     }
   };
 
@@ -84,6 +83,8 @@ export class ActionManager implements IActionManager {
 
     if (selectedCard) {
       this.table.takeColonyCard(selectedCard);
+      this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
+      this.cardsToDrop = []; //чистим масив сбрасываемых карт
     } else {
       console.log("No more colony cards available.");
     }
