@@ -90,18 +90,18 @@
     - [X] - добавить новые карты в Board если карт меньше чем 3 на момент нового раунда (Anastasia)// я увлеклась
     - [X] - сейчас колода, елси закончилась, снова генериться (Anastasia) (оно локалом починилось).
     - [ ] - добавить по одному пойнту на неиспользованные карты
-- [X] - добавить построеные и открытые колонии в локал сторадж
-- [ ] - действие колоний:
-      - [ ]  1.Delivery
-         - [ ]   "BLACK MARKET"
-         - [ ]   "SPACE LIFT"
-      - [ ]  2.Engeneering
-         - [ ]   "SPACECRAFT MANUFACTORY"
-         - [ ]   "SPACE INDUSTRY CENTER"
-         - [ ]   "HELIOSTAT DESERT",
-      - [ ]  3.Terraforming
-         - [ ]   "OPERATIONS SUPPORT COMMAND",
-         - [ ]"STRATEGIC DEVELOPMENT CENTER",
-        - [ ]"FIELD RESEARCH HEADQUARTERS",
+- [X] - добавить построеные и открытые колонии в локал сторадж (Anastasia)
 - [ ] - isSekected: доработать таким образом, чтобы можно было при повторном клике на выбранную карту убрать обводку и убрать саму карту из масива выбранных карт (Anastasia)
 - [ ] - isDisabled (после мерджа ветки с isDisabled) - усоврешенсвованный метод, который не дает выбирать не ту комбинацию карт(Anastasia)
+### Colony in action:
+ - [ ] Delivery
+       - [ ]   "BLACK MARKET"
+       - [ ]   "SPACE LIFT"
+ - [ ]  Engeneering
+       - [ ]   "SPACECRAFT MANUFACTORY"
+       - [ ]   "SPACE INDUSTRY CENTER"
+       - [ ]   "HELIOSTAT DESERT",
+ - [ ] Terraforming
+       - [ ]   "OPERATIONS SUPPORT COMMAND",
+       - [ ] "STRATEGIC DEVELOPMENT CENTER",
+       - [ ] "FIELD RESEARCH HEADQUARTERS",
