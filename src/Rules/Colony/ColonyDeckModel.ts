@@ -7,11 +7,13 @@ export class ColonyDeckModel<T extends { id: number }> {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "colonyDeck", [
+    const isLoaded = makeAutoSavable(this, gameId, "colonyDeck", [
       "_activeCards" as any,
       "openedCards"]
       )
-    this.initialize();
+      if (!isLoaded) {
+        this.initialize();
+      }
   }
 
   private _activeCards: number[] = [];
