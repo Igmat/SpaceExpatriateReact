@@ -1,7 +1,9 @@
 import { GameState } from '..';
-import { createColonyCards } from './createColonyCards';
+import { createCards } from '../CardDefinitions/createCards';
+import { ColonyCard } from '../card-types';
 
-export const colonyCards = createColonyCards (
+export const colonyCards = createCards<ColonyCard>(
+    "colony",
 
     // -------------- Delivery ----------------
     /*{
@@ -26,14 +28,14 @@ export const colonyCards = createColonyCards (
         name: "MANUFACTURING MEGAPOLIS"
     },
     */
-    {  
+    {
         benefit: "On Delivery one of your Delivery Station Modules ignores Space Garbage",
         whenIsActivated: "during",
         mutateAction: "delivery",
         players: 2,
         name: "BLACK MARKET",
-        activate: (gameState:GameState) => {console.log("activate black market")},
-        effects:["selectDeliveryStation"]
+        activate: (gameState: GameState) => { console.log("activate black market") },
+        effects: ["selectDeliveryStation"]
     },
     {
         benefit: "Before Delivery add/remove a resource to/from Space Garbage. You may do this as many times as there are players in the game",
@@ -94,7 +96,7 @@ export const colonyCards = createColonyCards (
         mutateAction: "engineering",
         name: "SPACE INDUSTRY CENTER"
     },
- 
+
     // -------------- Military ----------------
     /*{
         benefit: "Empowers Spaceborne Forces, and wins the tie when comparing military power for this Combat Arms forces",
@@ -195,6 +197,6 @@ export const colonyCards = createColonyCards (
         mutateAction: "terraforming",
         name: "FIELD RESEARCH HEADQUARTERS",
     },
-    
+
 )
-//console.log(colonyCards) 
+
