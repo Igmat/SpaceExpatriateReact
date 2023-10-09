@@ -45,6 +45,7 @@ exports[`Board snapshot 1`] = `
     >
       <div
         className="card"
+        onClick={[Function]}
       >
         <div
           className="mutateAction"
@@ -74,6 +75,7 @@ exports[`Board snapshot 1`] = `
       </div>
       <div
         className="card"
+        onClick={[Function]}
       >
         <div
           className="mutateAction"
@@ -103,6 +105,7 @@ exports[`Board snapshot 1`] = `
       </div>
       <div
         className="card"
+        onClick={[Function]}
       >
         <div
           className="mutateAction"
