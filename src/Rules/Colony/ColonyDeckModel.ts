@@ -16,20 +16,14 @@ export class ColonyDeckModel<T extends { id: number }> {
     initialize = () => {
         this._activeCards = Object.keys(this.cardsDefinitions);
         this.mixCards();
+
+        // cut out 3 cards from the active Cards and put them to the opened Cards
         this.openedCards = this._activeCards.splice(0, 3).map(id => this.cardsDefinitions[id]);
-        console.log(this.openedCards);
     }
 
     openCard() {
         this.openedCards.push(this.takeCard());
     }
-    /*
-        takeOpenedCard() {
-            const result = this.openedCard;
-            this.openedCard = undefined;
-            return result;
-        }
-    */
 
     takeCard = (): T => {
         const idOfCard = this._activeCards.pop()!;

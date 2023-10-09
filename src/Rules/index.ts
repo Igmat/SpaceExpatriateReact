@@ -19,7 +19,7 @@ export class GameState {
   round = new RoundManager(this.decks, this.hand, this.gameId);
   resources = new ResourcesModel(this.table, this.round, this.gameId);
   action = new ActionManager(this.decks, this.table, this.round, this.hand, this.resources, this.gameId);
-  colony = new ColonyManager(this.gameId);
+  colony = new ColonyManager(this.gameId, this.round);
 }
 
 const gameStateContext = createContext(new GameState())
