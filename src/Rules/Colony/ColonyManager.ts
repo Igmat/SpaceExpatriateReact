@@ -3,36 +3,40 @@ import { ColonyDeckModel } from "./ColonyDeckModel";
 import { colonyCards } from "./colony-cards";
 
 interface notTakenColonyCard {
-    id: number;
-    points: number;
+  id: number;
+  points: number;
 }
 
 export class ColonyManager {
-    constructor(
-        private readonly gameId: string,
-    ) {
-        makeAutoObservable(this);
-        this.initialize();
-    }
+  constructor(private readonly gameId: string) {
+    makeAutoObservable(this);
+    this.initialize();
+  }
+  
+  colonies: ColonyCard[] = [];
+  colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
+  currentRound: number = 0;
+  notTakenColonyCards: notTakenColonyCard[] = [];
 
-    colonyDeck = new ColonyDeckModel(colonyCards, this.gameId)
-    currentRound: number = 0;
-    notTakenColonyCards: notTakenColonyCard[] = [];
+  initialize = () => {};
+  effects = {
+    selectDeliveryStation: () => {},
+    adjustGarbage: () => {},
+  };
+  
+  beforePerform = (card: any) => {
+    const aplicable = this.findAplicableColonyCards(card.type, "before");
+    aplicable.forEach((colony) => {
+      colony.activate();
+      colony.effects.forEach((effect) => {
+        this.effects[effect]();
+      });
+    });
+  };
 
-    initialize = () => {
+  // get points from colony cards if they are was not taken after round
+  getColonyPoints = () => {};
 
-    }
-
-
-    // get points from colony cards if they are was not taken after round
-    getColonyPoints = () => {
-
-    }
-
-    // reset colony cards when button "reset" is clicked
-    reset = () => {
-
-    }
-
-
+  // reset colony cards when button "reset" is clicked
+  reset = () => {};
 }

@@ -1,3 +1,4 @@
+import { GameState } from '..';
 import { createColonyCards } from './createColonyCards';
 
 export const colonyCards = createColonyCards (
@@ -30,7 +31,9 @@ export const colonyCards = createColonyCards (
         whenIsActivated: "during",
         mutateAction: "delivery",
         players: 2,
-        name: "BLACK MARKET"
+        name: "BLACK MARKET",
+        activate: (gameState:GameState) => {console.log("activate black market")},
+        effects:["selectDeliveryStation"]
     },
     {
         benefit: "Before Delivery add/remove a resource to/from Space Garbage. You may do this as many times as there are players in the game",
@@ -39,6 +42,13 @@ export const colonyCards = createColonyCards (
         name: "SPACE LIFT"
     },
 
+    {
+        benefit: "{connection: 'end',  exitPoint: ['fuel', 'biotic material', 'minerals'], points: 2, name: 'HELIOSTAT DESERT'}",
+        //Добавляется новый модуль в инженерию
+        whenIsActivated: "before",
+        mutateAction: "delivery",
+        name: "HELIOSTAT DESERT",
+    },
 
 
     // -------------- Engineering ----------------
@@ -84,14 +94,7 @@ export const colonyCards = createColonyCards (
         mutateAction: "engineering",
         name: "SPACE INDUSTRY CENTER"
     },
-    {
-        benefit: "{connection: 'end',  exitPoint: ['fuel', 'biotic material', 'minerals'], points: 2, name: 'HELIOSTAT DESERT'}",
-        //Добавляется новый модуль в инженерию
-        whenIsActivated: "before",
-        mutateAction: "engineering",
-        name: "HELIOSTAT DESERT",
-    },
-
+ 
     // -------------- Military ----------------
     /*{
         benefit: "Empowers Spaceborne Forces, and wins the tie when comparing military power for this Combat Arms forces",

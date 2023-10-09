@@ -37,7 +37,7 @@ export class ActionManager implements IActionManager {
   activateDeck = (type: CardType) => {};
 
   activateCard = (card: number) => {
-    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
       this.buildColony(card); //строим колонию
       
@@ -58,7 +58,7 @@ export class ActionManager implements IActionManager {
   };
 
   reset = () => {
-    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       this.cardsToDrop.forEach((card) => this.table.takeCard(card));
     }
     this.cardsToDrop = [];
@@ -72,7 +72,7 @@ export class ActionManager implements IActionManager {
 
   tryBuildColony = () => {
     //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
-    if (this.isThreeCardsOfSameType() || this.isOneCardOfEachType()) {
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       this.dropCards();
     }
   };
@@ -90,18 +90,14 @@ export class ActionManager implements IActionManager {
     }
   };
 
-  isThreeCardsOfSameType = () => {
-    if (
-      this.cardsToDrop.length === 3 &&
+  get isThreeCardsOfSameType () {
+    return this.cardsToDrop.length === 3 &&
       this.cardsToDrop.filter((card) => card.type === this.missionType)
-        .length === 3
-    ) {
-      return true;
-    }
+        .length === 3;
   };
 
-  isOneCardOfEachType = () => {
-    if (
+  get isOneCardOfEachType () {
+   return (
       this.cardsToDrop.length === 4 &&
       (["delivery", "engineering", "terraforming", "military"] as const)
         .map(
@@ -109,8 +105,6 @@ export class ActionManager implements IActionManager {
             this.cardsToDrop.filter((card) => card.type === el).length === 1
         )
         .filter(Boolean).length === 4
-    ) {
-      return true;
-    }
+    );
   };
 }

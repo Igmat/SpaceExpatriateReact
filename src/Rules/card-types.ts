@@ -1,3 +1,5 @@
+import { GameState } from ".";
+
 export type ResourcePrimitive = 'fuel' | 'minerals' | 'biotic materials' | 'machinery' | 'nanotechnologies' | 'dark matter';
 
 export const isResourcePrimitive = (option: string): option is ResourcePrimitive =>
@@ -53,4 +55,6 @@ export interface ColonyCard {
     mutateAction: CardType, //или тут будет функция будет мутировать экшены,
     players?: number,
     name: string,
+    activate?: (gameState: GameState) => void,
+    effects?: string[]// правильный тип добавить
 }

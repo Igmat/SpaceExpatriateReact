@@ -64,7 +64,7 @@ export class ActionManager {
 
     this.round.phase = card.type;
     console.log(this.round.phase);
-
+    this.colony.beforePerform(card);
     this.managers[card.type].perform(card);
   };
 
