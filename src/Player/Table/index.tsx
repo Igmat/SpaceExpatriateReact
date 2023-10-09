@@ -21,18 +21,26 @@ export const Table = observer((props: TableProps) => {
   const [selectedCards, setSelectedCards] = useState([] as CardDefinition[]);
 
   const handleClick = (card: CardDefinition) => {
-    props.action.activateCardOnTable(card) &&
-      setSelectedCards([...selectedCards, card]);
+    const isSelected = selectedCards.includes(card);
+    setSelectedCards(
+      isSelected
+        ? selectedCards.filter((el) => el !== card)
+        : [...selectedCards, card]
+    );
+    props.action.activateCardOnTable(card);
+  };
+
+  const handleEndTurn = () => {
+    setSelectedCards([]);
+    props.action.tryNext();
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
         {props.model.colony.map((card, ind) => (
-          <CCard
-            key={ind}
-            {...card}
-          />))}
+          <CCard key={ind} {...card} />
+        ))}
       </div>
       <div className={styles.cardsContainer}>
         {props.model.delivery.map((card, ind) => (
@@ -50,10 +58,6 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             isSelected={selectedCards.includes(card)}
-            isAvailable={
-              props.round.phase === "delivery" &&
-              props.round.step === "performing"
-            }
             onClick={() => handleClick(card)}
           />
         ))}
@@ -64,10 +68,6 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             isSelected={selectedCards.includes(card)}
-            isAvailable={
-              props.round.phase === "delivery" &&
-              props.round.step === "performing"
-            }
             onClick={() => handleClick(card)}
           />
         ))}
@@ -101,25 +101,27 @@ export const Table = observer((props: TableProps) => {
 
       {/*buttons*/}
       {props.round.step === "performing" && selectedCards.length > 0 && (
-        <ResetButton action={props.action} />
+        <ResetButton action={props.action} /> // повесить очистку массива с выбранными картами
       )}
       {props.round.phase === "delivery" &&
         props.round.step === "performing" && (
           <ResetButton action={props.action} />
         )}
-      {props.round.step === "performing"&& props.round.phase === "terraforming" && selectedCards.length >= 3 && (
-        <button
-          className={styles.confirmButton}
-          onClick={props.action.tryNext} //обнулить useState в пустой массив
-        >
-          Confirm
-        </button>
-      )}
+      {props.round.step === "performing" &&
+        props.round.phase === "terraforming" &&
+        selectedCards.length >= 3 && (
+          <button
+            className={styles.confirmButton}
+            onClick={handleEndTurn}
+          >
+            Confirm
+          </button>
+        )}
 
       {props.round.step === "performing" && (
         <button
           className={styles.giveUpButton}
-          onClick={props.action.tryNext} //обнулить useState в пустой массив
+          onClick={handleEndTurn} 
         >
           End turn
         </button>
