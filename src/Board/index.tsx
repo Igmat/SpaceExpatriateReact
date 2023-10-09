@@ -17,8 +17,8 @@ export const Board = observer(() => {
       />
       <div className={styles.colonyContainer}>
         <ColonyDeck colony={gameState.colony.colonyDeck}
-        table = {gameState.table}
-        action={gameState.action}
+          table = {gameState.table}
+          action={gameState.action}
          />
       </div>
       <div className={styles.board}>
