@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { ColonyDeckModel } from "./ColonyDeckModel";
 import { colonyCards } from "./colony-cards";
+import { ColonyCard } from "../card-types";
 
 interface notTakenColonyCard {
   id: number;

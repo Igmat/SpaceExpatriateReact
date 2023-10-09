@@ -19,7 +19,7 @@ export const ColonyDeck = observer((props: ColonyDeckProps) => {
                 <CCard
                     key={ind}
                     {...card}
-                    onOpenCardClick={() => props.action.activateCard(ind)}
+                    onOpenCardClick={() => props.action.activateColonyCard(ind)}
                 />))
             }
         </div>
