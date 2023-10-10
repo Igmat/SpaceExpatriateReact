@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType} from "./card-types";
+import { CardDefinition, CardType } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
@@ -21,7 +21,7 @@ export class ActionManager {
     private readonly resources: ResourcesModel,
     private readonly gameId: string,
     private readonly colony: ColonyManager
-    
+
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, `action`, [`activeAction`]);
@@ -64,7 +64,7 @@ export class ActionManager {
 
     this.round.phase = card.type;
     console.log(this.round.phase);
-    this.colony.beforePerform(card);
+    //  this.colony.beforePerform(card);
     this.managers[card.type].perform(card);
   };
 
@@ -94,7 +94,7 @@ export class ActionManager {
     if (!this.activeAction) return;
     return this.managers[this.activeAction].activateCardOnTable(card);
   };
-  
+
   select = (option: string) => {
     if (!this.activeAction) return;
     this.managers[this.activeAction].select(option);

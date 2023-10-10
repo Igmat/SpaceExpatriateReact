@@ -1,13 +1,12 @@
 import { ActionManager } from '../../Rules/ActionManager';
 import { ColonyDeckModel } from '../../Rules/Colony/ColonyDeckModel';
 import { TableModel } from '../../Rules/TableModel';
-import { ColonyCard } from '../../Rules/card-types';
 import { CCard } from "../../components/ColonyCard";
 import styles from "./ColonyDeck.module.scss";
 import { observer } from "mobx-react-lite";
 
 interface ColonyDeckProps {
-    colony: ColonyDeckModel<ColonyCard>;
+    colony: ColonyDeckModel;
     table: TableModel;
     action: ActionManager;
 }

@@ -3,31 +3,25 @@ import { ColonyDeckModel } from "./ColonyDeckModel";
 import { colonyCards } from "./colony-cards";
 import { ColonyCard } from "../card-types";
 
-interface notTakenColonyCard {
-  id: number;
-  points: number;
-}
-
 export class ColonyManager {
   constructor(private readonly gameId: string) {
     makeAutoObservable(this);
     this.initialize();
   }
-  
+
   colonies: ColonyCard[] = [];
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
-  currentRound: number = 0;
-  notTakenColonyCards: notTakenColonyCard[] = [];
 
-  initialize = () => {};
   effects = {
-    selectDeliveryStation: () => {},
-    adjustGarbage: () => {},
+    selectDeliveryStation: () => { },
+    adjustGarbage: () => { },
   };
-  
-  beforePerform = (card: any) => {
+
+  initialize = () => { };
+
+  /*beforePerform = (card: any) => {
     const aplicable = this.findAplicableColonyCards(card.type, "before");
-    aplicable.forEach((colony) => {
+    aplicable.forEach((colony: ColonyCard) => {
       colony.activate();
       colony.effects.forEach((effect) => {
         this.effects[effect]();
@@ -35,9 +29,11 @@ export class ColonyManager {
     });
   };
 
-  // get points from colony cards if they are was not taken after round
-  getColonyPoints = () => {};
+  findAplicableColonyCards = () => {
 
-  // reset colony cards when button "reset" is clicked
-  reset = () => {};
+  };
+  */
+
+  getColonyPoints = () => { };
+
 }
