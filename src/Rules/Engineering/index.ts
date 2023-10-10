@@ -48,6 +48,8 @@ export class ActionManager implements IActionManager {
         this.table.takeCard(this.hand.dropCard(card));
         this.tryNext() && this.round.next()
     };
+    
+    activateColonyCard = (card: number) => {};
     activateCardOnTable = (card: CardDefinition) =>
         false;
 
