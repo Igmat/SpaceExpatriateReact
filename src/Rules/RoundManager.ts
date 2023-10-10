@@ -15,17 +15,17 @@ export class RoundManager {
     gameId: string,
   ) {
     makeAutoObservable(this);
-    const isLoaded = makeAutoSavable(this, gameId, "round",[
+    const isLoaded = makeAutoSavable(this, gameId, "round", [
       "current",
       "phase",
-       {key:"_step" as any, condition: (value) => value !== "resources"},
-    
+      { key: "_step" as any, condition: (value) => value !== "resources" },
+
     ]);
-    if (!isLoaded){
-    this.hand.takeCard(this.decks.delivery.takeCard());
-    this.hand.takeCard(this.decks.engineering.takeCard());
-    this.hand.takeCard(this.decks.military.takeCard());
-    this.hand.takeCard(this.decks.terraforming.takeCard());
+    if (!isLoaded) {
+      this.hand.takeCard(this.decks.delivery.takeCard());
+      this.hand.takeCard(this.decks.engineering.takeCard());
+      this.hand.takeCard(this.decks.military.takeCard());
+      this.hand.takeCard(this.decks.terraforming.takeCard());
     }
   }
 
@@ -54,13 +54,12 @@ export class RoundManager {
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
-  
   };
-  
+
   private setStep(step: Step) {
     this._step = step;
   }
-  
+
   startOptionsStep() {
     this.setStep("options");
   }
