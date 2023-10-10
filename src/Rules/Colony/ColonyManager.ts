@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ColonyDeckModel } from "./ColonyDeckModel";
+import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import { colonyCards } from "./colony-cards";
 import { CardType, ColonyCard } from "../card-types";
 
@@ -9,15 +9,15 @@ export class ColonyManager {
     this.initialize();
   }
 
-  colonies: ColonyCard[] = [];
+  colonies: ColonyCardWithPoints[] = [];
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
 
   effects = {
-    selectDeliveryStation: () => {},
-    adjustGarbage: () => {},
+    selectDeliveryStation: () => { },
+    adjustGarbage: () => { },
   };
 
-  initialize = () => {};
+  initialize = () => { };
 
   beforePerform = (card: any) => {
     const aplicable = this.findAplicableColonyCards(card.type, "before");
@@ -45,5 +45,5 @@ export class ColonyManager {
     );
   };
 
-  getColonyPoints = () => {};
+  getColonyPoints = () => { };
 }

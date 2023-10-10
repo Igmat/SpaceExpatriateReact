@@ -6,13 +6,13 @@ import { Table } from "./Table";
 import { observer } from "mobx-react-lite";
 
 export const Player = observer(() => {
-  const gameState  = useGameState()
+  const gameState = useGameState()
 
   return (
     <>
-      <Table model={gameState.table} round={gameState.round} action={gameState.action} resources={gameState.resources}/>
-      <Hand model={gameState.hand} decks={gameState.decks} action={gameState.action}/>
-      <PlayerMenu resources={gameState.resources}/>
+      <Table model={gameState.table} round={gameState.round} action={gameState.action} resources={gameState.resources} colony={gameState.colony} />
+      <Hand model={gameState.hand} decks={gameState.decks} action={gameState.action} />
+      <PlayerMenu resources={gameState.resources} />
     </>
   );
 });

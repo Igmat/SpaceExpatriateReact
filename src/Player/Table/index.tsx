@@ -9,12 +9,14 @@ import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { CCard } from "../../components/ColonyCard";
+import { ColonyManager } from "../../Rules/Colony/ColonyManager";
 
 interface TableProps {
   model: TableModel;
   round: RoundManager;
   action: ActionManager;
   resources: ResourcesModel;
+  colony: ColonyManager;
 }
 
 export const Table = observer((props: TableProps) => {
@@ -24,14 +26,15 @@ export const Table = observer((props: TableProps) => {
     props.action.activateCardOnTable(card) &&
       setSelectedCards([...selectedCards, card]);
   };
- 
+
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
-        {props.model.colony.map((card, ind) => (
+        {props.colony.colonies.map((card, ind) => (
           <CCard
             key={ind}
             {...card}
+
           />))}
       </div>
       <div className={styles.cardsContainer}>
@@ -103,7 +106,7 @@ export const Table = observer((props: TableProps) => {
         props.round.step === "performing" && (
           <ResetButton action={props.action} />
         )}
-      {props.round.step === "performing"&& props.round.phase === "terraforming" && selectedCards.length >= 3 && (
+      {props.round.step === "performing" && props.round.phase === "terraforming" && selectedCards.length >= 3 && (
         <button
           className={styles.confirmButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив
