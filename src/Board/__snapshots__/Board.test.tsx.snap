@@ -115,7 +115,7 @@ exports[`Board snapshot 1`] = `
         <div
           className="benefit"
         >
-          {connection: 'end',  exitPoint: ['fuel', 'biotic material', 'minerals'], points: 2, name: 'HELIOSTAT DESERT'}
+          On Engineering gain 1 point for each Station Module being docked to your Station during the Action
         </div>
         <p
           className="points"
@@ -130,7 +130,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          HELIOSTAT DESERT
+          SPACE INDUSTRY CENTER
         </p>
       </div>
     </div>
