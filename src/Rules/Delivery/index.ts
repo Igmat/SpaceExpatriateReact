@@ -62,10 +62,8 @@ export class ActionManager implements IActionManager {
   activateDeck = (type: CardType) => { };
 
   activateCard = (card: number) => {
-    if (this.round.phase === "delivery"){
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
-    }
   };
   activateColonyCard = (card: number) => {};
   
@@ -147,8 +145,8 @@ export class ActionManager implements IActionManager {
       () => this.resources.handleCardProcessing(card)
     );
   }
-  
-  isDisabled(place: string, card: CardDefinition, ): boolean {
+
+  isDisabled(place: string, card: CardDefinition,): boolean {
     if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
       return true;
     }
@@ -174,7 +172,7 @@ export class ActionManager implements IActionManager {
     return false;
   }
 
-  isDisabledDeck = (type:CardType): boolean => {
+  isDisabledDeck = (type: CardType): boolean => {
     if (this.round.phase === "delivery") return true;
     return false;
   };
