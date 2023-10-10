@@ -48,11 +48,16 @@ export class ActionManager implements IActionManager {
   };
 
   activateCardOnTable = (card: CardDefinition) => {
+    const cardIndex = this.cardsToDrop.indexOf(card);
+    if (cardIndex !== -1) {
+        this.cardsToDrop.splice(cardIndex, 1);
+        return true;
+    }
     this.cardsToDrop.push(card);
+    console.log("cardsToDrop: " + this.cardsToDrop.length);
     this.tryBuildColony();
     return true;
   };
-
 
   select = (option: string) => {
     if (isCardType(option)) {

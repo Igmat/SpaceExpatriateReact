@@ -21,10 +21,10 @@ export class TableModel {
     ]);
   }
 
-  delivery: DeliveryCard[] = [];
-  engineering: EngineeringCard[] = [];
-  terraforming: TerraformingCard[] = [];
-  military: MilitaryCard[] = [];
+  delivery: (DeliveryCard & {selected:boolean})[] = [];
+  engineering: (EngineeringCard & {selected:boolean})[] = [];
+  terraforming: (TerraformingCard & {selected:boolean})[] = [];
+  military: (MilitaryCard & {selected:boolean})[] = [];
   colony: ColonyCard[] = [];
 
   dropCards = (

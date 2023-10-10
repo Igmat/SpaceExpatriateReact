@@ -5,7 +5,6 @@ import { Card } from "../../components/Card";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { CCard } from "../../components/ColonyCard";
@@ -18,11 +17,9 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-  const [selectedCards, setSelectedCards] = useState([] as CardDefinition[]);
 
   const handleClick = (card: CardDefinition) => {
-    props.action.activateCardOnTable(card) &&
-      setSelectedCards([...selectedCards, card]);
+    props.action.activateCardOnTable(card)
   };
  
   return (
@@ -39,7 +36,7 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
+            // isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -50,7 +47,7 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
+            // isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -61,7 +58,7 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
+            // isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -72,7 +69,7 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
+            // isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -96,14 +93,12 @@ export const Table = observer((props: TableProps) => {
       )}*/}
 
       {/*buttons*/}
-      {props.round.step === "performing" && selectedCards.length > 0 && (
-        <ResetButton action={props.action} />
-      )}
-      {props.round.phase === "delivery" &&
+     
+      {(props.round.phase === "delivery"|| props.round.phase === "terraforming") &&
         props.round.step === "performing" && (
           <ResetButton action={props.action} />
         )}
-      {props.round.step === "performing"&& props.round.phase === "terraforming" && selectedCards.length >= 3 && (
+      {props.round.step === "performing"&& props.round.phase === "terraforming" && (  /*&& selectedCards.length > 0*/
         <button
           className={styles.confirmButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив
