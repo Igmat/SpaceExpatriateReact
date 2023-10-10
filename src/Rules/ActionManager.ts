@@ -88,6 +88,10 @@ export class ActionManager {
 
     // this.tryNext();
   };
+ activateColonyCard = (card: number) => {
+    if (!this.activeAction) return;
+    this.managers[this.activeAction].activateColonyCard(card);
+  }
 
   activateCardOnTable = (card: CardDefinition) => {
     if (!this.activeAction) return;

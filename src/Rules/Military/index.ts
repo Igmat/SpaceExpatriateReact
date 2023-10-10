@@ -38,6 +38,7 @@ export class ActionManager implements IActionManager {
   };
 
   activateCard = (card: number) => {};
+  activateColonyCard = (card: number) => {};
   activateCardOnTable = (card: CardDefinition) => {
     return false;
   };

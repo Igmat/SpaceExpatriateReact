@@ -35,19 +35,22 @@ export class ActionManager implements IActionManager {
   tryNext = () =>
     this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
 
-  activateDeck = (type: CardType) => {
-    if (this._remaining.activateDeck === 0) return;
-    this._remaining.activateDeck--;
-    this.table.takeCard(this.decks[type].takeCard());
-    this.tryNext() && this.round.next();
-  };
-  activateCard = (card: number) => {
-    if (this._remaining.activateCard === 0) return;
-    this._remaining.activateCard--;
-    this.table.takeCard(this.hand.dropCard(card));
-    this.tryNext() && this.round.next();
-  };
-  activateCardOnTable = (card: CardDefinition) =>false;
+    activateDeck = (type: CardType) => {
+        if (this._remaining.activateDeck === 0) return;
+        this._remaining.activateDeck--;
+        this.table.takeCard(this.decks[type].takeCard());
+        this.tryNext() && this.round.next()
+    };
+    activateCard = (card: number) => {
+        if (this._remaining.activateCard === 0) return;
+        this._remaining.activateCard--;
+        this.table.takeCard(this.hand.dropCard(card));
+        this.tryNext() && this.round.next()
+    };
+    
+    activateColonyCard = (card: number) => {};
+    activateCardOnTable = (card: CardDefinition) =>
+        false;
 
   select = (option: string) => {};
 

@@ -30,17 +30,20 @@ export class ActionManager implements IActionManager {
   };
 
   tryNext = () => {
-    this.reset() // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
+    this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     return true;
   };
 
   activateDeck = (type: CardType) => {};
 
   activateCard = (card: number) => {
+   
+  };
+
+  activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
       this.buildColony(card); //строим колонию
-      
     }
   };
 
@@ -49,6 +52,7 @@ export class ActionManager implements IActionManager {
     this.tryBuildColony();
     return true;
   };
+
 
   select = (option: string) => {
     if (isCardType(option)) {
@@ -88,16 +92,19 @@ export class ActionManager implements IActionManager {
     } else {
       console.log("No more colony cards available.");
     }
+    this.tryNext()&& this.round.next(); //переходим к следующему раунду
   };
 
-  get isThreeCardsOfSameType () {
-    return this.cardsToDrop.length === 3 &&
+  get isThreeCardsOfSameType() {
+    return (
+      this.cardsToDrop.length === 3 &&
       this.cardsToDrop.filter((card) => card.type === this.missionType)
-        .length === 3;
-  };
+        .length === 3
+    );
+  }
 
-  get isOneCardOfEachType () {
-   return (
+  get isOneCardOfEachType() {
+    return (
       this.cardsToDrop.length === 4 &&
       (["delivery", "engineering", "terraforming", "military"] as const)
         .map(

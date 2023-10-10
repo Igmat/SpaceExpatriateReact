@@ -67,7 +67,8 @@ export class ActionManager implements IActionManager {
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
     }
   };
-
+  activateColonyCard = (card: number) => {};
+  
   activateCardOnTable = (card: CardDefinition) => {
     if (card.type === "engineering") {
       this.activateEngineeringCard(card);
