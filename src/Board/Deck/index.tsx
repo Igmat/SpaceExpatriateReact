@@ -7,7 +7,7 @@ import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import styles from './Deck.module.scss'
+import styles from "./Deck.module.scss";
 
 interface DeckProps {
   model: DeckModel<CardDefinition>;
@@ -16,10 +16,10 @@ interface DeckProps {
   action: ActionManager;
   round: RoundManager;
   resources: ResourcesModel;
+  isDisabled: boolean;
 }
 
 export const Deck = observer((props: DeckProps) => {
-
   const onOpenCardClick = () => {
     props.action.perform(props.model.openedCard);
   };
@@ -31,14 +31,17 @@ export const Deck = observer((props: DeckProps) => {
         onClick={onOpenCardClick}
       >
         {props.model.openedCard && (
-          <Card key={props.model.openedCard.id} {...props.model.openedCard} />
+          <Card
+            key={props.model.openedCard.id}
+            {...props.model.openedCard}
+            isDisabled={props.action.isDisabled("opened", props.model.openedCard,)}
+          />
         )}
       </div>
       <div
-        className={`${styles[props.model.type]} ${styles.deck}`}
+        className={`${styles[props.model.type]} ${styles.deck} ${props.isDisabled ? styles.disabled : ""}`}
         onClick={() => props.action.activateDeck(props.model.type)}
       />
     </>
   );
 });
-

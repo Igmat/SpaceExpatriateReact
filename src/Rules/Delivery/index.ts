@@ -62,7 +62,7 @@ export class ActionManager implements IActionManager {
   activateDeck = (type: CardType) => { };
 
   activateCard = (card: number) => {
-    if(this.round.phase === "delivery"){// без этого карты с руки скидываются когда попало
+    if (this.round.phase === "delivery"){
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
     }
@@ -94,7 +94,9 @@ export class ActionManager implements IActionManager {
         this.resources.addResource(option);
       }
       if (this.deliveryOption === "garbage") {
-        this.resources.removeResourcesFromGarbage(option as Exclude<ResourcePrimitive, "dark matter">);
+        this.resources.removeResourcesFromGarbage(
+          option as Exclude<ResourcePrimitive, "dark matter">
+        );
       }
       this.resources.getResources();
       this.round.startPerformingStep();
@@ -144,4 +146,35 @@ export class ActionManager implements IActionManager {
       () => this.resources.handleCardProcessing(card)
     );
   }
+  
+  isDisabled(place: string, card: CardDefinition, ): boolean {
+    if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
+      return true;
+    }
+    if (this.round.phase === "delivery") {
+      if (place === "table") {
+        if (card.type === "engineering") {
+          if (
+            (card.connection === "start" &&
+              this.resources.engineeringMaps.Start[card.id] === 0) ||
+            (card.connection === "continue" &&
+              this.resources.engineeringMaps.Middle[card.id] <= 0) ||
+            (card.connection === "end" &&
+              this.resources.engineeringMaps.FinishCounter <= 0)
+          )
+            return true;
+        }
+        if (card.type === "military") return true;
+        if (card.type === "delivery") return true;
+      }
+      if (place === "hand") return false;
+      if (place === "opened") return true;
+    }
+    return false;
+  }
+
+  isDisabledDeck = (type:CardType): boolean => {
+    if (this.round.phase === "delivery") return true;
+    return false;
+  };
 }

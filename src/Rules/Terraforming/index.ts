@@ -107,4 +107,24 @@ export class ActionManager implements IActionManager {
         .filter(Boolean).length === 4
     );
   };
+  
+  isDisabled( place: string, card: CardDefinition,): boolean {
+    if (this.round.phase === "terraforming") {
+      if (place === "table") return this.isDisabledTable(card);
+      if (place === "hand") return true;
+      // if (type === "deck") return this.isDisabledDeck(card.type);
+      if (place === "opened") return true;
+    }
+    return false;
+  }
+
+  isDisabledTable = (card: CardDefinition): boolean => {
+    //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
+    return false;
+  };
+
+  isDisabledDeck = (type: CardType): boolean => {
+    if (this.round.phase === "terraforming") return true;
+    return false;
+  };
 }

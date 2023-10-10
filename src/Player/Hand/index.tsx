@@ -16,7 +16,7 @@ export const Hand = observer((props: HandProps) => {
   return (
     <div className={styles.container}>
       {props.model.cardsInHand.map((card, ind) => (
-        <Card key={ind} {...card} onClick={() => props.action.activateCard(ind)} />
+        <Card key={ind} {...card} onClick={() => props.action.activateCard(ind)}  isDisabled={props.action.isDisabled("hand", card)}/>
       ))}
     </div>
   );

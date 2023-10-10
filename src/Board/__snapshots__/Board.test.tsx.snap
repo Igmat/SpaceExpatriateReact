@@ -180,7 +180,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="delivery deck"
+      className="delivery deck "
       onClick={[Function]}
     />
     <div
@@ -223,7 +223,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="engineering deck"
+      className="engineering deck "
       onClick={[Function]}
     />
     <div
@@ -316,7 +316,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="terraforming deck"
+      className="terraforming deck "
       onClick={[Function]}
     />
     <div
@@ -334,7 +334,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="military deck"
+      className="military deck "
       onClick={[Function]}
     />
   </div>

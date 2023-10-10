@@ -57,4 +57,19 @@ export class ActionManager implements IActionManager {
   };
 
   reset = () => {};
+
+  isDisabled(place: string, card: CardDefinition, ): boolean {
+    if (this.round.phase === "military") {
+      if (place === "table") return true;
+      if (place === "hand") return true;
+      if (place === "opened") return true;
+    }
+    return false;
+  }
+
+  isDisabledDeck = (type: CardType): boolean => {
+    return false;
+  };
+
+
 }
