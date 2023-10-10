@@ -228,9 +228,6 @@ resetPlayerResources = () => {//запасной вариант востанов
       {} as { [key: number]: number }
     );
     this.engineeringMaps.FinishCounter = 0; // забывали очищать счетчик, если была скинута карта с руки с предыдущего раунда
-
-    console.log(this.engineeringMaps.Start);
-    console.log(this.engineeringMaps);
   };
 
   useCardConnection = (card: EngineeringCard) => {
