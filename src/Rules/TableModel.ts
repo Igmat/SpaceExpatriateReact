@@ -21,10 +21,10 @@ export class TableModel {
     ]);
   }
 
-  delivery: (DeliveryCard & {selected:boolean})[] = [];
-  engineering: (EngineeringCard & {selected:boolean})[] = [];
-  terraforming: (TerraformingCard & {selected:boolean})[] = [];
-  military: (MilitaryCard & {selected:boolean})[] = [];
+  delivery: (DeliveryCard & { selected: boolean })[] = [];
+  engineering: (EngineeringCard & { selected: boolean })[] = [];
+  terraforming: (TerraformingCard & { selected: boolean })[] = [];
+  military: (MilitaryCard & { selected: boolean })[] = [];
   colony: ColonyCard[] = [];
 
   dropCards = (
@@ -47,9 +47,31 @@ export class TableModel {
 
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
-    //  console.log(card)
   };
   takeColonyCard = (card: ColonyCard) => {
     this.colony.push(card);
   };
+
+  resetSelectedFlags = () => {
+    this.delivery.forEach((card) => (card.selected = false));
+    this.engineering.forEach((card) => (card.selected = false));
+    this.terraforming.forEach((card) => (card.selected = false));
+    this.military.forEach((card) => (card.selected = false));
+  };
+
+  setSelectedFlagTrue = (card:CardDefinition) => {
+    this[card.type].forEach((el) => {
+      if (el.id === card.id) {
+        el.selected = true;
+      }
+    });
+  };
+
+  setSelectedFlagFalse = (card: CardDefinition) => {
+    this[card.type].forEach((el) => {
+      if (el.id === card.id) {
+        el.selected = false;
+      }
+    });
+  }
 }
