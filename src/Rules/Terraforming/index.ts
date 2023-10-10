@@ -7,77 +7,91 @@ import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class ActionManager implements IActionManager {
+  cardsToDrop: CardDefinition[] = [];
 
-    cardsToDrop: CardDefinition[] = [];
+  missionType?: CardType;
 
-    missionType?: CardType;
+  constructor(
+    private readonly round: RoundManager,
+    private readonly table: TableModel,
+    private readonly decks: DeckManager,
+    gameId: string
+  ) {
+    makeAutoObservable(this);
+    makeAutoSavable(this, gameId, "terraformingManager", [
+      "cardsToDrop",
+      "missionType",
+    ]);
+  }
 
-    constructor(
-        private readonly round: RoundManager,
-        private readonly table: TableModel,
-        private readonly decks: DeckManager,
-        gameId: string
-    ) {
-        makeAutoObservable(this);
-        makeAutoSavable(this, gameId, "terraformingManager",[
-            "cardsToDrop",
-            "missionType"
-          ]);
+  perform = (card: CardDefinition) => {
+    this.round.startOptionsStep();
+  };
+  tryNext = () => {
+    return true;
+    //tryBuildColony
+    //должна быть очистка
+  };
+  activateDeck = (type: CardType) => {};
+  activateCard = (card: number) => {};
+  activateCardOnTable = (card: CardDefinition) => {
+    //проверка на наличие в массиве
+    this.cardsToDrop.push(card);
+    return true;
+  };
+
+  select = (option: string) => {
+    if (isCardType(option)) {
+      this.round.startPerformingStep();
+      this.missionType = option;
     }
+  };
 
-    perform = (card: CardDefinition) => {
-        this.round.startOptionsStep();
-    };
-    tryNext = () => {
-        return true
-        //tryBuildColony
-        //должна быть очистка
-    };
-    activateDeck = (type: CardType) => {
+  reset = () => {
+    this.cardsToDrop = [];
+    console.log("cardsToDrop: " + this.cardsToDrop.length);
+  };
 
-    };
-    activateCard = (card: number) => {
+  dropCards = () => {
+    this.decks.dropCards(...this.table.dropCards(...this.cardsToDrop));
+    this.cardsToDrop = [];
+    console.log("You have dropped cards and got 1 Colony");
+    this.tryNext();
+  };
 
-    };
-    activateCardOnTable = (card: CardDefinition) => {
-        //проверка на наличие в массиве
-        this.cardsToDrop.push(card)
-        return true
-    };
+  tryBuildColony = () => {
+    this.cardsToDrop.length === 3 &&
+      this.cardsToDrop.filter((card) => card.type === this.missionType)
+        .length === 3 &&
+      this.dropCards();
+    this.cardsToDrop.length === 4 &&
+      (["delivery", "engineering", "terraforming", "military"] as const)
+        .map(
+          (el) =>
+            this.cardsToDrop.filter((card) => card.type === el).length === 1
+        )
+        .filter(Boolean).length === 4 &&
+      this.dropCards();
+    //сделать возврат true / false
+  };
 
-    select = (option: string) => {
-        if (isCardType(option)) {
-            this.round.startPerformingStep();
-            this.missionType = option;
-        }
+  isDisabled( place: string, card: CardDefinition,): boolean {
+    if (this.round.phase === "terraforming") {
+      if (place === "table") return this.isDisabledTable(card);
+      if (place === "hand") return true;
+      // if (type === "deck") return this.isDisabledDeck(card.type);
+      if (place === "opened") return true;
     }
+    return false;
+  }
 
-    reset = () => {
-        this.cardsToDrop = [];
-        console.log("cardsToDrop: " + this.cardsToDrop.length);
-    }
+  isDisabledTable = (card: CardDefinition): boolean => {
+    //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
+    return false;
+  };
 
-    dropCards = () => {
-        this.decks.dropCards(...this.table.dropCards(...this.cardsToDrop)) ;
-        this.cardsToDrop = [];
-        console.log("You have dropped cards and got 1 Colony");
-        this.tryNext();
-    };
-
-
-    tryBuildColony = () => {
-        this.cardsToDrop.length === 3 &&
-            this.cardsToDrop.filter((card) => card.type === this.missionType)
-                .length === 3 &&
-            this.dropCards();
-        this.cardsToDrop.length === 4 &&
-            (["delivery", "engineering", "terraforming", "military"] as const)
-                .map(
-                    (el) =>
-                        this.cardsToDrop.filter((card) => card.type === el).length === 1
-                )
-                .filter(Boolean).length === 4 &&
-            this.dropCards();
-        //сделать возврат true / false
-    };
+  isDisabledDeck = (type: CardType): boolean => {
+    if (this.round.phase === "terraforming") return true;
+    return false;
+  };
 }

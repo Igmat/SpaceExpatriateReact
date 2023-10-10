@@ -45,6 +45,9 @@ export class ActionManager {
   };
 
   activeAction?: CardType;
+  get deliveryManager(): DAM {
+    return this.managers.delivery;
+  }
 
   perform = (card?: CardDefinition) => {
     if (!card) return;
@@ -61,7 +64,6 @@ export class ActionManager {
 
     this.round.phase = card.type;
     console.log(this.round.phase);
-
     this.managers[card.type].perform(card);
   };
 
@@ -97,4 +99,19 @@ export class ActionManager {
     if (!this.activeAction) return;
     this.managers[this.activeAction].reset();
   };
+
+  get isDisabled(): (place: string, card: CardDefinition) => boolean {
+    return (place: string, card: CardDefinition) => {
+      if (!this.activeAction) return false;
+      if (this.round.phase === "active" && (place === "table"|| place === "hand")) return true;
+      return this.managers[this.activeAction].isDisabled(place, card);
+    };
+  }
+  get isDisabledDeck(): (type: CardType) => boolean {
+    return (type: CardType) => {
+      if (!this.activeAction) return false;
+      if (this.round.phase === "active") return true;
+      return this.managers[this.activeAction].isDisabledDeck(type);
+    };
+  }
 }

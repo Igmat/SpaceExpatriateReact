@@ -23,7 +23,7 @@ export const Table = observer((props: TableProps) => {
     props.action.activateCardOnTable(card) &&
       setSelectedCards([...selectedCards, card]);
   };
-
+ 
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
@@ -33,6 +33,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -42,11 +43,8 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             isSelected={selectedCards.includes(card)}
-            isAvailable={
-              props.round.phase === "delivery" &&
-              props.round.step === "performing"
-            }
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -56,11 +54,8 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             isSelected={selectedCards.includes(card)}
-            isAvailable={
-              props.round.phase === "delivery" &&
-              props.round.step === "performing"
-            }
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -71,6 +66,7 @@ export const Table = observer((props: TableProps) => {
             {...card}
             isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
+            isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -108,7 +104,7 @@ export const Table = observer((props: TableProps) => {
         </button>
       )}
 
-      {props.round.step === "performing" &&  (
+      {props.round.step === "performing" && (
         <button
           className={styles.giveUpButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив
