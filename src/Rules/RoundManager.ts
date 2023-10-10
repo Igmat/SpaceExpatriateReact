@@ -3,7 +3,6 @@ import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType, ResourcePrimitive } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { ActionManager } from "./ActionManager";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
@@ -13,7 +12,6 @@ export class RoundManager {
   constructor(
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
-    private readonly action: ActionManager,
     gameId: string,
   ) {
     makeAutoObservable(this);
@@ -56,7 +54,6 @@ export class RoundManager {
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
-    this.action.activeAction = undefined;
   };
 
   private setStep(step: Step) {

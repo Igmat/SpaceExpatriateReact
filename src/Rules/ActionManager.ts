@@ -68,9 +68,14 @@ export class ActionManager {
     this.managers[card.type].perform(card);
   };
 
+  callNextRound = () => {
+    this.round.next();
+    this.activeAction = undefined
+  }
+
   tryNext = () => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].tryNext() && this.round.next();
+    this.managers[this.activeAction].tryNext() && this.callNextRound();
   };
 
   activateDeck = (type: CardType) => {
