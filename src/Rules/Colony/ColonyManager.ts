@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { ColonyDeckModel } from "./ColonyDeckModel";
 import { colonyCards } from "./colony-cards";
-import { ColonyCard } from "../card-types";
+import { CardType, ColonyCard } from "../card-types";
 
 export class ColonyManager {
   constructor(private readonly gameId: string) {
@@ -13,27 +13,37 @@ export class ColonyManager {
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
 
   effects = {
-    selectDeliveryStation: () => { },
-    adjustGarbage: () => { },
+    selectDeliveryStation: () => {},
+    adjustGarbage: () => {},
   };
 
-  initialize = () => { };
+  initialize = () => {};
 
-  /*beforePerform = (card: any) => {
+  beforePerform = (card: any) => {
     const aplicable = this.findAplicableColonyCards(card.type, "before");
     aplicable.forEach((colony: ColonyCard) => {
-      colony.activate();
-      colony.effects.forEach((effect) => {
-        this.effects[effect]();
-      });
+      if (colony.activate !== undefined) {
+        // colony.activate();
+      }
+      if (colony.effects !== undefined) {
+        colony.effects.forEach((effect) => {
+          // this.effects[effect]();
+        });
+      }
     });
   };
 
-  findAplicableColonyCards = () => {
-
+  findAplicableColonyCards = (
+    CardType: CardType,
+    whenIsActivated: string
+  ): ColonyCard[] => {
+    // проверить. праивльно ли работает метод
+    return this.colonies.filter(
+      (colony) =>
+        colony.whenIsActivated === whenIsActivated &&
+        colony.mutateAction === CardType
+    );
   };
-  */
 
-  getColonyPoints = () => { };
-
+  getColonyPoints = () => {};
 }
