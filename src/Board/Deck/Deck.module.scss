@@ -22,6 +22,8 @@
   box-shadow: 3px 3px #5c4d32, 6px 6px #4a3f29, 9px 9px #3e3626;
 }
 
+
+ 
 .deck {
   width:120px;
   height:200px;
@@ -39,4 +41,10 @@
     position: relative;
  
   }
+  &.disabled {
+    filter: grayscale(80%) brightness(
+       50%
+     );
+     cursor: not-allowed;
+   } 
 }
