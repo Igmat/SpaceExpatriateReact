@@ -1,19 +1,12 @@
 import { Deck } from "./Deck";
 import styles from "./Board.module.scss";
 import { useGameState } from "../Rules";
-import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ResourcesDeck } from "./ResourcesDeck";
+import { ColonyDeck } from "./ColonyDeck";
 
 export const Board = observer(() => {
   const gameState = useGameState();
-  const [propmt, setPropmt] = useState("");
-
-  useEffect(() => {
-    gameState.round.current >= 5 &&
-      setPropmt(`Choose a mission, round ${gameState.round.current}`);
-    setTimeout(() => setPropmt(" "), 2000);
-  }, [gameState.round]);
 
   return (
     <div className={styles.container}>
@@ -22,8 +15,12 @@ export const Board = observer(() => {
         action={gameState.action}
         resources={gameState.resources}
       />
-      <p> {propmt} </p>
-
+      <div className={styles.colonyContainer}>
+        <ColonyDeck colony={gameState.colony.colonyDeck}
+          table = {gameState.table}
+          action={gameState.action}
+         />
+      </div>
       <div className={styles.board}>
         <Deck
           model={gameState.decks.delivery}

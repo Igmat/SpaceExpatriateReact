@@ -18,6 +18,9 @@ Array [
       className="cardsContainer"
     />
     <div
+      className="cardsContainer"
+    />
+    <div
       className="round"
     >
       Round: 1

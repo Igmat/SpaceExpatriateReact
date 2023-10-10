@@ -8,6 +8,7 @@ import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
+import { CCard } from "../../components/ColonyCard";
 
 interface TableProps {
   model: TableModel;
@@ -26,6 +27,13 @@ export const Table = observer((props: TableProps) => {
  
   return (
     <div className={styles.container}>
+      <div className={styles.cardsContainer}>
+        {props.model.colony.map((card, ind) => (
+          <CCard
+            key={ind}
+            {...card}
+          />))}
+      </div>
       <div className={styles.cardsContainer}>
         {props.model.delivery.map((card, ind) => (
           <Card
@@ -95,7 +103,7 @@ export const Table = observer((props: TableProps) => {
         props.round.step === "performing" && (
           <ResetButton action={props.action} />
         )}
-      {props.round.step === "performing" && selectedCards.length >= 3 && (
+      {props.round.step === "performing"&& props.round.phase === "terraforming" && selectedCards.length >= 3 && (
         <button
           className={styles.confirmButton}
           onClick={props.action.tryNext} //обнулить useState в пустой массив

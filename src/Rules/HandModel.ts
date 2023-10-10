@@ -5,15 +5,15 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 export class HandModel {
   public cardsInHand: CardDefinition[] = [];
   public tempDroppedCards: CardDefinition[] = []
-  
+
   constructor(gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "hand",[
+    makeAutoSavable(this, gameId, "hand", [
       "cardsInHand",
       "tempDroppedCards",
     ]);
   }
- dropCard = (ind: number) => {
+  dropCard = (ind: number) => {
     const card = this.cardsInHand[ind];
     this.cardsInHand.splice(ind, 1); //вырезаем карту из руки
     return card;

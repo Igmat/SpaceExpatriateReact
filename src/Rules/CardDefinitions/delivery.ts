@@ -12,3 +12,4 @@ export const deliveryCards = createCards<DeliveryCard>(
     { resources: [ 'machinery'], quantity: 4 },
     { resources: [ 'nanotechnologies'], quantity: 4 },
 )
+

@@ -3,7 +3,7 @@ import { RoundManager } from "../../Rules/RoundManager";
 import { ActionManager } from "../../Rules/ActionManager";
 import { observer } from "mobx-react-lite";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import { NavLink } from "react-router-dom";
+
 interface ResourcesDeckProps {
   round: RoundManager;
   action: ActionManager;
@@ -14,7 +14,7 @@ export const ResourcesDeck = observer((props: ResourcesDeckProps) => {
 
   return (
     <div className={styles.container}>
-       <NavLink to="/"> <div className={styles.startBtn}>END GAME</div></NavLink>
+   
       <div className={styles.garbage}>
       
        <div className={styles.biotic}>

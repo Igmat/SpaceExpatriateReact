@@ -10,6 +10,7 @@ import { ActionManager as TAM } from "./Terraforming";
 import { ActionManager as DAM } from "./Delivery";
 import { ActionManager as MAM } from "./Military";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
+import { ColonyManager } from "./Colony/ColonyManager";
 
 export class ActionManager {
   constructor(
@@ -18,7 +19,9 @@ export class ActionManager {
     private readonly round: RoundManager,
     private readonly hand: HandModel,
     private readonly resources: ResourcesModel,
-    private readonly gameId: string
+    private readonly gameId: string,
+    private readonly colony: ColonyManager
+
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, `action`, [`activeAction`]);
@@ -32,7 +35,7 @@ export class ActionManager {
       this.hand,
       this.gameId
     ),
-    terraforming: new TAM(this.round, this.table, this.decks, this.gameId),
+    terraforming: new TAM(this.round, this.table, this.decks, this.gameId, this.colony),
     delivery: new DAM(
       this.table,
       this.round,
@@ -65,6 +68,7 @@ export class ActionManager {
 
     this.round.phase = card.type;
     console.log(this.round.phase);
+    this.colony.beforePerform(card);
     this.managers[card.type].perform(card);
   };
 
@@ -90,6 +94,10 @@ export class ActionManager {
 
     // this.tryNext();
   };
+ activateColonyCard = (card: number) => {
+    if (!this.activeAction) return;
+    this.managers[this.activeAction].activateColonyCard(card);
+  }
 
   activateCardOnTable = (card: CardDefinition) => {
     if (!this.activeAction) return;

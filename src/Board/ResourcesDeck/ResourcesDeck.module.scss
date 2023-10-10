@@ -9,7 +9,7 @@
 
   & .garbage {
     width: 100%;
-    height: 200px;
+    height: 80px;
     border-radius: 15px;
     background-color: rgb(38, 38, 38);
     color: rgb(121, 137, 125);
@@ -18,11 +18,12 @@
     align-items: center;
     gap: 25px;
     position: relative;
+    transform: translate(0, -70px);
     &::before {
       content: "SPACE GARBAGE";
       position: absolute;
       color: rgb(133, 133, 133, 0.1);
-      font-size: 80px;
+      font-size: 40px;
       top: -10px;
       z-index: 0;
     }
@@ -40,23 +41,23 @@
     }
     & .biotic {
       background-color: green;
-      transform: translate(0, 40px) rotate(10deg);
+      transform: translate(0, 0px) rotate(10deg);
     }
     & .fuel {
       background-color: purple;
-      transform: translate(0, 20px) rotate(340deg);
+      transform: translate(0, 0px) rotate(340deg);
     }
     & .machinery {
       background-color: red;
-      transform: translate(10px, 50px) rotate(10deg);
+      transform: translate(10px, 0px) rotate(10deg);
     }
     & .minerals {
       background-color: blue;
-      transform: translate(10px, 10px) rotate(350deg);
+      transform: translate(10px, 0px) rotate(350deg);
     }
     & .nanotechnologies {
       background-color: rgb(198, 198, 80);
-      transform: translate(0, 40px) rotate(10deg);
+      transform: translate(0, 0px) rotate(10deg);
     }
   }
 }

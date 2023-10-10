@@ -7,19 +7,6 @@ exports[`Board snapshot 1`] = `
   <div
     className="container"
   >
-    <a
-      aria-current="page"
-      className="active"
-      href="/"
-      onClick={[Function]}
-    >
-       
-      <div
-        className="startBtn"
-      >
-        END GAME
-      </div>
-    </a>
     <div
       className="garbage"
     >
@@ -50,10 +37,104 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
   </div>
-  <p>
-     
-     
-  </p>
+  <div
+    className="colonyContainer"
+  >
+    <div
+      className="colonyCards"
+    >
+      <div
+        className="card"
+        onClick={[Function]}
+      >
+        <div
+          className="mutateAction"
+        >
+          military
+        </div>
+        <div
+          className="benefit"
+        >
+          Tactical Nanorobotics
+        </div>
+        <p
+          className="points"
+        >
+          2
+        </p>
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          TACTICAL NANOROBOTICS
+        </p>
+      </div>
+      <div
+        className="card"
+        onClick={[Function]}
+      >
+        <div
+          className="mutateAction"
+        >
+          military
+        </div>
+        <div
+          className="benefit"
+        >
+          On Military gain 1 point for each card drawn by you during the Action, but not more than 3 points
+        </div>
+        <p
+          className="points"
+        >
+          2
+        </p>
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          COMMAND CENTER
+        </p>
+      </div>
+      <div
+        className="card"
+        onClick={[Function]}
+      >
+        <div
+          className="mutateAction"
+        >
+          engineering
+        </div>
+        <div
+          className="benefit"
+        >
+          On Engineering gain 1 point for each Station Module being docked to your Station during the Action
+        </div>
+        <p
+          className="points"
+        >
+          2
+        </p>
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          SPACE INDUSTRY CENTER
+        </p>
+      </div>
+    </div>
+  </div>
   <div
     className="board"
   >

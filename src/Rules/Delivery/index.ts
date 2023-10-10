@@ -65,7 +65,8 @@ export class ActionManager implements IActionManager {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
-
+  activateColonyCard = (card: number) => {};
+  
   activateCardOnTable = (card: CardDefinition) => {
     if (card.type === "engineering") {
       this.activateEngineeringCard(card);

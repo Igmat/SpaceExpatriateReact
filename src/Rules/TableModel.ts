@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import {
   CardDefinition,
+  ColonyCard,
   DeliveryCard,
   EngineeringCard,
   MilitaryCard,
@@ -11,12 +12,12 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 export class TableModel {
   constructor(gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "table",[
+    makeAutoSavable(this, gameId, "table", [
       "delivery",
       "engineering",
       "terraforming",
       "military",
- 
+      "colony",
     ]);
   }
 
@@ -24,9 +25,10 @@ export class TableModel {
   engineering: EngineeringCard[] = [];
   terraforming: TerraformingCard[] = [];
   military: MilitaryCard[] = [];
+  colony: ColonyCard[] = [];
 
-
-  dropCards = (//очистить сброшенные карты со стола
+  dropCards = (
+    //очистить сброшенные карты со стола
     ...cards: (
       | DeliveryCard
       | EngineeringCard
@@ -40,12 +42,14 @@ export class TableModel {
       (card) => !cards.includes(card)
     );
     this.military = this.military.filter((card) => !cards.includes(card));
-
     return cards;
   };
 
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
     //  console.log(card)
+  };
+  takeColonyCard = (card: ColonyCard) => {
+    this.colony.push(card);
   };
 }

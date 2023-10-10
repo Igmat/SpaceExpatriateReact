@@ -1,0 +1,37 @@
+.card{
+    width: 120px;
+    height: 200px;
+    border-radius: 15px;
+    padding: 10px;
+    background-color: rgb(108, 76, 76);
+    color: rgb(178, 177, 177);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+& .mutateAction{
+    color: rgb(131, 131, 228);
+}
+& .benefit{
+    height: 80px;
+    font-size: 10px;
+    border-radius: 15px;
+    border: 1px solid rgb(131, 131, 96);
+    box-shadow: inset 0px 0px 10px 5px rgba(0, 0, 0, 0.6);
+}
+& .points{
+    border-radius: 50%;
+    border: 1px solid rgb(131, 131, 96);
+    width: 30px;
+    background-color: gray;
+    align-self: flex-end;
+}
+& .colony{
+    width: 100%;
+    background: linear-gradient(rgb(145, 114, 114), rgb(108, 76, 76), rgb(108, 76, 76),rgb(145, 114, 114));
+}
+& .name{
+    font-size: 15px;
+}
+}

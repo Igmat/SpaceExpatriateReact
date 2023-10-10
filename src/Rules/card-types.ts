@@ -1,6 +1,8 @@
+import { GameState } from ".";
+
 export type ResourcePrimitive = 'fuel' | 'minerals' | 'biotic materials' | 'machinery' | 'nanotechnologies' | 'dark matter';
 
-export const isResourcePrimitive = (option: string ): option is ResourcePrimitive => 
+export const isResourcePrimitive = (option: string): option is ResourcePrimitive =>
     (['fuel', 'minerals', 'biotic materials', 'machinery', 'nanotechnologies', 'dark matter']).includes(option)
 
 export const isCardType = (option: string): option is CardType =>
@@ -16,7 +18,7 @@ export interface DeliveryCard {
     id: number,
     type: 'delivery',
     resources: /*ResourcePrimitive | */ResourcePrimitive[],
-   // points: number
+    // points: number
 }
 
 export interface EngineeringCard {
@@ -42,5 +44,17 @@ export interface MilitaryCard {
     type: 'military',
     weapon: 'orbital' | 'intelligence' | 'fighters' | 'spaceborne',
     name: string,
-   // points: number
+    // points: number
+}
+
+export interface ColonyCard {
+    id: number,
+    type: 'colony',
+    benefit: string,
+    whenIsActivated: 'before' | 'after' | 'during',
+    mutateAction: CardType, //или тут будет функция будет мутировать экшены,
+    players?: number,
+    name: string,
+    activate?: (gameState: GameState) => void,
+    effects?: string[]// правильный тип добавить
 }

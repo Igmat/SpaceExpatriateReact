@@ -5,17 +5,18 @@ import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+import { ColonyManager } from "../Colony/ColonyManager";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
-
   missionType?: CardType;
 
   constructor(
     private readonly round: RoundManager,
     private readonly table: TableModel,
     private readonly decks: DeckManager,
-    gameId: string
+    gameId: string,
+    private readonly colony: ColonyManager
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -27,18 +28,31 @@ export class ActionManager implements IActionManager {
   perform = (card: CardDefinition) => {
     this.round.startOptionsStep();
   };
+
   tryNext = () => {
+    this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     return true;
-    //tryBuildColony
-    //должна быть очистка
   };
+
   activateDeck = (type: CardType) => {};
-  activateCard = (card: number) => {};
+
+  activateCard = (card: number) => {
+   
+  };
+
+  activateColonyCard = (card: number) => {
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
+      //если выполняется условие для постройки колонии
+      this.buildColony(card); //строим колонию
+    }
+  };
+
   activateCardOnTable = (card: CardDefinition) => {
-    //проверка на наличие в массиве
     this.cardsToDrop.push(card);
+    this.tryBuildColony();
     return true;
   };
+
 
   select = (option: string) => {
     if (isCardType(option)) {
@@ -48,33 +62,59 @@ export class ActionManager implements IActionManager {
   };
 
   reset = () => {
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
+      this.cardsToDrop.forEach((card) => this.table.takeCard(card));
+    }
     this.cardsToDrop = [];
     console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
 
   dropCards = () => {
-    this.decks.dropCards(...this.table.dropCards(...this.cardsToDrop));
-    this.cardsToDrop = [];
+    this.table.dropCards(...this.cardsToDrop);
     console.log("You have dropped cards and got 1 Colony");
-    this.tryNext();
   };
 
   tryBuildColony = () => {
-    this.cardsToDrop.length === 3 &&
-      this.cardsToDrop.filter((card) => card.type === this.missionType)
-        .length === 3 &&
+    //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       this.dropCards();
-    this.cardsToDrop.length === 4 &&
+    }
+  };
+
+  buildColony = (selectedCardIndex: number) => {
+    const selectedCard =
+      this.colony.colonyDeck.takeOpenedCard(selectedCardIndex);
+
+    if (selectedCard) {
+      this.table.takeColonyCard(selectedCard);
+      this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
+      this.cardsToDrop = []; //чистим масив сбрасываемых карт
+    } else {
+      console.log("No more colony cards available.");
+    }
+    this.tryNext()&& this.round.next(); //переходим к следующему раунду
+  };
+
+  get isThreeCardsOfSameType() {
+    return (
+      this.cardsToDrop.length === 3 &&
+      this.cardsToDrop.filter((card) => card.type === this.missionType)
+        .length === 3
+    );
+  }
+
+  get isOneCardOfEachType() {
+    return (
+      this.cardsToDrop.length === 4 &&
       (["delivery", "engineering", "terraforming", "military"] as const)
         .map(
           (el) =>
             this.cardsToDrop.filter((card) => card.type === el).length === 1
         )
-        .filter(Boolean).length === 4 &&
-      this.dropCards();
-    //сделать возврат true / false
+        .filter(Boolean).length === 4
+    );
   };
-
+  
   isDisabled( place: string, card: CardDefinition,): boolean {
     if (this.round.phase === "terraforming") {
       if (place === "table") return this.isDisabledTable(card);

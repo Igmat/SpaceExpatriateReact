@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 import { Provider, GameState } from "../../Rules";
 import { useMemo} from "react";
 import { gameStore } from "../../Store";
-
-
+import { NavLink } from "react-router-dom";
+import styles from './Game.module.scss'
 
 export const Game = () => {
   const gameId = useParams<{ gameId: string }>().gameId;
@@ -23,7 +23,11 @@ export const Game = () => {
       {useModalWrapper(
         <div className="App">
           <div className="board">
-          <button onClick={() => saveGame(gameId!)}>Save Game</button>
+            <div className={styles.gameBtns}>
+            <button onClick={() => saveGame(gameId!)}>Save Game</button>
+          <NavLink to="/"> <button className={styles.startBtn}>End Game</button></NavLink>
+            </div>
+      
             <Board />
           </div>
           <div className="player">
