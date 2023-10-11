@@ -38,11 +38,11 @@ export class ActionManager implements IActionManager {
 
   public calculatedResources: Resource[] = [];
   deliveryOption?: DeliveryOption;
-  usedTerraformingCards: TerraformingCard[] = []; //использованные карты Terraforming
+  usedTerraformingCards: number[] = []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = [];
 
   useTerraformingCard = (card: TerraformingCard) => {
-    this.usedTerraformingCards.push(card);
+    this.usedTerraformingCards.push(card.id);
   };
 
   perform = (card: CardDefinition) => {
@@ -72,7 +72,7 @@ export class ActionManager implements IActionManager {
       this.activateEngineeringCard(card);
     }
     if (card.type === "terraforming") {
-      if (!this.usedTerraformingCards.includes(card)) {
+      if (!this.usedTerraformingCards.includes(card.id)) {
         this.resources.tryConsumeResources(card.resources, () => {
           this.resources.calculateRoundPoints(card);
           this.useTerraformingCard(card);
@@ -147,7 +147,7 @@ export class ActionManager implements IActionManager {
   }
 
   isDisabled(place: string, card: CardDefinition,): boolean {
-    if (this.usedTerraformingCards.includes(card as TerraformingCard)) {
+    if (this.usedTerraformingCards.includes(card.id)) {
       return true;
     }
     if (this.round.phase === "delivery") {
