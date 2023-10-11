@@ -6,6 +6,7 @@ import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ColonyManager } from "../Colony/ColonyManager";
+import { ResourcesModel } from "../ResourcesModel";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
@@ -16,7 +17,8 @@ export class ActionManager implements IActionManager {
     private readonly table: TableModel,
     private readonly decks: DeckManager,
     gameId: string,
-    private readonly colony: ColonyManager
+    private readonly colony: ColonyManager,
+    private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -31,14 +33,13 @@ export class ActionManager implements IActionManager {
 
   tryNext = () => {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
+    this.colony.colonyDeck.countPoints();
     return true;
   };
 
-  activateDeck = (type: CardType) => {};
+  activateDeck = (type: CardType) => { };
 
-  activateCard = (card: number) => {
-   
-  };
+  activateCard = (card: number) => { };
 
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
@@ -84,6 +85,10 @@ export class ActionManager implements IActionManager {
   buildColony = (selectedCardIndex: number) => {
     const selectedCard =
       this.colony.colonyDeck.takeOpenedCard(selectedCardIndex);
+    
+    let selectedCardPoints = selectedCard.points;
+    this.resources.points.total += selectedCardPoints!; //прибавляем очки за постройку колонии
+    selectedCard.points = 0; //обнуляем очки на карте которая построена
 
     if (selectedCard) {
       this.table.takeColonyCard(selectedCard);
@@ -92,7 +97,7 @@ export class ActionManager implements IActionManager {
     } else {
       console.log("No more colony cards available.");
     }
-    this.tryNext()&& this.round.next(); //переходим к следующему раунду
+    this.tryNext() && this.round.next(); //переходим к следующему раунду
   };
 
   get isThreeCardsOfSameType() {

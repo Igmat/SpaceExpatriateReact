@@ -35,7 +35,7 @@ export class ActionManager {
       this.hand,
       this.gameId
     ),
-    terraforming: new TAM(this.round, this.table, this.decks, this.gameId, this.colony),
+    terraforming: new TAM(this.round, this.table, this.decks, this.gameId, this.colony, this.resources),
     delivery: new DAM(
       this.table,
       this.round,
@@ -94,7 +94,8 @@ export class ActionManager {
 
     // this.tryNext();
   };
- activateColonyCard = (card: number) => {
+  
+  activateColonyCard = (card: number) => {
     if (!this.activeAction) return;
     this.managers[this.activeAction].activateColonyCard(card);
   }
