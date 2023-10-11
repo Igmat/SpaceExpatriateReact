@@ -6,7 +6,7 @@ type CardProps = ColonyCardWithPoints & {
   onOpenCardClick?: () => void;
 };
 
-export const CCard = observer((props: CardProps) => {
+export const ColonyCard = observer((props: CardProps) => {
 
   return (
     <div className={styles.card} onClick={props.onOpenCardClick}>

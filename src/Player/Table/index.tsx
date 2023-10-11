@@ -8,7 +8,7 @@ import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
-import { CCard } from "../../components/ColonyCard";
+import { ColonyCard } from "../../components/ColonyCard";
 import { ColonyManager } from "../../Rules/Colony/ColonyManager";
 
 interface TableProps {
@@ -31,10 +31,9 @@ export const Table = observer((props: TableProps) => {
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
         {props.colony.colonies.map((card, ind) => (
-          <CCard
+          <ColonyCard
             key={ind}
             {...card}
-
           />))}
       </div>
       <div className={styles.cardsContainer}>
