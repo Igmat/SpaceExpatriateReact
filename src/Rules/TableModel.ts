@@ -59,19 +59,11 @@ export class TableModel {
     this.military.forEach((card) => (card.isSelected = false));
   };
 
-  setSelectedFlagTrue = (card:CardDefinition) => {
+  toggleSelectedFlag = (card: CardDefinition) => {
     this[card.type].forEach((el) => {
       if (el.id === card.id) {
-        el.isSelected = true;
+        el.isSelected = !el.isSelected; 
       }
     });
   };
-
-  setSelectedFlagFalse = (card: CardDefinition) => {
-    this[card.type].forEach((el) => {
-      if (el.id === card.id) {
-        el.isSelected = false;
-      }
-    });
-  }
 }
