@@ -36,7 +36,7 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={card.isSelected}
+            // isSelected={card.isSelected}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -47,7 +47,6 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={card.isSelected}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -58,7 +57,6 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={card.isSelected}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -69,7 +67,6 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={card.isSelected}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
