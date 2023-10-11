@@ -21,10 +21,10 @@ export class TableModel {
     ]);
   }
 
-  delivery: DeliveryCard[] = [];
-  engineering: EngineeringCard[] = [];
-  terraforming: TerraformingCard[] = [];
-  military: MilitaryCard[] = [];
+  delivery: (DeliveryCard & { isSelected: boolean })[] = [];
+  engineering: (EngineeringCard & { isSelected: boolean })[] = [];
+  terraforming: (TerraformingCard & { isSelected: boolean })[] = [];
+  military: (MilitaryCard & { isSelected: boolean })[] = [];
   colony: ColonyCard[] = [];
 
   dropCards = (
@@ -47,9 +47,23 @@ export class TableModel {
 
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
-    //  console.log(card)
   };
   takeColonyCard = (card: ColonyCard) => {
     this.colony.push(card);
+  };
+
+  resetSelectedFlags = () => {
+    this.delivery.forEach((card) => (card.isSelected = false));
+    this.engineering.forEach((card) => (card.isSelected = false));
+    this.terraforming.forEach((card) => (card.isSelected = false));
+    this.military.forEach((card) => (card.isSelected = false));
+  };
+
+  toggleSelectedFlag = (card: CardDefinition) => {
+    this[card.type].forEach((el) => {
+      if (el.id === card.id) {
+        el.isSelected = !el.isSelected; 
+      }
+    });
   };
 }
