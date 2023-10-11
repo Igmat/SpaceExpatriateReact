@@ -52,8 +52,4 @@ export class TableModel {
     this[card.type].push(card as any);
     //  console.log(card)
   };
-
-  takeColonyCard = (card: ColonyCardWithPoints) => {
-    this.colony.colonies.push(card);
-  };
 }

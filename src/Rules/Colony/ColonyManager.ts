@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ColonyDeckModel } from "./ColonyDeckModel";
+import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import { colonyCards } from "./colony-cards";
 import { CardType, ColonyCard } from "../card-types";
 
@@ -14,6 +14,10 @@ export class ColonyManager {
   effects = {
     selectDeliveryStation: () => { },
     adjustGarbage: () => { },
+  };
+
+  takeColonyCard = (card: ColonyCardWithPoints) => {
+    this.colonies.push(card);
   };
 
   beforePerform = (card: any) => {

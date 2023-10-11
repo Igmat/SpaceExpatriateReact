@@ -85,18 +85,18 @@ export class ActionManager implements IActionManager {
   buildColony = (selectedCardIndex: number) => {
     const selectedCard =
       this.colony.colonyDeck.takeOpenedCard(selectedCardIndex);
-    
-    let selectedCardPoints = selectedCard.points;
-    this.resources.points.total += selectedCardPoints!; //прибавляем очки за постройку колонии
-    selectedCard.points = 0; //обнуляем очки на карте которая построена
 
-    if (selectedCard) {
-      this.table.takeColonyCard(selectedCard);
-      this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
-      this.cardsToDrop = []; //чистим масив сбрасываемых карт
-    } else {
-      console.log("No more colony cards available.");
+    if (!selectedCard) {
+      console.log("No more colony cards available.")
+      return;
     }
+
+    this.resources.points.total += selectedCard.points || 0; //прибавляем очки за постройку колонии
+    delete selectedCard.points //обнуляем очки на карте которая построена
+
+    this.colony.takeColonyCard(selectedCard);
+    this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
+    this.cardsToDrop = []; //чистим масив сбрасываемых карт
     this.tryNext() && this.round.next(); //переходим к следующему раунду
   };
 
@@ -119,8 +119,8 @@ export class ActionManager implements IActionManager {
         .filter(Boolean).length === 4
     );
   };
-  
-  isDisabled( place: string, card: CardDefinition,): boolean {
+
+  isDisabled(place: string, card: CardDefinition,): boolean {
     if (this.round.phase === "terraforming") {
       if (place === "table") return this.isDisabledTable(card);
       if (place === "hand") return true;
