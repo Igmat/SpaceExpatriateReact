@@ -28,64 +28,24 @@ export const Table = observer((props: TableProps) => {
           <CCard key={ind} {...card} />
         ))}
       </div>
-      <div className={styles.cardsContainer}>
-        {props.model.delivery.map((card, ind) => (
-          <Card
-            key={ind}
-            {...card}
-            // isSelected={card.isSelected}
-            onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled("table", card)}
-          />
-        ))}
-      </div>
-      <div className={styles.cardsContainer}>
-        {props.model.engineering.map((card, ind) => (
-          <Card
-            key={ind}
-            {...card}
-            onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled("table", card)}
-          />
-        ))}
-      </div>
-      <div className={styles.cardsContainer}>
-        {props.model.terraforming.map((card, ind) => (
-          <Card
-            key={ind}
-            {...card}
-            onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled("table", card)}
-          />
-        ))}
-      </div>
-      <div className={styles.cardsContainer}>
-        {props.model.military.map((card, ind) => (
-          <Card
-            key={ind}
-            {...card}
-            onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled("table", card)}
-          />
-        ))}
-      </div>
-
       <div className={styles.round}>{"Round: " + props.round.current}</div>
-      {/*  {(["delivery", "engineering", "terraforming", "military"] as const).map(el => 
-        <div className={styles.cardsContainer}>
-        {props.model[el].map((card, ind) => (
-          <Card key={ind} {...card} 
-          {}
-          isSelected={props.action.cardsToDrop.includes(card)}
-           onClick={()=>props.action.activateCardsOnTable(card)}/>
-        ))}
-      </div>
-      )}*/}
-
-      {/*buttons*/}
+      
+      {(["delivery", "engineering", "terraforming", "military"] as const).map(
+        (el) => (
+          <div className={styles.cardsContainer}>
+            {props.model[el].map((card, ind) => (
+              <Card
+                key={ind}
+                {...card}
+                onClick={() => handleClick(card)}
+                isDisabled={props.action.isDisabled("table", card)}
+              />
+            ))}
+          </div>
+        )
+      )}
 
       {props.round.isResetable && <ResetButton action={props.action} />}
-
       {props.round.step === "performing" && (
         <button className={styles.endTurnButton} onClick={props.action.tryNext}>
           {props.round.isConfirmable ? "Confirm" : "End turn"}
