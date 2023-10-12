@@ -2,6 +2,8 @@ import { makeAutoObservable } from "mobx";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ColonyCard } from "../card-types";
 
+export type ColonyCardWithPoints = ColonyCard & { points?: number };
+
 export class ColonyDeckModel {
   constructor(
     private readonly cardsDefinitions: { [key: number]: ColonyCard },
@@ -18,7 +20,7 @@ export class ColonyDeckModel {
   }
 
   private _activeCards: number[] = [];
-  openedCards: (ColonyCard & { points: number })[] = [];
+  openedCards: ColonyCardWithPoints[] = [];
 
   initialize = () => {
     this._activeCards = Object.keys(this.cardsDefinitions);
@@ -28,8 +30,11 @@ export class ColonyDeckModel {
       .map((id) => ({ ...this.cardsDefinitions[id], points: 0 }));
   };
 
-  openCard() {
-    this.openedCards.forEach(el => el.points += (this.openedCards.length === 1 ? 2 : 1))
+  countPoints = () => {
+    this.openedCards.forEach(card => card.points! += (this.openedCards.length === 1 ? 2 : 1))
+  }
+
+  openCard = () => {
     if (this.openedCards.length >= 3) return
 
     const remainingCards = 3 - this.openedCards.length;
@@ -39,7 +44,7 @@ export class ColonyDeckModel {
     this.openedCards.push(...newCards);
   }
 
-  takeOpenedCard(ind: number) {
+  takeOpenedCard = (ind: number) => {
     const card = this.openedCards[ind];
     this.openedCards.splice(ind, 1);
     return card;

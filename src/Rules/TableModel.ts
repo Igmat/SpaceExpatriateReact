@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import {
   CardDefinition,
-  ColonyCard,
   DeliveryCard,
   EngineeringCard,
   MilitaryCard,
@@ -10,14 +9,15 @@ import {
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 export class TableModel {
-  constructor(gameId: string) {
+  constructor(
+    gameId: string,
+  ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "table", [
       "delivery",
       "engineering",
       "terraforming",
       "military",
-      "colony",
     ]);
   }
 
@@ -25,7 +25,7 @@ export class TableModel {
   engineering: (EngineeringCard & { isSelected: boolean })[] = [];
   terraforming: (TerraformingCard & { isSelected: boolean })[] = [];
   military: (MilitaryCard & { isSelected: boolean })[] = [];
-  colony: ColonyCard[] = [];
+
 
   dropCards = (
     //очистить сброшенные карты со стола
@@ -47,9 +47,7 @@ export class TableModel {
 
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
-  };
-  takeColonyCard = (card: ColonyCard) => {
-    this.colony.push(card);
+    //  console.log(card)
   };
 
   resetSelectedFlags = () => {
@@ -62,7 +60,7 @@ export class TableModel {
   toggleSelectedFlag = (card: CardDefinition) => {
     this[card.type].forEach((el) => {
       if (el.id === card.id) {
-        el.isSelected = !el.isSelected; 
+        el.isSelected = !el.isSelected;
       }
     });
   };

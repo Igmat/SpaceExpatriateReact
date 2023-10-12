@@ -3,7 +3,7 @@ import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType, ResourcePrimitive } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { ColonyManager } from "./Colony/ColonyManager";
+import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
@@ -12,8 +12,9 @@ export class RoundManager {
   constructor(
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
-    private readonly colony: ColonyManager,
-    gameId: string
+    private readonly colonyDeck: ColonyDeckModel,
+
+    gameId: string,
   ) {
     makeAutoObservable(this);
     const isLoaded = makeAutoSavable(this, gameId, "round", [
@@ -54,7 +55,7 @@ export class RoundManager {
     this.decks.engineering.openCard();
     this.decks.military.openCard();
     this.decks.terraforming.openCard();
-    this.colony.colonyDeck.openCard();
+    this.colonyDeck.openCard();
   };
 
   private setStep(step: Step) {
