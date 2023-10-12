@@ -13,7 +13,6 @@ export class RoundManager {
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
     private readonly colonyDeck: ColonyDeckModel,
-
     gameId: string,
   ) {
     makeAutoObservable(this);
@@ -87,5 +86,9 @@ export class RoundManager {
 
   get isConfirmable(): boolean {
     return this.phase === "delivery" || this.phase === "terraforming";
+  }
+
+  get isPerfomingStep(): boolean {
+    return this.step === "performing";
   }
 }
