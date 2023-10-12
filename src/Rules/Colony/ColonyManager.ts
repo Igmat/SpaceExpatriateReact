@@ -1,10 +1,21 @@
 import { makeAutoObservable } from "mobx";
 import { ColonyCardWithPoints } from "./ColonyDeckModel";
-import { CardType, ColonyCard } from "../card-types";
+import { CardType, ColonyCard, EngineeringCard } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+import { TableModel } from "../TableModel";
+
+const cardEngeneering = {
+  id: 111,
+  type: 'engineering',
+  connection: 'end',
+  exitPoint: ['fuel', 'biotic materials', 'minerals'],
+  points: 2,
+  name: 'HELIOSTAT DESERT',
+  isSelected: false 
+} as EngineeringCard & { isSelected: boolean }
 
 export class ColonyManager {
-  constructor(private readonly gameId: string) {
+  constructor(private readonly gameId: string, private readonly table: TableModel) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "colony", [
       "colonies",
@@ -12,11 +23,14 @@ export class ColonyManager {
   }
 
   colonies: ColonyCard[] = [];
-
+ 
   effects = {
     selectDeliveryStation: () => { },
     adjustGarbage: () => { },
+    pushEngineering: () => {this.table.engineering.push(cardEngeneering) 
+      return ()=>{this.table.engineering.pop()}},
   };
+   
 
   takeColonyCard = (card: ColonyCardWithPoints) => {
     this.colonies.push(card);
@@ -30,7 +44,7 @@ export class ColonyManager {
       }
       if (colony.effects !== undefined) {
         colony.effects.forEach((effect) => {
-          // this.effects[effect]();
+          this.effects[effect]();
         });
       }
     });

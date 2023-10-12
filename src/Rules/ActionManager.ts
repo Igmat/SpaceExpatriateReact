@@ -87,6 +87,7 @@ export class ActionManager {
 
   nextRound = () => {
     this.round.next();
+    //тут чистим єффекты
     this.activeAction = undefined
   }
 
