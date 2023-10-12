@@ -44,7 +44,7 @@ export const colonyCards = createCards<ColonyCard>(
     },
 
     {
-        benefit: "{ \"id\": 111, \"type\": \"engineering\", \"connection\": \"end\", \"exitPoint\": [\"fuel\", \"biotic materials\", \"minerals\"], \"points\": 2, \"name\": \"HELIOSTAT DESERT\" }",
+        benefit: "{ \"id\": 111, \"type\": \"engineering\", \"connection\": \"start\", \"entryPoint\": [\"fuel\", \"biotic materials\", \"minerals\"], \"points\": 2, \"name\": \"HELIOSTAT DESERT\" }",
         whenIsActivated: "before",
         mutateAction: "delivery",
         name: "HELIOSTAT DESERT",

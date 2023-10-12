@@ -55,7 +55,7 @@ exports[`Board snapshot 1`] = `
         <div
           className="benefit"
         >
-          { "id": 111, "type": "engineering", "connection": "end", "exitPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
+          { "id": 111, "type": "engineering", "connection": "start", "entryPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
         </div>
         <p
           className="points"
@@ -83,7 +83,7 @@ exports[`Board snapshot 1`] = `
         <div
           className="benefit"
         >
-          { "id": 111, "type": "engineering", "connection": "end", "exitPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
+          { "id": 111, "type": "engineering", "connection": "start", "entryPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
         </div>
         <p
           className="points"
@@ -111,7 +111,7 @@ exports[`Board snapshot 1`] = `
         <div
           className="benefit"
         >
-          { "id": 111, "type": "engineering", "connection": "end", "exitPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
+          { "id": 111, "type": "engineering", "connection": "start", "entryPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
         </div>
         <p
           className="points"
