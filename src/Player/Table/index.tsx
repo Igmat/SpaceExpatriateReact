@@ -7,13 +7,15 @@ import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
-import { CCard } from "../../components/ColonyCard";
+import { ColonyCard } from "../../components/ColonyCard";
+import { ColonyManager } from "../../Rules/Colony/ColonyManager";
 
 interface TableProps {
   model: TableModel;
   round: RoundManager;
   action: ActionManager;
   resources: ResourcesModel;
+  colony: ColonyManager;
 }
 
 export const Table = observer((props: TableProps) => {
@@ -21,12 +23,12 @@ export const Table = observer((props: TableProps) => {
   const handleClick = (card: CardDefinition) => {
     props.action.activateCardOnTable(card)
   };
- 
+
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
-        {props.model.colony.map((card, ind) => (
-          <CCard
+        {props.colony.colonies.map((card, ind) => (
+          <ColonyCard
             key={ind}
             {...card}
           />))}

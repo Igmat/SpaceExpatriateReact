@@ -5,6 +5,8 @@ import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+import { ResourcesModel } from "../ResourcesModel";
+import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 
 export class ActionManager implements IActionManager {
@@ -16,7 +18,9 @@ export class ActionManager implements IActionManager {
     private readonly table: TableModel,
     private readonly decks: DeckManager,
     gameId: string,
-    private readonly colony: ColonyManager
+    private readonly colony: ColonyManager,
+    private readonly colonyDeck: ColonyDeckModel,
+    private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -32,12 +36,13 @@ export class ActionManager implements IActionManager {
 
   tryNext = () => {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
+    this.colonyDeck.countPoints();
     return true;
   };
 
-  activateDeck = (type: CardType) => {};
+  activateDeck = (type: CardType) => { };
 
-  activateCard = (card: number) => {};
+  activateCard = (card: number) => { };
 
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
@@ -88,15 +93,19 @@ export class ActionManager implements IActionManager {
 
   buildColony = (selectedCardIndex: number) => {
     const selectedCard =
-      this.colony.colonyDeck.takeOpenedCard(selectedCardIndex);
+      this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
-    if (selectedCard) {
-      this.table.takeColonyCard(selectedCard);
-      this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
-      this.cardsToDrop = []; //чистим масив сбрасываемых карт
-    } else {
-      console.log("No more colony cards available.");
+    if (!selectedCard) {
+      console.log("No more colony cards available.")
+      return;
     }
+
+    this.resources.points.total += selectedCard.points || 0; //прибавляем очки за постройку колонии
+    delete selectedCard.points //обнуляем очки на карте которая построена
+
+    this.colony.takeColonyCard(selectedCard);
+    this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
+    this.cardsToDrop = []; //чистим масив сбрасываемых карт
     this.tryNext() && this.round.next(); //переходим к следующему раунду
   };
 
@@ -118,9 +127,9 @@ export class ActionManager implements IActionManager {
         )
         .filter(Boolean).length === 4
     );
-  }
+  };
 
-  isDisabled(place: string, card: CardDefinition): boolean {
+  isDisabled(place: string, card: CardDefinition,): boolean {
     if (this.round.phase === "terraforming") {
       if (place === "table") return this.isDisabledTable(card);
       if (place === "hand") return true;
