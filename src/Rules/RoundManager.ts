@@ -85,10 +85,9 @@ export class RoundManager {
   }
 
   get isConfirmable(): boolean {
-    return this.phase === "delivery" || this.phase === "terraforming";
+    return this.step === "performing"&&(this.phase === "delivery" || this.phase === "terraforming");
   }
-
-  get isPerfomingStep(): boolean {
-    return this.step === "performing";
+  get isEndable(): boolean {
+    return this.step === "performing" && (this.phase === "military" || this.phase === "engineering");
   }
 }

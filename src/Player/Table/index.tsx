@@ -47,12 +47,12 @@ export const Table = observer((props: TableProps) => {
         )
       )}
       {props.round.isResetable && <ResetButton action={props.action} />}
-      {props.round.isPerfomingStep && props.round.isConfirmable && (
+      {props.round.isConfirmable && (
         <button className={styles.endTurnButton} onClick={props.action.tryNext}>
           Confirm
         </button>
       )}
-      {props.round.isPerfomingStep && !props.round.isConfirmable && (
+      {props.round.isEndable && (
         <button className={styles.endTurnButton} onClick={props.action.tryNext}>
           End turn
         </button>
