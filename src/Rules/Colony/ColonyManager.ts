@@ -3,19 +3,20 @@ import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
+  EngineeringCard,
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
 
-// const cardEngeneering = {
-//   id: 111,
-//   type: "engineering",
-//   connection: "end",
-//   exitPoint: ["fuel", "biotic materials", "minerals"],
-//   points: 2,
-//   name: "HELIOSTAT DESERT",
-//   isSelected: false,
-// } as EngineeringCard & { isSelected: boolean };
+const cardEngeneering = {
+  id: 111,
+  type: "engineering",
+  connection: "start",
+  entryPoint: ["fuel","biotic materials","minerals"],
+  points: 2,
+  name: "HELIOSTAT DESERT",
+  isSelected: false,
+} as EngineeringCard & { isSelected: boolean };
 
 export class ColonyManager {
   constructor(
@@ -32,7 +33,7 @@ export class ColonyManager {
     selectDeliveryStation: () => {},
     adjustGarbage: () => {},
     tempEngineering: (colony:ColonyCard) => {
-      this.table.engineering.push(JSON.parse(colony.benefit));
+      this.table.engineering.push(cardEngeneering);
       return () => {
         this.table.engineering.pop();
       };

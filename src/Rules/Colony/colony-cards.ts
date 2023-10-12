@@ -45,8 +45,8 @@ export const colonyCards = createCards<ColonyCard>(
     },
 
     {
-        benefit: "{ \"id\": 111, \"type\": \"engineering\", \"connection\": \"end\", \"exitPoint\": [\"fuel\", \"biotic materials\", \"minerals\"], \"points\": 2, \"name\": \"HELIOSTAT DESERT\" }",
-        //Добавляется новый модуль в инженерию
+        benefit: "Adds extra engineering card with start connection and gives 2 points",
+        //поремонтувати опис!
         whenIsActivated: "before",
         mutateAction: "delivery",
         name: "HELIOSTAT DESERT",
