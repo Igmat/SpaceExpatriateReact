@@ -8,7 +8,6 @@ import {
 } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyManager } from "./Colony/ColonyManager";
-import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 
 export class TableModel {
   constructor(
@@ -24,10 +23,10 @@ export class TableModel {
     ]);
   }
 
-  delivery: DeliveryCard[] = [];
-  engineering: EngineeringCard[] = [];
-  terraforming: TerraformingCard[] = [];
-  military: MilitaryCard[] = [];
+  delivery: (DeliveryCard & { isSelected: boolean })[] = [];
+  engineering: (EngineeringCard & { isSelected: boolean })[] = [];
+  terraforming: (TerraformingCard & { isSelected: boolean })[] = [];
+  military: (MilitaryCard & { isSelected: boolean })[] = [];
 
 
   dropCards = (
@@ -51,5 +50,20 @@ export class TableModel {
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
     //  console.log(card)
+  };
+
+  resetSelectedFlags = () => {
+    this.delivery.forEach((card) => (card.isSelected = false));
+    this.engineering.forEach((card) => (card.isSelected = false));
+    this.terraforming.forEach((card) => (card.isSelected = false));
+    this.military.forEach((card) => (card.isSelected = false));
+  };
+
+  toggleSelectedFlag = (card: CardDefinition) => {
+    this[card.type].forEach((el) => {
+      if (el.id === card.id) {
+        el.isSelected = !el.isSelected;
+      }
+    });
   };
 }

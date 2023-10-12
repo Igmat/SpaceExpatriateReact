@@ -29,6 +29,7 @@ export class ActionManager implements IActionManager {
 
   perform = (card: CardDefinition) => {
     this.round.startOptionsStep();
+    this.table.resetSelectedFlags();
   };
 
   tryNext = () => {
@@ -49,11 +50,16 @@ export class ActionManager implements IActionManager {
   };
 
   activateCardOnTable = (card: CardDefinition) => {
+    const cardIndex = this.cardsToDrop.indexOf(card);
+    this.table.toggleSelectedFlag(card);
+    if (cardIndex !== -1) {
+      this.cardsToDrop.splice(cardIndex, 1);
+      return true;
+    }
     this.cardsToDrop.push(card);
     this.tryBuildColony();
     return true;
   };
-
 
   select = (option: string) => {
     if (isCardType(option)) {
@@ -67,6 +73,7 @@ export class ActionManager implements IActionManager {
       this.cardsToDrop.forEach((card) => this.table.takeCard(card));
     }
     this.cardsToDrop = [];
+    this.table.resetSelectedFlags();
     console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
 

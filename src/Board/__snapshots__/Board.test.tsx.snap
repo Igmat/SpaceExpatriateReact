@@ -59,9 +59,7 @@ exports[`Board snapshot 1`] = `
         </div>
         <p
           className="points"
-        >
-          0
-        </p>
+        />
         <p
           className="colony"
         >
@@ -89,9 +87,7 @@ exports[`Board snapshot 1`] = `
         </div>
         <p
           className="points"
-        >
-          0
-        </p>
+        />
         <p
           className="colony"
         >
@@ -119,9 +115,7 @@ exports[`Board snapshot 1`] = `
         </div>
         <p
           className="points"
-        >
-          0
-        </p>
+        />
         <p
           className="colony"
         >
