@@ -5,7 +5,6 @@ import { Card } from "../../components/Card";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import { useState } from "react";
 import { CardDefinition } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { CCard } from "../../components/ColonyCard";
@@ -18,11 +17,9 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-  const [selectedCards, setSelectedCards] = useState([] as CardDefinition[]);
 
   const handleClick = (card: CardDefinition) => {
-    props.action.activateCardOnTable(card) &&
-      setSelectedCards([...selectedCards, card]);
+    props.action.activateCardOnTable(card)
   };
 
   return (
@@ -37,7 +34,7 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
+            // isSelected={card.isSelected}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -48,7 +45,6 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -59,7 +55,6 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -70,7 +65,6 @@ export const Table = observer((props: TableProps) => {
           <Card
             key={ind}
             {...card}
-            isSelected={selectedCards.includes(card)}
             onClick={() => handleClick(card)}
             isDisabled={props.action.isDisabled("table", card)}
           />
@@ -78,7 +72,19 @@ export const Table = observer((props: TableProps) => {
       </div>
 
       <div className={styles.round}>{"Round: " + props.round.current}</div>
+      {/*  {(["delivery", "engineering", "terraforming", "military"] as const).map(el => 
+        <div className={styles.cardsContainer}>
+        {props.model[el].map((card, ind) => (
+          <Card key={ind} {...card} 
+          {}
+          isSelected={props.action.cardsToDrop.includes(card)}
+           onClick={()=>props.action.activateCardsOnTable(card)}/>
+        ))}
+      </div>
+      )}*/}
 
+      {/*buttons*/}
+     
       {(props.round.phase === "delivery" ||
         props.round.phase === "terraforming") &&
         props.round.step === "performing" && (

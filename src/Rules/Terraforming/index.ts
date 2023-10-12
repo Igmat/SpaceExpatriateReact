@@ -27,6 +27,7 @@ export class ActionManager implements IActionManager {
 
   perform = (card: CardDefinition) => {
     this.round.startOptionsStep();
+    this.table.resetSelectedFlags();
   };
 
   tryNext = () => {
@@ -36,9 +37,7 @@ export class ActionManager implements IActionManager {
 
   activateDeck = (type: CardType) => {};
 
-  activateCard = (card: number) => {
-   
-  };
+  activateCard = (card: number) => {};
 
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
@@ -48,11 +47,16 @@ export class ActionManager implements IActionManager {
   };
 
   activateCardOnTable = (card: CardDefinition) => {
+    const cardIndex = this.cardsToDrop.indexOf(card);
+    this.table.toggleSelectedFlag(card);
+    if (cardIndex !== -1) {
+      this.cardsToDrop.splice(cardIndex, 1);
+      return true;
+    }
     this.cardsToDrop.push(card);
     this.tryBuildColony();
     return true;
   };
-
 
   select = (option: string) => {
     if (isCardType(option)) {
@@ -66,6 +70,7 @@ export class ActionManager implements IActionManager {
       this.cardsToDrop.forEach((card) => this.table.takeCard(card));
     }
     this.cardsToDrop = [];
+    this.table.resetSelectedFlags();
     console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
 
@@ -92,7 +97,7 @@ export class ActionManager implements IActionManager {
     } else {
       console.log("No more colony cards available.");
     }
-    this.tryNext()&& this.round.next(); //переходим к следующему раунду
+    this.tryNext() && this.round.next(); //переходим к следующему раунду
   };
 
   get isThreeCardsOfSameType() {
@@ -113,9 +118,9 @@ export class ActionManager implements IActionManager {
         )
         .filter(Boolean).length === 4
     );
-  };
-  
-  isDisabled( place: string, card: CardDefinition,): boolean {
+  }
+
+  isDisabled(place: string, card: CardDefinition): boolean {
     if (this.round.phase === "terraforming") {
       if (place === "table") return this.isDisabledTable(card);
       if (place === "hand") return true;
