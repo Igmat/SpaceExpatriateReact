@@ -1,4 +1,3 @@
-import { GameState } from '..';
 import { createCards } from '../CardDefinitions/createCards';
 import { ColonyCard } from '../card-types';
 
@@ -34,8 +33,8 @@ export const colonyCards = createCards<ColonyCard>(
         mutateAction: "delivery",
         players: 2,
         name: "BLACK MARKET",
-        activate: (gameState: GameState) => { console.log("activate black market") },
-        effects: ["selectDeliveryStation"]
+        // activate: (gameState: GameState) => { console.log("activate black market") },
+        // effects: ["selectDeliveryStation"]
     },
     {
         benefit: "Before Delivery add/remove a resource to/from Space Garbage. You may do this as many times as there are players in the game",
@@ -46,11 +45,16 @@ export const colonyCards = createCards<ColonyCard>(
 
     {
         benefit: "{ \"id\": 111, \"type\": \"engineering\", \"connection\": \"end\", \"exitPoint\": [\"fuel\", \"biotic materials\", \"minerals\"], \"points\": 2, \"name\": \"HELIOSTAT DESERT\" }",
-        //Добавляется новый модуль в инженерию
         whenIsActivated: "before",
         mutateAction: "delivery",
         name: "HELIOSTAT DESERT",
-        effects: ["tempEngineering"],
+        before: {
+          effects: ["tempEngineering"]
+          },
+        after: {
+           effects: ["tempEngineeringRemove"] 
+          },
+       
         quantity: 15
     },
 

@@ -68,7 +68,8 @@ export interface MilitaryCard {
 export type ColonyCardEffect =
   | "selectDeliveryStation"
   | "adjustGarbage"
-  | "tempEngineering";
+  | "tempEngineering"
+  | "tempEngineeringRemove";
 export interface ColonyCard {
   id: number;
   type: "colony";
@@ -77,19 +78,19 @@ export interface ColonyCard {
   mutateAction: CardType; //или тут будет функция будет мутировать экшены,
   players?: number;
   name: string;
-  activate?: (gameState: GameState) => void;
-  effects?: ColonyCardEffect[]; 
+  // activate?: (gameState: GameState) => void;
+  // effects?: ColonyCardEffect[];
 
-//   before?: {
-//     activate?: (gameState: GameState) => void;
-//     effects?: ColonyCardEffect[]; 
-//   };
-//   after?: {
-//     activate?: (gameState: GameState) => void;
-//     effects?: ColonyCardEffect[]; 
-//   };
-//   during?: {
-//     activate?: (gameState: GameState) => void;
-//     effects?: ColonyCardEffect[]; 
-//   };
+  before?: {
+    activate?: (gameState: GameState) => void;
+    effects?: ColonyCardEffect[];
+  };
+  after?: {
+    activate?: (gameState: GameState) => void;
+    effects?: ColonyCardEffect[];
+  };
+  during?: {
+    activate?: (gameState: GameState) => void;
+    effects?: ColonyCardEffect[];
+  };
 }

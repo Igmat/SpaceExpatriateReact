@@ -3,19 +3,10 @@ import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
+
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
-
-// const cardEngeneering = {
-//   id: 111,
-//   type: "engineering",
-//   connection: "end",
-//   exitPoint: ["fuel", "biotic materials", "minerals"],
-//   points: 2,
-//   name: "HELIOSTAT DESERT",
-//   isSelected: false,
-// } as EngineeringCard & { isSelected: boolean };
 
 export class ColonyManager {
   constructor(
@@ -32,10 +23,10 @@ export class ColonyManager {
     selectDeliveryStation: () => {},
     adjustGarbage: () => {},
     tempEngineering: (colony:ColonyCard) => {
-      this.table.engineering.push(JSON.parse(colony.benefit));
-      return () => {
-        this.table.engineering.pop();
-      };
+      this.table.engineering.push(JSON.parse(colony.benefit))
+    },
+    tempEngineeringRemove: (colony:ColonyCard) => {
+        this.table.engineering.pop()
     },
   };
 
@@ -44,45 +35,39 @@ export class ColonyManager {
   };
 
   beforePerform = (type: CardType) => {
-    const aplicable = this.findAplicableColonyCards(type, "before");
+    const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
-      if (colony.activate !== undefined) {
+      if (colony.before?.activate !== undefined) {
         // colony.activate();
       }
-      if (colony.effects !== undefined) {
-        colony.effects.forEach((effect) => {
-          const cancel = this.effects[effect](colony);
-          if (cancel !== undefined) this.activeEffects.unshift(cancel);
+      if (colony.before?.effects !== undefined) {
+        colony.before?.effects.forEach((effect) => {
+           this.effects[effect](colony);
         });
       }
     });
   };
-
-  activeEffects: (() => void)[] = [];
-
-  afterPerform = (type: CardType) => {
-    const aplicable = this.findAplicableColonyCards(type, "after");
+afterPerform = (type: CardType) => {
+    const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
-      if (colony.activate !== undefined) {
+      if (colony.after?.activate !== undefined) {
         // colony.activate();
       }
-      if (colony.effects !== undefined) {
-        colony.effects.forEach((effect) => {
-          this.effects[effect](colony);
+      if (colony.after?.effects !== undefined) {
+        colony.after?.effects.forEach((effect) => {
+           this.effects[effect](colony);
         });
       }
     });
-    this.activeEffects.forEach((cancel) => cancel());
-    this.activeEffects = [];
-  };
+  }
+
 
   findAplicableColonyCards = (
     CardType: CardType,
-    whenIsActivated: string
   ): ColonyCard[] => {
     return this.colonies.filter(
       (colony) =>
-        colony.whenIsActivated === whenIsActivated &&
+        // colony.whenIsActivated === whenIsActivated &&
         colony.mutateAction === CardType
     );
   };
