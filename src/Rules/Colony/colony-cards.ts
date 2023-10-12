@@ -50,7 +50,7 @@ export const colonyCards = createCards<ColonyCard>(
         whenIsActivated: "before",
         mutateAction: "delivery",
         name: "HELIOSTAT DESERT",
-        effects: ["pushEngineering"],
+        effects: ["tempEngineering"],
         quantity: 15
     },
 

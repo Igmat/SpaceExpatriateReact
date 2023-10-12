@@ -68,7 +68,7 @@ export interface MilitaryCard {
 export type ColonyCardEffect =
   | "selectDeliveryStation"
   | "adjustGarbage"
-  | "pushEngineering";
+  | "tempEngineering";
 export interface ColonyCard {
   id: number;
   type: "colony";

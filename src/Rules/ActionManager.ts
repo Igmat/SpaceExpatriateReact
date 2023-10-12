@@ -80,14 +80,13 @@ export class ActionManager {
     }
 
     this.round.phase = card.type;
-    console.log(this.round.phase);
-    this.colony.beforePerform(card);
+    this.colony.beforePerform(this.activeAction);
     this.managers[card.type].perform(card);
   };
 
   nextRound = () => {
+    this.colony.afterPerform(this.activeAction!);
     this.round.next();
-    //тут чистим єффекты
     this.activeAction = undefined
   }
 
