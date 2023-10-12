@@ -17,9 +17,8 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-
   const handleClick = (card: CardDefinition) => {
-    props.action.activateCardOnTable(card)
+    props.action.activateCardOnTable(card);
   };
 
   return (
@@ -84,29 +83,14 @@ export const Table = observer((props: TableProps) => {
       )}*/}
 
       {/*buttons*/}
-     
-      {(props.round.phase === "delivery" ||
-        props.round.phase === "terraforming") &&
-        props.round.step === "performing" && (
-          <ResetButton action={props.action} />
-        )}
-      {props.round.step === "performing" &&
-        (props.round.phase === "delivery" ||
-        props.round.phase === "terraforming" ? (
-          <button
-            className={styles.endTurnButton}
-            onClick={props.action.tryNext}
-          >
-            Confirm
-          </button>
-        ) : (
-          <button
-            className={styles.endTurnButton}
-            onClick={props.action.tryNext}
-          >
-            End turn
-          </button>
-        ))}
+
+      {props.round.isResetable && <ResetButton action={props.action} />}
+
+      {props.round.step === "performing" && (
+        <button className={styles.endTurnButton} onClick={props.action.tryNext}>
+          {props.round.isConfirmable ? "Confirm" : "End turn"}
+        </button>
+      )}
     </div>
   );
 });

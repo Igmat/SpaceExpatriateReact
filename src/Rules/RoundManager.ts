@@ -9,19 +9,17 @@ type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
 
 export class RoundManager {
-
   constructor(
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
     private readonly colony: ColonyManager,
-    gameId: string,
+    gameId: string
   ) {
     makeAutoObservable(this);
     const isLoaded = makeAutoSavable(this, gameId, "round", [
       "current",
       "phase",
       { key: "_step" as any, condition: (value) => value !== "resources" },
-
     ]);
     if (!isLoaded) {
       this.hand.takeCard(this.decks.delivery.takeCard());
@@ -77,5 +75,16 @@ export class RoundManager {
     this.setStep("resources");
     this._params = params;
     this._onSelect = onSelect;
+  }
+
+  get isResetable(): boolean {
+    return (
+      (this.phase === "delivery" || this.phase === "terraforming") &&
+      this.step === "performing"
+    );
+  }
+
+  get isConfirmable(): boolean {
+    return this.phase === "delivery" || this.phase === "terraforming";
   }
 }
