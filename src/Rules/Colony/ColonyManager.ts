@@ -3,20 +3,19 @@ import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
-  EngineeringCard,
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
 
-const cardEngeneering = {
-  id: 111,
-  type: "engineering",
-  connection: "end",
-  exitPoint: ["fuel", "biotic materials", "minerals"],
-  points: 2,
-  name: "HELIOSTAT DESERT",
-  isSelected: false,
-} as EngineeringCard & { isSelected: boolean };
+// const cardEngeneering = {
+//   id: 111,
+//   type: "engineering",
+//   connection: "end",
+//   exitPoint: ["fuel", "biotic materials", "minerals"],
+//   points: 2,
+//   name: "HELIOSTAT DESERT",
+//   isSelected: false,
+// } as EngineeringCard & { isSelected: boolean };
 
 export class ColonyManager {
   constructor(
@@ -32,8 +31,8 @@ export class ColonyManager {
   effects = {
     selectDeliveryStation: () => {},
     adjustGarbage: () => {},
-    tempEngineering: () => {
-      this.table.engineering.push(cardEngeneering);
+    tempEngineering: (colony:ColonyCard) => {
+      this.table.engineering.push(JSON.parse(colony.benefit));
       return () => {
         this.table.engineering.pop();
       };
@@ -52,7 +51,7 @@ export class ColonyManager {
       }
       if (colony.effects !== undefined) {
         colony.effects.forEach((effect) => {
-          const cancel = this.effects[effect]();
+          const cancel = this.effects[effect](colony);
           if (cancel !== undefined) this.activeEffects.unshift(cancel);
         });
       }
@@ -69,7 +68,7 @@ export class ColonyManager {
       }
       if (colony.effects !== undefined) {
         colony.effects.forEach((effect) => {
-          this.effects[effect]();
+          this.effects[effect](colony);
         });
       }
     });
