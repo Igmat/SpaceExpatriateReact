@@ -44,7 +44,7 @@ export class ColonyDeckModel {
     this.openedCards.push(...newCards);
   }
 
-  takeOpenedCard(ind: number) {
+  takeOpenedCard = (ind: number) => {
     const card = this.openedCards[ind];
     this.openedCards.splice(ind, 1);
     return card;

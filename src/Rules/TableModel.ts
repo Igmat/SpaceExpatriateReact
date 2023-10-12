@@ -7,12 +7,10 @@ import {
   TerraformingCard,
 } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { ColonyManager } from "./Colony/ColonyManager";
 
 export class TableModel {
   constructor(
     gameId: string,
-    private readonly colony: ColonyManager
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "table", [

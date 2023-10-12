@@ -5,8 +5,9 @@ import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
-import { ColonyManager } from "../Colony/ColonyManager";
 import { ResourcesModel } from "../ResourcesModel";
+import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
+import { ColonyManager } from "../Colony/ColonyManager";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
@@ -18,6 +19,7 @@ export class ActionManager implements IActionManager {
     private readonly decks: DeckManager,
     gameId: string,
     private readonly colony: ColonyManager,
+    private readonly colonyDeck: ColonyDeckModel,
     private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
@@ -34,7 +36,7 @@ export class ActionManager implements IActionManager {
 
   tryNext = () => {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
-    this.colony.colonyDeck.countPoints();
+    this.colonyDeck.countPoints();
     return true;
   };
 
@@ -91,7 +93,7 @@ export class ActionManager implements IActionManager {
 
   buildColony = (selectedCardIndex: number) => {
     const selectedCard =
-      this.colony.colonyDeck.takeOpenedCard(selectedCardIndex);
+      this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
     if (!selectedCard) {
       console.log("No more colony cards available.")

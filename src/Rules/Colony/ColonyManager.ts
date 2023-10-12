@@ -1,15 +1,17 @@
 import { makeAutoObservable } from "mobx";
-import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
-import { colonyCards } from "./colony-cards";
+import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import { CardType, ColonyCard } from "../card-types";
+import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class ColonyManager {
   constructor(private readonly gameId: string) {
     makeAutoObservable(this);
+    makeAutoSavable(this, gameId, "colony", [
+      "colonies",
+    ])
   }
 
   colonies: ColonyCard[] = [];
-  colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
 
   effects = {
     selectDeliveryStation: () => { },

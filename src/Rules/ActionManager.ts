@@ -11,6 +11,7 @@ import { ActionManager as DAM } from "./Delivery";
 import { ActionManager as MAM } from "./Military";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyManager } from "./Colony/ColonyManager";
+import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 export class ActionManager {
   constructor(
@@ -20,7 +21,8 @@ export class ActionManager {
     private readonly hand: HandModel,
     private readonly resources: ResourcesModel,
     private readonly gameId: string,
-    private readonly colony: ColonyManager
+    private readonly colony: ColonyManager,
+    private readonly colonyDeck: ColonyDeckModel,
 
   ) {
     makeAutoObservable(this);
@@ -35,7 +37,15 @@ export class ActionManager {
       this.hand,
       this.gameId
     ),
-    terraforming: new TAM(this.round, this.table, this.decks, this.gameId, this.colony, this.resources),
+    terraforming: new TAM(
+      this.round,
+      this.table,
+      this.decks,
+      this.gameId,
+      this.colony,
+      this.colonyDeck,
+      this.resources
+    ),
     delivery: new DAM(
       this.table,
       this.round,
@@ -44,7 +54,10 @@ export class ActionManager {
       this.decks,
       this.gameId
     ),
-    military: new MAM(this.round, this.hand, this.decks),
+    military: new MAM(
+      this.round,
+      this.hand,
+      this.decks),
   };
 
   activeAction?: CardType;
