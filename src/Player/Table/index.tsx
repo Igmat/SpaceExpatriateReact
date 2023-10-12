@@ -31,10 +31,10 @@ export const Table = observer((props: TableProps) => {
         ))}
       </div>
       <div className={styles.round}>{"Round: " + props.round.current}</div>
-      
+
       {(["delivery", "engineering", "terraforming", "military"] as const).map(
         (el) => (
-          <div className={styles.cardsContainer}>
+          <div className={styles.cardsContainer} key={el}>
             {props.model[el].map((card, ind) => (
               <Card
                 key={ind}
@@ -46,13 +46,23 @@ export const Table = observer((props: TableProps) => {
           </div>
         )
       )}
-
       {props.round.isResetable && <ResetButton action={props.action} />}
-      {props.round.step === "performing" && (
-        <button className={styles.endTurnButton} onClick={props.action.tryNext}>
-          {props.round.isConfirmable ? "Confirm" : "End turn"}
-        </button>
-      )}
+      {props.round.step === "performing" &&
+        (props.round.isConfirmable ? (
+          <button
+            className={styles.endTurnButton}
+            onClick={props.action.tryNext}
+          >
+            Confirm
+          </button>
+        ) : (
+          <button
+            className={styles.endTurnButton}
+            onClick={props.action.tryNext}
+          >
+            End turn
+          </button>
+        ))}
     </div>
   );
 });
