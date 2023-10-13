@@ -40,9 +40,9 @@ export class ActionManager implements IActionManager {
     return true;
   };
 
-  activateDeck = (type: CardType) => { };
+  activateDeck = (type: CardType) => {};
 
-  activateCard = (card: number) => { };
+  activateCard = (card: number) => {};
 
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
@@ -92,16 +92,14 @@ export class ActionManager implements IActionManager {
   };
 
   buildColony = (selectedCardIndex: number) => {
-    const selectedCard =
-      this.colonyDeck.takeOpenedCard(selectedCardIndex);
+    const selectedCard = this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
     if (!selectedCard) {
-      console.log("No more colony cards available.")
+      console.log("No more colony cards available.");
       return;
     }
 
-    this.resources.points.total += selectedCard.points || 0; //прибавляем очки за постройку колонии
-    delete selectedCard.points //обнуляем очки на карте которая построена
+    this.resources.extractColonyPoints(selectedCard);
 
     this.colony.takeColonyCard(selectedCard);
     this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
@@ -127,9 +125,9 @@ export class ActionManager implements IActionManager {
         )
         .filter(Boolean).length === 4
     );
-  };
+  }
 
-  isDisabled(place: string, card: CardDefinition,): boolean {
+  isDisabled(place: string, card: CardDefinition): boolean {
     if (this.round.phase === "terraforming") {
       if (place === "table") return this.isDisabledTable(card);
       if (place === "hand") return true;

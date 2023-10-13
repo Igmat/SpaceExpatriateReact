@@ -9,6 +9,7 @@ import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
+import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
@@ -181,6 +182,12 @@ resetPlayerResources = () => {//запасной вариант востанов
   removeResourcesFromGarbage = (resource: Exclude<ResourcePrimitive, "dark matter">) => {
     this.garbageResources[resource] = 0;
   };
+  
+  extractColonyPoints = (selectedCard:ColonyCardWithPoints)=>{
+    const colonyPoints = selectedCard.points || 0;
+    this.points.total += colonyPoints; 
+    delete selectedCard.points;
+  }
 
   calculateTotalPoints = () => {
     this.points.total += this.points.round;
