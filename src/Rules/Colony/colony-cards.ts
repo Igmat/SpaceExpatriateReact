@@ -199,7 +199,7 @@ export const colonyCards = createCards<ColonyCard>(
     },
     {
         benefit: "On Terraforming on your turn collect all points from neutral Colonies (even if you do not set up a Colony)",
-        whenIsActivated: "during",
+        whenIsActivated: "before",
         mutateAction: "terraforming",
         name: "FIELD RESEARCH HEADQUARTERS",
     },
