@@ -55,7 +55,7 @@ exports[`Board snapshot 1`] = `
         <div
           className="benefit"
         >
-          { "id": 111, "type": "engineering", "connection": "start", "entryPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
+          Adds extra engineering card with start connection and gives 2 points
         </div>
         <p
           className="points"
@@ -83,7 +83,7 @@ exports[`Board snapshot 1`] = `
         <div
           className="benefit"
         >
-          { "id": 111, "type": "engineering", "connection": "start", "entryPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
+          Adds extra engineering card with start connection and gives 2 points
         </div>
         <p
           className="points"
@@ -111,7 +111,7 @@ exports[`Board snapshot 1`] = `
         <div
           className="benefit"
         >
-          { "id": 111, "type": "engineering", "connection": "start", "entryPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }
+          Adds extra engineering card with start connection and gives 2 points
         </div>
         <p
           className="points"
