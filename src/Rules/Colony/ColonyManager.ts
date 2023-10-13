@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { ColonyCardWithPoints } from "./ColonyDeckModel";
-import {
+import type {
   CardType,
   ColonyCard,
   EngineeringCard,
@@ -17,6 +17,8 @@ const cardEngeneering = {
   name: "HELIOSTAT DESERT",
   isSelected: false,
 } as EngineeringCard & { isSelected: boolean };
+
+export type EffectNames = keyof ColonyManager["effects"];
 
 export class ColonyManager {
   constructor(

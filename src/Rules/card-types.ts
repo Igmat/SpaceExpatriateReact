@@ -1,4 +1,5 @@
 import { GameState } from ".";
+import { EffectNames } from "./Colony/ColonyManager";
 
 export type ResourcePrimitive =
   | "fuel"
@@ -65,10 +66,6 @@ export interface MilitaryCard {
   name: string;
   // points: number
 }
-export type ColonyCardEffect =
-  | "selectDeliveryStation"
-  | "adjustGarbage"
-  | "tempEngineering";
 export interface ColonyCard {
   id: number;
   type: "colony";
@@ -78,7 +75,7 @@ export interface ColonyCard {
   players?: number;
   name: string;
   activate?: (gameState: GameState) => void;
-  effects?: ColonyCardEffect[]; 
+  effects?: EffectNames[]; 
 
 //   before?: {
 //     activate?: (gameState: GameState) => void;
