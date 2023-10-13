@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ColonyCardWithPoints } from "./ColonyDeckModel";
+import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
@@ -9,13 +9,16 @@ import {
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
+import { ResourcesModel } from "../ResourcesModel";
 
 export type EffectName = keyof ColonyManager["effects"];
 
 export class ColonyManager {
   constructor(
     private readonly gameId: string,
-    private readonly table: TableModel
+    private readonly table: TableModel,
+    private readonly resources: ResourcesModel,
+    private readonly colonyDeck: ColonyDeckModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "colony", ["colonies"]);
@@ -27,12 +30,18 @@ export class ColonyManager {
     selectDeliveryStation: () => {},
     adjustGarbage: () => {},
     addTempEngineering: (colony: ColonyCard) => {
-      this.table.engineering.push(colony.data as (EngineeringCard & { isSelected: boolean }));
+      this.table.engineering.push(
+        colony.data as EngineeringCard & { isSelected: boolean }
+      );
     },
     removeTempEngineering: (colony: ColonyCard) => {
       this.table.engineering.pop();
     },
-    addPointsFromColonies: () => {}
+    addPointsFromColonies: (colony: ColonyCard) => {
+      this.colonyDeck.openedCards.forEach((card) =>
+        this.resources.extractColonyPoints(card)
+      );
+    },
   };
 
   takeColonyCard = (card: ColonyCardWithPoints) => {
@@ -70,9 +79,6 @@ export class ColonyManager {
   };
 
   findAplicableColonyCards = (CardType: CardType): ColonyCard[] => {
-    return this.colonies.filter(
-      (colony) =>
-        colony.mutateAction === CardType
-    );
+    return this.colonies.filter((colony) => colony.mutateAction === CardType);
   };
 }
