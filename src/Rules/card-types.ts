@@ -69,7 +69,8 @@ export type ColonyCardEffect =
   | "selectDeliveryStation"
   | "adjustGarbage"
   | "tempEngineering"
-  | "tempEngineeringRemove";
+  | "tempEngineeringRemove"
+  | "addPointsFromColonies"
 export interface ColonyCard {
   id: number;
   type: "colony";

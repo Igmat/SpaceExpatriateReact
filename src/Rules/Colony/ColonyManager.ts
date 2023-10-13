@@ -28,6 +28,7 @@ export class ColonyManager {
     tempEngineeringRemove: (colony:ColonyCard) => {
         this.table.engineering.pop()
     },
+    addPointsFromColonies: () => {}
   };
 
   takeColonyCard = (card: ColonyCardWithPoints) => {
