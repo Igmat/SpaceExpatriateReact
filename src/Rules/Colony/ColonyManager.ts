@@ -3,10 +3,14 @@ import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
-
+  EngineeringCard,
+  FullTrigger,
+  expandTrigger,
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
+
+export type EffectName = keyof ColonyManager["effects"];
 
 export class ColonyManager {
   constructor(
@@ -22,11 +26,11 @@ export class ColonyManager {
   effects = {
     selectDeliveryStation: () => {},
     adjustGarbage: () => {},
-    tempEngineering: (colony:ColonyCard) => {
-      this.table.engineering.push(JSON.parse(colony.benefit))
+    addTempEngineering: (colony: ColonyCard) => {
+      this.table.engineering.push(colony.data as (EngineeringCard & { isSelected: boolean }));
     },
-    tempEngineeringRemove: (colony:ColonyCard) => {
-        this.table.engineering.pop()
+    removeTempEngineering: (colony: ColonyCard) => {
+      this.table.engineering.pop();
     },
     addPointsFromColonies: () => {}
   };
@@ -38,37 +42,36 @@ export class ColonyManager {
   beforePerform = (type: CardType) => {
     const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
-      if (colony.before?.activate !== undefined) {
-        // colony.activate();
+      const before: FullTrigger = expandTrigger(colony.before);
+      if (before.activate !== undefined) {
+        // before.activate();
       }
-      if (colony.before?.effects !== undefined) {
-        colony.before?.effects.forEach((effect) => {
-           this.effects[effect](colony);
+      if (before.effects !== undefined) {
+        before.effects.forEach((effect) => {
+          this.effects[effect](colony);
         });
       }
     });
   };
-afterPerform = (type: CardType) => {
+
+  afterPerform = (type: CardType) => {
     const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
-      if (colony.after?.activate !== undefined) {
+      const after: FullTrigger = expandTrigger(colony.after);
+      if (after.activate !== undefined) {
         // colony.activate();
       }
-      if (colony.after?.effects !== undefined) {
-        colony.after?.effects.forEach((effect) => {
-           this.effects[effect](colony);
+      if (after.effects !== undefined) {
+        after.effects.forEach((effect) => {
+          this.effects[effect](colony);
         });
       }
     });
-  }
+  };
 
-
-  findAplicableColonyCards = (
-    CardType: CardType,
-  ): ColonyCard[] => {
+  findAplicableColonyCards = (CardType: CardType): ColonyCard[] => {
     return this.colonies.filter(
       (colony) =>
-        // colony.whenIsActivated === whenIsActivated &&
         colony.mutateAction === CardType
     );
   };

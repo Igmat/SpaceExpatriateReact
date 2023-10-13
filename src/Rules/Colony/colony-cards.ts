@@ -1,5 +1,5 @@
 import { createCards } from "../CardDefinitions/createCards";
-import { ColonyCard } from "../card-types";
+import { ColonyCard, EngineeringCard } from "../card-types";
 
 export const colonyCards = createCards<ColonyCard>(
   "colony",
@@ -30,7 +30,7 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "On Delivery one of your Delivery Station Modules ignores Space Garbage",
-    whenIsActivated: "during",
+    // whenIsActivated: "during",
     mutateAction: "delivery",
     players: 2,
     name: "BLACK MARKET",
@@ -40,23 +40,27 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "Before Delivery add/remove a resource to/from Space Garbage. You may do this as many times as there are players in the game",
-    whenIsActivated: "before",
+    // whenIsActivated: "before",
     mutateAction: "delivery",
     name: "SPACE LIFT",
   },
 
   {
     benefit:
-      '{ "id": 111, "type": "engineering", "connection": "start", "entryPoint": ["fuel", "biotic materials", "minerals"], "points": 2, "name": "HELIOSTAT DESERT" }',
-    whenIsActivated: "before",
+      "Adds extra engineering card with start connection and gives 2 points",
+    data: {
+      id: 111,
+      type: "engineering",
+      connection: "start",
+      entryPoint: ["fuel", "biotic materials", "minerals"],
+      points: 2,
+      name: "HELIOSTAT DESERT",
+      isSelected: false,
+    } as EngineeringCard & { isSelected: boolean },
     mutateAction: "delivery",
     name: "HELIOSTAT DESERT",
-    before: {
-      effects: ["tempEngineering"],
-    },
-    after: {
-      effects: ["tempEngineeringRemove"],
-    },
+    before: "addTempEngineering",
+    after: "removeTempEngineering"
   },
 
   // -------------- Engineering ----------------
@@ -92,7 +96,7 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "After Engineering dock a Station Module(from supply) of any type of which you have fewer on your Station than the other types",
-    whenIsActivated: "after",
+    // whenIsActivated: "after",
     mutateAction: "engineering",
     players: 2,
     name: "SPACECRAFT MANUFACTORY",
@@ -100,7 +104,7 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "On Engineering gain 1 point for each Station Module being docked to your Station during the Action",
-    whenIsActivated: "during",
+    // whenIsActivated: "during",
     mutateAction: "engineering",
     name: "SPACE INDUSTRY CENTER",
   },
@@ -137,7 +141,7 @@ export const colonyCards = createCards<ColonyCard>(
     */
   {
     benefit: "Tactical Nanorobotics", //Добавляется новый модуль в милитари
-    whenIsActivated: "during",
+    // whenIsActivated: "during",
     mutateAction: "military",
     players: 2,
     name: "TACTICAL NANOROBOTICS",
@@ -145,14 +149,14 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "On Military gain 1 point for each card drawn by you during the Action, but not more than 3 points",
-    whenIsActivated: "during",
+    // whenIsActivated: "during",
     mutateAction: "military",
     name: "COMMAND CENTER",
   },
   {
     benefit:
       "On Military (Political Pressure) when docking another player's Station Module, draw a card for each of their Inferiorities",
-    whenIsActivated: "during",
+    // whenIsActivated: "during",
     mutateAction: "military",
     name: "REVERSE ENGINEERING LAB",
   },
@@ -190,7 +194,7 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "On Terraforming gain 2 points if you have at least 1 Station Module card of the mission Type in your Hand",
-    whenIsActivated: "during",
+    // whenIsActivated: "during",
     mutateAction: "terraforming",
     players: 2,
     name: "OPERATIONS SUPPORT COMMAND",
@@ -199,19 +203,16 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "After Terraforming dock a Station Module of the Mission Type from supply",
-    whenIsActivated: "after",
+    // whenIsActivated: "after",
     mutateAction: "terraforming",
     name: "STRATEGIC DEVELOPMENT CENTER",
   },
   {
     benefit:
       "On Terraforming on your turn collect all points from neutral Colonies (even if you do not set up a Colony)",
-    whenIsActivated: "before",
     mutateAction: "terraforming",
     name: "FIELD RESEARCH HEADQUARTERS",
-    before: {
-      effects: ["addPointsFromColonies"],
-    },
+    before:  "addPointsFromColonies",
     quantity: 15,
   }
 );
