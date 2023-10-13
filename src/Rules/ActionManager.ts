@@ -81,9 +81,7 @@ export class ActionManager {
   };
 
   nextRound = () => {
-    if (this.activeAction) {
-      this.colony.afterPerform(this.activeAction);
-    }
+    this.activeAction && this.colony.afterPerform(this.activeAction);
     this.round.next();
     this.activeAction = undefined;
   };

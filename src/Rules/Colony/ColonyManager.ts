@@ -3,9 +3,9 @@ import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
-  EngineeringCard,
   FullTrigger,
   expandTrigger,
+  isSelectableEngineeringCard,
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
@@ -27,9 +27,9 @@ export class ColonyManager {
     selectDeliveryStation: () => {},
     adjustGarbage: () => {},
     addTempEngineering: (colony: ColonyCard) => {
-      this.table.engineering.push(
-        colony.data as EngineeringCard & { isSelected: boolean }
-      );
+      if(isSelectableEngineeringCard(colony.data)){
+      this.table.engineering.push(colony.data);
+      }
     },
     removeTempEngineering: (colony: ColonyCard) => {
       this.table.engineering.pop();

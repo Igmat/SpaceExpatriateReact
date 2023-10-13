@@ -1,28 +1,37 @@
 import { GameState } from ".";
 import type { EffectName } from "./Colony/ColonyManager";
 
-export type ResourcePrimitive =
-  | "fuel"
-  | "minerals"
-  | "biotic materials"
-  | "machinery"
-  | "nanotechnologies"
-  | "dark matter";
+const ResourceTypes = [
+  "fuel",
+  "minerals",
+  "biotic materials",
+  "machinery",
+  "nanotechnologies",
+  "dark matter",
+] as const;
 
-export const isResourcePrimitive = (
-  option: string
-): option is ResourcePrimitive =>
-  [
-    "fuel",
-    "minerals",
-    "biotic materials",
-    "machinery",
-    "nanotechnologies",
-    "dark matter",
-  ].includes(option);
+export type ResourcePrimitive = (typeof ResourceTypes)[number];
+
+export const isResourcePrimitive = (option: string): option is ResourcePrimitive => 
+ResourceTypes.includes(option as any);
 
 export const isCardType = (option: string): option is CardType =>
   ["delivery", "engineering", "terraforming", "military"].includes(option);
+
+export const isSelectableEngineeringCard = (
+  value: unknown
+): value is SelectableEngineeringCard => {
+  return (
+    typeof value === "object" &&
+    !!value &&
+    "isSelected" in value &&
+    "id" in value &&
+    "type" in value &&
+    value.type === "engineering" &&
+    "connection" in value &&
+    "name" in value
+  );
+};
 
 export type Resource = ResourcePrimitive | ResourcePrimitive[];
 
@@ -50,6 +59,10 @@ export interface EngineeringCard {
   points?: number;
   name: string;
 }
+
+export type SelectableEngineeringCard = EngineeringCard & {
+  isSelected: boolean;
+};
 
 export interface TerraformingCard {
   name: string;

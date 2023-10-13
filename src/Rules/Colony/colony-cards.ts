@@ -1,5 +1,5 @@
 import { createCards } from "../CardDefinitions/createCards";
-import { ColonyCard, EngineeringCard } from "../card-types";
+import { ColonyCard, SelectableEngineeringCard } from "../card-types";
 
 export const colonyCards = createCards<ColonyCard>(
   "colony",
@@ -56,7 +56,7 @@ export const colonyCards = createCards<ColonyCard>(
       points: 2,
       name: "HELIOSTAT DESERT",
       isSelected: false,
-    } as EngineeringCard & { isSelected: boolean },
+    } as SelectableEngineeringCard,
     mutateAction: "delivery",
     name: "HELIOSTAT DESERT",
     before: "addTempEngineering",
