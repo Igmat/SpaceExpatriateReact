@@ -9,11 +9,13 @@ import {
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
+import { GameState } from "..";
 
 export type EffectName = keyof ColonyManager["effects"];
 
 export class ColonyManager {
   constructor(
+    private readonly gameState: GameState,
     private readonly gameId: string,
     private readonly table: TableModel
   ) {
@@ -44,7 +46,7 @@ export class ColonyManager {
     const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
       const before: FullTrigger = expandTrigger(colony.before);
-      // before.activate();
+      before.activate(this.gameState);
       before.effects.forEach((effect) => {
         this.effects[effect](colony);
       });
@@ -55,7 +57,7 @@ export class ColonyManager {
     const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
       const after: FullTrigger = expandTrigger(colony.after);
-      // colony.activate();
+      after.activate(this.gameState);
       after.effects.forEach((effect) => {
         this.effects[effect](colony);
       });
