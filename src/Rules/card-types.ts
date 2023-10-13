@@ -1,5 +1,5 @@
 import { GameState } from ".";
-import { EffectName } from "./Colony/ColonyManager";
+import type { EffectName } from "./Colony/ColonyManager";
 
 export type ResourcePrimitive =
   | "fuel"
@@ -67,16 +67,18 @@ export interface MilitaryCard {
   // points: number
 }
 
+export type EffectActivateFn = (gameState: GameState) => void;
+
 export type FullTrigger = {
-  activate: (gameState: GameState) => void;
-  effects:EffectName[];
-}
+  activate: EffectActivateFn;
+  effects: EffectName[];
+};
 
 export type Trigger =
-  | FullTrigger
+  | EffectName
+  | EffectActivateFn
   | EffectName[]
-  | ((gameState: GameState) => void)
-  | EffectName;
+  | FullTrigger;
 
 export interface ColonyCard {
   id: number;
@@ -105,4 +107,4 @@ export const expandTrigger = (trigger?: Trigger): FullTrigger => {
     return { activate: () => {}, effects: [trigger] };
   }
   return trigger;
-}
+};

@@ -27,7 +27,9 @@ export class ColonyManager {
     selectDeliveryStation: () => {},
     adjustGarbage: () => {},
     addTempEngineering: (colony: ColonyCard) => {
-      this.table.engineering.push(colony.data as (EngineeringCard & { isSelected: boolean }));
+      this.table.engineering.push(
+        colony.data as EngineeringCard & { isSelected: boolean }
+      );
     },
     removeTempEngineering: (colony: ColonyCard) => {
       this.table.engineering.pop();
@@ -42,14 +44,10 @@ export class ColonyManager {
     const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
       const before: FullTrigger = expandTrigger(colony.before);
-      if (before.activate !== undefined) {
-        // before.activate();
-      }
-      if (before.effects !== undefined) {
-        before.effects.forEach((effect) => {
-          this.effects[effect](colony);
-        });
-      }
+      // before.activate();
+      before.effects.forEach((effect) => {
+        this.effects[effect](colony);
+      });
     });
   };
 
@@ -57,21 +55,13 @@ export class ColonyManager {
     const aplicable = this.findAplicableColonyCards(type);
     aplicable.forEach((colony: ColonyCard) => {
       const after: FullTrigger = expandTrigger(colony.after);
-      if (after.activate !== undefined) {
-        // colony.activate();
-      }
-      if (after.effects !== undefined) {
-        after.effects.forEach((effect) => {
-          this.effects[effect](colony);
-        });
-      }
+      // colony.activate();
+      after.effects.forEach((effect) => {
+        this.effects[effect](colony);
+      });
     });
   };
 
-  findAplicableColonyCards = (CardType: CardType): ColonyCard[] => {
-    return this.colonies.filter(
-      (colony) =>
-        colony.mutateAction === CardType
-    );
-  };
+  findAplicableColonyCards = (CardType: CardType): ColonyCard[] =>
+    this.colonies.filter((colony) => colony.mutateAction === CardType);
 }
