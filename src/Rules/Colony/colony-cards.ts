@@ -60,8 +60,7 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "delivery",
     name: "HELIOSTAT DESERT",
     before: "addTempEngineering",
-    after: "removeTempEngineering",
-    quantity: 15,
+    after: "removeTempEngineering"
   },
 
   // -------------- Engineering ----------------
