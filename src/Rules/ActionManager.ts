@@ -35,7 +35,8 @@ export class ActionManager {
       this.table,
       this.decks,
       this.hand,
-      this.gameId
+      this.gameId,
+ 
     ),
     terraforming: new TAM(
       this.round,
@@ -75,7 +76,7 @@ export class ActionManager {
     this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
 
     if (this.round.current < 5) {
-      this.round.next();
+      this.nextRound();
       return;
     }
 
@@ -97,20 +98,20 @@ export class ActionManager {
 
   activateDeck = (type: CardType) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateDeck(type);
-    //this.tryNext();
+    this.managers[this.activeAction].activateDeck(type) && this.nextRound();
+
   };
 
   activateCard = (card: number) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateCard(card);
-
-    // this.tryNext();
+    this.managers[this.activeAction].activateCard(card) && this.nextRound();
+ 
   };
   
   activateColonyCard = (card: number) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateColonyCard(card);
+    this.managers[this.activeAction].activateColonyCard(card) && this.nextRound();
+
   }
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -120,7 +121,7 @@ export class ActionManager {
 
   select = (option: string) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].select(option);
+    this.managers[this.activeAction].select(option) && this.nextRound(); //заглушка
   };
 
   reset = () => {
@@ -136,6 +137,7 @@ export class ActionManager {
     };
   }
   get isDisabledDeck(): (type: CardType) => boolean {
+    console.log(this.activeAction)
     return (type: CardType) => {
       if (!this.activeAction) return false;
       if (this.round.phase === "active") return true;

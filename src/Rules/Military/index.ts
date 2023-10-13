@@ -24,7 +24,7 @@ export class ActionManager implements IActionManager {
     this.round.startOptionsStep();
   };
 
-  tryNext = () => true;
+  tryNext = () => this.remaining.activateDeck === 0;
 
   activateDeck = (type: CardType) => {
     if (
@@ -33,8 +33,7 @@ export class ActionManager implements IActionManager {
     )
       this.hand.takeCard(this.decks[type].takeCard());
     this.remaining.activateDeck = 0;
-
-    this.tryNext() && this.round.next();
+   return this.tryNext()
   };
 
   activateCard = (card: number) => {};
@@ -48,7 +47,7 @@ export class ActionManager implements IActionManager {
       this.militaryoption = option;
     }
     if (this.militaryoption === "political") {
-      this.tryNext() && this.round.next();
+     return this.tryNext() //заглушка
     }
     if (this.militaryoption === "exploration") {
       this.round.startPerformingStep();
