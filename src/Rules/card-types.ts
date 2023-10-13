@@ -1,4 +1,5 @@
 import { GameState } from ".";
+import { EffectName } from "./Colony/ColonyManager";
 
 export type ResourcePrimitive =
   | "fuel"
@@ -65,32 +66,43 @@ export interface MilitaryCard {
   name: string;
   // points: number
 }
-export type ColonyCardEffect =
-  | "selectDeliveryStation"
-  | "adjustGarbage"
-  | "tempEngineering"
-  | "tempEngineeringRemove";
+
+export type FullTrigger = {
+  activate: (gameState: GameState) => void;
+  effects:EffectName[];
+}
+
+export type Trigger =
+  | FullTrigger
+  | EffectName[]
+  | ((gameState: GameState) => void)
+  | EffectName;
+
 export interface ColonyCard {
   id: number;
   type: "colony";
   benefit: string;
-  whenIsActivated: "before" | "after" | "during";
-  mutateAction: CardType; //или тут будет функция будет мутировать экшены,
+  mutateAction: CardType;
+  data?: unknown;
   players?: number;
   name: string;
-  // activate?: (gameState: GameState) => void;
-  // effects?: ColonyCardEffect[];
+  before?: Trigger;
+  after?: Trigger;
+  during?: Trigger;
+}
 
-  before?: {
-    activate?: (gameState: GameState) => void;
-    effects?: ColonyCardEffect[];
-  };
-  after?: {
-    activate?: (gameState: GameState) => void;
-    effects?: ColonyCardEffect[];
-  };
-  during?: {
-    activate?: (gameState: GameState) => void;
-    effects?: ColonyCardEffect[];
-  };
+export const expandTrigger = (trigger?: Trigger): FullTrigger => {
+  if (!trigger) {
+    return { activate: () => {}, effects: [] };
+  }
+  if (typeof trigger === "function") {
+    return { activate: trigger, effects: [] };
+  }
+  if (Array.isArray(trigger)) {
+    return { activate: () => {}, effects: trigger };
+  }
+  if (typeof trigger === "string") {
+    return { activate: () => {}, effects: [trigger] };
+  }
+  return trigger;
 }
