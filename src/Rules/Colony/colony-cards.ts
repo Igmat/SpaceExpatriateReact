@@ -34,8 +34,8 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "delivery",
     players: 2,
     name: "BLACK MARKET",
-    // activate: (gameState: GameState) => { console.log("activate black market") },
-    // effects: ["selectDeliveryStation"]
+    before: "selectDeliveryStation",
+    quantity: 20,
   },
   {
     benefit:

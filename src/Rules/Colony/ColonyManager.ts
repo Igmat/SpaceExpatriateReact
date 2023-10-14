@@ -5,27 +5,45 @@ import {
   ColonyCard,
   EngineeringCard,
   FullTrigger,
+  ResourcePrimitive,
   expandTrigger,
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
+import { RoundManager } from "../RoundManager";
+import { toArrayArray } from "../../Utils";
+import { ResourcesModel } from "../ResourcesModel";
 
 export type EffectName = keyof ColonyManager["effects"];
 
 export class ColonyManager {
   constructor(
     private readonly gameId: string,
-    private readonly table: TableModel
+    private readonly table: TableModel,
+    private readonly round: RoundManager,
+    private readonly resources: ResourcesModel
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "colony", ["colonies"]);
+    makeAutoSavable(this, this.gameId, "colony", ["colonies"]);
   }
 
   colonies: ColonyCard[] = [];
 
   effects = {
-    selectDeliveryStation: () => {},
-    adjustGarbage: () => {},
+    selectDeliveryStation: (colony: ColonyCard) => {
+      const deliveryResources = toArrayArray(this.table.delivery.map(card => card.resources as ResourcePrimitive[]));
+
+      this.round.startResourceStep(
+        deliveryResources,
+        (selected: ResourcePrimitive[]) => 
+          selected.forEach((resource: ResourcePrimitive) => {
+            this.resources.gainResource(resource);
+          })
+      );
+      return;
+    },
+
+    adjustGarbage: () => { },
     addTempEngineering: (colony: ColonyCard) => {
       this.table.engineering.push(colony.data as (EngineeringCard & { isSelected: boolean }));
     },

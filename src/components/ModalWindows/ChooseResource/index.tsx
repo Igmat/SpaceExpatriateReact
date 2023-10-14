@@ -8,11 +8,10 @@ interface ChooseResourceProps {
 
 export const ChooseResource = (props:ChooseResourceProps) => {
 
-  console.log(props.array);
   return (
     <div className={styles.modal}>
-      {props.array.map((resources) => (
-        <div className={styles.modalDialog} onClick={()=>props.select(resources)}>{resources.join(" + ")}</div>
+      {props.array.map((resources, id) => (
+        <div key={id} className={styles.modalDialog} onClick={()=>props.select(resources)}>{resources.join(" + ")}</div>
       ))}
     </div>
   );
