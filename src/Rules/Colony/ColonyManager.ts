@@ -11,6 +11,7 @@ import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
 import { GameState } from "..";
 import { ResourcesModel } from "../ResourcesModel";
+import { HandModel } from "../HandModel";
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -20,7 +21,8 @@ export class ColonyManager {
     private readonly gameId: string,
     private readonly table: TableModel,
     private readonly resources: ResourcesModel,
-    private readonly colonyDeck: ColonyDeckModel
+    private readonly colonyDeck: ColonyDeckModel,
+    private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "colony", ["colonies"]);
@@ -44,6 +46,14 @@ export class ColonyManager {
         this.resources.extractColonyPoints(card)
       );
     },
+    addPointsForMissionType: (colony: ColonyCard) => {
+      this.hand.cardsInHand.forEach((card) => {
+          if (card.type === this.gameState.action.teraformingManager.missionType) {
+              this.resources.addPoints(2);
+              return;
+          }
+      });
+    }
   };
 
   takeColonyCard = (card: ColonyCardWithPoints) => {

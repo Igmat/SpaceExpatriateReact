@@ -15,7 +15,6 @@ export type PlayerResources = {
   [key in ResourcePrimitive]: number;
 };
 
-
 export class ResourcesModel {
   constructor(
     private readonly table: TableModel,
@@ -23,7 +22,7 @@ export class ResourcesModel {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "resorces",[
+    makeAutoSavable(this, gameId, "resorces", [
       "garbageResources",
       "playerResources",
       "tempGarbageResources",
@@ -71,12 +70,11 @@ export class ResourcesModel {
     this.table.delivery.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
-    Object.keys(this.garbageResources)
-      .forEach(key => {
-        this.playerResources[key] -= this.garbageResources[key]
-        if (this.playerResources[key] < 0) this.playerResources[key] = 0;
-      })
-    
+    Object.keys(this.garbageResources).forEach((key) => {
+      this.playerResources[key] -= this.garbageResources[key];
+      if (this.playerResources[key] < 0) this.playerResources[key] = 0;
+    });
+
     this.charterResource && this.playerResources[this.charterResource]++;
     // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
   };
@@ -86,13 +84,15 @@ export class ResourcesModel {
   };
 
   dropToGarbage = () => {
-    Object.keys(this.garbageResources)
-    .forEach(key=>this.garbageResources[key] = this.playerResources[key])
+    Object.keys(this.garbageResources).forEach(
+      (key) => (this.garbageResources[key] = this.playerResources[key])
+    );
   };
 
   dropResources = () => {
-    Object.keys(this.playerResources)
-    .forEach(key=>this.playerResources[key] = 0)
+    Object.keys(this.playerResources).forEach(
+      (key) => (this.playerResources[key] = 0)
+    );
   };
   /*
   savePlayerResources = () => {//запасной вариант востановления ресурсов при ресете
@@ -179,15 +179,21 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.playerResources[resource]++;
   };
 
-  removeResourcesFromGarbage = (resource: Exclude<ResourcePrimitive, "dark matter">) => {
+  removeResourcesFromGarbage = (
+    resource: Exclude<ResourcePrimitive, "dark matter">
+  ) => {
     this.garbageResources[resource] = 0;
   };
-  
-  extractColonyPoints = (selectedCard:ColonyCardWithPoints)=>{
+
+  extractColonyPoints = (selectedCard: ColonyCardWithPoints) => {
     const colonyPoints = selectedCard.points || 0;
-    this.points.total += colonyPoints; 
+    this.points.total += colonyPoints;
     delete selectedCard.points;
-  }
+  };
+  
+  addPoints = (points: number) => {
+    this.points.total += points;
+  };
 
   calculateTotalPoints = () => {
     this.points.total += this.points.round;

@@ -198,6 +198,8 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "terraforming",
     players: 2,
     name: "OPERATIONS SUPPORT COMMAND",
+    after: "addPointsForMissionType",
+    quantity: 20
   },
 
   {
@@ -213,6 +215,5 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "terraforming",
     name: "FIELD RESEARCH HEADQUARTERS",
     before:  "addPointsFromColonies",
-    quantity: 15,
   }
 );

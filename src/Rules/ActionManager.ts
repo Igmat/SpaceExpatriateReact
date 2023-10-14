@@ -61,6 +61,9 @@ export class ActionManager {
   get deliveryManager(): DAM {
     return this.managers.delivery;
   }
+  get teraformingManager(): TAM {
+    return this.managers.terraforming;
+  }
 
   perform = (card?: CardDefinition) => {
     if (!card) return;
