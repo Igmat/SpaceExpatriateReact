@@ -21,7 +21,7 @@ export class GameState {
   table = new TableModel(this.gameId);
   round = new RoundManager(this.decks, this.hand, this.colonyDeck, this.gameId);
   resources = new ResourcesModel(this.table, this.round, this.gameId);
-  colony = new ColonyManager(this.gameId, this.table,this.resources, this.colonyDeck);
+  colony = new ColonyManager(this,this.gameId, this.table,this.resources, this.colonyDeck);
   action = new ActionManager(this.decks, this.table, this.round, this.hand, this.resources, this.gameId, this.colony, this.colonyDeck);
 }
 
