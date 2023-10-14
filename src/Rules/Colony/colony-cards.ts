@@ -199,7 +199,6 @@ export const colonyCards = createCards<ColonyCard>(
     players: 2,
     name: "OPERATIONS SUPPORT COMMAND",
     after: "addPointsForMissionType",
-    quantity: 20
   },
 
   {
