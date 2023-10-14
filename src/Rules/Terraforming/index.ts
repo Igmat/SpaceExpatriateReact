@@ -47,8 +47,9 @@ export class ActionManager implements IActionManager {
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
-      this.buildColony(card); //строим колонию
+      return  this.buildColony(card);//строим колонию
     }
+  
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -106,7 +107,8 @@ export class ActionManager implements IActionManager {
     this.colony.takeColonyCard(selectedCard);
     this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
     this.cardsToDrop = []; //чистим масив сбрасываемых карт
-    this.tryNext() && this.round.next(); //переходим к следующему раунду
+    //this.tryNext() && this.round.next(); //переходим к следующему раунду
+    return this.tryNext()
   };
 
   get isThreeCardsOfSameType() {
