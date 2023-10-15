@@ -4,6 +4,7 @@ import {
   DeliveryCard,
   EngineeringCard,
   MilitaryCard,
+  SelectableEngineeringCard,
   TerraformingCard,
 } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
@@ -22,7 +23,7 @@ export class TableModel {
   }
 
   delivery: (DeliveryCard & { isSelected: boolean })[] = [];
-  engineering: (EngineeringCard & { isSelected: boolean })[] = [];
+  engineering: (SelectableEngineeringCard)[] = [];
   terraforming: (TerraformingCard & { isSelected: boolean })[] = [];
   military: (MilitaryCard & { isSelected: boolean })[] = [];
 
