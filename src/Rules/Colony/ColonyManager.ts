@@ -3,7 +3,6 @@ import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
-  EngineeringCard,
   FullTrigger,
   ResourcePrimitive,
   expandTrigger,
@@ -48,7 +47,7 @@ export class ColonyManager {
         this.table.engineering.push(colony.data);
       }
     },
-    
+
     removeTempEngineering: async (colony: ColonyCard) => {
       this.table.engineering.pop();
     },
