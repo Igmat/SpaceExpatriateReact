@@ -22,8 +22,7 @@ export class ActionManager {
     private readonly resources: ResourcesModel,
     private readonly gameId: string,
     private readonly colony: ColonyManager,
-    private readonly colonyDeck: ColonyDeckModel,
-
+    private readonly colonyDeck: ColonyDeckModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, `action`, [`activeAction`]);
@@ -55,10 +54,7 @@ export class ActionManager {
       this.decks,
       this.gameId
     ),
-    military: new MAM(
-      this.round,
-      this.hand,
-      this.decks),
+    military: new MAM(this.round, this.hand, this.decks),
   };
 
   activeAction?: CardType;
@@ -86,10 +82,10 @@ export class ActionManager {
   };
 
   nextRound = () => {
-    this.colony.afterPerform(this.activeAction!);
+    this.activeAction && this.colony.afterPerform(this.activeAction);
     this.round.next();
-    this.activeAction = undefined
-  }
+    this.activeAction = undefined;
+  };
 
   tryNext = () => {
     if (!this.activeAction) return;
@@ -107,12 +103,11 @@ export class ActionManager {
     this.managers[this.activeAction].activateCard(card) && this.nextRound();
  
   };
-  
+
   activateColonyCard = (card: number) => {
     if (!this.activeAction) return;
     this.managers[this.activeAction].activateColonyCard(card) && this.nextRound();
-
-  }
+  };
 
   activateCardOnTable = (card: CardDefinition) => {
     if (!this.activeAction) return;
@@ -132,7 +127,11 @@ export class ActionManager {
   get isDisabled(): (place: string, card: CardDefinition) => boolean {
     return (place: string, card: CardDefinition) => {
       if (!this.activeAction) return false;
-      if (this.round.phase === "active" && (place === "table" || place === "hand")) return true;
+      if (
+        this.round.phase === "active" &&
+        (place === "table" || place === "hand")
+      )
+        return true;
       return this.managers[this.activeAction].isDisabled(place, card);
     };
   }
