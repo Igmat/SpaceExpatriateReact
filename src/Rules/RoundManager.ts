@@ -6,7 +6,7 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 type Phase = "active" | CardType | "passive";
-type Step = "options" | "performing" | "resources" | "done";
+type Step = "options" | "performing" | "resources" | "colony" | "done";
 
 export class RoundManager {
   constructor(
@@ -64,17 +64,19 @@ export class RoundManager {
   startOptionsStep() {
     this.setStep("options");
   }
+
   startPerformingStep() {
     this.setStep("performing");
   }
 
-  startResourceStep(
-    params: ResourcePrimitive[][],
-    onSelect: (selected: ResourcePrimitive[]) => void
-  ) {
+  async startResourceStep(
+    params: ResourcePrimitive[][]   
+  ): Promise<ResourcePrimitive[]> {
     this.setStep("resources");
     this._params = params;
-    this._onSelect = onSelect;
+    return new Promise(resolve => {
+      this._onSelect = (resources) => resolve(resources)
+    })
   }
 
   get isResetable(): boolean {
@@ -85,7 +87,7 @@ export class RoundManager {
   }
 
   get isConfirmable(): boolean {
-    return this.step === "performing"&&(this.phase === "delivery" || this.phase === "terraforming");
+    return this.step === "performing" && (this.phase === "delivery" || this.phase === "terraforming");
   }
   get isEndable(): boolean {
     return this.step === "performing" && (this.phase === "military" || this.phase === "engineering");

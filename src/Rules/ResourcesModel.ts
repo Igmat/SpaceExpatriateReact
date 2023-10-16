@@ -22,7 +22,7 @@ export class ResourcesModel {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "resorces",[
+    makeAutoSavable(this, gameId, "resorces", [
       "garbageResources",
       "playerResources",
       "tempGarbageResources",
@@ -75,7 +75,7 @@ export class ResourcesModel {
         this.playerResources[key] -= this.garbageResources[key]
         if (this.playerResources[key] < 0) this.playerResources[key] = 0;
       })
-    
+
     this.charterResource && this.playerResources[this.charterResource]++;
     // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
   };
@@ -86,12 +86,12 @@ export class ResourcesModel {
 
   dropToGarbage = () => {
     Object.keys(this.garbageResources)
-    .forEach(key=>this.garbageResources[key] = this.playerResources[key])
+      .forEach(key => this.garbageResources[key] = this.playerResources[key])
   };
 
   dropResources = () => {
     Object.keys(this.playerResources)
-    .forEach(key=>this.playerResources[key] = 0)
+      .forEach(key => this.playerResources[key] = 0)
   };
   /*
   savePlayerResources = () => {//запасной вариант востановления ресурсов при ресете
@@ -129,7 +129,7 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.gainResources(card);
   };
 
-  tryConsumeResources(resources: Resource[], onConsume: () => void) {
+  async tryConsumeResources(resources: Resource[], onConsume: () => void) {
     if (resources === undefined) return onConsume();
     const variants = toArrayArray(resources);
     const darkMatterVariants: ResourcePrimitive[][] = variants.map(
@@ -151,13 +151,13 @@ resetPlayerResources = () => {//запасной вариант востанов
       this.consumeResources(validCombinations[0]);
       return onConsume();
     }
-    this.round.startResourceStep(validCombinations, (selected) => {
-      this.consumeResources(selected);
-      onConsume();
-    });
+    const selected = await this.round.startResourceStep(validCombinations);
+    this.consumeResources(selected);
+    onConsume();
+
   }
 
-  gainResources(card: EngineeringCard) {
+  async gainResources(card: EngineeringCard) {
     //получение ресурсов
     if (card.exitPoint === undefined) return;
     const combinations = generateCombinations(toArrayArray(card.exitPoint));
@@ -167,11 +167,10 @@ resetPlayerResources = () => {//запасной вариант востанов
       });
       return;
     }
-    this.round.startResourceStep(combinations, (selected) => {
-      selected.forEach((resource) => {
-        this.gainResource(resource);
-      });
-    });
+    const selected = await this.round.startResourceStep(combinations);
+    selected.forEach((resource) => {
+      this.gainResource(resource);
+    })
   }
 
   gainResource = (resource: ResourcePrimitive) => {

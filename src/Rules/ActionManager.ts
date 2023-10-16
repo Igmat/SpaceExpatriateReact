@@ -67,7 +67,7 @@ export class ActionManager {
     return this.managers.delivery;
   }
 
-  perform = (card?: CardDefinition) => {
+  perform = async (card?: CardDefinition) => {
     if (!card) return;
 
     if (this.round.phase !== "active") return;
@@ -81,7 +81,7 @@ export class ActionManager {
     }
 
     this.round.phase = card.type;
-    this.colony.beforePerform(this.activeAction);
+    await this.colony.beforePerform(this.activeAction);
     this.managers[card.type].perform(card);
   };
 

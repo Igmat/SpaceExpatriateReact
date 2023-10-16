@@ -30,24 +30,19 @@ export class ColonyManager {
   colonies: ColonyCard[] = [];
 
   effects = {
-    selectDeliveryStation: (colony: ColonyCard) => {
-      const deliveryResources = toArrayArray(this.table.delivery.map(card => card.resources as ResourcePrimitive[]));
-
-      this.round.startResourceStep(
-        deliveryResources,
-        (selected: ResourcePrimitive[]) => 
-          selected.forEach((resource: ResourcePrimitive) => {
-            this.resources.gainResource(resource);
-          })
-      );
-      return;
+    selectDeliveryStation: async (colony: ColonyCard) => {
+        const deliveryResources = toArrayArray(this.table.delivery.map(card => card.resources as ResourcePrimitive[]));
+        const selected = await this.round.startResourceStep(deliveryResources);
+        selected.forEach((resource: ResourcePrimitive) => {
+          this.resources.gainResource(resource)
+        })
     },
 
-    adjustGarbage: () => { },
-    addTempEngineering: (colony: ColonyCard) => {
+    adjustGarbage: async () => { },
+    addTempEngineering: async (colony: ColonyCard) => {
       this.table.engineering.push(colony.data as (EngineeringCard & { isSelected: boolean }));
     },
-    removeTempEngineering: (colony: ColonyCard) => {
+    removeTempEngineering: async (colony: ColonyCard) => {
       this.table.engineering.pop();
     },
   };
@@ -56,19 +51,17 @@ export class ColonyManager {
     this.colonies.push(card);
   };
 
-  beforePerform = (type: CardType) => {
+  beforePerform = async (type: CardType) => {
     const aplicable = this.findAplicableColonyCards(type);
-    aplicable.forEach((colony: ColonyCard) => {
+
+    await Promise.all(aplicable.map((colony: ColonyCard) => {
       const before: FullTrigger = expandTrigger(colony.before);
-      if (before.activate !== undefined) {
-        // before.activate();
-      }
-      if (before.effects !== undefined) {
-        before.effects.forEach((effect) => {
-          this.effects[effect](colony);
-        });
-      }
-    });
+      // before.activate();
+
+      return Promise.all(before.effects.map((effect) =>
+        this.effects[effect](colony)
+      ));
+    }));
   };
 
   afterPerform = (type: CardType) => {
