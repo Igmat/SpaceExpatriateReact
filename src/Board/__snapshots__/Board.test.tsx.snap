@@ -50,12 +50,12 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
-          terraforming
+          military
         </div>
         <div
           className="benefit"
         >
-          On Terraforming on your turn collect all points from neutral Colonies (even if you do not set up a Colony)
+          Tactical Nanorobotics
         </div>
         <p
           className="points"
@@ -68,7 +68,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          FIELD RESEARCH HEADQUARTERS
+          TACTICAL NANOROBOTICS
         </p>
       </div>
       <div
@@ -78,12 +78,12 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
-          terraforming
+          military
         </div>
         <div
           className="benefit"
         >
-          On Terraforming on your turn collect all points from neutral Colonies (even if you do not set up a Colony)
+          On Military gain 1 point for each card drawn by you during the Action, but not more than 3 points
         </div>
         <p
           className="points"
@@ -96,7 +96,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          FIELD RESEARCH HEADQUARTERS
+          COMMAND CENTER
         </p>
       </div>
       <div
@@ -106,12 +106,12 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
-          terraforming
+          engineering
         </div>
         <div
           className="benefit"
         >
-          On Terraforming on your turn collect all points from neutral Colonies (even if you do not set up a Colony)
+          On Engineering gain 1 point for each Station Module being docked to your Station during the Action
         </div>
         <p
           className="points"
@@ -124,7 +124,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          FIELD RESEARCH HEADQUARTERS
+          SPACE INDUSTRY CENTER
         </p>
       </div>
     </div>
