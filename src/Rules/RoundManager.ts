@@ -6,7 +6,7 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 type Phase = "active" | CardType | "passive";
-type Step = "options" | "performing" | "resources" | "colony" | "done";
+type Step = "options" | "performing" | "resources" | "done";
 
 export class RoundManager {
   constructor(
