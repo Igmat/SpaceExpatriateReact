@@ -213,6 +213,5 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "terraforming",
     name: "FIELD RESEARCH HEADQUARTERS",
     before:  "addPointsFromColonies",
-    quantity: 15,
   }
 );
