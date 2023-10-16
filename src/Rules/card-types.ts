@@ -80,7 +80,7 @@ export interface MilitaryCard {
   // points: number
 }
 
-export type EffectActivateFn = (gameState: GameState) => void;
+export type EffectActivateFn = (gameState: GameState) => Promise<unknown>;
 
 export type FullTrigger = {
   activate: EffectActivateFn;
@@ -93,6 +93,10 @@ export type Trigger =
   | EffectName[]
   | FullTrigger;
 
+export const TriggerNames = ["before", "after", "during", "beforeSelect", "afterSelect"] as const;
+
+export type TriggerName = (typeof TriggerNames)[number]
+
 export interface ColonyCard {
   id: number;
   type: "colony";
@@ -101,23 +105,23 @@ export interface ColonyCard {
   data?: unknown;
   players?: number;
   name: string;
-  before?: Trigger;
-  after?: Trigger;
-  during?: Trigger;
+  triggers: {
+    [key in TriggerName]?: Trigger
+  }
 }
 
 export const expandTrigger = (trigger?: Trigger): FullTrigger => {
   if (!trigger) {
-    return { activate: () => {}, effects: [] };
+    return { activate: async () => {}, effects: [] };
   }
   if (typeof trigger === "function") {
     return { activate: trigger, effects: [] };
   }
   if (Array.isArray(trigger)) {
-    return { activate: () => {}, effects: trigger };
+    return { activate: async () => {}, effects: trigger };
   }
   if (typeof trigger === "string") {
-    return { activate: () => {}, effects: [trigger] };
+    return { activate: async () => {}, effects: [trigger] };
   }
   return trigger;
 };

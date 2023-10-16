@@ -77,12 +77,12 @@ export class ActionManager {
     }
 
     this.round.phase = card.type;
-    await this.colony.beforePerform(this.activeAction);
+    await this.colony.triggers.before(this.activeAction);
     this.managers[card.type].perform(card);
   };
 
   nextRound = () => {
-    this.activeAction && this.colony.afterPerform(this.activeAction);
+    this.activeAction && this.colony.triggers.after(this.activeAction);
     this.round.next();
     this.activeAction = undefined;
   };
@@ -98,7 +98,7 @@ export class ActionManager {
 
   };
 
-  activateCard = (card: number) => {
+  activateCard = async (card: number) => {
     if (!this.activeAction) return;
     this.managers[this.activeAction].activateCard(card) && this.nextRound();
  
@@ -114,9 +114,11 @@ export class ActionManager {
     return this.managers[this.activeAction].activateCardOnTable(card);
   };
 
-  select = (option: string) => {
+  select = async (option: string) => {
     if (!this.activeAction) return;
+    await this.colony.triggers.beforeSelect(this.activeAction)
     this.managers[this.activeAction].select(option) && this.nextRound(); //заглушка
+    await this.colony.triggers.afterSelect(this.activeAction)
   };
 
   reset = () => {

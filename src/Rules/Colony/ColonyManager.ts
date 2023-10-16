@@ -5,6 +5,8 @@ import {
   ColonyCard,
   FullTrigger,
   ResourcePrimitive,
+  TriggerName,
+  TriggerNames,
   expandTrigger,
   isSelectableEngineeringCard,
 } from "../card-types";
@@ -33,11 +35,11 @@ export class ColonyManager {
 
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
-        const deliveryResources = toArrayArray(this.table.delivery.map(card => card.resources as ResourcePrimitive[]));
-        const selected = await this.round.startResourceStep(deliveryResources);
-        selected.forEach((resource: ResourcePrimitive) => {
-          this.resources.gainResource(resource)
-        })
+      const deliveryResources = toArrayArray(this.table.delivery.map(card => card.resources as ResourcePrimitive[]));
+      const selected = await this.round.startResourceStep(deliveryResources);
+      selected.forEach((resource: ResourcePrimitive) => {
+        this.resources.gainResource(resource)
+      })
     },
 
     adjustGarbage: async () => { },
@@ -51,37 +53,31 @@ export class ColonyManager {
     removeTempEngineering: async (colony: ColonyCard) => {
       this.table.engineering.pop();
     },
-
   };
 
   takeColonyCard = (card: ColonyCardWithPoints) => {
     this.colonies.push(card);
   };
 
-  beforePerform = async (type: CardType) => {
+  private executeTrigger = async (type: CardType, triggerName: TriggerName) => {
     const aplicable = this.findAplicableColonyCards(type);
 
     await Promise.all(aplicable.map((colony: ColonyCard) => {
-      const before: FullTrigger = expandTrigger(colony.before);
-      before.activate(this.gameState); // переделать в промис
+      const trigger: FullTrigger = expandTrigger(colony.triggers[triggerName]);
+      trigger.activate(this.gameState); // переделать в промис
 
-      return Promise.all(before.effects.map((effect) =>
+      return Promise.all(trigger.effects.map((effect) =>
         this.effects[effect](colony)
       ));
-    
     }))
-  };
+  }
 
-  afterPerform = (type: CardType) => {
-    const aplicable = this.findAplicableColonyCards(type);
-    aplicable.forEach((colony: ColonyCard) => {
-      const after: FullTrigger = expandTrigger(colony.after);
-      after.activate(this.gameState);
-      after.effects.forEach((effect) => {
-        this.effects[effect](colony);
-      });
-    });
-  };
+  private getTriggerExecutor = (triggerName: TriggerName) => async (type: CardType) =>
+    this.executeTrigger(type, triggerName);
+
+  triggers = TriggerNames.reduce((acc, trigger) =>
+      (acc[trigger] = this.getTriggerExecutor(trigger)) && acc,
+    {} as { [key in TriggerName]: (type: CardType) => Promise<void> })
 
   findAplicableColonyCards = (CardType: CardType): ColonyCard[] =>
     this.colonies.filter((colony) => colony.mutateAction === CardType);

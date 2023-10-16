@@ -34,15 +34,19 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "delivery",
     players: 2,
     name: "BLACK MARKET",
-    before: "selectDeliveryStation",
+    triggers: {
+      before: "selectDeliveryStation",
+    },
     quantity: 20,
   },
+
   {
     benefit:
       "Before Delivery add/remove a resource to/from Space Garbage. You may do this as many times as there are players in the game",
     // whenIsActivated: "before",
     mutateAction: "delivery",
     name: "SPACE LIFT",
+    triggers: {}
   },
 
   {
@@ -59,8 +63,11 @@ export const colonyCards = createCards<ColonyCard>(
     } as SelectableEngineeringCard,
     mutateAction: "delivery",
     name: "HELIOSTAT DESERT",
-    before: "addTempEngineering",
-    after: "removeTempEngineering"
+    triggers: {
+      before: "addTempEngineering",
+      after: "removeTempEngineering"
+    }
+    
   },
 
   // -------------- Engineering ----------------
@@ -100,6 +107,7 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "engineering",
     players: 2,
     name: "SPACECRAFT MANUFACTORY",
+    triggers: {}
   },
   {
     benefit:
@@ -107,6 +115,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "during",
     mutateAction: "engineering",
     name: "SPACE INDUSTRY CENTER",
+    triggers: {}
   },
 
   // -------------- Military ----------------
@@ -145,6 +154,7 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "military",
     players: 2,
     name: "TACTICAL NANOROBOTICS",
+    triggers: {}
   },
   {
     benefit:
@@ -152,6 +162,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "during",
     mutateAction: "military",
     name: "COMMAND CENTER",
+    triggers: {}
   },
   {
     benefit:
@@ -159,6 +170,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "during",
     mutateAction: "military",
     name: "REVERSE ENGINEERING LAB",
+    triggers: {}
   },
 
   // -------------- Terraforming ----------------
@@ -198,6 +210,7 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "terraforming",
     players: 2,
     name: "OPERATIONS SUPPORT COMMAND",
+    triggers: {}
   },
 
   {
@@ -206,6 +219,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "after",
     mutateAction: "terraforming",
     name: "STRATEGIC DEVELOPMENT CENTER",
+    triggers: {}
   },
   {
     benefit:
@@ -213,5 +227,6 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "before",
     mutateAction: "terraforming",
     name: "FIELD RESEARCH HEADQUARTERS",
+    triggers: {}
   }
 );
