@@ -41,7 +41,7 @@ export const ControlPanel = observer(() => {
       );
     }
     return modalService.hide;
-  }, [gameState.round, gameState.round.step, modalService, gameState.round.phase, gameState.round.params]);
+  }, [gameState.modal, gameState.round, gameState.round.step, modalService, gameState.round.phase, gameState.round.params]);
 
   return <></>;
 });
