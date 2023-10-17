@@ -12,6 +12,10 @@ import { TableModel } from "../TableModel";
 import { GameState } from "..";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
+import { ActionManager as TAM } from "../Terraforming";
+import { ActionManager as DAM } from "../Delivery";
+import { ActionManager as EAM } from "../Engineering";
+import { ActionManager as MAM } from "../Military";
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -31,8 +35,8 @@ export class ColonyManager {
   colonies: ColonyCard[] = [];
 
   effects = {
-    selectDeliveryStation: () => {},
-    adjustGarbage: () => {},
+    selectDeliveryStation: (colony: ColonyCard) => {},
+    adjustGarbage: (colony: ColonyCard) => {},
     addTempEngineering: (colony: ColonyCard) => {
       if(isSelectableEngineeringCard(colony.data)){
       this.table.engineering.push(colony.data);
@@ -48,7 +52,7 @@ export class ColonyManager {
     },
     addPointsForMissionType: (colony: ColonyCard) => {
       this.hand.cardsInHand.forEach((card) => {
-          if (card.type === this.gameState.action.teraformingManager.missionType) {
+          if (card.type === (this.gameState.action.currentManager as TAM).missionType) {
               this.resources.addPoints(2);
               return;
           }

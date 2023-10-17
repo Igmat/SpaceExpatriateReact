@@ -9,4 +9,4 @@ export interface IActionManager {
     select: (option: string) => void
     reset: () => void
 }
-
+// нужно обновить

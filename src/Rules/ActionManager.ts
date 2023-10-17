@@ -58,11 +58,8 @@ export class ActionManager {
 
   activeAction?: CardType;
 
-  get deliveryManager(): DAM {
-    return this.managers.delivery;
-  }
-  get teraformingManager(): TAM {
-    return this.managers.terraforming;
+  get currentManager() {
+    return this.activeAction && this.managers[this.activeAction];
   }
 
   perform = (card?: CardDefinition) => {
@@ -80,7 +77,7 @@ export class ActionManager {
 
     this.round.phase = card.type;
     this.colony.beforePerform(this.activeAction);
-    this.managers[card.type].perform(card);
+    this.currentManager?.perform(card);
   };
 
   nextRound = () => {
@@ -89,43 +86,20 @@ export class ActionManager {
     this.activeAction = undefined;
   };
 
-  tryNext = () => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].tryNext() && this.nextRound();
-  };
+  tryNext = () => this.currentManager?.tryNext() && this.nextRound();
 
-  activateDeck = (type: CardType) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateDeck(type);
-    //this.tryNext();
-  };
+  activateDeck = (type: CardType) => this.currentManager?.activateDeck(type);
 
-  activateCard = (card: number) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateCard(card);
+  activateCard = (card: number) => this.currentManager?.activateCard(card);
 
-    // this.tryNext();
-  };
+  activateColonyCard = (card: number) => this.currentManager?.activateColonyCard(card);
 
-  activateColonyCard = (card: number) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateColonyCard(card);
-  };
+  activateCardOnTable = (card: CardDefinition) => this.currentManager?.activateCardOnTable(card);
 
-  activateCardOnTable = (card: CardDefinition) => {
-    if (!this.activeAction) return;
-    return this.managers[this.activeAction].activateCardOnTable(card);
-  };
+  select = (option: string) => this.currentManager?.select(option);
 
-  select = (option: string) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].select(option);
-  };
+  reset = () => this.currentManager?.reset();
 
-  reset = () => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].reset();
-  };
 
   get isDisabled(): (place: string, card: CardDefinition) => boolean {
     return (place: string, card: CardDefinition) => {
