@@ -4,6 +4,7 @@ import { HandModel } from "./HandModel";
 import { CardType, ResourcePrimitive } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
+import { ModalManager } from "./ModalManager";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
@@ -13,6 +14,7 @@ export class RoundManager {
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
     private readonly colonyDeck: ColonyDeckModel,
+    private readonly modal: ModalManager,
     gameId: string,
   ) {
     makeAutoObservable(this);
@@ -61,8 +63,9 @@ export class RoundManager {
     this._step = step;
   }
 
-  startOptionsStep() {
+  async startOptionsStep() {
     this.setStep("options");
+    //return this.modal.show();
   }
 
   startPerformingStep() {
@@ -74,9 +77,7 @@ export class RoundManager {
   ): Promise<ResourcePrimitive[]> {
     this.setStep("resources");
     this._params = params;
-    return new Promise(resolve => {
-      this._onSelect = (resources) => resolve(resources)
-    })
+    return await this.modal.show(params)
   }
 
   get isResetable(): boolean {

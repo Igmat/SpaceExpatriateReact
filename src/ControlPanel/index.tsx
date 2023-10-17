@@ -30,11 +30,11 @@ export const ControlPanel = observer(() => {
           array={gameState.round.params!}
           select={(resource) => {
             gameState.round.startPerformingStep();
-            if (gameState.round.onSelect === undefined) {
+            if (gameState.modal.onSelect === undefined) {
               modalService.hide();
               return;
             }
-            gameState.round.onSelect(resource);
+            gameState.modal.onSelect(resource);
           }}
         />,
         true

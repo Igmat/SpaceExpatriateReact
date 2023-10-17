@@ -84,8 +84,10 @@ export class ActionManager implements IActionManager {
 
   select = (option: string) => {
     if (option === "charter" || option === "garbage") {
-      this.deliveryOption = option;
-      return;
+      return new Promise((resolve) => {
+        this.deliveryOption = option as DeliveryOption
+        resolve("") 
+      });
     }
     if (isResourcePrimitive(option)) {
       if (this.deliveryOption === undefined) return;

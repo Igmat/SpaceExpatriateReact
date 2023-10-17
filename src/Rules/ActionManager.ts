@@ -117,7 +117,7 @@ export class ActionManager {
   select = async (option: string) => {
     if (!this.activeAction) return;
     await this.colony.triggers.beforeSelect(this.activeAction)
-    this.managers[this.activeAction].select(option) && this.nextRound(); //заглушка
+    this.managers[this.activeAction].select(option)  // && this.nextRound(); 
     await this.colony.triggers.afterSelect(this.activeAction)
   };
 

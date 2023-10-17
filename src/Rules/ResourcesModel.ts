@@ -14,6 +14,7 @@ export type PlayerResources = {
   [key in ResourcePrimitive]: number;
 };
 
+export type GarbageResources = Omit<PlayerResources, "dark matter">;
 
 export class ResourcesModel {
   constructor(
@@ -45,7 +46,7 @@ export class ResourcesModel {
 
   public charterResource?: ResourcePrimitive;
 
-  public garbageResources: Omit<PlayerResources, "dark matter"> = {
+  public garbageResources: GarbageResources = {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,

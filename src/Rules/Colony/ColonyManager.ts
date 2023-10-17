@@ -13,8 +13,7 @@ import {
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
 import { RoundManager } from "../RoundManager";
-import { toArrayArray } from "../../Utils";
-import { ResourcesModel } from "../ResourcesModel";
+import { GarbageResources, ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
 
 export type EffectName = keyof ColonyManager["effects"];
@@ -35,11 +34,22 @@ export class ColonyManager {
 
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
-      const deliveryResources = toArrayArray(this.table.delivery.map(card => card.resources as ResourcePrimitive[]));
-      const selected = await this.round.startResourceStep(deliveryResources);
-      selected.forEach((resource: ResourcePrimitive) => {
-        this.resources.gainResource(resource)
-      })
+
+      const getValidCombination = (deliveryResources: Exclude<ResourcePrimitive, "dark matter">[][], garbageResources: GarbageResources) => {
+        const garbageResourcesFiltered =
+          Object.entries(garbageResources)
+            .filter(([_, value]) => value > 0)
+            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
+        const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
+        return deliveryResources.filter((array) => array.some(resource => garbageResourcesArray.some(garbageResource => garbageResource === resource)));
+      };
+
+      const deliveryResources = this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
+      const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
+      const selected = await this.round.startResourceStep(validCardCombinations);
+      selected.forEach((resource) => {
+        this.resources.gainResource(resource);
+      });
     },
 
     adjustGarbage: async () => { },
@@ -64,7 +74,7 @@ export class ColonyManager {
 
     await Promise.all(aplicable.map((colony: ColonyCard) => {
       const trigger: FullTrigger = expandTrigger(colony.triggers[triggerName]);
-      trigger.activate(this.gameState); // переделать в промис
+      trigger.activate(this.gameState);
 
       return Promise.all(trigger.effects.map((effect) =>
         this.effects[effect](colony)
@@ -76,7 +86,7 @@ export class ColonyManager {
     this.executeTrigger(type, triggerName);
 
   triggers = TriggerNames.reduce((acc, trigger) =>
-      (acc[trigger] = this.getTriggerExecutor(trigger)) && acc,
+    (acc[trigger] = this.getTriggerExecutor(trigger)) && acc,
     {} as { [key in TriggerName]: (type: CardType) => Promise<void> })
 
   findAplicableColonyCards = (CardType: CardType): ColonyCard[] =>
