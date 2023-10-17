@@ -16,14 +16,13 @@ interface DeckProps {
   action: ActionManager;
   round: RoundManager;
   resources: ResourcesModel;
-  isDisabled: boolean;
+  isDisabledDeck: boolean;
 }
 
 export const Deck = observer((props: DeckProps) => {
   const onOpenCardClick = () => {
     props.action.perform(props.model.openedCard);
   };
-
   return (
     <>
       <div
@@ -34,12 +33,12 @@ export const Deck = observer((props: DeckProps) => {
           <Card
             key={props.model.openedCard.id}
             {...props.model.openedCard}
-            isDisabled={props.action.isDisabled("opened", props.model.openedCard,)}
+            isDisabled={props.action.isDisabled('openedCard', props.model.openedCard)}
           />
         )}
       </div>
       <div
-        className={`${styles[props.model.type]} ${styles.deck} ${props.isDisabled ? styles.disabled : ""}`}
+        className={`${styles[props.model.type]} ${styles.deck} ${props.isDisabledDeck ? styles.disabled : ""}`}
         onClick={() => props.action.activateDeck(props.model.type)}
       />
     </>

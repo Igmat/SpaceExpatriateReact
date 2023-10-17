@@ -8,6 +8,7 @@ import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
+import { CardSource } from "../ActionManager";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
@@ -131,23 +132,24 @@ export class ActionManager implements IActionManager {
     );
   };
 
-  isDisabled(place: string, card: CardDefinition,): boolean {
-    if (this.round.phase === "terraforming") {
-      if (place === "table") return this.isDisabledTable(card);
-      if (place === "hand") return true;
-      // if (type === "deck") return this.isDisabledDeck(card.type);
-      if (place === "opened") return true;
+
+
+isDisabled(place: CardSource, card: CardDefinition): boolean {
+    switch (place) {
+      case "table":
+        return this.isDisabledTable(card);
+      case "hand":
+        return true;
+      case 'openedCard':
+        return true;
+      default:
+        return false;
     }
-    return false;
+    
   }
+  isDisabledDeck = (type: CardType): boolean => true;
+  
 
-  isDisabledTable = (card: CardDefinition): boolean => {
-    //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
-    return false;
-  };
+  isDisabledTable = (card: CardDefinition): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
 
-  isDisabledDeck = (type: CardType): boolean => {
-    if (this.round.phase === "terraforming") return true;
-    return false;
-  };
 }

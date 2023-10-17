@@ -4,6 +4,7 @@ import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
+import { CardSource } from "../ActionManager";
 
 export type Militaryoption = "political" | "exploration";
 
@@ -33,7 +34,7 @@ export class ActionManager implements IActionManager {
     )
       this.hand.takeCard(this.decks[type].takeCard());
     this.remaining.activateDeck = 0;
-   return this.tryNext()
+    return this.tryNext();
   };
 
   activateCard = (card: number) => {};
@@ -47,7 +48,7 @@ export class ActionManager implements IActionManager {
       this.militaryoption = option;
     }
     if (this.militaryoption === "political") {
-     return this.tryNext() //заглушка
+      return this.tryNext(); //заглушка
     }
     if (this.militaryoption === "exploration") {
       this.round.startPerformingStep();
@@ -58,18 +59,8 @@ export class ActionManager implements IActionManager {
 
   reset = () => {};
 
-  isDisabled(place: string, card: CardDefinition, ): boolean {
-    if (this.round.phase === "military") {
-      if (place === "table") return true;
-      if (place === "hand") return true;
-      if (place === "opened") return true;
-    }
-    return false;
-  }
+  isDisabled = (place: CardSource, card: CardDefinition): boolean => true
 
-  isDisabledDeck = (type: CardType): boolean => {
-    return false;
-  };
-
-
+  isDisabledDeck = (type: CardType): boolean => false
+ 
 }

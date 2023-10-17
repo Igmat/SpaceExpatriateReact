@@ -6,6 +6,7 @@ import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+import { CardSource } from "../ActionManager";
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -30,21 +31,21 @@ export class ActionManager implements IActionManager {
     this.round.startPerformingStep();
   };
 
-  tryNext = () => this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
-  
+  tryNext = () =>
+    this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
 
   activateDeck = (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
     this._remaining.activateDeck--;
     this.table.takeCard(this.decks[type].takeCard());
-   return this.tryNext()
+    return this.tryNext();
   };
-  
+
   activateCard = (card: number) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
     this.table.takeCard(this.hand.dropCard(card));
-  return this.tryNext()
+    return this.tryNext();
   };
 
   activateColonyCard = (card: number) => {};
@@ -53,21 +54,9 @@ export class ActionManager implements IActionManager {
   select = (option: string) => {};
 
   reset = () => {};
-  isDisabled(place: string, card: CardDefinition): boolean {
-    if (this.round.phase === "engineering") {
-      if (place === "table") return true;
-      if (place === "hand" && this._remaining.activateCard === 0) return true;
-      if (place === "opened") return true;
-    }
-    return false;
-  }
 
-  isDisabledDeck = (type: CardType): boolean => {
-    if (
-      this.round.phase === "engineering" &&
-      this._remaining.activateDeck === 0
-    )
-      return true;
-    return false;
-  };
+  isDisabled = (place: CardSource, card: CardDefinition): boolean => (place === "hand" && this._remaining.activateCard) ? false : true;
+  
+  isDisabledDeck = (type: CardType): boolean => !this._remaining.activateDeck ? true : false;
+  
 }

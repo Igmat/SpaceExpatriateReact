@@ -43,14 +43,14 @@ export const Table = observer((props: TableProps) => {
             isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
-      </div>
+   </div>
       <div className={styles.cardsContainer}>
         {props.model.engineering.map((card, ind) => (
           <Card
             key={ind}
             {...card}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled("table", card)}
+          isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -60,7 +60,7 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled("table", card)}
+          isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>
@@ -70,7 +70,7 @@ export const Table = observer((props: TableProps) => {
             key={ind}
             {...card}
             onClick={() => handleClick(card)}
-            isDisabled={props.action.isDisabled("table", card)}
+          isDisabled={props.action.isDisabled("table", card)}
           />
         ))}
       </div>

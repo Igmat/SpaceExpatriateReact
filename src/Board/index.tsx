@@ -29,7 +29,7 @@ export const Board = observer(() => {
           table={gameState.table}
           action={gameState.action}
           round={gameState.round}
-          isDisabled={gameState.action.isDisabledDeck("delivery")}
+          isDisabledDeck={gameState.action.isDisabledDeck("delivery")}
         />
         <Deck
           model={gameState.decks.engineering}
@@ -38,7 +38,7 @@ export const Board = observer(() => {
           table={gameState.table}
           action={gameState.action}
           round={gameState.round}
-          isDisabled={gameState.action.isDisabledDeck("engineering")}
+          isDisabledDeck={gameState.action.isDisabledDeck("engineering")}
         />
         <Deck
           model={gameState.decks.terraforming}
@@ -47,7 +47,7 @@ export const Board = observer(() => {
           table={gameState.table}
           action={gameState.action}
           round={gameState.round}
-          isDisabled={gameState.action.isDisabledDeck("terraforming")}
+          isDisabledDeck={gameState.action.isDisabledDeck("terraforming")}
         />
         <Deck
           model={gameState.decks.military}
@@ -56,7 +56,7 @@ export const Board = observer(() => {
           table={gameState.table}
           action={gameState.action}
           round={gameState.round}
-          isDisabled={gameState.action.isDisabledDeck("military")}
+          isDisabledDeck={gameState.action.isDisabledDeck("military")}
         />
       </div>
     </div>
