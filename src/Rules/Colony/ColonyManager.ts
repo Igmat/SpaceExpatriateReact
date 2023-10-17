@@ -13,9 +13,6 @@ import { GameState } from "..";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
-import { ActionManager as DAM } from "../Delivery";
-import { ActionManager as EAM } from "../Engineering";
-import { ActionManager as MAM } from "../Military";
 
 export type EffectName = keyof ColonyManager["effects"];
 
