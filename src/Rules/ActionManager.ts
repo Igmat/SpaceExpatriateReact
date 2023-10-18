@@ -14,6 +14,8 @@ import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 export type CardSource = 'openedCard' | 'hand' | 'table'
+export type CardSource2 = 'Deck' | 'Hand' | 'Table' | string //иначе передача имени компонента ругается, т.к. тип его string
+
 export class ActionManager {
   constructor(
     private readonly decks: DeckManager,
@@ -128,10 +130,23 @@ export class ActionManager {
   get isDisabled(): (place: CardSource, card: CardDefinition) => boolean {
     return (place: CardSource, card: CardDefinition) => {
       if (!this.activeAction) return place === 'openedCard'? false : true;
-      return  this.managers[this.activeAction].isDisabled(place, card)
+      return this.managers[this.activeAction].isDisabled(place, card)
     };
   }
-
+  isDisabled2 = (card: CardDefinition) =>  {
+    const caller = this.isDisabled2.caller;//устаревшее, ругается стрикт. Безопасных и новых аналогов не нашла
+    if (caller && caller.name === "Hand") {
+     console.log('I was colled in' + caller.name)
+     return true
+    }
+  }
+  get isDisabled3(): (componentsName: CardSource2, card: CardDefinition) => boolean {
+    return (componentsName: CardSource2, card: CardDefinition) => {
+      if (!this.activeAction) return componentsName === 'Deck' ? false : true;
+      return false
+     
+    };
+  }
   get isDisabledDeck(): (type: CardType) => boolean {
     return (type: CardType) => {
       if (!this.activeAction) return true;

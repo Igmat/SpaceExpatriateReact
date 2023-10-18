@@ -33,7 +33,9 @@ export const Deck = observer((props: DeckProps) => {
           <Card
             key={props.model.openedCard.id}
             {...props.model.openedCard}
-            isDisabled={props.action.isDisabled('openedCard', props.model.openedCard)}
+          // isDisabled={props.action.isDisabled('openedCard', props.model.openedCard)}
+          isDisabled={props.action.isDisabled3(Deck.name, props.model.openedCard)}
+  
           />
         )}
       </div>
