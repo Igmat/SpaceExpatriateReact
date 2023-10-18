@@ -41,16 +41,15 @@ export class ActionManager implements IActionManager {
     return true;
   };
 
-  activateDeck = (type: CardType) => { };
+  activateDeck = (type: CardType) => {};
 
-  activateCard = (card: number) => { };
+  activateCard = (card: number) => {};
 
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
-      return  this.buildColony(card);//строим колонию
+      return this.buildColony(card); //строим колонию
     }
-  
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -94,22 +93,21 @@ export class ActionManager implements IActionManager {
   };
 
   buildColony = (selectedCardIndex: number) => {
-    const selectedCard =
-      this.colonyDeck.takeOpenedCard(selectedCardIndex);
+    const selectedCard = this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
     if (!selectedCard) {
-      console.log("No more colony cards available.")
+      console.log("No more colony cards available.");
       return;
     }
 
     this.resources.points.total += selectedCard.points || 0; //прибавляем очки за постройку колонии
-    delete selectedCard.points //обнуляем очки на карте которая построена
+    delete selectedCard.points; //обнуляем очки на карте которая построена
 
     this.colony.takeColonyCard(selectedCard);
     this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
     this.cardsToDrop = []; //чистим масив сбрасываемых карт
     //this.tryNext() && this.round.next(); //переходим к следующему раунду
-    return this.tryNext()
+    return this.tryNext();
   };
 
   get isThreeCardsOfSameType() {
@@ -130,26 +128,18 @@ export class ActionManager implements IActionManager {
         )
         .filter(Boolean).length === 4
     );
-  };
+  }
 
-
-
-isDisabled(place: CardSource, card: CardDefinition): boolean {
-    switch (place) {
-      case "table":
-        return this.isDisabledTable(card);
-      case "hand":
-        return true;
-      case 'openedCard':
-        return true;
-      default:
-        return false;
+  isDisabled(place: CardSource, card: CardDefinition): boolean {
+    if (place === "table") {
+      return this.isDisabledTable(card);
     }
-    
+    if (place === "hand" || place === "openedCard") {
+      return true;
+    }
+    return false;
   }
   isDisabledDeck = (type: CardType): boolean => true;
-  
 
   isDisabledTable = (card: CardDefinition): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
-
 }

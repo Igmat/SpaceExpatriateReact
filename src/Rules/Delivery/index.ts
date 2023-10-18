@@ -146,8 +146,8 @@ export class ActionManager implements IActionManager {
       () => this.resources.handleCardProcessing(card)
     );
   }
-/*// на всякий случай оставлю это тут (if версия до Case)
-  isDisabled2(place: string, card: CardDefinition): boolean {
+
+  isDisabled(place: CardSource, card: CardDefinition): boolean {
     if (place === "table") {
       if (card.type === "engineering") {
         const isEmpty =
@@ -157,42 +157,16 @@ export class ActionManager implements IActionManager {
             !this.resources.engineeringMaps.Middle[card.id]) ||
           (card.connection === "end" &&
             !this.resources.engineeringMaps.FinishCounter);
-        console.log(isEmpty);
         return isEmpty;
       }
 
       if (card.type === "terraforming")
-        return this.usedTerraformingCards.includes(card.id);
+        return this.usedTerraformingCards.includes(card.id);//не подсвечивает возможности исходя из ресурсов
     }
 
     if (place === "hand") return false;
     return true;
-  }*/
-  isDisabled(place:  CardSource,  card: CardDefinition): boolean {
-    switch (place) {
-      case "table":
-        switch (card.type) {
-          case "engineering":
-            const isEmpty =
-              (card.connection === "start" &&
-                !this.resources.engineeringMaps.Start[card.id]) ||
-              (card.connection === "continue" &&
-                !this.resources.engineeringMaps.Middle[card.id]) ||
-              (card.connection === "end" &&
-                !this.resources.engineeringMaps.FinishCounter);
-            return isEmpty;
-          case "terraforming":
-            return this.usedTerraformingCards.includes(card.id);//не подсвечивает возможности исходя из ресурсов
-          default:
-            return true;
-        }
-      case "hand":
-        return false;
-      default:
-        return true;
-    }
   }
-  
 
   isDisabledDeck = (type: CardType): boolean => true;
 }
