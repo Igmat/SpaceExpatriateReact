@@ -39,16 +39,6 @@
     color: rgb(177, 177, 177, 0.5);
     z-index: -1;
   }
-  & .end{
-    transform: translate(200px,-560px);
-    cursor: pointer;
-    background-color: black;
-    border-radius: 15px;
-    color: white;
-    width: 200px;
-    height: 30px;
-    animation: radial-anakausug 1s infinite;
-  }
 }
 @keyframes radial-anakausug {
   0% { box-shadow: 0 0 0 0px rgba(244, 234, 99, 0.3); }  
@@ -56,26 +46,7 @@
   100% { box-shadow: 0 0 0 40px rgba(183, 194, 39, 0); }
   }
 
-.confirmButton {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 30px;
-  border-radius: 5px;
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgb(170, 152, 152);
-  font-size: 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
-  &:hover {
-    background-color: rgb(170, 152, 152);
-    color: rgb(255, 255, 255);
-  }
-}
-
-.giveUpButton {
+.endTurnButton {
   position: absolute;
   bottom: 0;
   left: 50%;

@@ -18,8 +18,8 @@ export class GameState {
   hand = new HandModel(this.gameId);
   decks = new DeckManager(this.gameId);
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
-  colony = new ColonyManager(this.gameId);
   table = new TableModel(this.gameId);
+  colony = new ColonyManager(this, this.gameId, this.table);
   round = new RoundManager(this.decks, this.hand, this.colonyDeck, this.gameId);
   resources = new ResourcesModel(this.table, this.round, this.gameId);
   action = new ActionManager(this.decks, this.table, this.round, this.hand, this.resources, this.gameId, this.colony, this.colonyDeck);
