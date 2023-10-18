@@ -24,27 +24,48 @@ export class ActionManager implements IActionManager {
     activateCard: 0,
   };
 
+  private _isEngineeringLogicChanged = false;
+
+  setEngineeringLogic() {
+    this._isEngineeringLogicChanged = true;
+  }
+
+  setRemainingActivateDeck = (value: number) => {
+    this._remaining.activateDeck += value;
+  }
+  setRemainingActivateCard = (value: number) => {
+    this._remaining.activateCard += value;
+  }
+ 
   perform = (card: CardDefinition) => {
     this._remaining.activateDeck = 1;
     this._remaining.activateCard = this.hand.cardsInHand.length > 0 ? 1 : 0;
     this.round.startPerformingStep();
   };
 
-  tryNext = () => this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
-  
+  tryNext = () =>
+    this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
 
   activateDeck = (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
-    this._remaining.activateDeck--;
-    this.table.takeCard(this.decks[type].takeCard());
-   return this.tryNext()
+    if (this._isEngineeringLogicChanged === false) {
+      this._remaining.activateDeck--;
+      this.table.takeCard(this.decks[type].takeCard());
+      return this.tryNext();
+    }
+    if (this._isEngineeringLogicChanged === true) {
+      this._remaining.activateDeck--;
+      this.hand.takeCard(this.decks[type].takeCard()!);
+      this._remaining.activateCard++;
+      return this.tryNext();
+    }
   };
-  
+
   activateCard = (card: number) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
     this.table.takeCard(this.hand.dropCard(card));
-  return this.tryNext()
+    return this.tryNext();
   };
 
   activateColonyCard = (card: number) => {};

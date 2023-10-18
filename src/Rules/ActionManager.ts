@@ -34,8 +34,7 @@ export class ActionManager {
       this.table,
       this.decks,
       this.hand,
-      this.gameId,
- 
+      this.gameId
     ),
     terraforming: new TAM(
       this.round,
@@ -79,6 +78,7 @@ export class ActionManager {
     this.round.phase = card.type;
     await this.colony.triggers.before(this.activeAction);
     this.currentManager?.perform(card);
+    await this.colony.triggers.afterPerform(this.activeAction);
   };
 
   nextRound = () => {
@@ -89,23 +89,27 @@ export class ActionManager {
 
   tryNext = () => this.currentManager?.tryNext() && this.nextRound();
 
-  activateDeck = (type: CardType) => this.currentManager?.activateDeck(type) && this.nextRound();
+  activateDeck = async (type: CardType) => {
+    this.currentManager?.activateDeck(type) && this.nextRound();
+  };
 
-  activateCard = (card: number) => this.currentManager?.activateCard(card) && this.nextRound();
+  activateCard = (card: number) =>
+    this.currentManager?.activateCard(card) && this.nextRound();
 
-  activateColonyCard = (card: number) => this.currentManager?.activateColonyCard(card) && this.nextRound();
+  activateColonyCard = (card: number) =>
+    this.currentManager?.activateColonyCard(card) && this.nextRound();
 
-  activateCardOnTable = (card: CardDefinition) => this.currentManager?.activateCardOnTable(card);
+  activateCardOnTable = (card: CardDefinition) =>
+    this.currentManager?.activateCardOnTable(card);
 
   select = async (option: string) => {
     if (!this.activeAction) return;
-    await this.colony.triggers.beforeSelect(this.activeAction)
+    await this.colony.triggers.beforeSelect(this.activeAction);
     this.currentManager?.select(option);
-    await this.colony.triggers.afterSelect(this.activeAction)
+    await this.colony.triggers.afterSelect(this.activeAction);
   };
 
   reset = () => this.currentManager?.reset();
-
 
   get isDisabled(): (place: string, card: CardDefinition) => boolean {
     return (place: string, card: CardDefinition) => {
@@ -119,7 +123,7 @@ export class ActionManager {
     };
   }
   get isDisabledDeck(): (type: CardType) => boolean {
-    console.log(this.activeAction)
+    console.log(this.activeAction);
     return (type: CardType) => {
       if (!this.activeAction) return false;
       if (this.round.phase === "active") return true;

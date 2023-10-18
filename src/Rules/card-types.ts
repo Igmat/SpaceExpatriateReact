@@ -93,7 +93,7 @@ export type Trigger =
   | EffectName[]
   | FullTrigger;
 
-export const TriggerNames = ["before", "after", "during", "beforeSelect", "afterSelect"] as const;
+export const TriggerNames = ["before", "after", "during", "beforeSelect", "afterSelect", "afterPerform"] as const;
 
 export type TriggerName = (typeof TriggerNames)[number]
 

@@ -17,6 +17,7 @@ import { GarbageResources, ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
 import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
+import { ActionManager as EAM } from "../Engineering";
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -38,25 +39,42 @@ export class ColonyManager {
 
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
-
-      const getValidCombination = (deliveryResources: Exclude<ResourcePrimitive, "dark matter">[][], garbageResources: GarbageResources) => {
-        const garbageResourcesFiltered =
-          Object.entries(garbageResources)
-            .filter(([_, value]) => value > 0)
-            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
+      const getValidCombination = (
+        deliveryResources: Exclude<ResourcePrimitive, "dark matter">[][],
+        garbageResources: GarbageResources
+      ) => {
+        const garbageResourcesFiltered = Object.entries(garbageResources)
+          .filter(([_, value]) => value > 0)
+          .reduce(
+            (acc, [key, value]) => ({ ...acc, [key]: value }),
+            {} as GarbageResources
+          );
         const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
-        return deliveryResources.filter((array) => array.some(resource => garbageResourcesArray.some(garbageResource => garbageResource === resource)));
+        return deliveryResources.filter((array) =>
+          array.some((resource) =>
+            garbageResourcesArray.some(
+              (garbageResource) => garbageResource === resource
+            )
+          )
+        );
       };
 
-      const deliveryResources = this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
-      const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
-      const selected = await this.round.startResourceStep(validCardCombinations);
+      const deliveryResources = this.table.delivery.map(
+        (card) => card.resources as Exclude<ResourcePrimitive, "dark matter">[]
+      );
+      const validCardCombinations = getValidCombination(
+        deliveryResources,
+        this.resources.garbageResources
+      );
+      const selected = await this.round.startResourceStep(
+        validCardCombinations
+      );
       selected.forEach((resource) => {
         this.resources.gainResource(resource);
       });
     },
 
-    adjustGarbage: async () => { },
+    adjustGarbage: async () => {},
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isSelectableEngineeringCard(colony.data)) {
@@ -74,38 +92,57 @@ export class ColonyManager {
     },
     addPointsForMissionType: async (colony: ColonyCard) => {
       this.hand.cardsInHand.forEach((card) => {
-          if (card.type === (this.gameState.action.currentManager as TAM).missionType) {
-              this.resources.addPoints(2);
-              return;
-          }
+        if (card.type ===
+          (this.gameState.action.currentManager as TAM).missionType
+        ) {this.resources.addPoints(2);}
       });
-    }
-  };
+    },
 
-  takeColonyCard = (card: ColonyCardWithPoints) => {
-    this.colonies.push(card);
+    dockDeliveryModule: async (colony: ColonyCard) => {
+      (this.gameState.action.currentManager as EAM).setRemainingActivateDeck(1);
+      this.gameState.action.currentManager?.activateDeck("delivery");
+    },
+
+    adjustRemainingActions: async (colony: ColonyCard) => {
+      (this.gameState.action.currentManager as EAM).setRemainingActivateDeck(1);
+      (this.gameState.action.currentManager as EAM).setRemainingActivateCard(-1);
+    },
+
+    changeEngineeringLogic: async (colony: ColonyCard) => {
+      (this.gameState.action.currentManager as EAM).setEngineeringLogic();
+    },
   };
 
   private executeTrigger = async (type: CardType, triggerName: TriggerName) => {
     const aplicable = this.findAplicableColonyCards(type);
 
-    await Promise.all(aplicable.map((colony: ColonyCard) => {
-      const trigger: FullTrigger = expandTrigger(colony.triggers[triggerName]);
-      trigger.activate(this.gameState);
+    await Promise.all(
+      aplicable.map((colony: ColonyCard) => {
+        const trigger: FullTrigger = expandTrigger(
+          colony.triggers[triggerName]
+        );
+        trigger.activate(this.gameState);
 
-      return Promise.all(trigger.effects.map((effect) =>
-        this.effects[effect](colony)
-      ));
-    }))
-  }
+        return Promise.all(
+          trigger.effects.map((effect) => this.effects[effect](colony))
+        );
+      })
+    );
+  };
 
-  private getTriggerExecutor = (triggerName: TriggerName) => async (type: CardType) =>
-    this.executeTrigger(type, triggerName);
+  private getTriggerExecutor =
+    (triggerName: TriggerName) => async (type: CardType) =>
+      this.executeTrigger(type, triggerName);
 
-  triggers = TriggerNames.reduce((acc, trigger) =>
-    (acc[trigger] = this.getTriggerExecutor(trigger)) && acc,
-    {} as { [key in TriggerName]: (type: CardType) => Promise<void> })
+  triggers = TriggerNames.reduce(
+    (acc, trigger) => (acc[trigger] = this.getTriggerExecutor(trigger)) && acc,
+    {} as { [key in TriggerName]: (type: CardType) => Promise<void> }
+  );
 
   findAplicableColonyCards = (CardType: CardType): ColonyCard[] =>
     this.colonies.filter((colony) => colony.mutateAction === CardType);
+
+  takeColonyCard = (card: ColonyCardWithPoints) => {
+    this.colonies.push(card);
+  };
 }

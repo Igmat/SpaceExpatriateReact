@@ -37,7 +37,6 @@ export const colonyCards = createCards<ColonyCard>(
     triggers: {
       afterSelect: "selectDeliveryStation",
     },
-    quantity: 20,
   },
 
   {
@@ -46,7 +45,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "before",
     mutateAction: "delivery",
     name: "SPACE LIFT",
-    triggers: {}
+    triggers: {},
   },
 
   {
@@ -65,19 +64,22 @@ export const colonyCards = createCards<ColonyCard>(
     name: "HELIOSTAT DESERT",
     triggers: {
       before: "addTempEngineering",
-      after: "removeTempEngineering"
-    }
-    
+      after: "removeTempEngineering",
+    },
   },
 
   // -------------- Engineering ----------------
-  /*{
+  {
         benefit: "Before Engineering dock a Station Module from Delivery supply",
-        whenIsActivated: "before",
         mutateAction: "engineering",
         players: 3,
-        name: "SPACE CARRIERS PORT"
+        name: "SPACE CARRIERS PORT",
+        triggers: {
+           afterPerform: "dockDeliveryModule",
+        },
+        quantity: 20,
     },
+    /*
     {
         benefit: "Before Engineering dock a Station Module from Engineering supply",
         whenIsActivated: "before",
@@ -107,7 +109,7 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "engineering",
     players: 2,
     name: "SPACECRAFT MANUFACTORY",
-    triggers: {}
+    triggers: {},
   },
   {
     benefit:
@@ -115,7 +117,18 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "during",
     mutateAction: "engineering",
     name: "SPACE INDUSTRY CENTER",
-    triggers: {}
+    triggers: {},
+  },
+  {
+    benefit:
+      "On Engineering, whenever you need to dock a Station Module from hand/supply,draw a card (from any supply) and then dock a Station Module from your hand instead.This Colony card effect gives its owner the privilege of a wider choice of Station Modules to dock.",
+    mutateAction: "engineering",
+    name: "Institute of Technology",
+    triggers: {
+      before: "changeEngineeringLogic",
+      afterPerform: "adjustRemainingActions"
+    },
+    quantity: 20,
   },
 
   // -------------- Military ----------------
@@ -154,7 +167,7 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "military",
     players: 2,
     name: "TACTICAL NANOROBOTICS",
-    triggers: {}
+    triggers: {},
   },
   {
     benefit:
@@ -162,7 +175,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "during",
     mutateAction: "military",
     name: "COMMAND CENTER",
-    triggers: {}
+    triggers: {},
   },
   {
     benefit:
@@ -170,7 +183,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "during",
     mutateAction: "military",
     name: "REVERSE ENGINEERING LAB",
-    triggers: {}
+    triggers: {},
   },
 
   // -------------- Terraforming ----------------
@@ -212,7 +225,7 @@ export const colonyCards = createCards<ColonyCard>(
     name: "OPERATIONS SUPPORT COMMAND",
     triggers: {
       after: "addPointsForMissionType",
-    }
+    },
   },
 
   {
@@ -221,7 +234,7 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "after",
     mutateAction: "terraforming",
     name: "STRATEGIC DEVELOPMENT CENTER",
-    triggers: {}
+    triggers: {},
   },
   {
     benefit:
@@ -230,6 +243,6 @@ export const colonyCards = createCards<ColonyCard>(
     name: "FIELD RESEARCH HEADQUARTERS",
     triggers: {
       before: "addPointsFromColonies",
-    }
+    },
   }
 );
