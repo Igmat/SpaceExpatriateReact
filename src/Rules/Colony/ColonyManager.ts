@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ColonyCardWithPoints } from "./ColonyDeckModel";
+import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import {
   CardType,
   ColonyCard,
@@ -15,6 +15,8 @@ import { TableModel } from "../TableModel";
 import { RoundManager } from "../RoundManager";
 import { GarbageResources, ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
+import { HandModel } from "../HandModel";
+import { ActionManager as TAM } from "../Terraforming";
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -24,7 +26,9 @@ export class ColonyManager {
     private readonly gameId: string,
     private readonly table: TableModel,
     private readonly round: RoundManager,
-    private readonly resources: ResourcesModel
+    private readonly resources: ResourcesModel,
+    private readonly colonyDeck: ColonyDeckModel,
+    private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, this.gameId, "colony", ["colonies"]);
@@ -63,6 +67,19 @@ export class ColonyManager {
     removeTempEngineering: async (colony: ColonyCard) => {
       this.table.engineering.pop();
     },
+    addPointsFromColonies: async (colony: ColonyCard) => {
+      this.colonyDeck.openedCards.forEach((card) =>
+        this.resources.extractColonyPoints(card)
+      );
+    },
+    addPointsForMissionType: async (colony: ColonyCard) => {
+      this.hand.cardsInHand.forEach((card) => {
+          if (card.type === (this.gameState.action.currentManager as TAM).missionType) {
+              this.resources.addPoints(2);
+              return;
+          }
+      });
+    }
   };
 
   takeColonyCard = (card: ColonyCardWithPoints) => {

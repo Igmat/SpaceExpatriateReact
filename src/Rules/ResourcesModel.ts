@@ -9,6 +9,7 @@ import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
+import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
@@ -94,17 +95,7 @@ export class ResourcesModel {
     Object.keys(this.playerResources)
       .forEach(key => this.playerResources[key] = 0)
   };
-  /*
-  savePlayerResources = () => {//запасной вариант востановления ресурсов при ресете
-    for (let key in this.playerResources) {
-      this.tempPlayerResources[key] = this.playerResources[key];
-    }
-  };
-resetPlayerResources = () => {//запасной вариант востановления ресурсов при ресете
-  for (let key in this.tempPlayerResources) {
-    this.playerResources[key] = this.tempPlayerResources[key];
-  }
-}*/
+
   consumeResources = (resources: ResourcePrimitive[]) => {
     //потребление ресурсов
     resources.forEach((resource) => {
@@ -178,8 +169,20 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.playerResources[resource]++;
   };
 
-  removeResourcesFromGarbage = (resource: Exclude<ResourcePrimitive, "dark matter">) => {
+  removeResourcesFromGarbage = (
+    resource: Exclude<ResourcePrimitive, "dark matter">
+  ) => {
     this.garbageResources[resource] = 0;
+  };
+
+  extractColonyPoints = (selectedCard: ColonyCardWithPoints) => {
+    const colonyPoints = selectedCard.points || 0;
+    this.points.total += colonyPoints;
+    delete selectedCard.points;
+  };
+  
+  addPoints = (points: number) => {
+    this.points.total += points;
   };
 
   calculateTotalPoints = () => {

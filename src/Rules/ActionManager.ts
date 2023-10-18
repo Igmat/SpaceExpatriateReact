@@ -59,8 +59,8 @@ export class ActionManager {
 
   activeAction?: CardType;
 
-  get deliveryManager(): DAM {
-    return this.managers.delivery;
+  get currentManager() {
+    return this.activeAction && this.managers[this.activeAction];
   }
 
   perform = async (card?: CardDefinition) => {
@@ -78,7 +78,7 @@ export class ActionManager {
 
     this.round.phase = card.type;
     await this.colony.triggers.before(this.activeAction);
-    this.managers[card.type].perform(card);
+    this.currentManager?.perform(card);
   };
 
   nextRound = () => {
@@ -87,44 +87,25 @@ export class ActionManager {
     this.activeAction = undefined;
   };
 
-  tryNext = () => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].tryNext() && this.nextRound();
-  };
+  tryNext = () => this.currentManager?.tryNext() && this.nextRound();
 
-  activateDeck = (type: CardType) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateDeck(type) && this.nextRound();
+  activateDeck = (type: CardType) => this.currentManager?.activateDeck(type) && this.nextRound();
 
-  };
+  activateCard = (card: number) => this.currentManager?.activateCard(card) && this.nextRound();
 
-  activateCard = async (card: number) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateCard(card) && this.nextRound();
- 
-  };
+  activateColonyCard = (card: number) => this.currentManager?.activateColonyCard(card) && this.nextRound();
 
-  activateColonyCard = (card: number) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateColonyCard(card) && this.nextRound();
-  };
-
-  activateCardOnTable = (card: CardDefinition) => {
-    if (!this.activeAction) return;
-    return this.managers[this.activeAction].activateCardOnTable(card);
-  };
+  activateCardOnTable = (card: CardDefinition) => this.currentManager?.activateCardOnTable(card);
 
   select = async (option: string) => {
     if (!this.activeAction) return;
     await this.colony.triggers.beforeSelect(this.activeAction)
-    this.managers[this.activeAction].select(option)  // && this.nextRound(); 
+    this.currentManager?.select(option);
     await this.colony.triggers.afterSelect(this.activeAction)
   };
 
-  reset = () => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].reset();
-  };
+  reset = () => this.currentManager?.reset();
+
 
   get isDisabled(): (place: string, card: CardDefinition) => boolean {
     return (place: string, card: CardDefinition) => {

@@ -210,7 +210,9 @@ export const colonyCards = createCards<ColonyCard>(
     mutateAction: "terraforming",
     players: 2,
     name: "OPERATIONS SUPPORT COMMAND",
-    triggers: {}
+    triggers: {
+      after: "addPointsForMissionType",
+    }
   },
 
   {
@@ -224,9 +226,10 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "On Terraforming on your turn collect all points from neutral Colonies (even if you do not set up a Colony)",
-    // whenIsActivated: "before",
     mutateAction: "terraforming",
     name: "FIELD RESEARCH HEADQUARTERS",
-    triggers: {}
+    triggers: {
+      before: "addPointsFromColonies",
+    }
   }
 );
