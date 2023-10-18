@@ -51,7 +51,7 @@ export class ActionManager implements IActionManager {
     this.resources.createEngineeringMaps(this.table.engineering);
   };
 
-  tryNext = () => {
+  get isEnded () {
     this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
@@ -160,8 +160,10 @@ export class ActionManager implements IActionManager {
         return isEmpty;
       }
 
-      if (card.type === "terraforming")
+      if (card.type === "terraforming") {
         return this.usedTerraformingCards.includes(card.id);//не подсвечивает возможности исходя из ресурсов
+
+      }
     }
 
     if (place === "hand") return false;

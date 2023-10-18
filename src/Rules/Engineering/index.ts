@@ -31,21 +31,19 @@ export class ActionManager implements IActionManager {
     this.round.startPerformingStep();
   };
 
-  tryNext = () =>
-    this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
-
+  get isEnded () {
+   return this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
+  }
   activateDeck = (type: CardType) => {
-    if (this._remaining.activateDeck === 0) return;
+    if (this._remaining.activateDeck === 0) return false;
     this._remaining.activateDeck--;
     this.table.takeCard(this.decks[type].takeCard());
-    return this.tryNext();
   };
 
   activateCard = (card: number) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
     this.table.takeCard(this.hand.dropCard(card));
-    return this.tryNext();
   };
 
   activateColonyCard = (card: number) => {};

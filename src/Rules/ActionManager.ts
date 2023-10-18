@@ -87,24 +87,26 @@ export class ActionManager {
     this.activeAction = undefined;
   };
 
-  tryNext = () => {
+  confirm = () => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].tryNext() && this.nextRound();
+    this.managers[this.activeAction].isEnded && this.nextRound();
   };
 
   activateDeck = (type: CardType) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateDeck(type) && this.nextRound();
+    this.managers[this.activeAction].activateDeck(type);
+    this.managers[this.activeAction].isEnded && this.nextRound();
   };
 
   activateCard = (card: number) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateCard(card) && this.nextRound();
+    this.managers[this.activeAction].activateCard(card) 
+    this.managers[this.activeAction].isEnded && this.nextRound();
   };
 
   activateColonyCard = (card: number) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateColonyCard(card) && this.nextRound();
+    this.managers[this.activeAction].activateColonyCard(card)
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -114,7 +116,8 @@ export class ActionManager {
 
   select = (option: string) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].select(option) && this.nextRound(); //заглушка
+    this.managers[this.activeAction].select(option) 
+  this.managers.military.select(option) && this.nextRound(); //заглушка
   };
 
   reset = () => {

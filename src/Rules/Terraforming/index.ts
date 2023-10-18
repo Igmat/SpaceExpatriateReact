@@ -35,7 +35,7 @@ export class ActionManager implements IActionManager {
     this.table.resetSelectedFlags();
   };
 
-  tryNext = () => {
+  get isEnded () {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
     return true;
@@ -106,8 +106,6 @@ export class ActionManager implements IActionManager {
     this.colony.takeColonyCard(selectedCard);
     this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
     this.cardsToDrop = []; //чистим масив сбрасываемых карт
-    //this.tryNext() && this.round.next(); //переходим к следующему раунду
-    return this.tryNext();
   };
 
   get isThreeCardsOfSameType() {
