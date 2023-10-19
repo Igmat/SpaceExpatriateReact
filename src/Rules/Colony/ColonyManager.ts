@@ -116,7 +116,7 @@ export class ColonyManager {
     changeEngineeringLogic: async (colony: ColonyCard) => {
       const currentManager = this.gameState.action.currentManager as EAM;
       currentManager.activateDeck = (type: CardType) => {
-        if (currentManager.remaining.activateDeck) return;//проверить билеты
+        if (currentManager.remaining.activateDeck===0) return;//проверить билеты
         currentManager.setRemainingActivateDeck(-1);
         this.hand.takeCard(this.gameState.decks[type].takeCard()!);
         currentManager.setRemainingActivateCard(1);
