@@ -77,7 +77,6 @@ export const colonyCards = createCards<ColonyCard>(
         triggers: {
            afterPerform: "dockDeliveryModule",
         },
-        quantity: 20,
     },
     /*
     {
@@ -128,7 +127,6 @@ export const colonyCards = createCards<ColonyCard>(
       before: "changeEngineeringLogic",
       afterPerform: "adjustRemainingActions"
     },
-    quantity: 20,
   },
 
   // -------------- Military ----------------

@@ -78,12 +78,12 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
-          engineering
+          military
         </div>
         <div
           className="benefit"
         >
-          On Engineering, whenever you need to dock a Station Module from hand/supply,draw a card (from any supply) and then dock a Station Module from your hand instead.This Colony card effect gives its owner the privilege of a wider choice of Station Modules to dock.
+          Tactical Nanorobotics
         </div>
         <p
           className="points"
@@ -96,7 +96,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          Institute of Technology
+          TACTICAL NANOROBOTICS
         </p>
       </div>
       <div
