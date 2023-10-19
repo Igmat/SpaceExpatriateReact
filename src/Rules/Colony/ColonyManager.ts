@@ -116,12 +116,20 @@ export class ColonyManager {
     changeEngineeringLogic: async (colony: ColonyCard) => {
       const currentManager = this.gameState.action.currentManager as EAM;
       currentManager.activateDeck = (type: CardType) => {
-        if (currentManager.remaining.activateDeck===0) return;//проверить билеты
+        if (currentManager.remaining.activateDeck === 0) return;
         currentManager.setRemainingActivateDeck(-1);
         this.hand.takeCard(this.gameState.decks[type].takeCard()!);
         currentManager.setRemainingActivateCard(1);
         return currentManager.tryNext();
       };
+    },
+
+    dockStationModuleOfMissionType: async (colony: ColonyCard) => {
+      this.table.takeCard(
+        this.gameState.decks[
+          (this.gameState.action.currentManager as TAM).missionType!
+        ].takeCard()!
+      );
     },
   };
 

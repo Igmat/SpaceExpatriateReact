@@ -217,7 +217,6 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "On Terraforming gain 2 points if you have at least 1 Station Module card of the mission Type in your Hand",
-    // whenIsActivated: "during",
     mutateAction: "terraforming",
     players: 2,
     name: "OPERATIONS SUPPORT COMMAND",
@@ -229,10 +228,11 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "After Terraforming dock a Station Module of the Mission Type from supply",
-    // whenIsActivated: "after",
     mutateAction: "terraforming",
     name: "STRATEGIC DEVELOPMENT CENTER",
-    triggers: {},
+    triggers: {
+      after: "dockStationModuleOfMissionType",
+    },
   },
   {
     benefit:
