@@ -1,23 +1,44 @@
 import React, {
-  ReactNode,
   useState,
   createContext,
   useMemo,
   memo,
+  FC,
 } from "react";
 import styles from "./ModalWindow.module.scss";
+import {
+  DeliveryModalOption,
+  MillitaryModalOptions,
+  ModalOptions,
+  ResourcesModalOption
+} from "../../Rules/ModalManager";
+import { CardType } from "../../Rules/card-types";
+
+
+type ModalOptionsType = CardType | ResourcesModalOption | MillitaryModalOptions | DeliveryModalOption | undefined;
 
 const modalContext = createContext({
-  show: (content: React.ReactNode, persistant?: boolean) => {},
-  hide: () => {},
+  show: (
+    content: FC<ModalOptions<ModalOptionsType>>,
+    setOption: (option: ModalOptionsType) => void,
+    onClose: () => void,
+    params?: any,
+    persistant: boolean = false
+  ) => { },
+  hide: () => { },
 });
 
 interface ModalComponentProps {
   hide: () => void;
   showModal: boolean;
-  content: React.ReactNode;
+  content: FC<ModalOptions<ModalOptionsType>>;
+  setOption: (option: ModalOptionsType) => void;
+  params?: any;
+  close: () => void;
   persistant: boolean;
 }
+//-----------------------------------------------------------
+
 const ModalComponent = (props: ModalComponentProps) => {
   const keydownHandler = ({ key }: any) => {
     switch (key) {
@@ -45,31 +66,45 @@ const ModalComponent = (props: ModalComponentProps) => {
             X
           </button>
         )}
-        {props.content}
+        <props.content
+          chooseOption={props.setOption}
+          params={props.params}
+          onClose={props.close}
+        />
       </div>
     </div>
   );
 };
 
+//-----------------------------------------------------------
+
 export function useModalService() {
   return React.useContext(modalContext);
 }
 
-export function useModalWrapper(content: React.ReactNode) {
+export function useModalWrapper(content: FC<ModalOptions<ModalOptionsType>>) {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [modalContent, setModalContent] = useState<FC<ModalOptions<ModalOptionsType>>>(() => null);
   const [persistant, setPersistant] = useState(false);
+  const [propsOption, setPropsOption] = useState<ModalOptionsType>(undefined);
 
   const modalService = useMemo(
     () => ({
-      show: (content: React.ReactNode, persistant: boolean = false) => {
+      show: (
+        content: FC<ModalOptions<ModalOptionsType>>,
+        setOption: (option: ModalOptionsType) => void,
+        onClose: () => void,
+        params?: any, 
+        persistant: boolean = false
+      ) => {
         setShowModal(true);
         setPersistant(persistant);
         setModalContent(content);
+        setPropsOption(params)
       },
       hide: () => {
         setShowModal(false);
-        setModalContent(null);
+        setModalContent(() => null);
       },
     }),
     []
@@ -78,6 +113,9 @@ export function useModalWrapper(content: React.ReactNode) {
   const Modal = () => (
     <ModalComponent
       content={modalContent}
+      close={modalService.hide}
+      setOption={(option: ModalOptionsType) => setPropsOption(option)}
+      params={propsOption}
       hide={modalService.hide}
       showModal={showModal}
       persistant={persistant}
@@ -86,7 +124,7 @@ export function useModalWrapper(content: React.ReactNode) {
 
   const Provider = useMemo(
     () =>
-      memo((props: { children?: ReactNode }) => (
+      memo((props: { children?: JSX.Element }) => (
         <modalContext.Provider value={modalService}>
           {props.children}
         </modalContext.Provider>
@@ -94,12 +132,16 @@ export function useModalWrapper(content: React.ReactNode) {
     [modalService]
   );
 
-  const memorisedContent = useMemo(() => content, [content]);
+  const memorisedContent = useMemo(
+    () => content,
+    [content]);
   return (
     <>
       <Provider>
-        {memorisedContent}
-        <Modal />
+        <>
+          {memorisedContent}
+          <Modal />
+        </>
       </Provider>
     </>
   );

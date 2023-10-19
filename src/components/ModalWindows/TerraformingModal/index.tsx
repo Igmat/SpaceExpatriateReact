@@ -1,34 +1,31 @@
-import { useGameState } from "../../../Rules"
-import styles from './TerraformingModal.module.scss'
-export const TerraformingModal = () => {
+import { ModalOptions } from "../../../Rules/ModalManager";
+import { CardType } from "../../../Rules/card-types";
+import styles from './TerraformingModal.module.scss';
 
-    const gameState = useGameState();
+export function TerraformingModal (props: ModalOptions<CardType>) {
 
     const onDeliveryMissionClick = () => {
-        gameState.action.select("delivery")
+        props.chooseOption("delivery")
     }
 
     const onEngineeringMissionClick = () => {
-        gameState.action.select("engineering")
+        props.chooseOption("engineering")
     }
 
     const onTerraformingMissionClick = () => {
-        gameState.action.select("terraforming")
+        props.chooseOption("terraforming")
     }
 
     const onMilitaryMissionClick = () => {
-        gameState.action.select("military")
+        props.chooseOption("military")
     }
 
     return (
         <div className={styles.modal}>
-          
             <div className={styles.modalDialog} onClick={onDeliveryMissionClick}>Delivery Mission</div>
             <div className={styles.modalDialog} onClick={onEngineeringMissionClick}>Engineering Mission</div>
-            <div className={styles.modalDialog}  onClick={onTerraformingMissionClick}>Terraforming Mission</div>
-            <div className={styles.modalDialog}  onClick={onMilitaryMissionClick}>Military Mission</div>
-        
-      
+            <div className={styles.modalDialog} onClick={onTerraformingMissionClick}>Terraforming Mission</div>
+            <div className={styles.modalDialog} onClick={onMilitaryMissionClick}>Military Mission</div>
         </div>
     )
 }

@@ -7,8 +7,6 @@ import {
   Resource,
   TerraformingCard,
   EngineeringCard,
-  isResourcePrimitive,
-  ResourcePrimitive,
 } from "../card-types";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
@@ -16,7 +14,7 @@ import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
-export type DeliveryOption = "charter" | "garbage";
+//export type DeliveryOption = "charter" | "garbage";
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -30,14 +28,14 @@ export class ActionManager implements IActionManager {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "deliveryManager", [
       "calculatedResources",
-      "deliveryOption",
+      //      "deliveryOption",
       "usedTerraformingCards",
       "tempDroppedCards",
     ]);
   }
 
   public calculatedResources: Resource[] = [];
-  deliveryOption?: DeliveryOption;
+  //  deliveryOption?: DeliveryOption;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = [];
 
@@ -51,7 +49,7 @@ export class ActionManager implements IActionManager {
   };
 
   tryNext = () => {
-    this.deliveryOption = undefined;
+    //    this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
     this.usedTerraformingCards = []; //очистка использованных карт Terraforming
@@ -65,8 +63,8 @@ export class ActionManager implements IActionManager {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
-  activateColonyCard = (card: number) => {};
-  
+  activateColonyCard = (card: number) => { };
+
   activateCardOnTable = (card: CardDefinition) => {
     if (card.type === "engineering") {
       this.activateEngineeringCard(card);
@@ -82,6 +80,7 @@ export class ActionManager implements IActionManager {
     return false;
   };
 
+  /*
   select = (option: string) => {
     if (option === "charter" || option === "garbage") {
       return new Promise((resolve) => {
@@ -103,12 +102,12 @@ export class ActionManager implements IActionManager {
       this.round.startPerformingStep();
     }
   };
+  */
 
   addCardsToTempDrop = (ind: number) => {
     const card = this.hand.cardsInHand[ind];
     this.tempDroppedCards.push(card); //пушим карту во временный сброс
     this.hand.dropCard(ind); //вырезаем карту из руки
-    // console.log(this.tempDroppedCards)
     return card;
   };
 

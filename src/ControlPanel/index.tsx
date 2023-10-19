@@ -7,10 +7,11 @@ import { TerraformingModal } from "../components/ModalWindows/TerraformingModal"
 import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
 import { ChooseResource } from "../components/ModalWindows/ChooseResource";
 
-const modalByPhase = {
-  military: <MillitaryModal />,
-  delivery: <DeliveryActionWindow />,
-  terraforming: <TerraformingModal />,
+const modals = {
+  military: MillitaryModal,
+  delivery: DeliveryActionWindow,
+  terraforming: TerraformingModal,
+  resources: ChooseResource,
 } as const;
 
 export const ControlPanel = observer(() => {
@@ -18,30 +19,15 @@ export const ControlPanel = observer(() => {
 
   const modalService = useModalService();
   useEffect(() => {
-    if (gameState.round.step === "options") {
-      modalService.show(
-        modalByPhase[gameState.round.phase as keyof typeof modalByPhase],
-        true
-      );
-    }
-    if (gameState.round.step === "resources") {
-      modalService.show(
-        <ChooseResource
-          array={gameState.round.params!}
-          select={(resource) => {
-            gameState.round.startPerformingStep();
-            if (gameState.modal.onSelect === undefined) {
-              modalService.hide();
-              return;
-            }
-            gameState.modal.onSelect(resource);
-          }}
-        />,
-        true
-      );
-    }
+    modalService.show(
+      modals[gameState.modal.type as keyof typeof modals],
+      gameState.modal.setOption,
+      gameState.modal.params,
+      true
+    );
+
     return modalService.hide;
-  }, [gameState.modal, gameState.round, gameState.round.step, modalService, gameState.round.phase, gameState.round.params]);
+  }, [gameState.modal.type, gameState.modal.params, gameState.modal.setOption, modalService]);
 
   return <></>;
 });

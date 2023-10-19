@@ -39,16 +39,24 @@ export class ColonyManager {
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
 
-      const getValidCombination = (deliveryResources: Exclude<ResourcePrimitive, "dark matter">[][], garbageResources: GarbageResources) => {
-        const garbageResourcesFiltered =
-          Object.entries(garbageResources)
-            .filter(([_, value]) => value > 0)
-            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
-        const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
-        return deliveryResources.filter((array) => array.some(resource => garbageResourcesArray.some(garbageResource => garbageResource === resource)));
+      const getValidCombination = (
+        deliveryResources: Exclude<ResourcePrimitive, "dark matter">[][],
+        garbageResources: GarbageResources) => {
+          const garbageResourcesFiltered =
+            Object.entries(garbageResources)
+              .filter(([_, value]) => value > 0)
+              .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
+          const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
+          return deliveryResources
+            .filter((array) => array
+              .some(resource => garbageResourcesArray
+                .some(garbageResource => garbageResource === resource)
+              )
+            );
       };
 
-      const deliveryResources = this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
+      const deliveryResources =
+        this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
       const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
       const selected = await this.round.startResourceStep(validCardCombinations);
       selected.forEach((resource) => {

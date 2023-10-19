@@ -34,22 +34,25 @@ export class RoundManager {
   current = 1;
   phase: Phase = "active";
   private _step?: Step;
-  private _params?: ResourcePrimitive[][];
-  private _onSelect?: (selected: ResourcePrimitive[]) => void;
 
   get step() {
     return this._step;
   }
+
+/*  
+  private _params?: ResourcePrimitive[][];
+  private _onSelect?: (selected: ResourcePrimitive[]) => void;
+
   get params() {
     return this._params;
   }
   get onSelect() {
     return this._onSelect;
   }
-
+*/
+  
   next = () => {
     this.current++;
-    // console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this._step = undefined;
     this.decks.delivery.openCard();
@@ -62,22 +65,21 @@ export class RoundManager {
   private setStep(step: Step) {
     this._step = step;
   }
+  
+  startPerformingStep() {
+    this.setStep("performing");
+  }
 
   async startOptionsStep() {
     this.setStep("options");
-    //return this.modal.show();
-  }
-
-  startPerformingStep() {
-    this.setStep("performing");
+    await this.modal.show();
   }
 
   async startResourceStep(
     params: ResourcePrimitive[][]   
   ): Promise<ResourcePrimitive[]> {
     this.setStep("resources");
-    this._params = params;
-    return await this.modal.show(params)
+    return await this.modal.show <ResourcePrimitive[]>(params)
   }
 
   get isResetable(): boolean {
