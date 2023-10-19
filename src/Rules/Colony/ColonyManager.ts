@@ -18,6 +18,7 @@ import { GameState } from "..";
 import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";
+import { DeckManager } from "../DeckManager";
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -29,7 +30,8 @@ export class ColonyManager {
     private readonly round: RoundManager,
     private readonly resources: ResourcesModel,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly hand: HandModel
+    private readonly hand: HandModel,
+    private readonly decks: DeckManager
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, this.gameId, "colony", ["colonies"]);
@@ -118,7 +120,7 @@ export class ColonyManager {
       currentManager.activateDeck = (type: CardType) => {
         if (currentManager.remaining.activateDeck === 0) return;
         currentManager.setRemainingActivateDeck(-1);
-        this.hand.takeCard(this.gameState.decks[type].takeCard()!);
+        this.hand.takeCard(this.decks[type].takeCard()!);
         currentManager.setRemainingActivateCard(1);
         return currentManager.tryNext();
       };
@@ -126,7 +128,7 @@ export class ColonyManager {
 
     dockStationModuleOfMissionType: async (colony: ColonyCard) => {
       this.table.takeCard(
-        this.gameState.decks[
+        this.decks[
           (this.gameState.action.currentManager as TAM).missionType!
         ].takeCard()!
       );
