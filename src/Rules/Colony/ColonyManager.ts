@@ -131,6 +131,21 @@ export class ColonyManager {
         ].takeCard()!
       );
     },
+
+    pointsForDocking: async (colony: ColonyCard) => {
+      const currentManager = this.gameState.action.currentManager as EAM;
+      currentManager.reaction(
+        () => [
+          this.table.delivery.length,
+          this.table.engineering.length,
+          this.table.terraforming.length,
+          this.table.military.length,
+        ],
+        () => {
+         this.resources.addPoints(1);
+        }
+      );
+    },
   };
 
   private executeTrigger = async (type: CardType, triggerName: TriggerName) => {

@@ -116,7 +116,9 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "during",
     mutateAction: "engineering",
     name: "SPACE INDUSTRY CENTER",
-    triggers: {},
+    triggers: {
+      before: "pointsForDocking",
+    },
   },
   {
     benefit:

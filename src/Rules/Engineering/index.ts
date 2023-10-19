@@ -6,6 +6,7 @@ import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+import { reaction } from 'mobx';
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -39,7 +40,7 @@ export class ActionManager implements IActionManager {
     this.setRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
   };
-
+  
   tryNext = () =>
     this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
 
@@ -79,5 +80,9 @@ export class ActionManager implements IActionManager {
     )
       return true;
     return false;
+  };
+
+  reaction = (fn: () => any, effect: () => void) => {
+    reaction(fn, effect);
   };
 }
