@@ -92,9 +92,12 @@ export class ColonyManager {
     },
     addPointsForMissionType: async (colony: ColonyCard) => {
       this.hand.cardsInHand.forEach((card) => {
-        if (card.type ===
+        if (
+          card.type ===
           (this.gameState.action.currentManager as TAM).missionType
-        ) {this.resources.addPoints(2);}
+        ) {
+          this.resources.addPoints(2);
+        }
       });
     },
 
@@ -105,11 +108,20 @@ export class ColonyManager {
 
     adjustRemainingActions: async (colony: ColonyCard) => {
       (this.gameState.action.currentManager as EAM).setRemainingActivateDeck(1);
-      (this.gameState.action.currentManager as EAM).setRemainingActivateCard(-1);
+      (this.gameState.action.currentManager as EAM).setRemainingActivateCard(
+        -1
+      );
     },
 
     changeEngineeringLogic: async (colony: ColonyCard) => {
-      (this.gameState.action.currentManager as EAM).setEngineeringLogic();
+      const currentManager = this.gameState.action.currentManager as EAM;
+      currentManager.activateDeck = (type: CardType) => {
+        if (currentManager.remaining.activateDeck) return;//проверить билеты
+        currentManager.setRemainingActivateDeck(-1);
+        this.hand.takeCard(this.gameState.decks[type].takeCard()!);
+        currentManager.setRemainingActivateCard(1);
+        return currentManager.tryNext();
+      };
     },
   };
 
