@@ -40,8 +40,7 @@ export const Table = observer((props: TableProps) => {
                 key={ind}
                 {...card}
                 onClick={() => handleClick(card)}
-                isDisabled={props.action.isDisabled("table", card)}
-              />
+                action={props.action} />
             ))}
           </div>
         )

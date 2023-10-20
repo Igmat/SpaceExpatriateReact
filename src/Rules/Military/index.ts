@@ -21,21 +21,28 @@ export class ActionManager implements IActionManager {
   private remaining = {
     activateDeck: 0,
   };
+  private _isEnded: boolean = false;
+
   perform = (card: CardDefinition) => {
     this.round.startOptionsStep();
   };
+  confirm = () => {
+    console.log(this.remaining.activateDeck);
+    if (this.remaining.activateDeck === 0) return (this._isEnded = true);
+  };
 
-  get isEnded () { 
-    return this.remaining.activateDeck === 0;
+  get isEnded() {
+    return this._isEnded;
   }
 
   activateDeck = (type: CardType) => {
     if (
       this.round.step === "performing" &&
-      this.militaryoption === "exploration"
+      this.militaryoption === "exploration" 
     )
       this.hand.takeCard(this.decks[type].takeCard());
     this.remaining.activateDeck = 0;
+    this.confirm()
   };
 
   activateCard = (card: number) => {};
@@ -49,7 +56,7 @@ export class ActionManager implements IActionManager {
       this.militaryoption = option;
     }
     if (this.militaryoption === "political") {
-     return true; //заглушка
+      return true; //заглушка
     }
     if (this.militaryoption === "exploration") {
       this.round.startPerformingStep();
@@ -60,8 +67,7 @@ export class ActionManager implements IActionManager {
 
   reset = () => {};
 
-  isDisabled = (place: CardSource, card: CardDefinition): boolean => true
+  isDisabled = (place: CardSource, card: CardDefinition): boolean => true;
 
-  isDisabledDeck = (type: CardType): boolean => false
- 
+  isDisabledDeck = (type: CardType): boolean => false;
 }

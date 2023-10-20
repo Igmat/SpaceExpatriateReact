@@ -41,6 +41,7 @@ export class ActionManager implements IActionManager {
   deliveryOption?: DeliveryOption;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = [];
+private _isEnded: boolean = false;
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card.id);
@@ -52,12 +53,16 @@ export class ActionManager implements IActionManager {
   };
 
   get isEnded () {
+return this._isEnded;
+  };
+
+confirm = () => {
     this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
     this.usedTerraformingCards = []; //очистка использованных карт Terraforming
     this.resources.confirmRoundResourceActions(); // считаем очки, перемещаем ресы в мусор, сбрасываем счетчик энергии, обнуляем ресы
-    return true;
+    this._isEnded = true;
   };
 
   activateDeck = (type: CardType) => {};

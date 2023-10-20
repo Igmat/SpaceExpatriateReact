@@ -13,9 +13,7 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
-export type CardSource = 'openedCard' | 'hand' | 'table'
-export type CardSource2 = 'Deck' | 'Hand' | 'Table' | string //иначе передача имени компонента ругается, т.к. тип его string
-
+export type CardSource = "decks" | "hand" | "table";
 export class ActionManager {
   constructor(
     private readonly decks: DeckManager,
@@ -90,7 +88,9 @@ export class ActionManager {
   };
 
   confirm = () => {
+    console.log(this.activeAction);
     if (!this.activeAction) return;
+    this.managers[this.activeAction].confirm(); //проверить/дописать начличие
     this.managers[this.activeAction].isEnded && this.nextRound();
   };
 
@@ -101,14 +101,16 @@ export class ActionManager {
   };
 
   activateCard = (card: number) => {
+    //с руки
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateCard(card) 
-    this.managers[this.activeAction].isEnded && this.nextRound();
+    this.managers[this.activeAction].activateCard(card);
+    this.managers[this.activeAction].isEnded && this.nextRound(); //было в инжениринге, можем только для него и прописать
+    //console.log('card activated')
   };
 
   activateColonyCard = (card: number) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].activateColonyCard(card)
+    this.managers[this.activeAction].activateColonyCard(card);
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -118,8 +120,8 @@ export class ActionManager {
 
   select = (option: string) => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].select(option) 
-  this.managers.military.select(option) && this.nextRound(); //заглушка
+    this.managers[this.activeAction].select(option);
+    this.managers.military.select(option) && this.nextRound(); //заглушка
   };
 
   reset = () => {
@@ -127,26 +129,27 @@ export class ActionManager {
     this.managers[this.activeAction].reset();
   };
 
-  get isDisabled(): (place: CardSource, card: CardDefinition) => boolean {
-    return (place: CardSource, card: CardDefinition) => {
-      if (!this.activeAction) return place === 'openedCard'? false : true;
-      return this.managers[this.activeAction].isDisabled(place, card)
+  findCard = (card: CardDefinition): CardSource | undefined => {
+    if (this.decks.findCard(card)) return "decks";
+    if (this.table.findCard(card)) return "table";
+    if (
+      this.hand.cardsInHand.some(
+        (handCard) => handCard.id === card.id && card.type === handCard.type
+      )
+    )
+      return "hand";
+    return undefined;
+  };
+
+  get isDisabled(): (card: CardDefinition) => boolean {
+    return (card: CardDefinition) => {
+      const place = this.findCard(card);
+      if (place === undefined) return true;
+      if (!this.activeAction) return place === "decks" ? false : true;
+      return this.managers[this.activeAction].isDisabled(place!, card);
     };
   }
-  isDisabled2 = (card: CardDefinition) =>  {
-    const caller = this.isDisabled2.caller;//устаревшее, ругается стрикт. Безопасных и новых аналогов не нашла
-    if (caller && caller.name === "Hand") {
-     console.log('I was colled in' + caller.name)
-     return true
-    }
-  }
-  get isDisabled3(): (componentsName: CardSource2, card: CardDefinition) => boolean {
-    return (componentsName: CardSource2, card: CardDefinition) => {
-      if (!this.activeAction) return componentsName === 'Deck' ? false : true;
-      return false
-     
-    };
-  }
+
   get isDisabledDeck(): (type: CardType) => boolean {
     return (type: CardType) => {
       if (!this.activeAction) return true;

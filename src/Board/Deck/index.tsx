@@ -20,6 +20,8 @@ interface DeckProps {
 }
 
 export const Deck = observer((props: DeckProps) => {
+
+  //console.log(props.model.openedCard)
   const onOpenCardClick = () => {
     props.action.perform(props.model.openedCard);
   };
@@ -33,10 +35,7 @@ export const Deck = observer((props: DeckProps) => {
           <Card
             key={props.model.openedCard.id}
             {...props.model.openedCard}
-          // isDisabled={props.action.isDisabled('openedCard', props.model.openedCard)}
-          isDisabled={props.action.isDisabled3(Deck.name, props.model.openedCard)}
-  
-          />
+            action={props.action} />
         )}
       </div>
       <div

@@ -25,6 +25,11 @@ export class ActionManager implements IActionManager {
     activateCard: 0,
   };
 
+  private _isEnded: boolean = false;
+
+  confirm = () => {
+    if ( this._remaining.activateDeck === 0 && this._remaining.activateCard === 0) return this._isEnded = true;
+  }
   perform = (card: CardDefinition) => {
     this._remaining.activateDeck = 1;
     this._remaining.activateCard = this.hand.cardsInHand.length > 0 ? 1 : 0;
@@ -32,7 +37,7 @@ export class ActionManager implements IActionManager {
   };
 
   get isEnded () {
-   return this._remaining.activateDeck === 0 && this._remaining.activateCard === 0;
+    return this._isEnded;
   }
   activateDeck = (type: CardType) => {
     if (this._remaining.activateDeck === 0) return false;

@@ -1,5 +1,5 @@
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { CardType } from "./card-types";
+import { CardDefinition, CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
 
 export class DeckModel<T extends { id: number }> {
@@ -75,6 +75,10 @@ export class DeckModel<T extends { id: number }> {
     this._droppedCards.push(...cards);
   //  console.log('Im in  dropCards')
   };
+
+  findCard = (card: CardDefinition) => {
+return card.id === this.openedCard?.id
+  }
 
   get restCount () {
     return this._droppedCards.length;

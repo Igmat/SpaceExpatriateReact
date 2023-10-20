@@ -19,7 +19,7 @@ export const Hand = observer((props: HandProps) => {
           key={ind}
           {...card}
           onClick={() => props.action.activateCard(ind)}
-          isDisabled={props.action.isDisabled("hand", card)}  />
+          action={props.action}/>
       ))}
     </div>
   );

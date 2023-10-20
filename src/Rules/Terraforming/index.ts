@@ -29,17 +29,21 @@ export class ActionManager implements IActionManager {
       "missionType",
     ]);
   }
+  private _isEnded: boolean = false;
 
   perform = (card: CardDefinition) => {
     this.round.startOptionsStep();
     this.table.resetSelectedFlags();
   };
-
-  get isEnded () {
+  confirm = () => {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
-    return true;
-  };
+    this._isEnded = true;
+  }; 
+
+  get isEnded() {
+    return this._isEnded;
+  }
 
   activateDeck = (type: CardType) => {};
 
@@ -132,7 +136,7 @@ export class ActionManager implements IActionManager {
     if (place === "table") {
       return this.isDisabledTable(card);
     }
-    if (place === "hand" || place === "openedCard") {
+    if (place === "hand" || place === "decks") {
       return true;
     }
     return false;
