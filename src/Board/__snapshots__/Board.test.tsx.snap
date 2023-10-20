@@ -139,6 +139,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="delivery card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div>
           <div>
             <div
@@ -184,6 +188,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="engineering card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="continue"
         >
@@ -227,6 +235,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="terraforming card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="infoWrapper"
         >
@@ -320,6 +332,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="military card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="fighters"
         >
