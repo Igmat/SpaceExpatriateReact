@@ -12,7 +12,6 @@ import {
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
-import { RoundManager } from "../RoundManager";
 import { GarbageResources, ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
 import { HandModel } from "../HandModel";
@@ -25,7 +24,6 @@ export class ColonyManager {
     private readonly gameState: GameState,
     private readonly gameId: string,
     private readonly table: TableModel,
-    private readonly round: RoundManager,
     private readonly resources: ResourcesModel,
     private readonly colonyDeck: ColonyDeckModel,
     private readonly hand: HandModel
@@ -58,7 +56,7 @@ export class ColonyManager {
       const deliveryResources =
         this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
       const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
-      const selected = await this.round.startResourceStep(validCardCombinations);
+      const selected = await this.gameState.modal.show("resources" ,validCardCombinations);
       selected.forEach((resource) => {
         this.resources.gainResource(resource);
       });

@@ -5,8 +5,9 @@ export function MillitaryModal (props: ModalOptions<MillitaryModalOptions>) {
 
   return (
     <div className={styles.modal}>
-      <div className={styles.modalDialog} onClick={()=>props.chooseOption("exploration")}>Exploration</div>
-      <div className={styles.modalDialog} onClick={()=>props.chooseOption("political")}>Political Pressure</div>
+      {props.params && props.params.map((selected, id) => (
+        <div key={id} className={styles.modalDialog} onClick={() => props.onSelect(selected)}></div>
+      ))}
     </div>
   );
 };

@@ -12,6 +12,7 @@ import { ActionManager as MAM } from "./Military";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
+import { ModalManager } from "./ModalManager";
 
 export class ActionManager {
   constructor(
@@ -22,7 +23,8 @@ export class ActionManager {
     private readonly resources: ResourcesModel,
     private readonly gameId: string,
     private readonly colony: ColonyManager,
-    private readonly colonyDeck: ColonyDeckModel
+    private readonly colonyDeck: ColonyDeckModel,
+    private readonly modal: ModalManager,
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, `action`, [`activeAction`]);
@@ -44,7 +46,8 @@ export class ActionManager {
       this.gameId,
       this.colony,
       this.colonyDeck,
-      this.resources
+      this.resources,
+      this.modal,
     ),
     delivery: new DAM(
       this.table,
@@ -52,9 +55,15 @@ export class ActionManager {
       this.hand,
       this.resources,
       this.decks,
-      this.gameId
+      this.modal,
+      this.gameId,
     ),
-    military: new MAM(this.round, this.hand, this.decks),
+    military: new MAM(
+      this.round,
+      this.hand,
+      this.decks,
+      this.modal,
+    ),
   };
 
   activeAction?: CardType;

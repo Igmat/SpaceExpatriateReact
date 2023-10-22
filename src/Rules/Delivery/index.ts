@@ -7,14 +7,17 @@ import {
   Resource,
   TerraformingCard,
   EngineeringCard,
+  ResourcePrimitive,
+  isResourcePrimitive,
 } from "../card-types";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+import { ModalManager, ResourcesModalOption } from "../ModalManager";
 
-//export type DeliveryOption = "charter" | "garbage";
+export type DeliveryOption = "charter" | "garbage";
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -23,19 +26,24 @@ export class ActionManager implements IActionManager {
     private readonly hand: HandModel,
     private readonly resources: ResourcesModel,
     private readonly decks: DeckManager,
+    private readonly modal: ModalManager,
     gameId: string
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "deliveryManager", [
       "calculatedResources",
-      //      "deliveryOption",
+      "deliveryOption",
       "usedTerraformingCards",
       "tempDroppedCards",
     ]);
   }
 
   public calculatedResources: Resource[] = [];
-  //  deliveryOption?: DeliveryOption;
+  public modalResources = [
+    "fuel", "minerals", "biotic materials", "machinery", "nanotechnologies"
+  ] as ResourcesModalOption[];
+  deliveryOption?: DeliveryOption;
+  selectedResource?: Exclude<ResourcePrimitive, "dark matter">;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = [];
 
@@ -43,8 +51,23 @@ export class ActionManager implements IActionManager {
     this.usedTerraformingCards.push(card.id);
   };
 
-  perform = (card: CardDefinition) => {
-    this.round.startOptionsStep();
+  perform = async (card: CardDefinition) => {
+    //this.round.startOptionsStep();
+    this.deliveryOption = await this.modal.show("deliveryOptions", ["charter", "garbage"])
+    this.selectedResource = await this.modal.show("deliveryResources",
+      this.modalResources)
+
+    if (isResourcePrimitive(this.selectedResource) && (this.deliveryOption === "charter")) {
+      this.resources.addResource(this.selectedResource);
+    }
+
+    if (this.deliveryOption === "garbage") {
+      this.resources.removeResourcesFromGarbage(
+        this.selectedResource as ResourcesModalOption
+      );
+    }
+    this.resources.getResources();
+    //this.round.startPerformingStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
 
@@ -63,6 +86,7 @@ export class ActionManager implements IActionManager {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
+  
   activateColonyCard = (card: number) => { };
 
   activateCardOnTable = (card: CardDefinition) => {

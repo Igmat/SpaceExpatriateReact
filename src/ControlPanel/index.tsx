@@ -6,10 +6,12 @@ import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionW
 import { TerraformingModal } from "../components/ModalWindows/TerraformingModal";
 import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
 import { ChooseResource } from "../components/ModalWindows/ChooseResource";
+import { DeliveryResourcesModal } from "../components/ModalWindows/DeliveryActionWindow/DeliveryResourcesModal";
 
 const modals = {
   military: MillitaryModal,
-  delivery: DeliveryActionWindow,
+  deliveryOptions: DeliveryActionWindow,
+  deliveryResources: DeliveryResourcesModal,
   terraforming: TerraformingModal,
   resources: ChooseResource,
 } as const;
@@ -18,16 +20,18 @@ export const ControlPanel = observer(() => {
   const gameState = useGameState();
 
   const modalService = useModalService();
+
   useEffect(() => {
+    if (!gameState.modal.type) return;
     modalService.show(
-      modals[gameState.modal.type as keyof typeof modals],
-      gameState.modal.setOption,
-      gameState.modal.params,
+      modals[gameState.modal.type] as any,
+      gameState.modal.onSelect as any,
+      gameState.modal.params as any,
       true
     );
 
     return modalService.hide;
-  }, [gameState.modal.type, gameState.modal.params, gameState.modal.setOption, modalService]);
+  }, [gameState.modal.type, gameState.modal.params, gameState.modal.onSelect, modalService]);
 
   return <></>;
 });

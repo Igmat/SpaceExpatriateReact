@@ -7,39 +7,45 @@ import React, {
 } from "react";
 import styles from "./ModalWindow.module.scss";
 import {
-  DeliveryModalOption,
-  MillitaryModalOptions,
   ModalOptions,
-  ResourcesModalOption
 } from "../../Rules/ModalManager";
-import { CardType } from "../../Rules/card-types";
 
 
-type ModalOptionsType = CardType | ResourcesModalOption | MillitaryModalOptions | DeliveryModalOption | undefined;
-
+/*
+type ModalServiceType = {
+  show <T>(
+    content: FC<ModalOptions<T>>,
+    setOption: (option: T) => void,
+    onClose: () => void,
+    params?: any,
+    persistant: boolean
+  ): void,
+  hide: () => void,
+}
+*/
 const modalContext = createContext({
-  show: (
-    content: FC<ModalOptions<ModalOptionsType>>,
-    setOption: (option: ModalOptionsType) => void,
+  show <T>(
+    content: FC<ModalOptions<T>>,
+    setOption: (option: T) => void,
     onClose: () => void,
     params?: any,
     persistant: boolean = false
-  ) => { },
+  ) { },
   hide: () => { },
 });
 
-interface ModalComponentProps {
+interface ModalComponentProps <T> {
   hide: () => void;
   showModal: boolean;
-  content: FC<ModalOptions<ModalOptionsType>>;
-  setOption: (option: ModalOptionsType) => void;
+  content: FC<ModalOptions<T>>;
+  onSelect: (option: T) => void;
   params?: any;
   close: () => void;
   persistant: boolean;
 }
 //-----------------------------------------------------------
 
-const ModalComponent = (props: ModalComponentProps) => {
+function ModalComponent<T> (props: ModalComponentProps<T>){
   const keydownHandler = ({ key }: any) => {
     switch (key) {
       case "Escape":
@@ -67,7 +73,7 @@ const ModalComponent = (props: ModalComponentProps) => {
           </button>
         )}
         <props.content
-          chooseOption={props.setOption}
+          onSelect={props.onSelect}
           params={props.params}
           onClose={props.close}
         />
@@ -82,21 +88,21 @@ export function useModalService() {
   return React.useContext(modalContext);
 }
 
-export function useModalWrapper(content: FC<ModalOptions<ModalOptionsType>>) {
+export function useModalWrapper<T>(content: FC<ModalOptions<T>>) {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState<FC<ModalOptions<ModalOptionsType>>>(() => null);
+  const [modalContent, setModalContent] = useState<FC<ModalOptions<T>>>(() => null);
   const [persistant, setPersistant] = useState(false);
-  const [propsOption, setPropsOption] = useState<ModalOptionsType>(undefined);
+  const [propsOption, setPropsOption] = useState<T | undefined>(undefined );
 
-  const modalService = useMemo(
+  const modalService= useMemo(
     () => ({
-      show: (
-        content: FC<ModalOptions<ModalOptionsType>>,
-        setOption: (option: ModalOptionsType) => void,
+      show (
+        content: FC<ModalOptions<T>>,
+        onSelect: (selected: T) => void,
         onClose: () => void,
         params?: any, 
         persistant: boolean = false
-      ) => {
+      ){
         setShowModal(true);
         setPersistant(persistant);
         setModalContent(content);
@@ -108,14 +114,14 @@ export function useModalWrapper(content: FC<ModalOptions<ModalOptionsType>>) {
       },
     }),
     []
-  );
+  ) as any;
 
   const Modal = () => (
     <ModalComponent
       content={modalContent}
-      close={modalService.hide}
-      setOption={(option: ModalOptionsType) => setPropsOption(option)}
+      onSelect={(option) => setPropsOption(option)}
       params={propsOption}
+      close={modalService.hide}
       hide={modalService.hide}
       showModal={showModal}
       persistant={persistant}

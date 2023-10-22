@@ -4,6 +4,7 @@ import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
+import { ModalManager } from "../ModalManager";
 
 export type Militaryoption = "political" | "exploration";
 
@@ -11,7 +12,8 @@ export class ActionManager implements IActionManager {
   constructor(
     private readonly round: RoundManager,
     private readonly hand: HandModel,
-    private readonly decks: DeckManager
+    private readonly decks: DeckManager,
+    private readonly modal: ModalManager,
   ) {
     makeAutoObservable(this);
   }
@@ -21,7 +23,7 @@ export class ActionManager implements IActionManager {
     activateDeck: 0,
   };
   perform = (card: CardDefinition) => {
-    this.round.startOptionsStep();
+    this.modal.show("military", ["exploration", "political"]);
   };
 
   tryNext = () => this.remaining.activateDeck === 0;

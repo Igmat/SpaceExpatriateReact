@@ -10,6 +10,7 @@ import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
+import { ModalManager } from "./ModalManager";
 
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
@@ -21,6 +22,7 @@ export class ResourcesModel {
   constructor(
     private readonly table: TableModel,
     private readonly round: RoundManager,
+    private readonly modal: ModalManager,
     gameId: string
   ) {
     makeAutoObservable(this);
@@ -143,7 +145,7 @@ export class ResourcesModel {
       this.consumeResources(validCombinations[0]);
       return onConsume();
     }
-    const selected = await this.round.startResourceStep(validCombinations);
+    const selected = await this.modal.show("resources", validCombinations);
     this.consumeResources(selected);
     onConsume();
 
@@ -159,8 +161,8 @@ export class ResourcesModel {
       });
       return;
     }
-    const selected = await this.round.startResourceStep(combinations);
-    selected.forEach((resource) => {
+    const selected = await this.modal.show("resources", combinations);
+      selected.forEach((resource) => {
       this.gainResource(resource);
     })
   }

@@ -1,10 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
-import { CardType, ResourcePrimitive } from "./card-types";
+import { CardType } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
-import { ModalManager } from "./ModalManager";
 
 type Phase = "active" | CardType | "passive";
 type Step = "options" | "performing" | "resources" | "done";
@@ -14,7 +13,6 @@ export class RoundManager {
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly modal: ModalManager,
     gameId: string,
   ) {
     makeAutoObservable(this);
@@ -70,16 +68,8 @@ export class RoundManager {
     this.setStep("performing");
   }
 
-  async startOptionsStep() {
+  startOptionsStep() {
     this.setStep("options");
-    await this.modal.show();
-  }
-
-  async startResourceStep(
-    params: ResourcePrimitive[][]   
-  ): Promise<ResourcePrimitive[]> {
-    this.setStep("resources");
-    return await this.modal.show <ResourcePrimitive[]>(params)
   }
 
   get isResetable(): boolean {

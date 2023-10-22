@@ -8,6 +8,7 @@ import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
+import { ModalManager } from "../ModalManager";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
@@ -20,7 +21,8 @@ export class ActionManager implements IActionManager {
     gameId: string,
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly resources: ResourcesModel
+    private readonly resources: ResourcesModel,
+    private readonly modal: ModalManager,
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -30,7 +32,7 @@ export class ActionManager implements IActionManager {
   }
 
   perform = (card: CardDefinition) => {
-    this.round.startOptionsStep();
+    this.modal.show("terraforming", ["delivery", "engineering", "terraforming", "military"]);
     this.table.resetSelectedFlags();
   };
 
