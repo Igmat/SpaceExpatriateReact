@@ -6,7 +6,6 @@ import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
-import { reaction } from 'mobx';
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -82,7 +81,5 @@ export class ActionManager implements IActionManager {
     return false;
   };
 
-  reaction = (fn: () => any, effect: () => void) => {
-    reaction(fn, effect);
-  };
+
 }

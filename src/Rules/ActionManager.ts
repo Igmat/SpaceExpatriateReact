@@ -83,6 +83,7 @@ export class ActionManager {
 
   nextRound = () => {
     this.activeAction && this.colony.triggers.after(this.activeAction);
+    this.colony.cancelActiveEffects();
     this.round.next();
     this.activeAction = undefined;
   };
