@@ -64,7 +64,6 @@ export const colonyCards = createCards<ColonyCard>(
     name: "HELIOSTAT DESERT",
     triggers: {
       before: "addTempEngineering",
-      // after: "removeTempEngineering",
     },
   },
 
@@ -119,7 +118,7 @@ export const colonyCards = createCards<ColonyCard>(
     triggers: {
       before: "pointsForDocking",
     },
-    quantity: 20,
+  
 
   },
   {

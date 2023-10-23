@@ -137,28 +137,20 @@ export class ColonyManager {
         ].takeCard()!
       );
     },
-
-    ...(() => {
-      let cancelReaction: () => void = () => {};
-      return {
-        pointsForDocking: async (colony: ColonyCard) => {
-          cancelReaction = reaction(
-            () => [
-              this.table.delivery.length,
-              this.table.engineering.length,
-              this.table.terraforming.length,
-              this.table.military.length,
-            ],
-            () => {
-              this.resources.addPoints(1);
-            }
-          );
-        },
-        cancelPointsForDocking: async (colony: ColonyCard) => {
-          cancelReaction();
-        },
-      };
-    })(),
+    pointsForDocking: async (colony: ColonyCard) => {
+      const cancelReaction = reaction(
+        () => [
+          this.table.delivery.length,
+          this.table.engineering.length,
+          this.table.terraforming.length,
+          this.table.military.length,
+        ],
+        () => {
+          this.resources.addPoints(1);
+        }
+      );
+      return async () => cancelReaction();
+    },
   };
 
   activeEffects: (() => Promise<void>)[] = [];

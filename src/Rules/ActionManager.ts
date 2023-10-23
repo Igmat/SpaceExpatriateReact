@@ -81,10 +81,11 @@ export class ActionManager {
     await this.colony.triggers.afterPerform(this.activeAction);
   };
 
-  nextRound = () => {
-    this.activeAction && this.colony.triggers.after(this.activeAction);
+  nextRound = async() => {
+    this.activeAction && await this.colony.triggers.after(this.activeAction);
     this.colony.cancelActiveEffects();
     this.round.next();
+   
     this.activeAction = undefined;
   };
 
