@@ -20,7 +20,6 @@ export class HandModel {
   };
 
   takeCard(card?: CardDefinition) {
-    //  console.log(`cards in the hand ${this.cardsInHand.length + 1}`);
     card && this.cardsInHand.push(card);
   }
 }

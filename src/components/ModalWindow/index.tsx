@@ -10,21 +10,19 @@ import {
   ModalOptions,
 } from "../../Rules/ModalManager";
 
-
-/*
-type ModalServiceType = {
-  show <T>(
+type ModalServiceType<T> = {
+  show: (
     content: FC<ModalOptions<T>>,
     setOption: (option: T) => void,
     onClose: () => void,
     params?: any,
-    persistant: boolean
-  ): void,
+    persistant?: boolean
+  ) => void,
   hide: () => void,
 }
-*/
+
 const modalContext = createContext({
-  show <T>(
+  show<T>(
     content: FC<ModalOptions<T>>,
     setOption: (option: T) => void,
     onClose: () => void,
@@ -34,7 +32,7 @@ const modalContext = createContext({
   hide: () => { },
 });
 
-interface ModalComponentProps <T> {
+interface ModalComponentProps<T> {
   hide: () => void;
   showModal: boolean;
   content: FC<ModalOptions<T>>;
@@ -45,7 +43,8 @@ interface ModalComponentProps <T> {
 }
 //-----------------------------------------------------------
 
-function ModalComponent<T> (props: ModalComponentProps<T>){
+function ModalComponent<T>(props: ModalComponentProps<T>) {
+
   const keydownHandler = ({ key }: any) => {
     switch (key) {
       case "Escape":
@@ -88,45 +87,47 @@ export function useModalService() {
   return React.useContext(modalContext);
 }
 
-export function useModalWrapper<T>(content: FC<ModalOptions<T>>) {
+export function useModalWrapper<T>(content: React.ReactNode) {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState<FC<ModalOptions<T>>>(() => null);
+  const [modalContent, setModalContent] = useState<FC<ModalOptions<T>>>(() => () => null);
   const [persistant, setPersistant] = useState(false);
-  const [propsOption, setPropsOption] = useState<T | undefined>(undefined );
+  const [propsOption, setPropsOption] = useState<T | undefined>(undefined);
+  const [handleSelect, setHandleSelect] = useState<(arg:T)=>void>(()=>()=>null)
 
-  const modalService= useMemo(
+  const modalService: any = useMemo(
     () => ({
-      show (
+      show: (
         content: FC<ModalOptions<T>>,
         onSelect: (selected: T) => void,
-        onClose: () => void,
-        params?: any, 
+        params?: any,
         persistant: boolean = false
-      ){
+      ) => {
         setShowModal(true);
-        setPersistant(persistant);
-        setModalContent(content);
+        setModalContent(() => content);
+        setHandleSelect(() => onSelect)
         setPropsOption(params)
+        setPersistant(persistant);
       },
       hide: () => {
         setShowModal(false);
-        setModalContent(() => null);
+        setModalContent(() => () => null);
       },
     }),
     []
   ) as any;
 
-  const Modal = () => (
+  const Modal = () => {
+    return (
     <ModalComponent
       content={modalContent}
-      onSelect={(option) => setPropsOption(option)}
+      onSelect={handleSelect}
       params={propsOption}
       close={modalService.hide}
       hide={modalService.hide}
       showModal={showModal}
       persistant={persistant}
     />
-  );
+  )};
 
   const Provider = useMemo(
     () =>
@@ -142,13 +143,11 @@ export function useModalWrapper<T>(content: FC<ModalOptions<T>>) {
     () => content,
     [content]);
   return (
-    <>
-      <Provider>
-        <>
-          {memorisedContent}
-          <Modal />
-        </>
-      </Provider>
-    </>
+    <Provider>
+      <>
+        {memorisedContent}
+        <Modal />
+      </>
+    </Provider>
   );
 }

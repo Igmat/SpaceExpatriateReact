@@ -6,7 +6,5 @@ export interface IActionManager {
     activateDeck: (type: CardType) => void
     activateCard: (card: number) => void
     activateCardOnTable: (card: CardDefinition) => boolean
-    select?: (option: string) => void
     reset: () => void
 }
-// нужно обновить

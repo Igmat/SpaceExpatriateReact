@@ -3,9 +3,14 @@ import styles from "./DeliveryActionWindow.module.scss";
 
 export function DeliveryResourcesModal(props: ModalOptions<ResourcesModalOption>) {
     return (
-        <div className={styles.modal}>
-            {props.params && props.params.map((resources, id) => (
-                <div key={id} className={styles.modalDialog} onClick={() => props.onSelect(resources)}></div>
+        <div className={styles.container}>
+            {props.params && props.params.map((resource, id) => (
+                <div
+                    key={id}
+                    className={styles.action}
+                    onClick={() => props.onSelect(resource)}>
+                    {resource}
+                </div>
             ))}
         </div>
     );

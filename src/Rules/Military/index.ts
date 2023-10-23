@@ -17,13 +17,22 @@ export class ActionManager implements IActionManager {
   ) {
     makeAutoObservable(this);
   }
-  militaryoption?: Militaryoption;
+  militaryOption?: Militaryoption;
 
   private remaining = {
     activateDeck: 0,
   };
-  perform = (card: CardDefinition) => {
-    this.modal.show("military", ["exploration", "political"]);
+  perform = async (card: CardDefinition) => {
+    this.militaryOption = await this.modal.show("military", ["exploration", "political"]);
+
+    if (this.militaryOption === "political") {
+      return this.tryNext() //заглушка
+    }
+    if (this.militaryOption === "exploration") {
+      this.round.startPerformingStep();
+      this.remaining.activateDeck++;
+    }
+
   };
 
   tryNext = () => this.remaining.activateDeck === 0;
@@ -31,7 +40,7 @@ export class ActionManager implements IActionManager {
   activateDeck = (type: CardType) => {
     if (
       this.round.step === "performing" &&
-      this.militaryoption === "exploration"
+      this.militaryOption === "exploration"
     )
       this.hand.takeCard(this.decks[type].takeCard());
     this.remaining.activateDeck = 0;
@@ -42,20 +51,6 @@ export class ActionManager implements IActionManager {
   activateColonyCard = (card: number) => {};
   activateCardOnTable = (card: CardDefinition) => {
     return false;
-  };
-
-  select = (option: string) => {
-    if (option === "political" || option === "exploration") {
-      this.militaryoption = option;
-    }
-    if (this.militaryoption === "political") {
-     return this.tryNext() //заглушка
-    }
-    if (this.militaryoption === "exploration") {
-      this.round.startPerformingStep();
-      this.remaining.activateDeck++;
-    }
-    console.log("militaryoption: " + this.militaryoption);
   };
 
   reset = () => {};

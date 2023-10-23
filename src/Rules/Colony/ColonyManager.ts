@@ -40,23 +40,23 @@ export class ColonyManager {
       const getValidCombination = (
         deliveryResources: Exclude<ResourcePrimitive, "dark matter">[][],
         garbageResources: GarbageResources) => {
-          const garbageResourcesFiltered =
-            Object.entries(garbageResources)
-              .filter(([_, value]) => value > 0)
-              .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
-          const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
-          return deliveryResources
-            .filter((array) => array
-              .some(resource => garbageResourcesArray
-                .some(garbageResource => garbageResource === resource)
-              )
-            );
+        const garbageResourcesFiltered =
+          Object.entries(garbageResources)
+            .filter(([_, value]) => value > 0)
+            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
+        const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
+        return deliveryResources
+          .filter((array) => array
+            .some(resource => garbageResourcesArray
+              .some(garbageResource => garbageResource === resource)
+            )
+          );
       };
 
       const deliveryResources =
         this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
       const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
-      const selected = await this.gameState.modal.show("resources" ,validCardCombinations);
+      const selected = await this.gameState.modal.show("resources", validCardCombinations);
       selected.forEach((resource) => {
         this.resources.gainResource(resource);
       });
@@ -80,10 +80,10 @@ export class ColonyManager {
     },
     addPointsForMissionType: async (colony: ColonyCard) => {
       this.hand.cardsInHand.forEach((card) => {
-          if (card.type === (this.gameState.action.currentManager as TAM).missionType) {
-              this.resources.addPoints(2);
-              return;
-          }
+        if (card.type === (this.gameState.action.currentManager as TAM).missionType) {
+          this.resources.addPoints(2);
+          return;
+        }
       });
     }
   };

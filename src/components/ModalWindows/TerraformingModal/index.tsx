@@ -6,8 +6,13 @@ export function TerraformingModal (props: ModalOptions<CardType>) {
 
     return (
         <div className={styles.modal}>
-            {props.params && props.params.map((selected, id) => (
-                <div key={id} className={styles.modalDialog} onClick={() => props.onSelect(selected)}></div>
+            {props.params && props.params.map((select, id) => (
+                <div
+                    key={id}
+                    className={styles.modalDialog}
+                    onClick={() => props.onSelect(select)}>
+                     {select}
+                    </div>
             ))}
         </div>
     );

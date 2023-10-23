@@ -39,9 +39,6 @@ export class ActionManager implements IActionManager {
   }
 
   public calculatedResources: Resource[] = [];
-  public modalResources = [
-    "fuel", "minerals", "biotic materials", "machinery", "nanotechnologies"
-  ] as ResourcesModalOption[];
   deliveryOption?: DeliveryOption;
   selectedResource?: Exclude<ResourcePrimitive, "dark matter">;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
@@ -52,10 +49,10 @@ export class ActionManager implements IActionManager {
   };
 
   perform = async (card: CardDefinition) => {
-    //this.round.startOptionsStep();
+    this.round.startOptionsStep();
     this.deliveryOption = await this.modal.show("deliveryOptions", ["charter", "garbage"])
     this.selectedResource = await this.modal.show("deliveryResources",
-      this.modalResources)
+      ["fuel", "minerals", "biotic materials", "machinery", "nanotechnologies"])
 
     if (isResourcePrimitive(this.selectedResource) && (this.deliveryOption === "charter")) {
       this.resources.addResource(this.selectedResource);
@@ -67,7 +64,7 @@ export class ActionManager implements IActionManager {
       );
     }
     this.resources.getResources();
-    //this.round.startPerformingStep();
+    this.round.startPerformingStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
 
@@ -103,30 +100,6 @@ export class ActionManager implements IActionManager {
     }
     return false;
   };
-
-  /*
-  select = (option: string) => {
-    if (option === "charter" || option === "garbage") {
-      return new Promise((resolve) => {
-        this.deliveryOption = option as DeliveryOption
-        resolve("") 
-      });
-    }
-    if (isResourcePrimitive(option)) {
-      if (this.deliveryOption === undefined) return;
-      if (this.deliveryOption === "charter") {
-        this.resources.addResource(option);
-      }
-      if (this.deliveryOption === "garbage") {
-        this.resources.removeResourcesFromGarbage(
-          option as Exclude<ResourcePrimitive, "dark matter">
-        );
-      }
-      this.resources.getResources();
-      this.round.startPerformingStep();
-    }
-  };
-  */
 
   addCardsToTempDrop = (ind: number) => {
     const card = this.hand.cardsInHand[ind];

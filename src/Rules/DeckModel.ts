@@ -73,7 +73,6 @@ export class DeckModel<T extends { id: number }> {
 
   dropCards = (...cards: number[]) => {
     this._droppedCards.push(...cards);
-  //  console.log('Im in  dropCards')
   };
 
   get restCount () {
@@ -81,4 +80,3 @@ export class DeckModel<T extends { id: number }> {
   };
 }
 
-//https://mobx.js.org/README.html

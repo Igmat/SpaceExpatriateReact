@@ -87,7 +87,8 @@ export class ActionManager {
 
     this.round.phase = card.type;
     await this.colony.triggers.before(this.activeAction);
-    this.currentManager?.perform(card);
+    await this.currentManager?.perform(card);
+    await this.colony.triggers.afterSelect(this.activeAction);
   };
 
   nextRound = () => {

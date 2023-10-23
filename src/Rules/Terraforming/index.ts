@@ -13,6 +13,7 @@ import { ModalManager } from "../ModalManager";
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
   missionType?: CardType;
+  terraformingOption?: CardType;
 
   constructor(
     private readonly round: RoundManager,
@@ -31,8 +32,16 @@ export class ActionManager implements IActionManager {
     ]);
   }
 
-  perform = (card: CardDefinition) => {
-    this.modal.show("terraforming", ["delivery", "engineering", "terraforming", "military"]);
+  perform = async (card: CardDefinition) => {
+    this.terraformingOption = await this.modal.show(
+      "terraforming",
+      ["delivery", "engineering", "terraforming", "military"]
+    );
+
+    if (isCardType(this.terraformingOption)) {
+      this.round.startPerformingStep();
+      this.missionType = this.terraformingOption;
+    }
     this.table.resetSelectedFlags();
   };
 
@@ -67,10 +76,7 @@ export class ActionManager implements IActionManager {
   };
 
   select = (option: string) => {
-    if (isCardType(option)) {
-      this.round.startPerformingStep();
-      this.missionType = option;
-    }
+    
   };
 
   reset = () => {
@@ -79,12 +85,10 @@ export class ActionManager implements IActionManager {
     }
     this.cardsToDrop = [];
     this.table.resetSelectedFlags();
-    console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
 
   dropCards = () => {
     this.table.dropCards(...this.cardsToDrop);
-    console.log("You have dropped cards and got 1 Colony");
   };
 
   tryBuildColony = () => {

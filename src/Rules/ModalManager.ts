@@ -23,10 +23,9 @@ export class ModalManager {
         makeAutoObservable(this)
     }
 
-    deliveryOption?: DeliveryModalOption;
-    type?: ModalType;
-    private _params?: any[];
-    private _onSelect?: (selected: ResourcePrimitive[]) => void;
+    type?: ModalType = undefined;
+    private _params?: any[] = undefined;
+    private _onSelect?: (selected: ResourcePrimitive[]) => void = undefined;
 
     get params() {
         return this._params;
@@ -36,7 +35,6 @@ export class ModalManager {
         return this._onSelect;
     }
 
-    // метод используется в компоненте для отрисовки
     async show<T>(type: ModalType, params?: T[]): Promise<T> {
 
         this.type = type;
@@ -50,5 +48,4 @@ export class ModalManager {
             }
         })
     }
-
 }

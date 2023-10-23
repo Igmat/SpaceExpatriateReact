@@ -22,9 +22,9 @@ export const ControlPanel = observer(() => {
   const modalService = useModalService();
 
   useEffect(() => {
-    if (!gameState.modal.type) return;
+    if (!gameState.modal.type) return;    
     modalService.show(
-      modals[gameState.modal.type] as any,
+      modals[gameState.modal.type as keyof typeof modals] as any,
       gameState.modal.onSelect as any,
       gameState.modal.params as any,
       true
