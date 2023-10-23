@@ -83,12 +83,12 @@ export class ActionManager implements IActionManager {
     }
     this.cardsToDrop = [];
     this.table.resetSelectedFlags();
-    console.log("cardsToDrop: " + this.cardsToDrop.length);
+    //console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
 
   dropCards = () => {
     this.table.dropCards(...this.cardsToDrop);
-    console.log("You have dropped cards and got 1 Colony");
+   // console.log("You have dropped cards and got 1 Colony");
   };
 
   tryBuildColony = () => {
@@ -102,7 +102,7 @@ export class ActionManager implements IActionManager {
     const selectedCard = this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
     if (!selectedCard) {
-      console.log("No more colony cards available.");
+    //  console.log("No more colony cards available.");
       return;
     }
 

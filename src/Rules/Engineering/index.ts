@@ -7,7 +7,7 @@ import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { CardSource } from "../ActionManager";
-
+//не заканчивается раунд
 export class ActionManager implements IActionManager {
   constructor(
     private readonly round: RoundManager,
@@ -28,11 +28,7 @@ export class ActionManager implements IActionManager {
   private _isEnded: boolean = false;
 
   confirm = () => {
-    if (
-      this._remaining.activateDeck === 0 &&
-      this._remaining.activateCard === 0
-    )
-      return (this._isEnded = true);
+      return true
   };
   perform = (card: CardDefinition) => {
     this._remaining.activateDeck = 1;
@@ -41,7 +37,8 @@ export class ActionManager implements IActionManager {
   };
 
   get isEnded() {
-    return this._isEnded;
+    return this._remaining.activateDeck === 0 &&
+    this._remaining.activateCard === 0
   }
 
   resetIsEnded() {

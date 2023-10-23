@@ -16,7 +16,7 @@ interface DeckProps {
   action: ActionManager;
   round: RoundManager;
   resources: ResourcesModel;
-  isDisabledDeck: boolean;
+  isDisabled: boolean;
 }
 
 export const Deck = observer((props: DeckProps) => {
@@ -39,7 +39,7 @@ export const Deck = observer((props: DeckProps) => {
         )}
       </div>
       <div
-        className={`${styles[props.model.type]} ${styles.deck} ${props.isDisabledDeck ? styles.disabled : ""}`}
+        className={`${styles[props.model.type]} ${styles.deck} ${props.isDisabled ? styles.disabled : ""}`}
         onClick={() => props.action.activateDeck(props.model.type)}
       />
     </>

@@ -90,7 +90,7 @@ export class ActionManager {
 
   confirm = () => {
     if (!this.activeAction) return;
-    this.managers[this.activeAction].confirm(); //проверить/дописать начличие
+    this.managers[this.activeAction].confirm(); 
     this.managers[this.activeAction].isEnded && this.nextRound();
   };
 
@@ -109,11 +109,16 @@ export class ActionManager {
   activateColonyCard = (card: number) => {
     if (!this.activeAction) return;
     this.managers[this.activeAction].activateColonyCard(card);
+    //this.managers[this.activeAction].confirm(); 
+    this.managers[this.activeAction].isEnded && this.nextRound();
   };
-
-  activateCardOnTable = (card: CardDefinition) => {
+//карты на столе игрока 
+  activateCardOnTable = (card: CardDefinition) => {//возвращает boolean
     if (!this.activeAction) return;
-    return this.managers[this.activeAction].activateCardOnTable(card);
+    const result = this.managers[this.activeAction].activateCardOnTable(card);
+   // this.managers[this.activeAction].confirm(); 
+    this.managers[this.activeAction].isEnded && this.nextRound();
+    return result
   };
 
   select = (option: string) => {
@@ -127,27 +132,33 @@ export class ActionManager {
     this.managers[this.activeAction].reset();
   };
 
-  findCard = (card: CardDefinition): CardSource | undefined => {
+  isInDeck = (card: CardDefinition): CardSource | undefined => {
     if (this.decks.findCard(card)) return "decks";
-    if (this.table.findCard(card)) return "table";
+  };
+  isInHand = (card: CardDefinition): CardSource | undefined => {
     if (
       this.hand.cardsInHand.some(
         (handCard) => handCard.id === card.id && card.type === handCard.type
       )
     )
       return "hand";
-    return undefined;
   };
+  isOnTable = (card: CardDefinition): CardSource | undefined => {
+    if (this.table.findCard(card)) return "table";
+  };
+  
+get isDisabled(): (card: CardDefinition) => boolean {
+  return (card: CardDefinition) => {
+    const place = this.isInDeck(card) || this.isInHand(card) || this.isOnTable(card);
 
-  get isDisabled(): (card: CardDefinition) => boolean {
-    return (card: CardDefinition) => {
-      const place = this.findCard(card);
-      if (place === undefined) return true;
-      if (!this.activeAction) return place === "decks" ? false : true;
-      return this.managers[this.activeAction].isDisabled(place!, card);
-    };
-  }
+    if (!this.activeAction) return place === "decks" ? false : true;
 
+    if (place === undefined) return true;
+
+    return this.managers[this.activeAction].isDisabled(place, card);
+  };
+}
+  
   get isDisabledDeck(): (type: CardType) => boolean {
     return (type: CardType) => {
       if (!this.activeAction) return true;

@@ -27,11 +27,11 @@ export class ActionManager implements IActionManager {
     this.round.startOptionsStep();
   };
   confirm = () => {
-    if (this.remaining.activateDeck === 0) return (this._isEnded = true);
+   return true
   };
 
   get isEnded() {
-    return this._isEnded;
+    return this.remaining.activateDeck === 0;
   }
 
   resetIsEnded() {
@@ -65,7 +65,7 @@ export class ActionManager implements IActionManager {
       this.round.startPerformingStep();
       this.remaining.activateDeck++;
     }
-    console.log("militaryoption: " + this.militaryoption);
+    //console.log("militaryoption: " + this.militaryoption);
   };
 
   reset = () => {};

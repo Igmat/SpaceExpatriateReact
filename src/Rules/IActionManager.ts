@@ -2,7 +2,7 @@ import { CardDefinition, CardType } from "./card-types";
 
 export interface IActionManager {
     perform: (card: CardDefinition) => void
-    confirm: () => void//проверить, на кнопку
+    confirm: () => void
     activateDeck: (type: CardType) => void
     activateCard: (card: number) => void
     activateCardOnTable: (card: CardDefinition) => boolean
