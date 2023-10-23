@@ -84,11 +84,11 @@ export class ActionManager {
   nextRound = () => {
     this.activeAction && this.colony.afterPerform(this.activeAction);
     this.round.next();
+    this.activeAction && this.managers[this.activeAction].resetIsEnded();
     this.activeAction = undefined;
   };
 
   confirm = () => {
-    console.log(this.activeAction);
     if (!this.activeAction) return;
     this.managers[this.activeAction].confirm(); //проверить/дописать начличие
     this.managers[this.activeAction].isEnded && this.nextRound();
@@ -101,11 +101,9 @@ export class ActionManager {
   };
 
   activateCard = (card: number) => {
-    //с руки
     if (!this.activeAction) return;
     this.managers[this.activeAction].activateCard(card);
-    this.managers[this.activeAction].isEnded && this.nextRound(); //было в инжениринге, можем только для него и прописать
-    //console.log('card activated')
+    this.managers[this.activeAction].isEnded && this.nextRound();
   };
 
   activateColonyCard = (card: number) => {

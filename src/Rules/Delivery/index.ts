@@ -41,7 +41,7 @@ export class ActionManager implements IActionManager {
   deliveryOption?: DeliveryOption;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = [];
-private _isEnded: boolean = false;
+  private _isEnded: boolean = false;
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card.id);
@@ -52,11 +52,14 @@ private _isEnded: boolean = false;
     this.resources.createEngineeringMaps(this.table.engineering);
   };
 
-  get isEnded () {
-return this._isEnded;
-  };
+  get isEnded() {
+    return this._isEnded;
+  }
+  resetIsEnded() {
+    this._isEnded = false;
+  }
 
-confirm = () => {
+  confirm = () => {
     this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
@@ -166,8 +169,7 @@ confirm = () => {
       }
 
       if (card.type === "terraforming") {
-        return this.usedTerraformingCards.includes(card.id);//не подсвечивает возможности исходя из ресурсов
-
+        return this.usedTerraformingCards.includes(card.id); //не подсвечивает возможности исходя из ресурсов
       }
     }
 

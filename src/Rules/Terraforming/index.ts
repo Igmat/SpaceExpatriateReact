@@ -39,12 +39,14 @@ export class ActionManager implements IActionManager {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
     this._isEnded = true;
-  }; 
+  };
 
   get isEnded() {
     return this._isEnded;
   }
-
+  resetIsEnded() {
+    this._isEnded = false;
+  }
   activateDeck = (type: CardType) => {};
 
   activateCard = (card: number) => {};

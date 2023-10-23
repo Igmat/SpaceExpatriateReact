@@ -28,16 +28,24 @@ export class ActionManager implements IActionManager {
   private _isEnded: boolean = false;
 
   confirm = () => {
-    if ( this._remaining.activateDeck === 0 && this._remaining.activateCard === 0) return this._isEnded = true;
-  }
+    if (
+      this._remaining.activateDeck === 0 &&
+      this._remaining.activateCard === 0
+    )
+      return (this._isEnded = true);
+  };
   perform = (card: CardDefinition) => {
     this._remaining.activateDeck = 1;
     this._remaining.activateCard = this.hand.cardsInHand.length > 0 ? 1 : 0;
     this.round.startPerformingStep();
   };
 
-  get isEnded () {
+  get isEnded() {
     return this._isEnded;
+  }
+
+  resetIsEnded() {
+    this._isEnded = false;
   }
   activateDeck = (type: CardType) => {
     if (this._remaining.activateDeck === 0) return false;
@@ -58,8 +66,9 @@ export class ActionManager implements IActionManager {
 
   reset = () => {};
 
-  isDisabled = (place: CardSource, card: CardDefinition): boolean => (place === "hand" && this._remaining.activateCard) ? false : true;
-  
-  isDisabledDeck = (type: CardType): boolean => !this._remaining.activateDeck ? true : false;
-  
+  isDisabled = (place: CardSource, card: CardDefinition): boolean =>
+    place === "hand" && this._remaining.activateCard ? false : true;
+
+  isDisabledDeck = (type: CardType): boolean =>
+    !this._remaining.activateDeck ? true : false;
 }

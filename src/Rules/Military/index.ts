@@ -27,7 +27,6 @@ export class ActionManager implements IActionManager {
     this.round.startOptionsStep();
   };
   confirm = () => {
-    console.log(this.remaining.activateDeck);
     if (this.remaining.activateDeck === 0) return (this._isEnded = true);
   };
 
@@ -35,14 +34,18 @@ export class ActionManager implements IActionManager {
     return this._isEnded;
   }
 
+  resetIsEnded() {
+    this._isEnded = false;
+  }
+
   activateDeck = (type: CardType) => {
     if (
       this.round.step === "performing" &&
-      this.militaryoption === "exploration" 
+      this.militaryoption === "exploration"
     )
       this.hand.takeCard(this.decks[type].takeCard());
     this.remaining.activateDeck = 0;
-    this.confirm()
+    this.confirm();
   };
 
   activateCard = (card: number) => {};
