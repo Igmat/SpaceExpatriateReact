@@ -10,7 +10,7 @@ import {
   ModalOptions,
 } from "../../Rules/ModalManager";
 
-type ModalServiceType<T> = {
+/*type ModalServiceType<T> = {
   show: (
     content: FC<ModalOptions<T>>,
     setOption: (option: T) => void,
@@ -20,6 +20,7 @@ type ModalServiceType<T> = {
   ) => void,
   hide: () => void,
 }
+*/
 
 const modalContext = createContext({
   show<T>(
