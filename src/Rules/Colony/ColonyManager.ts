@@ -56,6 +56,9 @@ export class ColonyManager {
       const deliveryResources =
         this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
       const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
+      if (validCardCombinations.length === 0) {
+        return;
+      }
       const selected = await this.gameState.modal.show("resources", validCardCombinations);
       selected.forEach((resource) => {
         this.resources.gainResource(resource);
