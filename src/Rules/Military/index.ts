@@ -6,7 +6,8 @@ import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
 import { ModalManager } from "../ModalManager";
 
-export type Militaryoption = "political" | "exploration";
+export const MilitaryOption = ["exploration", "political"] as const;
+export type Militaryoption = (typeof MilitaryOption)[number];
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -23,7 +24,7 @@ export class ActionManager implements IActionManager {
     activateDeck: 0,
   };
   perform = async (card: CardDefinition) => {
-    this.militaryOption = await this.modal.show("military", ["exploration", "political"]);
+    this.militaryOption = await this.modal.show("military", MilitaryOption);
 
     if (this.militaryOption === "political") {
       return this.tryNext() //заглушка
@@ -32,7 +33,6 @@ export class ActionManager implements IActionManager {
       this.round.startPerformingStep();
       this.remaining.activateDeck++;
     }
-
   };
 
   tryNext = () => this.remaining.activateDeck === 0;
@@ -67,6 +67,5 @@ export class ActionManager implements IActionManager {
   isDisabledDeck = (type: CardType): boolean => {
     return false;
   };
-
 
 }

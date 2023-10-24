@@ -1,7 +1,9 @@
 import styles from "./DeliveryActionWindow.module.scss";
-import { DeliveryModalOption, ModalOptions} from "../../../Rules/ModalManager";
+import { ModalOptions} from "../../../Rules/ModalManager";
+import { FC } from "react";
+import { DeliveryOption } from "../../../Rules/Delivery";
 
-export function DeliveryActionWindow(props: ModalOptions<DeliveryModalOption>) {
+export const DeliveryActionWindow: FC<ModalOptions<DeliveryOption>> = (props) => {
   
   return (
     <div className={styles.container}>

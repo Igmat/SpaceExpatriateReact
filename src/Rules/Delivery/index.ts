@@ -7,17 +7,19 @@ import {
   Resource,
   TerraformingCard,
   EngineeringCard,
-  ResourcePrimitive,
   isResourcePrimitive,
+  BasicResources,
+  BasicResource,
 } from "../card-types";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
-import { ModalManager, ResourcesModalOption } from "../ModalManager";
+import { ModalManager} from "../ModalManager";
 
-export type DeliveryOption = "charter" | "garbage";
+const DeliveryOptions = ["charter", "garbage"] as const;
+export type DeliveryOption = (typeof DeliveryOptions)[number];
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -40,7 +42,7 @@ export class ActionManager implements IActionManager {
 
   public calculatedResources: Resource[] = [];
   deliveryOption?: DeliveryOption;
-  selectedResource?: Exclude<ResourcePrimitive, "dark matter">;
+  selectedResource?: BasicResource;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = [];
 
@@ -50,18 +52,15 @@ export class ActionManager implements IActionManager {
 
   perform = async (card: CardDefinition) => {
     this.round.startOptionsStep();
-    this.deliveryOption = await this.modal.show("deliveryOptions", ["charter", "garbage"])
-    this.selectedResource = await this.modal.show("deliveryResources",
-      ["fuel", "minerals", "biotic materials", "machinery", "nanotechnologies"])
+    this.deliveryOption = await this.modal.show("deliveryOptions", DeliveryOptions)
+    this.selectedResource = await this.modal.show("deliveryResources", BasicResources)
 
     if (isResourcePrimitive(this.selectedResource) && (this.deliveryOption === "charter")) {
       this.resources.addResource(this.selectedResource);
     }
 
     if (this.deliveryOption === "garbage") {
-      this.resources.removeResourcesFromGarbage(
-        this.selectedResource as ResourcesModalOption
-      );
+      this.resources.removeResourcesFromGarbage(this.selectedResource);
     }
     this.resources.getResources();
     this.round.startPerformingStep();

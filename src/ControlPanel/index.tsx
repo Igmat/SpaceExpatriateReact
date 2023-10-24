@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useGameState } from "../Rules";
 import { useModalService } from "../components/ModalWindow";
 import { observer } from "mobx-react-lite";
@@ -7,6 +7,7 @@ import { TerraformingModal } from "../components/ModalWindows/TerraformingModal"
 import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
 import { ChooseResource } from "../components/ModalWindows/ChooseResource";
 import { DeliveryResourcesModal } from "../components/ModalWindows/DeliveryActionWindow/DeliveryResourcesModal";
+import { ModalOptions } from "../Rules/ModalManager";
 
 const modals = {
   military: MillitaryModal,
@@ -16,17 +17,19 @@ const modals = {
   resources: ChooseResource,
 } as const;
 
+export type ModalType = keyof typeof modals;
+
 export const ControlPanel = observer(() => {
   const gameState = useGameState();
 
   const modalService = useModalService();
 
   useEffect(() => {
-    if (!gameState.modal.type) return;    
+    if (!gameState.modal.type || !gameState.modal.onSelect || !gameState.modal.params) return;    
     modalService.show(
-      modals[gameState.modal.type as keyof typeof modals] as any,
-      gameState.modal.onSelect as any,
-      gameState.modal.params as any,
+      modals[gameState.modal.type] as FC<ModalOptions<unknown>>,
+      gameState.modal.onSelect,
+      gameState.modal.params,
       true
     );
 

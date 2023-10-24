@@ -90,11 +90,10 @@ export class ActionManager {
     await this.colony.triggers.afterSelect(this.activeAction);
   };
 
-  nextRound = async() => {
+  nextRound = async () => {
     this.activeAction && await this.colony.triggers.after(this.activeAction);
     this.colony.cancelActiveEffects();
     this.round.next();
-   
     this.activeAction = undefined;
   };
 
@@ -113,14 +112,7 @@ export class ActionManager {
   activateCardOnTable = (card: CardDefinition) =>
     this.currentManager?.activateCardOnTable(card);
 
-  /*
-  select = async (option: string) => {
-    if (!this.activeAction) return;
-    await this.colony.triggers.beforeSelect(this.activeAction);
-    this.currentManager?.select(option);
-    await this.colony.triggers.afterSelect(this.activeAction)
-  };
-*/
+
   reset = () => this.currentManager?.reset();
 
   get isDisabled(): (place: string, card: CardDefinition) => boolean {

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, isCardType } from "../card-types";
+import { CardDefinition, CardType,  isCardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -10,10 +10,12 @@ import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
 
+const TerraformingOption = ["delivery", "engineering", "terraforming", "military"] as const;
+
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
   missionType?: CardType;
-  terraformingOption?: CardType;
+  terraformingOption?: (typeof TerraformingOption)[number];
 
   constructor(
     private readonly round: RoundManager,
@@ -33,10 +35,7 @@ export class ActionManager implements IActionManager {
   }
 
   perform = async (card: CardDefinition) => {
-    this.terraformingOption = await this.modal.show(
-      "terraforming",
-      ["delivery", "engineering", "terraforming", "military"]
-    );
+    this.terraformingOption = await this.modal.show("terraforming", TerraformingOption);
 
     if (isCardType(this.terraformingOption)) {
       this.round.startPerformingStep();

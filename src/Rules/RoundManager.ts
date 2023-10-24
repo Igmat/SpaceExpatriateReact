@@ -37,18 +37,6 @@ export class RoundManager {
     return this._step;
   }
 
-/*  
-  private _params?: ResourcePrimitive[][];
-  private _onSelect?: (selected: ResourcePrimitive[]) => void;
-
-  get params() {
-    return this._params;
-  }
-  get onSelect() {
-    return this._onSelect;
-  }
-*/
-  
   next = () => {
     this.current++;
     this.phase = "active";

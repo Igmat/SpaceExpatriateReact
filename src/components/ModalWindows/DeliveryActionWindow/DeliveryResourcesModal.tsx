@@ -1,7 +1,9 @@
-import { ModalOptions, ResourcesModalOption } from "../../../Rules/ModalManager";
+import { FC } from "react";
+import { ModalOptions } from "../../../Rules/ModalManager";
 import styles from "./DeliveryActionWindow.module.scss";
+import { BasicResource } from "../../../Rules/card-types";
 
-export function DeliveryResourcesModal(props: ModalOptions<ResourcesModalOption>) {
+export const DeliveryResourcesModal: FC<ModalOptions<BasicResource>> = (props) => {
     return (
         <div className={styles.container}>
             {props.params && props.params.map((resource, id) => (

@@ -1,8 +1,9 @@
+import { FC } from "react";
 import { ModalOptions } from "../../../Rules/ModalManager";
 import { CardType } from "../../../Rules/card-types";
 import styles from './TerraformingModal.module.scss';
 
-export function TerraformingModal (props: ModalOptions<CardType>) {
+export const TerraformingModal:FC<ModalOptions<CardType>> = (props) => {
 
     return (
         <div className={styles.modal}>

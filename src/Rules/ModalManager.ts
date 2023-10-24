@@ -1,31 +1,20 @@
 import { makeAutoObservable } from "mobx";
-import { ResourcePrimitive } from "./card-types";
-import { GameState } from ".";
-
-export type ModalType = "military" | "deliveryOptions" | "deliveryResources" | "terraforming" | "resources";
-
-export type DeliveryModalOption = "charter" | "garbage";
-
-export type ResourcesModalOption = Exclude<ResourcePrimitive, "dark matter">;
-
-export type MillitaryModalOptions = "exploration" | "political";
+import type { ModalType } from "../ControlPanel";
 
 export type ModalOptions<T> = {
     onSelect: (selected: T) => void;
     onClose?: () => void;
-    params?: T[];
+    params?: readonly T[];
 }
 export class ModalManager {
     constructor(
-        gameId: string,
-        private readonly gamestate: GameState,
     ) {
         makeAutoObservable(this)
     }
 
     type?: ModalType = undefined;
-    private _params?: any[] = undefined;
-    private _onSelect?: (selected: ResourcePrimitive[]) => void = undefined;
+    private _params?: readonly unknown[] = undefined;
+    private _onSelect?: (selected: unknown) => void = undefined;
 
     get params() {
         return this._params;
@@ -35,7 +24,7 @@ export class ModalManager {
         return this._onSelect;
     }
 
-    async show<T>(type: ModalType, params?: T[]): Promise<T> {
+    async show<T>(type: ModalType, params?: readonly T[]): Promise<T> {
 
         this.type = type;
 
@@ -43,7 +32,7 @@ export class ModalManager {
         
         return new Promise((resolve) => {
             this._onSelect = (selected) => {
-                resolve(selected as any);
+                resolve(selected as T);
                 this.type = undefined;
             }
         })

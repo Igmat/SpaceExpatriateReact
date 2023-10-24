@@ -1,9 +1,9 @@
+import { FC } from "react";
 import { ModalOptions } from "../../../Rules/ModalManager";
 import { ResourcePrimitive } from "../../../Rules/card-types";
 import styles from "./styles.module.scss";
 
-
-export function ChooseResource (props: ModalOptions<ResourcePrimitive[]>) {
+export const ChooseResource:FC<ModalOptions<ResourcePrimitive[]>> = (props) => {
 
   return (
     <div className={styles.modal}>

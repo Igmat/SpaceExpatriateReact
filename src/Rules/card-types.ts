@@ -1,19 +1,27 @@
 import { GameState } from ".";
 import type { EffectName } from "./Colony/ColonyManager";
 
-const ResourceTypes = [
+export const BasicResources = [
   "fuel",
   "minerals",
   "biotic materials",
   "machinery",
   "nanotechnologies",
+] as const;
+
+export const ResourcePrimitives = [
+  ...BasicResources,
   "dark matter",
 ] as const;
 
-export type ResourcePrimitive = (typeof ResourceTypes)[number];
+export type BasicResource = (typeof BasicResources)[number];
 
-export const isResourcePrimitive = (option: string): option is ResourcePrimitive => 
-ResourceTypes.includes(option as any);
+export type ResourcePrimitive = (typeof ResourcePrimitives)[number];
+
+export type Resource = ResourcePrimitive | ResourcePrimitive[];
+
+export const isResourcePrimitive = (option: string):option is ResourcePrimitive => 
+  ResourcePrimitives.includes(option as any);
 
 export const isCardType = (option: string): option is CardType =>
   ["delivery", "engineering", "terraforming", "military"].includes(option);
@@ -32,8 +40,6 @@ export const isSelectableEngineeringCard = (
     "name" in value
   );
 };
-
-export type Resource = ResourcePrimitive | ResourcePrimitive[];
 
 export type CardDefinition =
   | DeliveryCard
