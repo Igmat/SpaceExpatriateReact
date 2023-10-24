@@ -10,7 +10,6 @@ export class CardModel {
     ) {
       makeAutoObservable(this);
     }
-  
-    // Ваши методы и свойства
+
   }
   
