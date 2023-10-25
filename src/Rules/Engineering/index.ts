@@ -60,8 +60,6 @@ export class ActionManager implements IActionManager {
   activateColonyCard = (card: number) => {};
   activateCardOnTable = async (card: CardDefinition) => false;
 
-  select = (option: string) => {};
-
   reset = () => {};
   isDisabled(place: string, card: CardDefinition): boolean {
     if (this.round.phase === "engineering") {

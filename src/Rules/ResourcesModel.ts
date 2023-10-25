@@ -7,7 +7,6 @@ import {
   TerraformingCard,
 } from "./card-types";
 import { TableModel } from "./TableModel";
-import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
@@ -22,7 +21,6 @@ export type GarbageResources = Omit<PlayerResources, "dark matter">;
 export class ResourcesModel {
   constructor(
     private readonly table: TableModel,
-    private readonly round: RoundManager,
     private readonly modal: ModalManager,
     gameId: string
   ) {
