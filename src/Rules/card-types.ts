@@ -20,11 +20,19 @@ export type ResourcePrimitive = (typeof ResourcePrimitives)[number];
 
 export type Resource = ResourcePrimitive | ResourcePrimitive[];
 
+/* эти методы больше нигде не используются
+
 export const isResourcePrimitive = (option: string):option is ResourcePrimitive => 
   ResourcePrimitives.includes(option as any);
 
 export const isCardType = (option: string): option is CardType =>
   ["delivery", "engineering", "terraforming", "military"].includes(option);
+
+*/
+
+export const TerraformingOption = ["delivery", "engineering", "terraforming", "military"] as const;
+
+export const MilitaryOption = ["exploration", "political"] as const;
 
 export const isSelectableEngineeringCard = (
   value: unknown

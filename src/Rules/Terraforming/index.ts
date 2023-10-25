@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType,  isCardType } from "../card-types";
+import { CardDefinition, CardType, TerraformingOption } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -10,11 +10,8 @@ import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
 
-const TerraformingOption = ["delivery", "engineering", "terraforming", "military"] as const;
-
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
-  missionType?: CardType;
   terraformingOption?: (typeof TerraformingOption)[number];
 
   constructor(
@@ -30,16 +27,15 @@ export class ActionManager implements IActionManager {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
       "cardsToDrop",
-      "missionType",
+      "terraformingOption",
     ]);
   }
 
   perform = async (card: CardDefinition) => {
     this.terraformingOption = await this.modal.show("terraforming", TerraformingOption);
 
-    if (isCardType(this.terraformingOption)) {
+    if (this.terraformingOption) {
       this.round.startPerformingStep();
-      this.missionType = this.terraformingOption;
     }
     this.table.resetSelectedFlags();
   };
@@ -62,7 +58,7 @@ export class ActionManager implements IActionManager {
   
   };
 
-  activateCardOnTable = (card: CardDefinition) => {
+  activateCardOnTable = async (card: CardDefinition) => {
     const cardIndex = this.cardsToDrop.indexOf(card);
     this.table.toggleSelectedFlag(card);
     if (cardIndex !== -1) {
@@ -72,10 +68,6 @@ export class ActionManager implements IActionManager {
     this.cardsToDrop.push(card);
     this.tryBuildColony();
     return true;
-  };
-
-  select = (option: string) => {
-    
   };
 
   reset = () => {
@@ -117,7 +109,7 @@ export class ActionManager implements IActionManager {
   get isThreeCardsOfSameType() {
     return (
       this.cardsToDrop.length === 3 &&
-      this.cardsToDrop.filter((card) => card.type === this.missionType)
+      this.cardsToDrop.filter((card) => card.type === this.terraformingOption)
         .length === 3
     );
   }

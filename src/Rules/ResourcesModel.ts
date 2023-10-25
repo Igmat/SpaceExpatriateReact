@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import {
+  BasicResource,
   EngineeringCard,
   Resource,
   ResourcePrimitive,
@@ -26,7 +27,7 @@ export class ResourcesModel {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "resorces", [
+    makeAutoSavable(this, gameId, "resources", [
       "garbageResources",
       "playerResources",
       "tempGarbageResources",
@@ -37,7 +38,6 @@ export class ResourcesModel {
     ]);
   }
 
-  // будет разделение на PLayerModel & GarbageModel
   public playerResources: PlayerResources = {
     "biotic materials": 0,
     fuel: 0,
@@ -123,8 +123,8 @@ export class ResourcesModel {
     this.gainResources(card);
   };
 
-  async tryConsumeResources(resources: Resource[], onConsume: () => void) {
-    if (resources === undefined) return onConsume();
+  async tryConsumeResources(resources: Resource[]) {
+    if (resources === undefined) return true;
     const variants = toArrayArray(resources);
     const darkMatterVariants: ResourcePrimitive[][] = variants.map(
       (variant) => [
@@ -143,12 +143,11 @@ export class ResourcesModel {
     if (validCombinations.length === 0) return;
     if (validCombinations.length === 1) {
       this.consumeResources(validCombinations[0]);
-      return onConsume();
+      return true;
     }
     const selected = await this.modal.show("resources", validCombinations);
     this.consumeResources(selected);
-    onConsume();
-
+    return true;
   }
 
   async gainResources(card: EngineeringCard) {
@@ -172,7 +171,7 @@ export class ResourcesModel {
   };
 
   removeResourcesFromGarbage = (
-    resource: Exclude<ResourcePrimitive, "dark matter">
+    resource: BasicResource
   ) => {
     this.garbageResources[resource] = 0;
   };

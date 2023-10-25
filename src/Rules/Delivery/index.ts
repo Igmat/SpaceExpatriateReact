@@ -7,7 +7,6 @@ import {
   Resource,
   TerraformingCard,
   EngineeringCard,
-  isResourcePrimitive,
   BasicResources,
   BasicResource,
 } from "../card-types";
@@ -55,7 +54,7 @@ export class ActionManager implements IActionManager {
     this.deliveryOption = await this.modal.show("deliveryOptions", DeliveryOptions)
     this.selectedResource = await this.modal.show("deliveryResources", BasicResources)
 
-    if (isResourcePrimitive(this.selectedResource) && (this.deliveryOption === "charter")) {
+    if (this.deliveryOption === "charter") {
       this.resources.addResource(this.selectedResource);
     }
 
@@ -85,16 +84,18 @@ export class ActionManager implements IActionManager {
   
   activateColonyCard = (card: number) => { };
 
-  activateCardOnTable = (card: CardDefinition) => {
+  activateCardOnTable = async (card: CardDefinition) => {
     if (card.type === "engineering") {
       this.activateEngineeringCard(card);
     }
     if (card.type === "terraforming") {
       if (!this.usedTerraformingCards.includes(card.id)) {
-        this.resources.tryConsumeResources(card.resources, () => {
+        const successfulConsumeResources = await this.resources.tryConsumeResources(card.resources);
+
+        if (successfulConsumeResources) {
           this.resources.calculateRoundPoints(card);
           this.useTerraformingCard(card);
-        });
+        }
       }
     }
     return false;
@@ -121,7 +122,7 @@ export class ActionManager implements IActionManager {
     this.tempDroppedCards = [];
   };
 
-  activateEngineeringCard(card: EngineeringCard) {
+  activateEngineeringCard = async (card: EngineeringCard) => {
     if (
       card.connection === "start" &&
       this.resources.engineeringMaps.Start[card.id] === 0
@@ -137,10 +138,9 @@ export class ActionManager implements IActionManager {
       this.resources.engineeringMaps.FinishCounter <= 0
     )
       return;
-    this.resources.tryConsumeResources(
-      card.entryPoint ? [card.entryPoint] : [],
-      () => this.resources.handleCardProcessing(card)
-    );
+    await this.resources.tryConsumeResources(
+      card.entryPoint ? [card.entryPoint] : []) &&
+      this.resources.handleCardProcessing(card)
   }
 
   isDisabled(place: string, card: CardDefinition,): boolean {

@@ -1,12 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType } from "../card-types";
+import { CardDefinition, CardType, MilitaryOption } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
 import { ModalManager } from "../ModalManager";
 
-export const MilitaryOption = ["exploration", "political"] as const;
 export type Militaryoption = (typeof MilitaryOption)[number];
 
 export class ActionManager implements IActionManager {
@@ -23,6 +22,7 @@ export class ActionManager implements IActionManager {
   private remaining = {
     activateDeck: 0,
   };
+
   perform = async (card: CardDefinition) => {
     this.militaryOption = await this.modal.show("military", MilitaryOption);
 
@@ -49,7 +49,7 @@ export class ActionManager implements IActionManager {
 
   activateCard = (card: number) => {};
   activateColonyCard = (card: number) => {};
-  activateCardOnTable = (card: CardDefinition) => {
+  activateCardOnTable = async (card: CardDefinition) => {
     return false;
   };
 

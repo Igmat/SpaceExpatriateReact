@@ -27,16 +27,16 @@ export class ActionManager implements IActionManager {
   get remaining() {
     return this._remaining;
   }
-  ajustRemainingActivateDeck = (value: number) => {
+  adjustRemainingActivateDeck = (value: number) => {
     this._remaining.activateDeck += value;
   };
-  ajustRemainingActivateCard = (value: number) => {
+  adjustRemainingActivateCard = (value: number) => {
     this._remaining.activateCard += value;
   };
 
   perform = (card: CardDefinition) => {
-    this.ajustRemainingActivateDeck(1);
-    this.ajustRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
+    this.adjustRemainingActivateDeck(1);
+    this.adjustRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
   };
   
@@ -45,7 +45,7 @@ export class ActionManager implements IActionManager {
 
   activateDeck = (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
-    this.ajustRemainingActivateDeck(-1);
+    this.adjustRemainingActivateDeck(-1);
     this.table.takeCard(this.decks[type].takeCard());
     return this.tryNext();
   };
@@ -58,7 +58,7 @@ export class ActionManager implements IActionManager {
   };
 
   activateColonyCard = (card: number) => {};
-  activateCardOnTable = (card: CardDefinition) => false;
+  activateCardOnTable = async (card: CardDefinition) => false;
 
   select = (option: string) => {};
 

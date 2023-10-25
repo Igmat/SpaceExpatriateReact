@@ -1,6 +1,7 @@
 import { makeAutoObservable, reaction } from "mobx";
 import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import {
+  BasicResource,
   CardType,
   ColonyCard,
   FullTrigger,
@@ -57,7 +58,7 @@ export class ColonyManager {
       };
 
       const deliveryResources =
-        this.table.delivery.map(card => card.resources as Exclude<ResourcePrimitive, "dark matter">[]);
+        this.table.delivery.map(card => card.resources as BasicResource[]);
       const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
       if (validCardCombinations.length === 0) {
         return;
@@ -92,7 +93,7 @@ export class ColonyManager {
       this.hand.cardsInHand.forEach((card) => {
         if (
           card.type ===
-          (this.gameState.action.currentManager as TAM).missionType
+          (this.gameState.action.currentManager as TAM).terraformingOption
         ) {
           this.resources.addPoints(2);
         }
@@ -100,13 +101,13 @@ export class ColonyManager {
     },
 
     dockDeliveryModule: async (colony: ColonyCard) => {
-      (this.gameState.action.currentManager as EAM).setRemainingActivateDeck(1);
+      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(1);
       this.gameState.action.currentManager?.activateDeck("delivery");
     },
 
     adjustRemainingActions: async (colony: ColonyCard) => {
-      (this.gameState.action.currentManager as EAM).setRemainingActivateDeck(1);
-      (this.gameState.action.currentManager as EAM).setRemainingActivateCard(
+      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(1);
+      (this.gameState.action.currentManager as EAM).adjustRemainingActivateCard(
         -1
       );
     },
@@ -115,9 +116,9 @@ export class ColonyManager {
       const currentManager = this.gameState.action.currentManager as EAM;
       currentManager.activateDeck = (type: CardType) => {
         if (currentManager.remaining.activateDeck === 0) return;
-        currentManager.setRemainingActivateDeck(-1);
+        currentManager.adjustRemainingActivateDeck(-1);
         this.hand.takeCard(this.decks[type].takeCard()!);
-        currentManager.setRemainingActivateCard(1);
+        currentManager.adjustRemainingActivateCard(1);
         return currentManager.tryNext();
       };
     },
@@ -125,7 +126,7 @@ export class ColonyManager {
     dockStationModuleOfMissionType: async (colony: ColonyCard) => {
       this.table.takeCard(
         this.decks[
-          (this.gameState.action.currentManager as TAM).missionType!
+          (this.gameState.action.currentManager as TAM).terraformingOption!
         ].takeCard()!
       );
     },
