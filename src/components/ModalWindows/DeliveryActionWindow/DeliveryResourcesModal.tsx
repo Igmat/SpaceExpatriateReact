@@ -6,14 +6,15 @@ import { BasicResource } from "../../../Rules/card-types";
 export const DeliveryResourcesModal: FC<ModalOptions<BasicResource>> = (props) => {
     return (
         <div className={styles.container}>
-            {props.params && props.params.map((resource, id) => (
-                <div
-                    key={id}
-                    className={styles.action}
-                    onClick={() => props.onSelect(resource)}>
-                    {resource}
-                </div>
-            ))}
+            <div className={styles.resources}>
+                {props.params && props.params.map((resource, id) => (
+                    <div
+                        key={id}
+                        className={`${resource === "biotic materials" ? styles.bioticMaterial : styles[resource]}`}
+                        onClick={() => props.onSelect(resource)}>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
