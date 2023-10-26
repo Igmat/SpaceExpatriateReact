@@ -1,12 +1,13 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, MilitaryOption } from "../card-types";
+import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
 import { ModalManager } from "../ModalManager";
 
-export type Militaryoption = (typeof MilitaryOption)[number];
+export const MilitaryOptions = ["exploration", "political"] as const;
+export type Militaryoption = (typeof MilitaryOptions)[number];
 
 export class ActionManager implements IActionManager {
   constructor(
@@ -24,7 +25,7 @@ export class ActionManager implements IActionManager {
   };
 
   perform = async (card: CardDefinition) => {
-    this.militaryOption = await this.modal.show("military", MilitaryOption);
+    this.militaryOption = await this.modal.show("military", MilitaryOptions);
 
     if (this.militaryOption === "political") {
       return this.tryNext() //заглушка

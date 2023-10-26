@@ -30,9 +30,8 @@ export const isCardType = (option: string): option is CardType =>
 
 */
 
-export const TerraformingOption = ["delivery", "engineering", "terraforming", "military"] as const;
-
-export const MilitaryOption = ["exploration", "political"] as const;
+export const CardTypes = ["delivery", "engineering", "terraforming", "military"] as const;
+export type CardType = (typeof CardTypes)[number];
 
 export const isSelectableEngineeringCard = (
   value: unknown
@@ -55,7 +54,7 @@ export type CardDefinition =
   | TerraformingCard
   | MilitaryCard;
 
-export type CardType = "delivery" | "engineering" | "terraforming" | "military";
+
 
 export interface DeliveryCard {
   id: number;
@@ -126,16 +125,16 @@ export interface ColonyCard {
 
 export const expandTrigger = (trigger?: Trigger): FullTrigger => {
   if (!trigger) {
-    return { activate: async () => {}, effects: [] };
+    return { activate: async () => { }, effects: [] };
   }
   if (typeof trigger === "function") {
     return { activate: trigger, effects: [] };
   }
   if (Array.isArray(trigger)) {
-    return { activate: async () => {}, effects: trigger };
+    return { activate: async () => { }, effects: trigger };
   }
   if (typeof trigger === "string") {
-    return { activate: async () => {}, effects: [trigger] };
+    return { activate: async () => { }, effects: [trigger] };
   }
   return trigger;
 };

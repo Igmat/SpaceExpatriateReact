@@ -42,7 +42,7 @@ export class ColonyManager {
     selectDeliveryStation: async (colony: ColonyCard) => {
 
       const getValidCombination = (
-        deliveryResources: Exclude<ResourcePrimitive, "dark matter">[][],
+        deliveryResources: BasicResource[][],
         garbageResources: GarbageResources) => {
         const garbageResourcesFiltered =
           Object.entries(garbageResources)
@@ -69,7 +69,7 @@ export class ColonyManager {
       });
     },
 
-    adjustGarbage: async () => {},
+    adjustGarbage: async () => { },
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isSelectableEngineeringCard(colony.data)) {
@@ -93,7 +93,7 @@ export class ColonyManager {
       this.hand.cardsInHand.forEach((card) => {
         if (
           card.type ===
-          (this.gameState.action.currentManager as TAM).terraformingOption
+          (this.gameState.action.currentManager as TAM).missionType
         ) {
           this.resources.addPoints(2);
         }
@@ -126,7 +126,7 @@ export class ColonyManager {
     dockStationModuleOfMissionType: async (colony: ColonyCard) => {
       this.table.takeCard(
         this.decks[
-          (this.gameState.action.currentManager as TAM).terraformingOption!
+          (this.gameState.action.currentManager as TAM).missionType!
         ].takeCard()!
       );
     },

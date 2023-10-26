@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, TerraformingOption } from "../card-types";
+import { CardDefinition, CardType, CardTypes } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -12,7 +12,7 @@ import { ModalManager } from "../ModalManager";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
-  terraformingOption?: (typeof TerraformingOption)[number];
+  missionType?: CardType;
 
   constructor(
     private readonly round: RoundManager,
@@ -27,14 +27,14 @@ export class ActionManager implements IActionManager {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
       "cardsToDrop",
-      "terraformingOption",
+      "missionType",
     ]);
   }
 
   perform = async (card: CardDefinition) => {
-    this.terraformingOption = await this.modal.show("terraforming", TerraformingOption);
+    this.missionType = await this.modal.show("terraforming", CardTypes);
 
-    if (this.terraformingOption) {
+    if (this.missionType) {
       this.round.startPerformingStep();
     }
     this.table.resetSelectedFlags();
@@ -46,16 +46,15 @@ export class ActionManager implements IActionManager {
     return true;
   };
 
-  activateDeck = (type: CardType) => {};
+  activateDeck = (type: CardType) => { };
 
-  activateCard = (card: number) => {};
+  activateCard = (card: number) => { };
 
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
-      return  this.buildColony(card);//строим колонию
+      return this.buildColony(card);//строим колонию
     }
-  
   };
 
   activateCardOnTable = async (card: CardDefinition) => {
@@ -109,7 +108,7 @@ export class ActionManager implements IActionManager {
   get isThreeCardsOfSameType() {
     return (
       this.cardsToDrop.length === 3 &&
-      this.cardsToDrop.filter((card) => card.type === this.terraformingOption)
+      this.cardsToDrop.filter((card) => card.type === this.missionType)
         .length === 3
     );
   }
@@ -117,11 +116,10 @@ export class ActionManager implements IActionManager {
   get isOneCardOfEachType() {
     return (
       this.cardsToDrop.length === 4 &&
-      (["delivery", "engineering", "terraforming", "military"] as const)
-        .map(
-          (el) =>
-            this.cardsToDrop.filter((card) => card.type === el).length === 1
-        )
+      CardTypes.map(
+        (el) =>
+          this.cardsToDrop.filter((card) => card.type === el).length === 1
+      )
         .filter(Boolean).length === 4
     );
   }
