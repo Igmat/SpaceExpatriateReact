@@ -132,34 +132,7 @@ export class ActionManager {
     if (!this.activeAction) return;
     this.managers[this.activeAction].reset();
   };
-  /*
-  isInDeck = (card: CardDefinition): CardSource | undefined => {
-    if (this.decks.findCard(card)) return "decks";
-  };
-  isInHand = (card: CardDefinition): CardSource | undefined => {
-    if (
-      this.hand.cardsInHand.some(
-        (handCard) => handCard.id === card.id && card.type === handCard.type
-      )
-    )
-      return "hand";
-  };
-  isOnTable = (card: CardDefinition): CardSource | undefined => {
-    if (this.table.findCard(card)) return "table";
-  };
-  
-get isDisabled(): (card: CardDefinition) => boolean {
-  return (card: CardDefinition) => {
-    const place = this.isInDeck(card) || this.isInHand(card) || this.isOnTable(card);
-
-    if (!this.activeAction) return place === "decks" ? false : true;
-
-    if (place === undefined) return true;
-
-    return this.managers[this.activeAction].isDisabled(place, card);
-  };
-}
-*/
+ 
   isInDeck = (card: CardDefinition): boolean => {
     return !!this.decks.findCard(card);
   };
