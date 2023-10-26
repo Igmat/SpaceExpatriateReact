@@ -30,9 +30,13 @@ Array [
     className="container"
   >
     <div
-      className="delivery card   "
+      className="delivery card disabled  "
       onClick={[Function]}
     >
+       
+      <div>
+        ID: 31
+      </div>
       <div>
         <div>
           <div
@@ -51,9 +55,13 @@ Array [
       </div>
     </div>
     <div
-      className="engineering card   "
+      className="engineering card disabled  "
       onClick={[Function]}
     >
+       
+      <div>
+        ID: 31
+      </div>
       <div
         className="start"
       >
@@ -90,9 +98,13 @@ Array [
       </div>
     </div>
     <div
-      className="military card   "
+      className="military card disabled  "
       onClick={[Function]}
     >
+       
+      <div>
+        ID: 31
+      </div>
       <div
         className="intelligence"
       >
@@ -100,9 +112,13 @@ Array [
       </div>
     </div>
     <div
-      className="terraforming card   "
+      className="terraforming card disabled  "
       onClick={[Function]}
     >
+       
+      <div>
+        ID: 31
+      </div>
       <div
         className="infoWrapper"
       >

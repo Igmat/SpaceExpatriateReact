@@ -139,6 +139,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="delivery card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div>
           <div>
             <div
@@ -174,7 +178,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="delivery deck "
+      className="delivery deck disabled"
       onClick={[Function]}
     />
     <div
@@ -184,6 +188,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="engineering card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="continue"
         >
@@ -217,7 +225,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="engineering deck "
+      className="engineering deck disabled"
       onClick={[Function]}
     />
     <div
@@ -227,6 +235,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="terraforming card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="infoWrapper"
         >
@@ -310,7 +322,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="terraforming deck "
+      className="terraforming deck disabled"
       onClick={[Function]}
     />
     <div
@@ -320,6 +332,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="military card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="fighters"
         >
@@ -328,7 +344,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="military deck "
+      className="military deck disabled"
       onClick={[Function]}
     />
   </div>

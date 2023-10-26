@@ -8,6 +8,6 @@ interface ConfirmButtonProps {
 
 export const ConfirmButton = observer((props: ConfirmButtonProps) => {
     return (
-        <button className={styles.confirmButton} onClick={props.action.tryNext}>Confirm</button>
+        <button className={styles.confirmButton} onClick={props.action.confirm}>Confirm</button>
     )
 })

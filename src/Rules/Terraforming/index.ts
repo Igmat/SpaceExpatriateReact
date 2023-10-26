@@ -9,7 +9,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
-
+import { HandModel } from "../HandModel";
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
   missionType?: CardType;
@@ -23,6 +23,7 @@ export class ActionManager implements IActionManager {
     private readonly colonyDeck: ColonyDeckModel,
     private readonly resources: ResourcesModel,
     private readonly modal: ModalManager,
+    private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -30,8 +31,10 @@ export class ActionManager implements IActionManager {
       "missionType",
     ]);
   }
+  private _isEnded: boolean = false;
 
   perform = async (card: CardDefinition) => {
+    this._isEnded = false;
     this.missionType = await this.modal.show("terraforming", CardTypes);
 
     if (this.missionType) {
@@ -40,20 +43,24 @@ export class ActionManager implements IActionManager {
     this.table.resetSelectedFlags();
   };
 
-  tryNext = () => {
+  confirm = () => {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
-    return true;
+    this._isEnded = true;
   };
 
-  activateDeck = (type: CardType) => { };
+  get isEnded() {
+    return this._isEnded;
+  }
 
-  activateCard = (card: number) => { };
+  activateDeck = (type: CardType) => {};
+
+  activateCard = (card: number) => {};
 
   activateColonyCard = (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
-      return this.buildColony(card);//строим колонию
+      return this.buildColony(card); //строим колонию
     }
   };
 
@@ -92,7 +99,7 @@ export class ActionManager implements IActionManager {
     const selectedCard = this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
     if (!selectedCard) {
-      console.log("No more colony cards available.");
+      //  console.log("No more colony cards available.");
       return;
     }
 
@@ -101,8 +108,6 @@ export class ActionManager implements IActionManager {
     this.colony.takeColonyCard(selectedCard);
     this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
     this.cardsToDrop = []; //чистим масив сбрасываемых карт
-    //this.tryNext() && this.round.next(); //переходим к следующему раунду
-    return this.tryNext()
   };
 
   get isThreeCardsOfSameType() {
@@ -117,30 +122,21 @@ export class ActionManager implements IActionManager {
     return (
       this.cardsToDrop.length === 4 &&
       CardTypes.map(
-        (el) =>
-          this.cardsToDrop.filter((card) => card.type === el).length === 1
-      )
-        .filter(Boolean).length === 4
+        (el) => this.cardsToDrop.filter((card) => card.type === el).length === 1
+      ).filter(Boolean).length === 4
     );
   }
 
-  isDisabled(place: string, card: CardDefinition): boolean {
-    if (this.round.phase === "terraforming") {
-      if (place === "table") return this.isDisabledTable(card);
-      if (place === "hand") return true;
-      // if (type === "deck") return this.isDisabledDeck(card.type);
-      if (place === "opened") return true;
+  isDisabled(card: CardDefinition): boolean {
+    if (this.table.isOnTable(card)) {
+      return this.isDisabledTable(card);
+    }
+    if (this.hand.isInHand(card) || this.decks.isInDeck(card)) {
+      return true;
     }
     return false;
   }
+  isDisabledDeck = (type: CardType): boolean => true;
 
-  isDisabledTable = (card: CardDefinition): boolean => {
-    //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
-    return false;
-  };
-
-  isDisabledDeck = (type: CardType): boolean => {
-    if (this.round.phase === "terraforming") return true;
-    return false;
-  };
+  isDisabledTable = (card: CardDefinition): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
 }
