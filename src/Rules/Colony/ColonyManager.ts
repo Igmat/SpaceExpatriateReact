@@ -5,7 +5,6 @@ import {
   CardType,
   ColonyCard,
   FullTrigger,
-  ResourcePrimitive,
   TriggerName,
   TriggerNames,
   expandTrigger,
