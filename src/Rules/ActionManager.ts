@@ -12,6 +12,7 @@ import { ActionManager as MAM } from "./Military";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
+import { ModalManager } from "./ModalManager";
 
 export type CardSource = "decks" | "hand" | "table";
 export class ActionManager {
@@ -23,7 +24,8 @@ export class ActionManager {
     private readonly resources: ResourcesModel,
     private readonly gameId: string,
     private readonly colony: ColonyManager,
-    private readonly colonyDeck: ColonyDeckModel
+    private readonly colonyDeck: ColonyDeckModel,
+    private readonly modal: ModalManager,
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, `action`, [`activeAction`]);
@@ -44,7 +46,8 @@ export class ActionManager {
       this.gameId,
       this.colony,
       this.colonyDeck,
-      this.resources
+      this.resources,
+      this.modal,
     ),
     delivery: new DAM(
       this.table,
@@ -52,18 +55,24 @@ export class ActionManager {
       this.hand,
       this.resources,
       this.decks,
-      this.gameId
+      this.modal,
+      this.gameId,
     ),
-    military: new MAM(this.round, this.hand, this.decks),
+    military: new MAM(
+      this.round,
+      this.hand,
+      this.decks,
+      this.modal,
+    ),
   };
 
   activeAction?: CardType;
 
-  get deliveryManager(): DAM {
-    return this.managers.delivery;
+  get currentManager() {
+    return this.activeAction && this.managers[this.activeAction];
   }
 
-  perform = (card?: CardDefinition) => {
+  perform = async (card?: CardDefinition) => {
     if (!card) return;
 
     if (this.round.phase !== "active") return;
@@ -77,60 +86,47 @@ export class ActionManager {
     }
 
     this.round.phase = card.type;
-    this.colony.beforePerform(this.activeAction);
-    this.managers[card.type].perform(card);
+    await this.colony.triggers.before(this.activeAction);
+    await this.currentManager?.perform(card);
+    await this.colony.triggers.afterSelect(this.activeAction);
   };
 
-  nextRound = () => {
-    this.activeAction && this.colony.afterPerform(this.activeAction);
+  nextRound = async () => {
+    this.activeAction && await this.colony.triggers.after(this.activeAction);
+    this.colony.cancelActiveEffects();
     this.round.next();
-    this.activeAction && this.managers[this.activeAction].resetIsEnded();
     this.activeAction = undefined;
   };
 
   confirm = () => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].confirm();
-    this.managers[this.activeAction].isEnded && this.nextRound();
+    this.currentManager?.confirm();
+    this.currentManager?.isEnded && this.nextRound();
   };
 
   activateDeck = (type: CardType) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateDeck(type);
-    this.managers[this.activeAction].isEnded && this.nextRound();
+    this.currentManager?.activateDeck(type);
+    this.currentManager?.isEnded && this.nextRound();
   };
 
   activateCard = (card: number) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateCard(card);
-    this.managers[this.activeAction].isEnded && this.nextRound();
+    this.currentManager?.activateCard(card);
+    this.currentManager?.isEnded && this.nextRound();
   };
 
   activateColonyCard = (card: number) => {
     if (!this.activeAction) return;
     this.managers[this.activeAction].activateColonyCard(card);
-    //this.managers[this.activeAction].confirm();
     this.managers[this.activeAction].isEnded && this.nextRound();
-  };
-  //карты на столе игрока
-  activateCardOnTable = (card: CardDefinition) => {
-    //возвращает boolean
-    if (!this.activeAction) return;
-    const result = this.managers[this.activeAction].activateCardOnTable(card);
-    // this.managers[this.activeAction].confirm();
-    this.managers[this.activeAction].isEnded && this.nextRound();
-    return result;
   };
 
-  select = (option: string) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].select(option);
-    this.managers.military.select(option) && this.nextRound(); //заглушка
+  activateCardOnTable = (card: CardDefinition) => {
+    this.currentManager?.activateCardOnTable(card);
+    this.currentManager?.isEnded && this.nextRound();
   };
+
 
   reset = () => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].reset();
+    this.currentManager?.reset();
   };
  
   isInDeck = (card: CardDefinition): boolean => {
@@ -150,9 +146,9 @@ export class ActionManager {
   get isDisabled(): (card: CardDefinition) => boolean {
     return (card: CardDefinition) => {
       let place: CardSource | undefined;
-      if (this.isInDeck(card) === true) place = "decks";
-      if (this.isInHand(card) === true) place = "hand";
-      if (this.isOnTable(card) === true) place = "table";
+      if (this.isInDeck(card)) place = "decks";
+      if (this.isInHand(card)) place = "hand";
+      if (this.isOnTable(card)) place = "table";
       if (place === undefined) return true;
       if (!this.activeAction) return place === "decks" ? false : true;
 

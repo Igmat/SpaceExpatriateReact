@@ -4,68 +4,57 @@ import { CardDefinition, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
+import { ModalManager } from "../ModalManager";
 import { CardSource } from "../ActionManager";
 
-export type Militaryoption = "political" | "exploration";
+export const MilitaryOptions = ["exploration", "political"] as const;
+export type Militaryoption = (typeof MilitaryOptions)[number];
 
 export class ActionManager implements IActionManager {
   constructor(
     private readonly round: RoundManager,
     private readonly hand: HandModel,
-    private readonly decks: DeckManager
+    private readonly decks: DeckManager,
+    private readonly modal: ModalManager,
   ) {
     makeAutoObservable(this);
   }
-  militaryoption?: Militaryoption;
+  militaryOption?: Militaryoption;
 
   private remaining = {
     activateDeck: 0,
   };
-  private _isEnded: boolean = false;
 
-  perform = (card: CardDefinition) => {
-    this.round.startOptionsStep();
+  perform = async (card: CardDefinition) => {
+    this.militaryOption = await this.modal.show("military", MilitaryOptions);
+
+    if (this.militaryOption === "political") {
+     // return this.tryNext() //заглушка
+    }
+    if (this.militaryOption === "exploration") {
+      this.round.startPerformingStep();
+      this.remaining.activateDeck++;
+    }
   };
-  confirm = () => {
-   return true
-  };
+  confirm = () => {};
 
   get isEnded() {
     return this.remaining.activateDeck === 0;
   }
 
-  resetIsEnded() {
-    this._isEnded = false;
-  }
-
   activateDeck = (type: CardType) => {
     if (
       this.round.step === "performing" &&
-      this.militaryoption === "exploration"
+      this.militaryOption === "exploration"
     )
       this.hand.takeCard(this.decks[type].takeCard());
     this.remaining.activateDeck = 0;
-    this.confirm();
   };
 
   activateCard = (card: number) => {};
   activateColonyCard = (card: number) => {};
-  activateCardOnTable = (card: CardDefinition) => {
+  activateCardOnTable = async (card: CardDefinition) => {
     return false;
-  };
-
-  select = (option: string) => {
-    if (option === "political" || option === "exploration") {
-      this.militaryoption = option;
-    }
-    if (this.militaryoption === "political") {
-      return true; //заглушка
-    }
-    if (this.militaryoption === "exploration") {
-      this.round.startPerformingStep();
-      this.remaining.activateDeck++;
-    }
-    //console.log("militaryoption: " + this.militaryoption);
   };
 
   reset = () => {};

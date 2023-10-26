@@ -1,19 +1,20 @@
-import React from "react";
 import styles from "./Military.module.scss";
-import { useGameState } from "../../../Rules";
+import { ModalOptions } from "../../../Rules/ModalManager";
+import { FC } from "react";
+import { Militaryoption } from "../../../Rules/Military";
 
+export const MillitaryModal: FC<ModalOptions<Militaryoption>> = (props) => {
 
-
-export const MillitaryModal = () => {
-  const gameState = useGameState();
-
-  const handleOption = (option:string) => {
-    gameState.action.select(option);
-}
   return (
     <div className={styles.modal}>
-      <div className={styles.modalDialog} onClick={()=>handleOption("exploration")}>Exploration</div>
-      <div className={styles.modalDialog} onClick={()=>handleOption("political")}>Political Pressure</div>
+      {props.params && props.params.map((select, id) => (
+        <div
+          key={id}
+          className={styles.modalDialog}
+          onClick={() => props.onSelect(select)}>
+          {select}
+        </div>
+      ))}
     </div>
   );
 };

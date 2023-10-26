@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
-import { CardType, ResourcePrimitive } from "./card-types";
+import { CardType } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
@@ -32,22 +32,13 @@ export class RoundManager {
   current = 1;
   phase: Phase = "active";
   private _step?: Step;
-  private _params?: ResourcePrimitive[][];
-  private _onSelect?: (selected: ResourcePrimitive[]) => void;
 
   get step() {
     return this._step;
   }
-  get params() {
-    return this._params;
-  }
-  get onSelect() {
-    return this._onSelect;
-  }
 
   next = () => {
     this.current++;
-    // console.log("Round: " + this.current + " is started");
     this.phase = "active";
     this._step = undefined;
     this.decks.delivery.openCard();
@@ -60,21 +51,13 @@ export class RoundManager {
   private setStep(step: Step) {
     this._step = step;
   }
-
-  startOptionsStep() {
-    this.setStep("options");
-  }
+  
   startPerformingStep() {
     this.setStep("performing");
   }
 
-  startResourceStep(
-    params: ResourcePrimitive[][],
-    onSelect: (selected: ResourcePrimitive[]) => void
-  ) {
-    this.setStep("resources");
-    this._params = params;
-    this._onSelect = onSelect;
+  startOptionsStep() {
+    this.setStep("options");
   }
 
   get isResetable(): boolean {
@@ -85,7 +68,7 @@ export class RoundManager {
   }
 
   get isConfirmable(): boolean {
-    return this.step === "performing"&&(this.phase === "delivery" || this.phase === "terraforming");
+    return this.step === "performing" && (this.phase === "delivery" || this.phase === "terraforming");
   }
   get isEndable(): boolean {
     return this.step === "performing" && (this.phase === "military" || this.phase === "engineering");

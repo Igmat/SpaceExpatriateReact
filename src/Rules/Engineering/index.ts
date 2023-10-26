@@ -25,14 +25,19 @@ export class ActionManager implements IActionManager {
     activateCard: 0,
   };
 
-  private _isEnded: boolean = false;
-
-  confirm = () => {
-      return true
+  get remaining() {
+    return this._remaining;
+  }
+  adjustRemainingActivateDeck = (value: number) => {
+    this._remaining.activateDeck += value;
   };
+  adjustRemainingActivateCard = (value: number) => {
+    this._remaining.activateCard += value;
+  };
+
   perform = (card: CardDefinition) => {
-    this._remaining.activateDeck = 1;
-    this._remaining.activateCard = this.hand.cardsInHand.length > 0 ? 1 : 0;
+    this.adjustRemainingActivateDeck(1);
+    this.adjustRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
   };
 
@@ -40,26 +45,24 @@ export class ActionManager implements IActionManager {
     return this._remaining.activateDeck === 0 &&
     this._remaining.activateCard === 0
   }
-
-  resetIsEnded() {
-    this._isEnded = false;
-  }
+  confirm = () => {};
+ 
   activateDeck = (type: CardType) => {
-    if (this._remaining.activateDeck === 0) return false;
-    this._remaining.activateDeck--;
+    if (this._remaining.activateDeck === 0) return;
+    this.adjustRemainingActivateDeck(-1);
     this.table.takeCard(this.decks[type].takeCard());
+    //return this.tryNext();
   };
 
   activateCard = (card: number) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
     this.table.takeCard(this.hand.dropCard(card));
+   // return this.tryNext();
   };
 
   activateColonyCard = (card: number) => {};
-  activateCardOnTable = (card: CardDefinition) => false;
-
-  select = (option: string) => {};
+  activateCardOnTable = async (card: CardDefinition) => false;
 
   reset = () => {};
 

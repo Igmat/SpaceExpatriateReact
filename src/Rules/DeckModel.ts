@@ -73,7 +73,6 @@ export class DeckModel<T extends { id: number }> {
 
   dropCards = (...cards: number[]) => {
     this._droppedCards.push(...cards);
-  //  console.log('Im in  dropCards')
   };
 
   findCard = (card: CardDefinition) => {
@@ -85,4 +84,3 @@ return card.id === this.openedCard?.id
   };
 }
 
-//https://mobx.js.org/README.html

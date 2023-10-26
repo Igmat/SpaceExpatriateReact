@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, isCardType } from "../card-types";
+import { CardDefinition, CardType, CardTypes } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -8,6 +8,7 @@ import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
+import { ModalManager } from "../ModalManager";
 import { CardSource } from "../ActionManager";
 
 export class ActionManager implements IActionManager {
@@ -21,7 +22,8 @@ export class ActionManager implements IActionManager {
     gameId: string,
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly resources: ResourcesModel
+    private readonly resources: ResourcesModel,
+    private readonly modal: ModalManager
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -31,10 +33,15 @@ export class ActionManager implements IActionManager {
   }
   private _isEnded: boolean = false;
 
-  perform = (card: CardDefinition) => {
-    this.round.startOptionsStep();
+  perform = async (card: CardDefinition) => {
+    this.missionType = await this.modal.show("terraforming", CardTypes);
+
+    if (this.missionType) {
+      this.round.startPerformingStep();
+    }
     this.table.resetSelectedFlags();
   };
+
   confirm = () => {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
@@ -44,9 +51,7 @@ export class ActionManager implements IActionManager {
   get isEnded() {
     return this._isEnded;
   }
-  resetIsEnded() {
-    this._isEnded = false;
-  }
+
   activateDeck = (type: CardType) => {};
 
   activateCard = (card: number) => {};
@@ -58,7 +63,8 @@ export class ActionManager implements IActionManager {
     }
   };
 
-  activateCardOnTable = (card: CardDefinition) => {
+  activateCardOnTable = async (card: CardDefinition) => {
+    this._isEnded = false
     const cardIndex = this.cardsToDrop.indexOf(card);
     this.table.toggleSelectedFlag(card);
     if (cardIndex !== -1) {
@@ -70,25 +76,16 @@ export class ActionManager implements IActionManager {
     return true;
   };
 
-  select = (option: string) => {
-    if (isCardType(option)) {
-      this.round.startPerformingStep();
-      this.missionType = option;
-    }
-  };
-
   reset = () => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       this.cardsToDrop.forEach((card) => this.table.takeCard(card));
     }
     this.cardsToDrop = [];
     this.table.resetSelectedFlags();
-    //console.log("cardsToDrop: " + this.cardsToDrop.length);
   };
 
   dropCards = () => {
     this.table.dropCards(...this.cardsToDrop);
-   // console.log("You have dropped cards and got 1 Colony");
   };
 
   tryBuildColony = () => {
@@ -102,12 +99,11 @@ export class ActionManager implements IActionManager {
     const selectedCard = this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
     if (!selectedCard) {
-    //  console.log("No more colony cards available.");
+      //  console.log("No more colony cards available.");
       return;
     }
 
-    this.resources.points.total += selectedCard.points || 0; //прибавляем очки за постройку колонии
-    delete selectedCard.points; //обнуляем очки на карте которая построена
+    this.resources.extractColonyPoints(selectedCard);
 
     this.colony.takeColonyCard(selectedCard);
     this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
@@ -125,12 +121,9 @@ export class ActionManager implements IActionManager {
   get isOneCardOfEachType() {
     return (
       this.cardsToDrop.length === 4 &&
-      (["delivery", "engineering", "terraforming", "military"] as const)
-        .map(
-          (el) =>
-            this.cardsToDrop.filter((card) => card.type === el).length === 1
-        )
-        .filter(Boolean).length === 4
+      CardTypes.map(
+        (el) => this.cardsToDrop.filter((card) => card.type === el).length === 1
+      ).filter(Boolean).length === 4
     );
   }
 
