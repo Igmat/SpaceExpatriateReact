@@ -37,6 +37,7 @@ export const colonyCards = createCards<ColonyCard>(
     triggers: {
       afterSelect: "selectDeliveryStation",
     },
+    quantity: 20,
   },
 
   {

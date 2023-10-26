@@ -112,7 +112,6 @@ export class ActionManager {
   activateCardOnTable = (card: CardDefinition) =>
     this.currentManager?.activateCardOnTable(card);
 
-
   reset = () => this.currentManager?.reset();
 
   get isDisabled(): (place: string, card: CardDefinition) => boolean {

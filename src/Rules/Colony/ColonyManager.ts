@@ -18,6 +18,7 @@ import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";
 import { DeckManager } from "../DeckManager";
+import { generateCombinations } from "../../Utils";
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -40,6 +41,8 @@ export class ColonyManager {
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
 
+      let garbageResourcesArray: BasicResource[] = []
+
       const getValidCombination = (
         deliveryResources: BasicResource[][],
         garbageResources: GarbageResources) => {
@@ -47,7 +50,9 @@ export class ColonyManager {
           Object.entries(garbageResources)
             .filter(([_, value]) => value > 0)
             .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
-        const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
+        console.log(garbageResourcesFiltered);
+        
+        garbageResourcesArray = Object.keys(garbageResourcesFiltered);
         return deliveryResources
           .filter((array) => array
             .some(resource => garbageResourcesArray
@@ -62,10 +67,10 @@ export class ColonyManager {
       if (validCardCombinations.length === 0) {
         return;
       }
+      
       const selected = await this.gameState.modal.show("resources", validCardCombinations);
-      selected.forEach((resource) => {
-        this.resources.gainResource(resource);
-      });
+      
+      selected.filter(resource => garbageResourcesArray.includes(resource)).forEach(resource => this.resources.gainResource(resource))
     },
 
     adjustGarbage: async () => { },
