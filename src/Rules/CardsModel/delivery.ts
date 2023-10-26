@@ -16,18 +16,3 @@ export class DeliveryCardModel extends CardsModel {
   }
 
 }
-
-/*
-export interface GeneralCardDefinition {
-  id: number;
-  type: CardType;
-  name?: string;
-  resources?: Resource[] | ResourcePrimitive[];
-  points?: number;
-  connection?: "start" | "continue" | "end";
-  entryPoint?: Resource;
-  exitPoint?: Resource[] | ResourcePrimitive[];
-  weapon?: "orbital" | "intelligence" | "fighters" | "spaceborne";
-}
-
-*/

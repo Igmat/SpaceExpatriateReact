@@ -40,11 +40,9 @@ export type CardDefinition =
   | EngineeringCard
   | TerraformingCard
   | MilitaryCard
-  | ColonyCard;
 
-//export type CardType = "delivery" | "engineering" | "terraforming" | "military";
-export type CardType = "delivery" | "engineering" | "terraforming" | "military" | "colony";
 
+export type CardType = "delivery" | "engineering" | "terraforming" | "military";
 
 export interface DeliveryCard {
   id: number;
