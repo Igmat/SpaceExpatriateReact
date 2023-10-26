@@ -10,7 +10,6 @@ import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
 import { HandModel } from "../HandModel";
-
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
   missionType?: CardType;
@@ -24,8 +23,7 @@ export class ActionManager implements IActionManager {
     private readonly colonyDeck: ColonyDeckModel,
     private readonly resources: ResourcesModel,
     private readonly modal: ModalManager,
-    private readonly hand: HandModel,
-
+    private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -36,7 +34,7 @@ export class ActionManager implements IActionManager {
   private _isEnded: boolean = false;
 
   perform = async (card: CardDefinition) => {
-    this._isEnded = false
+    this._isEnded = false;
     this.missionType = await this.modal.show("terraforming", CardTypes);
 
     if (this.missionType) {
@@ -67,7 +65,6 @@ export class ActionManager implements IActionManager {
   };
 
   activateCardOnTable = async (card: CardDefinition) => {
- 
     const cardIndex = this.cardsToDrop.indexOf(card);
     this.table.toggleSelectedFlag(card);
     if (cardIndex !== -1) {

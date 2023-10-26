@@ -39,36 +39,46 @@ export class ColonyManager {
 
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
-
       const getValidCombination = (
         deliveryResources: BasicResource[][],
-        garbageResources: GarbageResources) => {
-        const garbageResourcesFiltered =
-          Object.entries(garbageResources)
-            .filter(([_, value]) => value > 0)
-            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
-        const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
-        return deliveryResources
-          .filter((array) => array
-            .some(resource => garbageResourcesArray
-              .some(garbageResource => garbageResource === resource)
-            )
+        garbageResources: GarbageResources
+      ) => {
+        const garbageResourcesFiltered = Object.entries(garbageResources)
+          .filter(([_, value]) => value > 0)
+          .reduce(
+            (acc, [key, value]) => ({ ...acc, [key]: value }),
+            {} as GarbageResources
           );
+        const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
+        return deliveryResources.filter((array) =>
+          array.some((resource) =>
+            garbageResourcesArray.some(
+              (garbageResource) => garbageResource === resource
+            )
+          )
+        );
       };
 
-      const deliveryResources =
-        this.table.delivery.map(card => card.resources as BasicResource[]);
-      const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
+      const deliveryResources = this.table.delivery.map(
+        (card) => card.resources as BasicResource[]
+      );
+      const validCardCombinations = getValidCombination(
+        deliveryResources,
+        this.resources.garbageResources
+      );
       if (validCardCombinations.length === 0) {
         return;
       }
-      const selected = await this.gameState.modal.show("resources", validCardCombinations);
+      const selected = await this.gameState.modal.show(
+        "resources",
+        validCardCombinations
+      );
       selected.forEach((resource) => {
         this.resources.gainResource(resource);
       });
     },
 
-    adjustGarbage: async () => { },
+    adjustGarbage: async () => {},
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isSelectableEngineeringCard(colony.data)) {
@@ -100,12 +110,16 @@ export class ColonyManager {
     },
 
     dockDeliveryModule: async (colony: ColonyCard) => {
-      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(1);
+      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(
+        1
+      );
       this.gameState.action.currentManager?.activateDeck("delivery");
     },
 
     adjustRemainingActions: async (colony: ColonyCard) => {
-      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(1);
+      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(
+        1
+      );
       (this.gameState.action.currentManager as EAM).adjustRemainingActivateCard(
         -1
       );

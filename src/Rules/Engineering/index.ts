@@ -42,11 +42,12 @@ export class ActionManager implements IActionManager {
   };
 
   get isEnded() {
-    return this._remaining.activateDeck === 0 &&
-    this._remaining.activateCard === 0
+    return (
+      this._remaining.activateDeck === 0 && this._remaining.activateCard === 0
+    );
   }
   confirm = () => {};
- 
+
   activateDeck = (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
     this.adjustRemainingActivateDeck(-1);
@@ -58,7 +59,7 @@ export class ActionManager implements IActionManager {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
     this.table.takeCard(this.hand.dropCard(card));
-   // return this.tryNext();
+    // return this.tryNext();
   };
 
   activateColonyCard = (card: number) => {};
@@ -67,7 +68,7 @@ export class ActionManager implements IActionManager {
   reset = () => {};
 
   isDisabled = (card: CardDefinition): boolean =>
-  this.hand.isInHand(card) && this._remaining.activateCard ? false : true;
+    this.hand.isInHand(card) && this._remaining.activateCard ? false : true;
 
   isDisabledDeck = (type: CardType): boolean =>
     !this._remaining.activateDeck ? true : false;

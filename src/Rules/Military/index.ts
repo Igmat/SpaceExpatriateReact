@@ -14,7 +14,7 @@ export class ActionManager implements IActionManager {
     private readonly round: RoundManager,
     private readonly hand: HandModel,
     private readonly decks: DeckManager,
-    private readonly modal: ModalManager,
+    private readonly modal: ModalManager
   ) {
     makeAutoObservable(this);
   }
@@ -28,7 +28,7 @@ export class ActionManager implements IActionManager {
     this.militaryOption = await this.modal.show("military", MilitaryOptions);
 
     if (this.militaryOption === "political") {
-     // return this.tryNext() //заглушка
+      // return this.tryNext() //заглушка
     }
     if (this.militaryOption === "exploration") {
       this.round.startPerformingStep();

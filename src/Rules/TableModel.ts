@@ -10,9 +10,7 @@ import {
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 export class TableModel {
-  constructor(
-    gameId: string,
-  ) {
+  constructor(gameId: string) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "table", [
       "delivery",
@@ -23,10 +21,9 @@ export class TableModel {
   }
 
   delivery: (DeliveryCard & { isSelected: boolean })[] = [];
-  engineering: (SelectableEngineeringCard)[] = [];
+  engineering: SelectableEngineeringCard[] = [];
   terraforming: (TerraformingCard & { isSelected: boolean })[] = [];
   military: (MilitaryCard & { isSelected: boolean })[] = [];
-
 
   dropCards = (
     //очистить сброшенные карты со стола
@@ -66,6 +63,6 @@ export class TableModel {
   };
 
   isOnTable = (card: CardDefinition) => {
-return (this[card.type].some(tableCard => tableCard.id === card.id));
-}
+    return this[card.type].some((tableCard) => tableCard.id === card.id);
+  };
 }

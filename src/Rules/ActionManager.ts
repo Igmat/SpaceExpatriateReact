@@ -24,7 +24,7 @@ export class ActionManager {
     private readonly gameId: string,
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly modal: ModalManager,
+    private readonly modal: ModalManager
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, `action`, [`activeAction`]);
@@ -47,8 +47,7 @@ export class ActionManager {
       this.colonyDeck,
       this.resources,
       this.modal,
-      this.hand,
-
+      this.hand
     ),
     delivery: new DAM(
       this.table,
@@ -57,14 +56,9 @@ export class ActionManager {
       this.resources,
       this.decks,
       this.modal,
-      this.gameId,
+      this.gameId
     ),
-    military: new MAM(
-      this.round,
-      this.hand,
-      this.decks,
-      this.modal,
-    ),
+    military: new MAM(this.round, this.hand, this.decks, this.modal),
   };
 
   activeAction?: CardType;
@@ -93,7 +87,7 @@ export class ActionManager {
   };
 
   nextRound = async () => {
-    this.activeAction && await this.colony.triggers.after(this.activeAction);
+    this.activeAction && (await this.colony.triggers.after(this.activeAction));
     this.colony.cancelActiveEffects();
     this.round.next();
     this.activeAction = undefined;
@@ -115,9 +109,8 @@ export class ActionManager {
   };
 
   activateColonyCard = (card: number) => {
-    if (!this.activeAction) return;
-    this.managers[this.activeAction].activateColonyCard(card);
-    this.managers[this.activeAction].isEnded && this.nextRound();
+    this.currentManager?.activateColonyCard(card);
+    this.currentManager?.isEnded && this.nextRound();
   };
 
   activateCardOnTable = (card: CardDefinition) => {
@@ -131,7 +124,7 @@ export class ActionManager {
 
   get isDisabled(): (card: CardDefinition) => boolean {
     return (card: CardDefinition) => {
-      if (!this.activeAction) return !this.decks.isInDeck(card)
+      if (!this.activeAction) return !this.decks.isInDeck(card);
       return this.managers[this.activeAction].isDisabled(card);
     };
   }

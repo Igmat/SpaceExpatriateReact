@@ -15,7 +15,7 @@ import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
-import { ModalManager} from "../ModalManager";
+import { ModalManager } from "../ModalManager";
 
 const DeliveryOptions = ["charter", "garbage"] as const;
 export type DeliveryOption = (typeof DeliveryOptions)[number];
@@ -53,8 +53,14 @@ export class ActionManager implements IActionManager {
   perform = async (card: CardDefinition) => {
     this._isEnded = false;
     this.round.startOptionsStep();
-    this.deliveryOption = await this.modal.show("deliveryOptions", DeliveryOptions)
-    this.selectedResource = await this.modal.show("deliveryResources", BasicResources)
+    this.deliveryOption = await this.modal.show(
+      "deliveryOptions",
+      DeliveryOptions
+    );
+    this.selectedResource = await this.modal.show(
+      "deliveryResources",
+      BasicResources
+    );
 
     if (this.deliveryOption === "charter") {
       this.resources.addResource(this.selectedResource);
@@ -87,8 +93,8 @@ export class ActionManager implements IActionManager {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
-  
-  activateColonyCard = (card: number) => { };
+
+  activateColonyCard = (card: number) => {};
 
   activateCardOnTable = async (card: CardDefinition) => {
     if (card.type === "engineering") {
@@ -96,7 +102,8 @@ export class ActionManager implements IActionManager {
     }
     if (card.type === "terraforming") {
       if (!this.usedTerraformingCards.includes(card.id)) {
-        const successfulConsumeResources = await this.resources.tryConsumeResources(card.resources);
+        const successfulConsumeResources =
+          await this.resources.tryConsumeResources(card.resources);
 
         if (successfulConsumeResources) {
           this.resources.calculateRoundPoints(card);
@@ -144,10 +151,10 @@ export class ActionManager implements IActionManager {
       this.resources.engineeringMaps.FinishCounter <= 0
     )
       return;
-    await this.resources.tryConsumeResources(
-      card.entryPoint ? [card.entryPoint] : []) &&
-      this.resources.handleCardProcessing(card)
-  }
+    (await this.resources.tryConsumeResources(
+      card.entryPoint ? [card.entryPoint] : []
+    )) && this.resources.handleCardProcessing(card);
+  };
 
   isDisabled(card: CardDefinition): boolean {
     if (this.table.isOnTable(card)) {

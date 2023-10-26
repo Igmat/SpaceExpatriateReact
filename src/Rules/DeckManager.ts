@@ -21,8 +21,8 @@ export class DeckManager {
   };
 
   isInDeck = (card: CardDefinition) => {
-return this[card.type].findCard(card)
-}
+    return this[card.type].findCard(card);
+  };
 
   get dropLength() {
     return (
@@ -32,5 +32,4 @@ return this[card.type].findCard(card)
       this.military.restCount
     );
   }
-
 }
