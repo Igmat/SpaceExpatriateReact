@@ -65,7 +65,7 @@ export class TableModel {
     });
   };
 
-  findCard = (card: CardDefinition) => {
+  isOnTable = (card: CardDefinition) => {
 return (this[card.type].some(tableCard => tableCard.id === card.id));
 }
 }

@@ -22,4 +22,10 @@ export class HandModel {
   takeCard(card?: CardDefinition) {
     card && this.cardsInHand.push(card);
   }
+
+  isInHand = (card: CardDefinition): boolean => {
+    return this.cardsInHand.some(
+      (handCard) => handCard.id === card.id && card.type === handCard.type
+    );
+  };
 }

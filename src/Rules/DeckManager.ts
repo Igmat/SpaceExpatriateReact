@@ -20,7 +20,7 @@ export class DeckManager {
     cards.forEach((card) => this[card.type].dropCards(card.id));
   };
 
-findCard = (card: CardDefinition) => {
+  isInDeck = (card: CardDefinition) => {
 return this[card.type].findCard(card)
 }
 

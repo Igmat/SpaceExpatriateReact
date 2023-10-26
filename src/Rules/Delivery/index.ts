@@ -16,7 +16,6 @@ import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ModalManager} from "../ModalManager";
-import { CardSource } from "../ActionManager";
 
 const DeliveryOptions = ["charter", "garbage"] as const;
 export type DeliveryOption = (typeof DeliveryOptions)[number];
@@ -52,6 +51,7 @@ export class ActionManager implements IActionManager {
   };
 
   perform = async (card: CardDefinition) => {
+    this._isEnded = false;
     this.round.startOptionsStep();
     this.deliveryOption = await this.modal.show("deliveryOptions", DeliveryOptions)
     this.selectedResource = await this.modal.show("deliveryResources", BasicResources)
@@ -149,8 +149,8 @@ export class ActionManager implements IActionManager {
       this.resources.handleCardProcessing(card)
   }
 
-  isDisabled(place: CardSource, card: CardDefinition): boolean {
-    if (place === "table") {
+  isDisabled(card: CardDefinition): boolean {
+    if (this.table.isOnTable(card)) {
       if (card.type === "engineering") {
         const isEmpty =
           (card.connection === "start" &&
@@ -167,7 +167,7 @@ export class ActionManager implements IActionManager {
       }
     }
 
-    if (place === "hand") return false;
+    if (this.hand.isInHand(card)) return false;
     return true;
   }
 

@@ -6,7 +6,7 @@ import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
-import { CardSource } from "../ActionManager";
+
 //не заканчивается раунд
 export class ActionManager implements IActionManager {
   constructor(
@@ -66,8 +66,8 @@ export class ActionManager implements IActionManager {
 
   reset = () => {};
 
-  isDisabled = (place: CardSource, card: CardDefinition): boolean =>
-    place === "hand" && this._remaining.activateCard ? false : true;
+  isDisabled = (card: CardDefinition): boolean =>
+  this.hand.isInHand(card) && this._remaining.activateCard ? false : true;
 
   isDisabledDeck = (type: CardType): boolean =>
     !this._remaining.activateDeck ? true : false;

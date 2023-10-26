@@ -14,7 +14,6 @@ import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 import { ModalManager } from "./ModalManager";
 
-export type CardSource = "decks" | "hand" | "table";
 export class ActionManager {
   constructor(
     private readonly decks: DeckManager,
@@ -48,6 +47,8 @@ export class ActionManager {
       this.colonyDeck,
       this.resources,
       this.modal,
+      this.hand,
+
     ),
     delivery: new DAM(
       this.table,
@@ -124,35 +125,14 @@ export class ActionManager {
     this.currentManager?.isEnded && this.nextRound();
   };
 
-
   reset = () => {
     this.currentManager?.reset();
-  };
- 
-  isInDeck = (card: CardDefinition): boolean => {
-    return !!this.decks.findCard(card);
-  };
-
-  isInHand = (card: CardDefinition): boolean => {
-    return this.hand.cardsInHand.some(
-      (handCard) => handCard.id === card.id && card.type === handCard.type
-    );
-  };
-
-  isOnTable = (card: CardDefinition): boolean => {
-    return !!this.table.findCard(card);
   };
 
   get isDisabled(): (card: CardDefinition) => boolean {
     return (card: CardDefinition) => {
-      let place: CardSource | undefined;
-      if (this.isInDeck(card)) place = "decks";
-      if (this.isInHand(card)) place = "hand";
-      if (this.isOnTable(card)) place = "table";
-      if (place === undefined) return true;
-      if (!this.activeAction) return place === "decks" ? false : true;
-
-      return this.managers[this.activeAction].isDisabled(place, card);
+      if (!this.activeAction) return !this.decks.isInDeck(card)
+      return this.managers[this.activeAction].isDisabled(card);
     };
   }
 

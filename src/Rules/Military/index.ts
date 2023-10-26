@@ -5,7 +5,6 @@ import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
 import { ModalManager } from "../ModalManager";
-import { CardSource } from "../ActionManager";
 
 export const MilitaryOptions = ["exploration", "political"] as const;
 export type Militaryoption = (typeof MilitaryOptions)[number];
@@ -59,7 +58,7 @@ export class ActionManager implements IActionManager {
 
   reset = () => {};
 
-  isDisabled = (place: CardSource, card: CardDefinition): boolean => true;
+  isDisabled = (card: CardDefinition): boolean => true;
 
   isDisabledDeck = (type: CardType): boolean => false;
 }

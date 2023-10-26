@@ -9,7 +9,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
-import { CardSource } from "../ActionManager";
+import { HandModel } from "../HandModel";
 
 export class ActionManager implements IActionManager {
   cardsToDrop: CardDefinition[] = [];
@@ -23,7 +23,9 @@ export class ActionManager implements IActionManager {
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
     private readonly resources: ResourcesModel,
-    private readonly modal: ModalManager
+    private readonly modal: ModalManager,
+    private readonly hand: HandModel,
+
   ) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "terraformingManager", [
@@ -34,6 +36,7 @@ export class ActionManager implements IActionManager {
   private _isEnded: boolean = false;
 
   perform = async (card: CardDefinition) => {
+    this._isEnded = false
     this.missionType = await this.modal.show("terraforming", CardTypes);
 
     if (this.missionType) {
@@ -64,7 +67,7 @@ export class ActionManager implements IActionManager {
   };
 
   activateCardOnTable = async (card: CardDefinition) => {
-    this._isEnded = false
+ 
     const cardIndex = this.cardsToDrop.indexOf(card);
     this.table.toggleSelectedFlag(card);
     if (cardIndex !== -1) {
@@ -127,11 +130,11 @@ export class ActionManager implements IActionManager {
     );
   }
 
-  isDisabled(place: CardSource, card: CardDefinition): boolean {
-    if (place === "table") {
+  isDisabled(card: CardDefinition): boolean {
+    if (this.table.isOnTable(card)) {
       return this.isDisabledTable(card);
     }
-    if (place === "hand" || place === "decks") {
+    if (this.hand.isInHand(card) || this.decks.isInDeck(card)) {
       return true;
     }
     return false;
