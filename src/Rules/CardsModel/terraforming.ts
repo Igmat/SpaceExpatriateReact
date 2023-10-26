@@ -1,20 +1,22 @@
 import { makeAutoObservable } from 'mobx';
 import { CardType, Resource, ResourcePrimitive } from '../card-types';
 import { CardsModel } from '.';
+import { GeneralCardDefinition } from '../CardDefinitions/createCards';
 
 export class TerraformingCardModel extends CardsModel {
 
   constructor(
     id: number,
 
-    public  type: CardType,
+    type: GeneralCardDefinition,
+
     public  name?: string,
     public  resources?: Resource[] | ResourcePrimitive[],
     public  points?: number,
   ) {
     super(id, type); 
 
-    makeAutoObservable(this);
+    //makeAutoObservable(this);
   }
 
 }
