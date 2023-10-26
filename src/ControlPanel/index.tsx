@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useGameState } from "../Rules";
 import { useModalService } from "../components/ModalWindow";
 import { observer } from "mobx-react-lite";
@@ -6,42 +6,35 @@ import { DeliveryActionWindow } from "../components/ModalWindows/DeliveryActionW
 import { TerraformingModal } from "../components/ModalWindows/TerraformingModal";
 import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
 import { ChooseResource } from "../components/ModalWindows/ChooseResource";
+import { DeliveryResourcesModal } from "../components/ModalWindows/DeliveryActionWindow/DeliveryResourcesModal";
+import { ModalOptions } from "../Rules/ModalManager";
 
-const modalByPhase = {
-  military: <MillitaryModal />,
-  delivery: <DeliveryActionWindow />,
-  terraforming: <TerraformingModal />,
+const modals = {
+  military: MillitaryModal,
+  deliveryOptions: DeliveryActionWindow,
+  deliveryResources: DeliveryResourcesModal,
+  terraforming: TerraformingModal,
+  resources: ChooseResource,
 } as const;
+
+export type ModalType = keyof typeof modals;
 
 export const ControlPanel = observer(() => {
   const gameState = useGameState();
 
   const modalService = useModalService();
+
   useEffect(() => {
-    if (gameState.round.step === "options") {
-      modalService.show(
-        modalByPhase[gameState.round.phase as keyof typeof modalByPhase],
-        true
-      );
-    }
-    if (gameState.round.step === "resources") {
-      modalService.show(
-        <ChooseResource
-          array={gameState.round.params!}
-          select={(resource) => {
-            gameState.round.startPerformingStep();
-            if (gameState.round.onSelect === undefined) {
-              modalService.hide();
-              return;
-            }
-            gameState.round.onSelect(resource);
-          }}
-        />,
-        true
-      );
-    }
+    if (!gameState.modal.type || !gameState.modal.onSelect || !gameState.modal.params) return;    
+    modalService.show(
+      modals[gameState.modal.type] as FC<ModalOptions<unknown>>,
+      gameState.modal.onSelect,
+      gameState.modal.params,
+      true
+    );
+
     return modalService.hide;
-  }, [gameState.round, gameState.round.step, modalService, gameState.round.phase, gameState.round.params]);
+  }, [gameState.modal.type, gameState.modal.params, gameState.modal.onSelect, modalService]);
 
   return <></>;
 });

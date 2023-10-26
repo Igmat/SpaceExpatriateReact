@@ -48,7 +48,6 @@ export class TableModel {
 
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
-    //  console.log(card)
   };
 
   resetSelectedFlags = () => {

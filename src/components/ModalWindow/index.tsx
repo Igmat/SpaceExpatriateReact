@@ -1,25 +1,38 @@
 import React, {
-  ReactNode,
   useState,
   createContext,
   useMemo,
   memo,
+  FC,
 } from "react";
 import styles from "./ModalWindow.module.scss";
+import {
+  ModalOptions,
+} from "../../Rules/ModalManager";
 
 const modalContext = createContext({
-  show: (content: React.ReactNode, persistant?: boolean) => {},
-  hide: () => {},
+  show<T>(
+    content: FC<ModalOptions<T>>,
+    setOption: (option: T) => void,
+    params?: readonly T[],
+    persistant: boolean = false
+  ) { },
+  hide: () => { },
 });
 
-interface ModalComponentProps {
+interface ModalComponentProps<T> {
   hide: () => void;
   showModal: boolean;
-  content: React.ReactNode;
+  content: FC<ModalOptions<T>>;
+  onSelect: (option: T) => void;
+  params?: readonly T[];
   persistant: boolean;
 }
-const ModalComponent = (props: ModalComponentProps) => {
-  const keydownHandler = ({ key }: any) => {
+//-----------------------------------------------------------
+
+function ModalComponent<T>(props: ModalComponentProps<T>) {
+
+  const keydownHandler = ({ key }: KeyboardEvent) => {
     switch (key) {
       case "Escape":
         if (!props.persistant) props.hide();
@@ -45,11 +58,16 @@ const ModalComponent = (props: ModalComponentProps) => {
             X
           </button>
         )}
-        {props.content}
+        <props.content
+          onSelect={props.onSelect}
+          params={props.params}
+        />
       </div>
     </div>
   );
 };
+
+//-----------------------------------------------------------
 
 export function useModalService() {
   return React.useContext(modalContext);
@@ -57,36 +75,48 @@ export function useModalService() {
 
 export function useModalWrapper(content: React.ReactNode) {
   const [showModal, setShowModal] = useState(false);
-  const [modalContent, setModalContent] = useState<ReactNode>(null);
+  const [modalContent, setModalContent] = useState<FC<ModalOptions<unknown>>>(() => () => null);
   const [persistant, setPersistant] = useState(false);
+  const [propsOption, setPropsOption] = useState< readonly unknown[] | undefined>(undefined);
+  const [handleSelect, setHandleSelect] = useState<(arg:unknown)=>void>(()=>()=>null)
 
   const modalService = useMemo(
     () => ({
-      show: (content: React.ReactNode, persistant: boolean = false) => {
+      show<T> (
+        content: FC<ModalOptions<T>>,
+        onSelect: (selected: T) => void,
+        params?: readonly T[],
+        persistant: boolean = false
+      ){
         setShowModal(true);
+        setModalContent(() => content as FC<ModalOptions<unknown>>);
+        setHandleSelect(() => onSelect)
+        setPropsOption(params)
         setPersistant(persistant);
-        setModalContent(content);
       },
       hide: () => {
         setShowModal(false);
-        setModalContent(null);
+        setModalContent(() => () => null);
       },
     }),
     []
   );
 
-  const Modal = () => (
+  const Modal = () => {
+    return (
     <ModalComponent
       content={modalContent}
+      onSelect={handleSelect}
+      params={propsOption}
       hide={modalService.hide}
       showModal={showModal}
       persistant={persistant}
     />
-  );
+  )};
 
   const Provider = useMemo(
     () =>
-      memo((props: { children?: ReactNode }) => (
+      memo((props: { children?: JSX.Element }) => (
         <modalContext.Provider value={modalService}>
           {props.children}
         </modalContext.Provider>
@@ -94,13 +124,15 @@ export function useModalWrapper(content: React.ReactNode) {
     [modalService]
   );
 
-  const memorisedContent = useMemo(() => content, [content]);
+  const memorisedContent = useMemo(
+    () => content,
+    [content]);
   return (
-    <>
-      <Provider>
+    <Provider>
+      <>
         {memorisedContent}
         <Modal />
-      </Provider>
-    </>
+      </>
+    </Provider>
   );
 }

@@ -5,8 +5,6 @@ export interface IActionManager {
     tryNext: () => boolean
     activateDeck: (type: CardType) => void
     activateCard: (card: number) => void
-    activateCardOnTable: (card: CardDefinition) => boolean
-    select: (option: string) => void
+    activateCardOnTable: (card: CardDefinition) => Promise<boolean>
     reset: () => void
 }
-
