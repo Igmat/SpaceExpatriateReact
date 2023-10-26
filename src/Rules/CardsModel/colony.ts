@@ -1,12 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 import { CardType, Trigger } from '../card-types';
 import { CardsModel } from '.';
+import { GeneralCardDefinition } from '../CardDefinitions/createCards';
 
 export class ColonyCardModel extends CardsModel {
 
   constructor(
     id: number,
-    type: CardType,
+    type: GeneralCardDefinition,
     public  benefit?: string,
     public  mutateAction?: CardType,
     public  name?: string,
@@ -18,7 +19,7 @@ export class ColonyCardModel extends CardsModel {
   ) {
     super(id, type); 
 
-    makeAutoObservable(this);
+  //  makeAutoObservable(this);
   }
 
 }

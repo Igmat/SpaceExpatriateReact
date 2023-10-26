@@ -3,11 +3,12 @@ import { makeAutoObservable } from "mobx";
 import { CardDefinition } from "../card-types";
 import { GeneralCardDefinition } from "../CardDefinitions/createCards";
 export class CardsModel {
+
     constructor (
         id: number,
-        type: CardType
+        type: GeneralCardDefinition
     ) {
-        makeAutoObservable(this);
+       // makeAutoObservable(this);
 
 }
 
