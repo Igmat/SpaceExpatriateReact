@@ -39,9 +39,12 @@ export type CardDefinition =
   | DeliveryCard
   | EngineeringCard
   | TerraformingCard
-  | MilitaryCard;
+  | MilitaryCard
+  | ColonyCard;
 
-export type CardType = "delivery" | "engineering" | "terraforming" | "military";
+//export type CardType = "delivery" | "engineering" | "terraforming" | "military";
+export type CardType = "delivery" | "engineering" | "terraforming" | "military" | "colony";
+
 
 export interface DeliveryCard {
   id: number;
@@ -95,7 +98,7 @@ export type Trigger =
 
 export interface ColonyCard {
   id: number;
-  type: "colony";
+ type: "colony";
   benefit: string;
   mutateAction: CardType;
   data?: unknown;

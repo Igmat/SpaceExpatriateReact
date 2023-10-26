@@ -1,11 +1,18 @@
-import { CardType } from "../card-types";
+import { CardType, ColonyCard } from "../card-types";
 import { makeAutoObservable } from "mobx";
-
+import { CardDefinition } from "../card-types";
+import { GeneralCardDefinition } from "../CardDefinitions/createCards";
 export class CardsModel {
     constructor (
-        id: string,
+        id: number,
         type: CardType
     ) {
         makeAutoObservable(this);
 
-}}
+}
+
+test(){
+console.log('!!!!!!!!!!!!')
+}
+
+}
