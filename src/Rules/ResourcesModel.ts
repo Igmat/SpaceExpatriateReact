@@ -1,17 +1,17 @@
 import { makeAutoObservable } from "mobx";
 import {
   BasicResource,
-  EngineeringCard,
   Resource,
   ResourcePrimitive,
-  TerraformingCard,
 } from "./card-types";
+
 import { TableModel } from "./TableModel";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 import { ModalManager } from "./ModalManager";
-
+import { EngineeringCard } from "../Rules/CardsModel/engineering";
+import { TerraformingCard } from "./CardsModel/terraforming";
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
 };
@@ -70,7 +70,7 @@ export class ResourcesModel {
   getResources = () => {
     this.dropResources();
     this.table.delivery.forEach((card) =>
-      card.resources.forEach((res) => this.playerResources[res]++)
+    card.resources.forEach((res) => this.playerResources[res]++)
     );
     Object.keys(this.garbageResources)
       .forEach(key => {

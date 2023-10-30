@@ -1,12 +1,10 @@
 import { makeAutoObservable } from "mobx";
 import {
-  CardDefinition,
-  DeliveryCard,
-  EngineeringCard,
-  MilitaryCard,
-  SelectableEngineeringCard,
-  TerraformingCard,
-} from "./card-types";
+  CardDefinition, SelectableEngineeringCard } from "./card-types";
+import { DeliveryCard } from "../Rules/CardsModel/delivery";
+import { EngineeringCard } from "../Rules/CardsModel/engineering";
+import { MilitaryCard } from "../Rules/CardsModel/military";
+import { TerraformingCard } from "../Rules/CardsModel/terraforming";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 export class TableModel {

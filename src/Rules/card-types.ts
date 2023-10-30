@@ -1,5 +1,9 @@
 import { GameState } from ".";
 import type { EffectName } from "./Colony/ColonyManager";
+import { DeliveryCard} from "./CardsModel/delivery";
+import { MilitaryCard} from "./CardsModel/military";
+import { EngineeringCard } from "./CardsModel/engineering";
+import { TerraformingCard } from "./CardsModel/terraforming";
 
 export const BasicResources = [
   "fuel",
@@ -48,50 +52,34 @@ export const isSelectableEngineeringCard = (
   );
 };
 
-export type CardDefinition =
+
+export type CardDefinition =//Card?  CardDefinition union от чистых данных DeliveryCardDefinition  ...
   | DeliveryCard
   | EngineeringCard
   | TerraformingCard
-  | MilitaryCard;
+  | MilitaryCard
+
+/*
+export type Cards =
+  | DeliveryCard
+  | EngineeringCard
+  | TerraformingCard
+  | MilitaryCard
+  | ColonyCard
+
+  export type CardDefinition =
+  | DeliveryCardDefinition 
+  | EngineeringCardDefinition 
+  | MilitaryCardDefinition
+  | TerraformingCardDefinition
+  | ColonyCardDefinition */
 
 
-
-export interface DeliveryCard {
-  id: number;
-  type: "delivery";
-  resources: /*ResourcePrimitive | */ ResourcePrimitive[];
-  // points: number
-}
-
-export interface EngineeringCard {
-  id: number;
-  type: "engineering";
-  connection: "start" | "continue" | "end";
-  entryPoint?: Resource;
-  exitPoint?: Resource[];
-  points?: number;
-  name: string;
-}
 
 export type SelectableEngineeringCard = EngineeringCard & {
   isSelected: boolean;
 };
 
-export interface TerraformingCard {
-  name: string;
-  id: number;
-  type: "terraforming";
-  resources: Resource[];
-  points: number;
-}
-
-export interface MilitaryCard {
-  id: number;
-  type: "military";
-  weapon: "orbital" | "intelligence" | "fighters" | "spaceborne";
-  name: string;
-  // points: number
-}
 
 export type EffectActivateFn = (gameState: GameState) => Promise<unknown>;
 
@@ -109,19 +97,6 @@ export type Trigger =
 export const TriggerNames = ["before", "after", "during", "beforeSelect", "afterSelect", "afterPerform"] as const;
 
 export type TriggerName = (typeof TriggerNames)[number]
-
-export interface ColonyCard {
-  id: number;
-  type: "colony";
-  benefit: string;
-  mutateAction: CardType;
-  data?: unknown;
-  players?: number;
-  name: string;
-  triggers: {
-    [key in TriggerName]?: Trigger
-  }
-}
 
 export const expandTrigger = (trigger?: Trigger): FullTrigger => {
   if (!trigger) {

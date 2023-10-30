@@ -1,9 +1,9 @@
 import { createCards } from "../CardDefinitions/createCards";
-import { ColonyCard, SelectableEngineeringCard } from "../card-types";
+import { ColonyCard } from "../CardsModel/colony";
+import { SelectableEngineeringCard } from "../card-types";
 
-export const colonyCards = createCards<ColonyCard>(
-  "colony",
-
+export const colonyCards = createCards(
+ ColonyCard,
   // -------------- Delivery ----------------
   /*{
         benefit: "On Delivery ignores all fuel in Space Garbage",
