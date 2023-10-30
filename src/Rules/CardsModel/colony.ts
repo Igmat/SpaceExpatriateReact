@@ -1,26 +1,49 @@
-import { makeAutoObservable } from 'mobx';
-import { CardType, Trigger } from '../card-types';
-import { CardsModel } from '.';
-import { GeneralCardDefinition } from '../CardDefinitions/createCards';
+import { makeAutoObservable } from "mobx";
+import { CardType, Trigger } from "../card-types";
 
-export class ColonyCardModel extends CardsModel {
+/*
+export interface ColonyCard {
+  id: number;
+ type: "colony";
+  benefit: string;
+  mutateAction: CardType;
+  data?: unknown;
+  players?: number;
+  name: string;
+  before?: Trigger;
+  after?: Trigger;
+  during?: Trigger;
+}*/
 
-  constructor(
-    id: number,
-    type: GeneralCardDefinition,
-    public  benefit?: string,
-    public  mutateAction?: CardType,
-    public  name?: string,
-    public  data?: unknown,
-    public  players?: number,
-    public  before?: Trigger,
-    public  after?: Trigger,
-    public   during?: Trigger
-  ) {
-    super(id, type); 
-
-  //  makeAutoObservable(this);
-  }
-
+export interface ColonyCardDefinition {
+  benefit: string;
+  mutateAction: CardType;
+  name: string;
+  data?: unknown;
+  players?: number;
+  before?: Trigger;
+  after?: Trigger;
+  during?: Trigger;
 }
 
+export class ColonyCard {
+  public benefit: string;
+  public mutateAction: CardType;
+  public name: string;
+  public after?: Trigger;
+  public before?: Trigger;
+  public data?: unknown;
+  public during?: Trigger;
+  public players?: number;
+  constructor(public id: number, data: ColonyCardDefinition) {
+    this.after = data.after;
+    this.before = data.before;
+    this.benefit = data.benefit;
+    this.data = data.data;
+    this.during = data.during;
+    this.mutateAction = data.mutateAction;
+    this.name = data.name;
+    this.players = data.players;
+    makeAutoObservable(this);
+  }
+}

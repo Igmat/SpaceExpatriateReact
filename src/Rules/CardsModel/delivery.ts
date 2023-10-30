@@ -1,19 +1,21 @@
-import { makeAutoObservable } from 'mobx';
-import { CardType, Resource, ResourcePrimitive } from '../card-types';
-import { CardsModel } from '.';
-import { GeneralCardDefinition } from '../CardDefinitions/createCards';
+import { makeAutoObservable } from "mobx";
+import { ResourcePrimitive } from "../card-types";
 
-export class DeliveryCardModel extends CardsModel {
-
-  constructor(
-    id: number,
-    type: GeneralCardDefinition,
-    public resources?: Resource[] | ResourcePrimitive[]
-
-  ) {
-    super(id, type); 
-
-    //makeAutoObservable(this);
+/*
+export interface DeliveryCard {
+  id: number;
+  type: "delivery";
+  resources: ResourcePrimitive[];
+}
+*/
+export interface DeliveryCardDefinition {
+  resources: ResourcePrimitive[];
+}
+export class DeliveryCard implements DeliveryCardDefinition {
+  public readonly type = "delivery";
+  public resources: ResourcePrimitive[];
+  constructor(public id: number, data: DeliveryCardDefinition) {
+    this.resources = data.resources;
+    makeAutoObservable(this);
   }
-
 }

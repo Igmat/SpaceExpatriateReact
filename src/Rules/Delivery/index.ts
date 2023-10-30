@@ -5,11 +5,11 @@ import {
   CardDefinition,
   CardType,
   Resource,
-  TerraformingCard,
-  EngineeringCard,
   isResourcePrimitive,
   ResourcePrimitive,
 } from "../card-types";
+import { TerraformingCard } from "../CardsModel/terraforming";
+import { EngineeringCard } from "../CardsModel/engineering";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";

@@ -1,10 +1,7 @@
 import { makeAutoObservable } from "mobx";
-import {
-  EngineeringCard,
-  Resource,
-  ResourcePrimitive,
-  TerraformingCard,
-} from "./card-types";
+import { Resource, ResourcePrimitive } from "./card-types";
+import { EngineeringCard } from "../Rules/CardsModel/engineering";
+import { TerraformingCard } from "./CardsModel/terraforming";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
@@ -68,7 +65,7 @@ export class ResourcesModel {
   getResources = () => {
     this.dropResources();
     this.table.delivery.forEach((card) =>
-      card.resources.forEach((res) => this.playerResources[res]++)
+    card.resources.forEach((res) => this.playerResources[res]++)
     );
     Object.keys(this.garbageResources)
       .forEach(key => {

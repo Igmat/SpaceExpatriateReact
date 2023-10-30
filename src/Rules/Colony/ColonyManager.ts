@@ -2,7 +2,6 @@ import { makeAutoObservable } from "mobx";
 import { ColonyCardWithPoints } from "./ColonyDeckModel";
 import {
   CardType,
-  ColonyCard,
   FullTrigger,
   expandTrigger,
   isSelectableEngineeringCard,
@@ -10,6 +9,7 @@ import {
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
 import { GameState } from "..";
+import { ColonyCard } from "../CardsModel/colony";
 
 export type EffectName = keyof ColonyManager["effects"];
 

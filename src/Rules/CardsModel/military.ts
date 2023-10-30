@@ -1,25 +1,28 @@
-import { makeAutoObservable } from 'mobx';
-import { CardType } from '../card-types';
-import { CardsModel } from '.';
-import { GeneralCardDefinition } from '../CardDefinitions/createCards';
+import { makeAutoObservable } from "mobx";
+/*
+export interface MilitaryCard {
+  id: number;
+  type: "military";
+  weapon: "orbital" | "intelligence" | "fighters" | "spaceborne";
+  name: string;
+  // points: number
+}
+*/
 
-export type WeaponType ="orbital" | "intelligence" | "fighters" | "spaceborne";
+export type WeaponType = "orbital" | "intelligence" | "fighters" | "spaceborne";
 
-export class MilitaryCardModel extends CardsModel {
-  
-  constructor(
-    id: number,
-
-    type: GeneralCardDefinition,
-
-    public weapon?: WeaponType,
-    public  name?: string
-
-  ) {
-    super(id, type); 
-
-   // makeAutoObservable(this);
-  }
-
+export interface MilitaryCardDefinition {
+  name: string;
+  weapon: WeaponType;
 }
 
+export class MilitaryCard {
+  public readonly type = "military";
+  public name: string;
+  public weapon: WeaponType;
+  constructor(public id: number, data: MilitaryCardDefinition) {
+    this.name = data.name;
+    this.weapon = data.weapon;
+    makeAutoObservable(this);
+  }
+}
