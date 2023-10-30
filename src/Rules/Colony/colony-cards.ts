@@ -35,9 +35,8 @@ export const colonyCards = createCards<ColonyCard>(
     players: 2,
     name: "BLACK MARKET",
     triggers: {
-      afterSelect: "selectDeliveryStation",
-    },
-    quantity: 20,
+      before: "selectDeliveryStation",
+    }
   },
 
   {

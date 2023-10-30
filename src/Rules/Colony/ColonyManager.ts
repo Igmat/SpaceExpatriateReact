@@ -1,7 +1,6 @@
 import { makeAutoObservable, reaction } from "mobx";
 import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import {
-  BasicResource,
   CardType,
   ColonyCard,
   FullTrigger,
@@ -12,13 +11,13 @@ import {
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
-import { GarbageResources, ResourcesModel } from "../ResourcesModel";
+import { ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
 import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";
 import { DeckManager } from "../DeckManager";
-import { generateCombinations } from "../../Utils";
+
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -41,39 +40,27 @@ export class ColonyManager {
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
 
-      let garbageResourcesArray: BasicResource[] = []
+      const originalGetResources = this.resources.getResources;
 
-      const getValidCombination = (
-        deliveryResources: BasicResource[][],
-        garbageResources: GarbageResources) => {
-        const garbageResourcesFiltered =
-          Object.entries(garbageResources)
-            .filter(([_, value]) => value > 0)
-            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {} as GarbageResources)
-        console.log(garbageResourcesFiltered);
-        
-        garbageResourcesArray = Object.keys(garbageResourcesFiltered);
-        return deliveryResources
-          .filter((array) => array
-            .some(resource => garbageResourcesArray
-              .some(garbageResource => garbageResource === resource)
-            )
-          );
-      };
+      this.resources.getResources = async () => {
+        const availableCards = this.table.delivery.filter(card =>
+          card.resources
+            .filter(resource => this.resources.garbageResources[resource] > 0).length > 0
+        )
+        const selected = await this.gameState.modal.show("blackMarket", availableCards);
+        const originalTableCards = this.table.delivery;
 
-      const deliveryResources =
-        this.table.delivery.map(card => card.resources as BasicResource[]);
-      const validCardCombinations = getValidCombination(deliveryResources, this.resources.garbageResources)
-      if (validCardCombinations.length === 0) {
-        return;
+        this.table.delivery =
+          this.table.delivery.filter(card => card !== selected)
+        await originalGetResources();
+        this.table.delivery = originalTableCards;
+        selected.resources.forEach(resource => this.resources.playerResources[resource]++) 
       }
-      
-      const selected = await this.gameState.modal.show("resources", validCardCombinations);
-      
-      selected.filter(resource => garbageResourcesArray.includes(resource)).forEach(resource => this.resources.gainResource(resource))
-    },
 
-    adjustGarbage: async () => { },
+      return async () => {
+        this.resources.getResources = originalGetResources;
+      }
+    },
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isSelectableEngineeringCard(colony.data)) {

@@ -61,7 +61,8 @@ export class ActionManager implements IActionManager {
     if (this.deliveryOption === "garbage") {
       this.resources.removeResourcesFromGarbage(this.selectedResource);
     }
-    this.resources.getResources();
+
+    await this.resources.getResources();
     this.round.startPerformingStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
@@ -108,10 +109,10 @@ export class ActionManager implements IActionManager {
     return card;
   };
 
-  reset = () => {
+  reset = async () => {
     this.resetTempDroppedCards();
     this.usedTerraformingCards = [];
-    this.resources.resetRoundState();
+    await this.resources.resetRoundState();
   };
 
   dropTempCards = () => {
