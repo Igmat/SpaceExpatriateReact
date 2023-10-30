@@ -34,15 +34,18 @@ export const colonyCards = createCards(
     mutateAction: "delivery",
     players: 2,
     name: "BLACK MARKET",
-    // activate: (gameState: GameState) => { console.log("activate black market") },
-    // effects: ["selectDeliveryStation"]
+    triggers: {
+      afterSelect: "selectDeliveryStation",
+    },
   },
+
   {
     benefit:
       "Before Delivery add/remove a resource to/from Space Garbage. You may do this as many times as there are players in the game",
     // whenIsActivated: "before",
     mutateAction: "delivery",
     name: "SPACE LIFT",
+    triggers: {},
   },
 
   {
@@ -59,18 +62,22 @@ export const colonyCards = createCards(
     } as SelectableEngineeringCard,
     mutateAction: "delivery",
     name: "HELIOSTAT DESERT",
-    before: "addTempEngineering",
-    after: "removeTempEngineering"
+    triggers: {
+      before: "addTempEngineering",
+    },
   },
 
   // -------------- Engineering ----------------
-  /*{
+  {
         benefit: "Before Engineering dock a Station Module from Delivery supply",
-        whenIsActivated: "before",
         mutateAction: "engineering",
         players: 3,
-        name: "SPACE CARRIERS PORT"
+        name: "SPACE CARRIERS PORT",
+        triggers: {
+           afterPerform: "dockDeliveryModule",
+        },
     },
+    /*
     {
         benefit: "Before Engineering dock a Station Module from Engineering supply",
         whenIsActivated: "before",
@@ -100,6 +107,7 @@ export const colonyCards = createCards(
     mutateAction: "engineering",
     players: 2,
     name: "SPACECRAFT MANUFACTORY",
+    triggers: {},
   },
   {
     benefit:
@@ -107,6 +115,21 @@ export const colonyCards = createCards(
     // whenIsActivated: "during",
     mutateAction: "engineering",
     name: "SPACE INDUSTRY CENTER",
+    triggers: {
+      before: "pointsForDocking",
+    },
+  
+
+  },
+  {
+    benefit:
+      "On Engineering, whenever you need to dock a Station Module from hand/supply,draw a card (from any supply) and then dock a Station Module from your hand instead.This Colony card effect gives its owner the privilege of a wider choice of Station Modules to dock.",
+    mutateAction: "engineering",
+    name: "Institute of Technology",
+    triggers: {
+      before: "changeEngineeringLogic",
+      afterPerform: "adjustRemainingActions"
+    },
   },
 
   // -------------- Military ----------------
@@ -145,6 +168,7 @@ export const colonyCards = createCards(
     mutateAction: "military",
     players: 2,
     name: "TACTICAL NANOROBOTICS",
+    triggers: {},
   },
   {
     benefit:
@@ -152,6 +176,7 @@ export const colonyCards = createCards(
     // whenIsActivated: "during",
     mutateAction: "military",
     name: "COMMAND CENTER",
+    triggers: {},
   },
   {
     benefit:
@@ -159,6 +184,7 @@ export const colonyCards = createCards(
     // whenIsActivated: "during",
     mutateAction: "military",
     name: "REVERSE ENGINEERING LAB",
+    triggers: {},
   },
 
   // -------------- Terraforming ----------------
@@ -194,24 +220,30 @@ export const colonyCards = createCards(
   {
     benefit:
       "On Terraforming gain 2 points if you have at least 1 Station Module card of the mission Type in your Hand",
-    // whenIsActivated: "during",
     mutateAction: "terraforming",
     players: 2,
     name: "OPERATIONS SUPPORT COMMAND",
+    triggers: {
+      after: "addPointsForMissionType",
+    },
   },
 
   {
     benefit:
       "After Terraforming dock a Station Module of the Mission Type from supply",
-    // whenIsActivated: "after",
     mutateAction: "terraforming",
     name: "STRATEGIC DEVELOPMENT CENTER",
+    triggers: {
+      after: "dockStationModuleOfMissionType",
+    },
   },
   {
     benefit:
       "On Terraforming on your turn collect all points from neutral Colonies (even if you do not set up a Colony)",
-    // whenIsActivated: "before",
     mutateAction: "terraforming",
     name: "FIELD RESEARCH HEADQUARTERS",
+    triggers: {
+      before: "addPointsFromColonies",
+    },
   }
 );

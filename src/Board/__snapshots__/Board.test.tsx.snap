@@ -50,6 +50,34 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
+          engineering
+        </div>
+        <div
+          className="benefit"
+        >
+          On Engineering, whenever you need to dock a Station Module from hand/supply,draw a card (from any supply) and then dock a Station Module from your hand instead.This Colony card effect gives its owner the privilege of a wider choice of Station Modules to dock.
+        </div>
+        <p
+          className="points"
+        />
+        <p
+          className="colony"
+        >
+          COLONY
+        </p>
+        <p
+          className="name"
+        >
+          Institute of Technology
+        </p>
+      </div>
+      <div
+        className="card"
+        onClick={[Function]}
+      >
+        <div
+          className="mutateAction"
+        >
           military
         </div>
         <div
@@ -69,34 +97,6 @@ exports[`Board snapshot 1`] = `
           className="name"
         >
           TACTICAL NANOROBOTICS
-        </p>
-      </div>
-      <div
-        className="card"
-        onClick={[Function]}
-      >
-        <div
-          className="mutateAction"
-        >
-          military
-        </div>
-        <div
-          className="benefit"
-        >
-          On Military gain 1 point for each card drawn by you during the Action, but not more than 3 points
-        </div>
-        <p
-          className="points"
-        />
-        <p
-          className="colony"
-        >
-          COLONY
-        </p>
-        <p
-          className="name"
-        >
-          COMMAND CENTER
         </p>
       </div>
       <div
@@ -139,6 +139,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="delivery card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div>
           <div>
             <div
@@ -174,7 +178,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="delivery deck "
+      className="delivery deck disabled"
       onClick={[Function]}
     />
     <div
@@ -184,6 +188,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="engineering card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="continue"
         >
@@ -217,7 +225,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="engineering deck "
+      className="engineering deck disabled"
       onClick={[Function]}
     />
     <div
@@ -227,6 +235,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="terraforming card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="infoWrapper"
         >
@@ -310,7 +322,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="terraforming deck "
+      className="terraforming deck disabled"
       onClick={[Function]}
     />
     <div
@@ -320,6 +332,10 @@ exports[`Board snapshot 1`] = `
       <div
         className="military card   "
       >
+         
+        <div>
+          ID: 0
+        </div>
         <div
           className="fighters"
         >
@@ -328,7 +344,7 @@ exports[`Board snapshot 1`] = `
       </div>
     </div>
     <div
-      className="military deck "
+      className="military deck disabled"
       onClick={[Function]}
     />
   </div>

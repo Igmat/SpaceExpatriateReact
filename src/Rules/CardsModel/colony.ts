@@ -1,19 +1,20 @@
 import { makeAutoObservable } from "mobx";
-import { CardType, Trigger } from "../card-types";
+import { CardType, Trigger, TriggerName } from "../card-types";
 
 /*
 export interface ColonyCard {
   id: number;
- type: "colony";
+  type: "colony";
   benefit: string;
   mutateAction: CardType;
   data?: unknown;
   players?: number;
   name: string;
-  before?: Trigger;
-  after?: Trigger;
-  during?: Trigger;
-}*/
+  triggers: {
+    [key in TriggerName]?: Trigger
+  }
+}
+*/
 
 export interface ColonyCardDefinition {
   benefit: string;
@@ -24,6 +25,9 @@ export interface ColonyCardDefinition {
   before?: Trigger;
   after?: Trigger;
   during?: Trigger;
+  triggers: {
+    [key in TriggerName]?: Trigger
+  }
 }
 
 export class ColonyCard {
@@ -35,6 +39,10 @@ export class ColonyCard {
   public data?: unknown;
   public during?: Trigger;
   public players?: number;
+  public triggers:{
+    [key in TriggerName]?: Trigger
+
+  }
   constructor(public id: number, data: ColonyCardDefinition) {
     this.after = data.after;
     this.before = data.before;
@@ -44,6 +52,7 @@ export class ColonyCard {
     this.mutateAction = data.mutateAction;
     this.name = data.name;
     this.players = data.players;
+    this.triggers = data.triggers;
     makeAutoObservable(this);
   }
 }

@@ -19,6 +19,11 @@ export class DeckManager {
   dropCards = (...cards: CardDefinition[]) => {
     cards.forEach((card) => this[card.type].dropCards(card.id));
   };
+
+  isInDeck = (card: CardDefinition) => {
+    return this[card.type].findCard(card);
+  };
+
   get dropLength() {
     return (
       this.delivery.restCount +
@@ -27,5 +32,4 @@ export class DeckManager {
       this.military.restCount
     );
   }
-
 }

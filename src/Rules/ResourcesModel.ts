@@ -1,25 +1,31 @@
 import { makeAutoObservable } from "mobx";
-import { Resource, ResourcePrimitive } from "./card-types";
-import { EngineeringCard } from "../Rules/CardsModel/engineering";
-import { TerraformingCard } from "./CardsModel/terraforming";
+import {
+  BasicResource,
+  Resource,
+  ResourcePrimitive,
+} from "./card-types";
+
 import { TableModel } from "./TableModel";
-import { RoundManager } from "./RoundManager";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-
+import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
+import { ModalManager } from "./ModalManager";
+import { EngineeringCard } from "../Rules/CardsModel/engineering";
+import { TerraformingCard } from "./CardsModel/terraforming";
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
 };
 
+export type GarbageResources = Omit<PlayerResources, "dark matter">;
 
 export class ResourcesModel {
   constructor(
     private readonly table: TableModel,
-    private readonly round: RoundManager,
+    private readonly modal: ModalManager,
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "resorces",[
+    makeAutoSavable(this, gameId, "resources", [
       "garbageResources",
       "playerResources",
       "tempGarbageResources",
@@ -30,7 +36,6 @@ export class ResourcesModel {
     ]);
   }
 
-  // будет разделение на PLayerModel & GarbageModel
   public playerResources: PlayerResources = {
     "biotic materials": 0,
     fuel: 0,
@@ -42,7 +47,7 @@ export class ResourcesModel {
 
   public charterResource?: ResourcePrimitive;
 
-  public garbageResources: Omit<PlayerResources, "dark matter"> = {
+  public garbageResources: GarbageResources = {
     fuel: 0,
     minerals: 0,
     "biotic materials": 0,
@@ -72,7 +77,7 @@ export class ResourcesModel {
         this.playerResources[key] -= this.garbageResources[key]
         if (this.playerResources[key] < 0) this.playerResources[key] = 0;
       })
-    
+
     this.charterResource && this.playerResources[this.charterResource]++;
     // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
   };
@@ -83,24 +88,14 @@ export class ResourcesModel {
 
   dropToGarbage = () => {
     Object.keys(this.garbageResources)
-    .forEach(key=>this.garbageResources[key] = this.playerResources[key])
+      .forEach(key => this.garbageResources[key] = this.playerResources[key])
   };
 
   dropResources = () => {
     Object.keys(this.playerResources)
-    .forEach(key=>this.playerResources[key] = 0)
+      .forEach(key => this.playerResources[key] = 0)
   };
-  /*
-  savePlayerResources = () => {//запасной вариант востановления ресурсов при ресете
-    for (let key in this.playerResources) {
-      this.tempPlayerResources[key] = this.playerResources[key];
-    }
-  };
-resetPlayerResources = () => {//запасной вариант востановления ресурсов при ресете
-  for (let key in this.tempPlayerResources) {
-    this.playerResources[key] = this.tempPlayerResources[key];
-  }
-}*/
+
   consumeResources = (resources: ResourcePrimitive[]) => {
     //потребление ресурсов
     resources.forEach((resource) => {
@@ -126,8 +121,8 @@ resetPlayerResources = () => {//запасной вариант востанов
     this.gainResources(card);
   };
 
-  tryConsumeResources(resources: Resource[], onConsume: () => void) {
-    if (resources === undefined) return onConsume();
+  async tryConsumeResources(resources: Resource[]) {
+    if (resources === undefined) return true;
     const variants = toArrayArray(resources);
     const darkMatterVariants: ResourcePrimitive[][] = variants.map(
       (variant) => [
@@ -146,15 +141,14 @@ resetPlayerResources = () => {//запасной вариант востанов
     if (validCombinations.length === 0) return;
     if (validCombinations.length === 1) {
       this.consumeResources(validCombinations[0]);
-      return onConsume();
+      return true;
     }
-    this.round.startResourceStep(validCombinations, (selected) => {
-      this.consumeResources(selected);
-      onConsume();
-    });
+    const selected = await this.modal.show("resources", validCombinations);
+    this.consumeResources(selected);
+    return true;
   }
 
-  gainResources(card: EngineeringCard) {
+  async gainResources(card: EngineeringCard) {
     //получение ресурсов
     if (card.exitPoint === undefined) return;
     const combinations = generateCombinations(toArrayArray(card.exitPoint));
@@ -164,19 +158,30 @@ resetPlayerResources = () => {//запасной вариант востанов
       });
       return;
     }
-    this.round.startResourceStep(combinations, (selected) => {
+    const selected = await this.modal.show("resources", combinations);
       selected.forEach((resource) => {
-        this.gainResource(resource);
-      });
-    });
+      this.gainResource(resource);
+    })
   }
 
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
   };
 
-  removeResourcesFromGarbage = (resource: Exclude<ResourcePrimitive, "dark matter">) => {
+  removeResourcesFromGarbage = (
+    resource: BasicResource
+  ) => {
     this.garbageResources[resource] = 0;
+  };
+
+  extractColonyPoints = (selectedCard: ColonyCardWithPoints) => {
+    const colonyPoints = selectedCard.points || 0;
+    this.points.total += colonyPoints;
+    delete selectedCard.points;
+  };
+  
+  addPoints = (points: number) => {
+    this.points.total += points;
   };
 
   calculateTotalPoints = () => {

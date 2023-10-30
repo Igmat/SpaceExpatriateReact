@@ -12,8 +12,8 @@ export class ColonyDeckModel {
     makeAutoObservable(this);
     const isLoaded = makeAutoSavable(this, gameId, "colonyDeck", [
       "_activeCards" as any,
-      "openedCards"]
-    )
+      "openedCards",
+    ]);
     if (!isLoaded) {
       this.initialize();
     }
@@ -31,24 +31,26 @@ export class ColonyDeckModel {
   };
 
   countPoints = () => {
-    this.openedCards.forEach(card => card.points! += (this.openedCards.length === 1 ? 2 : 1))
-  }
+    this.openedCards.forEach(
+      (card) => (card.points! += this.openedCards.length === 1 ? 2 : 1)
+    );
+  };
 
   openCard = () => {
-    if (this.openedCards.length >= 3) return
+    if (this.openedCards.length >= 3) return;
 
     const remainingCards = 3 - this.openedCards.length;
     const newCards = this._activeCards
       .splice(0, remainingCards)
       .map((id) => ({ ...this.cardsDefinitions[id], points: 0 }));
     this.openedCards.push(...newCards);
-  }
+  };
 
   takeOpenedCard = (ind: number) => {
     const card = this.openedCards[ind];
     this.openedCards.splice(ind, 1);
     return card;
-  }
+  };
 
   takeCard = (): ColonyCard => {
     const idOfCard = this._activeCards.pop()!;

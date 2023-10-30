@@ -8,9 +8,7 @@ import { TerraformingCard } from "../Rules/CardsModel/terraforming";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
 export class TableModel {
-  constructor(
-    gameId: string,
-  ) {
+  constructor(gameId: string) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "table", [
       "delivery",
@@ -21,10 +19,9 @@ export class TableModel {
   }
 
   delivery: (DeliveryCard & { isSelected: boolean })[] = [];
-  engineering: (SelectableEngineeringCard)[] = [];
+  engineering: SelectableEngineeringCard[] = [];
   terraforming: (TerraformingCard & { isSelected: boolean })[] = [];
   military: (MilitaryCard & { isSelected: boolean })[] = [];
-
 
   dropCards = (
     //очистить сброшенные карты со стола
@@ -46,7 +43,6 @@ export class TableModel {
 
   takeCard = (card: CardDefinition) => {
     this[card.type].push(card as any);
-    //  console.log(card)
   };
 
   resetSelectedFlags = () => {
@@ -62,5 +58,9 @@ export class TableModel {
         el.isSelected = !el.isSelected;
       }
     });
+  };
+
+  isOnTable = (card: CardDefinition) => {
+    return this[card.type].some((tableCard) => tableCard.id === card.id);
   };
 }

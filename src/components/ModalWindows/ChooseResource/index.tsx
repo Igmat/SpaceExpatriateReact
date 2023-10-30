@@ -1,18 +1,14 @@
+import { FC } from "react";
+import { ModalOptions } from "../../../Rules/ModalManager";
 import { ResourcePrimitive } from "../../../Rules/card-types";
 import styles from "./styles.module.scss";
 
-interface ChooseResourceProps {
-  array: Array<ResourcePrimitive[]>;
-  select: (resources: ResourcePrimitive[]) => void;
-}
+export const ChooseResource:FC<ModalOptions<ResourcePrimitive[]>> = (props) => {
 
-export const ChooseResource = (props:ChooseResourceProps) => {
-
-  console.log(props.array);
   return (
     <div className={styles.modal}>
-      {props.array.map((resources) => (
-        <div className={styles.modalDialog} onClick={()=>props.select(resources)}>{resources.join(" + ")}</div>
+      {props.params && props.params.map((resources, id) => (
+        <div key={id} className={styles.modalDialog} onClick={() => props.onSelect(resources)}>{resources.join(" + ")}</div>
       ))}
     </div>
   );
