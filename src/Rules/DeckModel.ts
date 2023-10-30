@@ -1,15 +1,15 @@
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { CardType } from "./card-types";
+import { CardDefinition, CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
 
 export class DeckModel<T extends { id: number }> {
   constructor(
     public readonly type: CardType,
     private readonly cardsDefinitions: { [key: number]: T },
-    gameId: string,
+    gameId: string
   ) {
     makeAutoObservable(this);
-    const isLoaded = makeAutoSavable(this, gameId, `deckmodel_${type}`,[
+    const isLoaded = makeAutoSavable(this, gameId, `deckmodel_${type}`, [
       "_activeCards" as any,
       "_droppedCards" as any,
       "openedCard",
@@ -27,14 +27,13 @@ export class DeckModel<T extends { id: number }> {
     this._activeCards = Object.keys(this.cardsDefinitions);
     this.mixCards();
     this.openCard();
-  }
+  };
 
   openCard = () => {
     this.openedCard !== undefined && this.dropCards(this.openedCard.id);
     this.openedCard = this.takeCard();
-
   };
- 
+
   takeOpenedCard() {
     const result = this.openedCard;
     this.openedCard = undefined;
@@ -44,7 +43,7 @@ export class DeckModel<T extends { id: number }> {
   takeOpenedCardAndOpenNew = () => {
     const result = this.takeOpenedCard();
     this.openCard();
- 
+
     return result;
   };
 
@@ -68,15 +67,17 @@ export class DeckModel<T extends { id: number }> {
       this.mixCards();
     }
     return this.cardsDefinitions[idOfCard];
- 
   };
 
   dropCards = (...cards: number[]) => {
     this._droppedCards.push(...cards);
   };
 
-  get restCount () {
-    return this._droppedCards.length;
+  findCard = (card: CardDefinition) => {
+    return card.id === this.openedCard?.id;
   };
-}
 
+  get restCount() {
+    return this._droppedCards.length;
+  }
+}

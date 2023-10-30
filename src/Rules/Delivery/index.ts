@@ -15,7 +15,7 @@ import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
-import { ModalManager} from "../ModalManager";
+import { ModalManager } from "../ModalManager";
 
 const DeliveryOptions = ["charter", "garbage"] as const;
 export type DeliveryOption = (typeof DeliveryOptions)[number];
@@ -44,15 +44,23 @@ export class ActionManager implements IActionManager {
   selectedResource?: BasicResource;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
   tempDroppedCards: CardDefinition[] = [];
+  private _isEnded: boolean = false;
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card.id);
   };
 
   perform = async (card: CardDefinition) => {
+    this._isEnded = false;
     this.round.startOptionsStep();
-    this.deliveryOption = await this.modal.show("deliveryOptions", DeliveryOptions)
-    this.selectedResource = await this.modal.show("deliveryResources", BasicResources)
+    this.deliveryOption = await this.modal.show(
+      "deliveryOptions",
+      DeliveryOptions
+    );
+    this.selectedResource = await this.modal.show(
+      "deliveryResources",
+      BasicResources
+    );
 
     if (this.deliveryOption === "charter") {
       this.resources.addResource(this.selectedResource);
@@ -67,23 +75,27 @@ export class ActionManager implements IActionManager {
     this.resources.createEngineeringMaps(this.table.engineering);
   };
 
-  tryNext = () => {
-    //    this.deliveryOption = undefined;
+  get isEnded() {
+    return this._isEnded;
+  }
+
+  confirm = () => {
+    this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
     this.usedTerraformingCards = []; //очистка использованных карт Terraforming
     this.resources.confirmRoundResourceActions(); // считаем очки, перемещаем ресы в мусор, сбрасываем счетчик энергии, обнуляем ресы
-    return true;
+    this._isEnded = true;
   };
 
-  activateDeck = (type: CardType) => { };
+  activateDeck = (type: CardType) => {};
 
   activateCard = (card: number) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
-  
-  activateColonyCard = (card: number) => { };
+
+  activateColonyCard = (card: number) => {};
 
   activateCardOnTable = async (card: CardDefinition) => {
     if (card.type === "engineering") {
@@ -91,7 +103,8 @@ export class ActionManager implements IActionManager {
     }
     if (card.type === "terraforming") {
       if (!this.usedTerraformingCards.includes(card.id)) {
-        const successfulConsumeResources = await this.resources.tryConsumeResources(card.resources);
+        const successfulConsumeResources =
+          await this.resources.tryConsumeResources(card.resources);
 
         if (successfulConsumeResources) {
           this.resources.calculateRoundPoints(card);
@@ -139,39 +152,32 @@ export class ActionManager implements IActionManager {
       this.resources.engineeringMaps.FinishCounter <= 0
     )
       return;
-    await this.resources.tryConsumeResources(
-      card.entryPoint ? [card.entryPoint] : []) &&
-      this.resources.handleCardProcessing(card)
-  }
-
-  isDisabled(place: string, card: CardDefinition,): boolean {
-    if (this.usedTerraformingCards.includes(card.id)) {
-      return true;
-    }
-    if (this.round.phase === "delivery") {
-      if (place === "table") {
-        if (card.type === "engineering") {
-          if (
-            (card.connection === "start" &&
-              this.resources.engineeringMaps.Start[card.id] === 0) ||
-            (card.connection === "continue" &&
-              this.resources.engineeringMaps.Middle[card.id] <= 0) ||
-            (card.connection === "end" &&
-              this.resources.engineeringMaps.FinishCounter <= 0)
-          )
-            return true;
-        }
-        if (card.type === "military") return true;
-        if (card.type === "delivery") return true;
-      }
-      if (place === "hand") return false;
-      if (place === "opened") return true;
-    }
-    return false;
-  }
-
-  isDisabledDeck = (type: CardType): boolean => {
-    if (this.round.phase === "delivery") return true;
-    return false;
+    (await this.resources.tryConsumeResources(
+      card.entryPoint ? [card.entryPoint] : []
+    )) && this.resources.handleCardProcessing(card);
   };
+
+  isDisabled(card: CardDefinition): boolean {
+    if (this.table.isOnTable(card)) {
+      if (card.type === "engineering") {
+        const isEmpty =
+          (card.connection === "start" &&
+            !this.resources.engineeringMaps.Start[card.id]) ||
+          (card.connection === "continue" &&
+            !this.resources.engineeringMaps.Middle[card.id]) ||
+          (card.connection === "end" &&
+            !this.resources.engineeringMaps.FinishCounter);
+        return isEmpty;
+      }
+
+      if (card.type === "terraforming") {
+        return this.usedTerraformingCards.includes(card.id); //не подсвечивает возможности исходя из ресурсов
+      }
+    }
+
+    if (this.hand.isInHand(card)) return false;
+    return true;
+  }
+
+  isDisabledDeck = (type: CardType): boolean => true;
 }

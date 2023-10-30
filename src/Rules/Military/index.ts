@@ -14,7 +14,7 @@ export class ActionManager implements IActionManager {
     private readonly round: RoundManager,
     private readonly hand: HandModel,
     private readonly decks: DeckManager,
-    private readonly modal: ModalManager,
+    private readonly modal: ModalManager
   ) {
     makeAutoObservable(this);
   }
@@ -28,15 +28,18 @@ export class ActionManager implements IActionManager {
     this.militaryOption = await this.modal.show("military", MilitaryOptions);
 
     if (this.militaryOption === "political") {
-      return this.tryNext() //заглушка
+      // return this.tryNext() //заглушка
     }
     if (this.militaryOption === "exploration") {
       this.round.startPerformingStep();
       this.remaining.activateDeck++;
     }
   };
+  confirm = () => {};
 
-  tryNext = () => this.remaining.activateDeck === 0;
+  get isEnded() {
+    return this.remaining.activateDeck === 0;
+  }
 
   activateDeck = (type: CardType) => {
     if (
@@ -45,7 +48,6 @@ export class ActionManager implements IActionManager {
     )
       this.hand.takeCard(this.decks[type].takeCard());
     this.remaining.activateDeck = 0;
-   return this.tryNext()
   };
 
   activateCard = (card: number) => {};
@@ -56,17 +58,7 @@ export class ActionManager implements IActionManager {
 
   reset = () => {};
 
-  isDisabled(place: string, card: CardDefinition, ): boolean {
-    if (this.round.phase === "military") {
-      if (place === "table") return true;
-      if (place === "hand") return true;
-      if (place === "opened") return true;
-    }
-    return false;
-  }
+  isDisabled = (card: CardDefinition): boolean => true;
 
-  isDisabledDeck = (type: CardType): boolean => {
-    return false;
-  };
-
+  isDisabledDeck = (type: CardType): boolean => false;
 }

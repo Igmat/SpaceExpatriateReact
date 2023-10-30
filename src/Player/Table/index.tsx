@@ -40,20 +40,19 @@ export const Table = observer((props: TableProps) => {
                 key={ind}
                 {...card}
                 onClick={() => handleClick(card)}
-                isDisabled={props.action.isDisabled("table", card)}
-              />
+                action={props.action} />
             ))}
           </div>
         )
       )}
       {props.round.isResetable && <ResetButton action={props.action} />}
       {props.round.isConfirmable && (
-        <button className={styles.endTurnButton} onClick={props.action.tryNext}>
+        <button className={styles.endTurnButton} onClick={props.action.confirm}>
           Confirm
         </button>
       )}
       {props.round.isEndable && (
-        <button className={styles.endTurnButton} onClick={props.action.tryNext}>
+        <button className={styles.endTurnButton} onClick={props.action.confirm}>
           End turn
         </button>
       )}

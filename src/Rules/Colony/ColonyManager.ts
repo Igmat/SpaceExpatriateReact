@@ -92,12 +92,16 @@ export class ColonyManager {
     },
 
     dockDeliveryModule: async (colony: ColonyCard) => {
-      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(1);
+      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(
+        1
+      );
       this.gameState.action.currentManager?.activateDeck("delivery");
     },
 
     adjustRemainingActions: async (colony: ColonyCard) => {
-      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(1);
+      (this.gameState.action.currentManager as EAM).adjustRemainingActivateDeck(
+        1
+      );
       (this.gameState.action.currentManager as EAM).adjustRemainingActivateCard(
         -1
       );
@@ -110,7 +114,7 @@ export class ColonyManager {
         currentManager.adjustRemainingActivateDeck(-1);
         this.hand.takeCard(this.decks[type].takeCard()!);
         currentManager.adjustRemainingActivateCard(1);
-        return currentManager.tryNext();
+        return currentManager.confirm();
       };
     },
 
