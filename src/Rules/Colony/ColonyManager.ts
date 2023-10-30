@@ -1,4 +1,4 @@
-import { makeAutoObservable, reaction } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import {
   CardType,
@@ -49,12 +49,13 @@ export class ColonyManager {
         )
         const selected = await this.gameState.modal.show("blackMarket", availableCards);
         const originalTableCards = this.table.delivery;
-
+        
+        runInAction( async() => {
         this.table.delivery =
           this.table.delivery.filter(card => card !== selected)
         await originalGetResources();
         this.table.delivery = originalTableCards;
-        selected.resources.forEach(resource => this.resources.playerResources[resource]++) 
+        selected.resources.forEach(resource => this.resources.playerResources[resource]++) })
       }
 
       return async () => {
