@@ -47,17 +47,25 @@ export class ColonyManager {
           card.resources
             .filter(resource => this.resources.garbageResources[resource] > 0).length > 0
         )
-        const selected = await this.gameState.modal.show("blackMarket", availableCards);
-        const originalTableCards = this.table.delivery;
-        
-        runInAction( async() => {
-        this.table.delivery =
-          this.table.delivery.filter(card => card !== selected)
-        await originalGetResources();
-        this.table.delivery = originalTableCards;
-        selected.resources.forEach(resource => this.resources.playerResources[resource]++) })
-      }
+        if (availableCards.length === 0) {
+          await originalGetResources();
+        } else if (availableCards.length === 1) {
+          await originalGetResources();
+          const resources = availableCards[0].resources;
+          resources.forEach(resource => this.resources.playerResources[resource]++);
+        } else {
+          const selected = await this.gameState.modal.show("blackMarket", availableCards);
+          const originalTableCards = this.table.delivery;
 
+          runInAction(async () => {
+            this.table.delivery =
+              this.table.delivery.filter(card => card !== selected);
+            await originalGetResources();
+            this.table.delivery = originalTableCards;
+            selected.resources.forEach(resource => this.resources.playerResources[resource]++);
+          })
+        }
+      }
       return async () => {
         this.resources.getResources = originalGetResources;
       }
