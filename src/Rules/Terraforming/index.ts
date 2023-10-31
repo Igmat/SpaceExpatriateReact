@@ -43,7 +43,7 @@ export class ActionManager implements IActionManager {
     this.table.resetSelectedFlags();
   };
 
-  confirm = () => {
+  confirm = async () => {
     this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
     this._isEnded = true;
@@ -76,7 +76,7 @@ export class ActionManager implements IActionManager {
     return true;
   };
 
-  reset = () => {
+  reset = async () => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       this.cardsToDrop.forEach((card) => this.table.takeCard(card));
     }

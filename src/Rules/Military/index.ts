@@ -35,7 +35,7 @@ export class ActionManager implements IActionManager {
       this.remaining.activateDeck++;
     }
   };
-  confirm = () => {};
+  confirm = async () => {};
 
   get isEnded() {
     return this.remaining.activateDeck === 0;
@@ -56,7 +56,7 @@ export class ActionManager implements IActionManager {
     return false;
   };
 
-  reset = () => {};
+  reset = async () => {};
 
   isDisabled = (card: CardDefinition): boolean => true;
 

@@ -79,7 +79,7 @@ export class ActionManager implements IActionManager {
     return this._isEnded;
   }
 
-  confirm = () => {
+  confirm = async () => {
     this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки

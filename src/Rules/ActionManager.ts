@@ -93,8 +93,8 @@ export class ActionManager {
     this.activeAction = undefined;
   };
 
-  confirm = () => {
-    this.currentManager?.confirm();
+  confirm = async () => {
+    await this.currentManager?.confirm();
     this.currentManager?.isEnded && this.nextRound();
   };
 
@@ -113,12 +113,12 @@ export class ActionManager {
     this.currentManager?.isEnded && this.nextRound();
   };
 
-  activateCardOnTable = (card: CardDefinition) => {
+  activateCardOnTable = async (card: CardDefinition) => {
     this.currentManager?.activateCardOnTable(card);
     this.currentManager?.isEnded && this.nextRound();
   };
 
-  reset = () => this.currentManager?.reset();
+  reset = async () => this.currentManager?.reset();
 
   get isDisabled(): (card: CardDefinition) => boolean {
     return (card: CardDefinition) => {
