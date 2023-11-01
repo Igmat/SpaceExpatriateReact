@@ -44,7 +44,7 @@ export class ActionManager implements IActionManager {
   };
 
   confirm = async () => {
-    this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
+    await this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
     this._isEnded = true;
   };

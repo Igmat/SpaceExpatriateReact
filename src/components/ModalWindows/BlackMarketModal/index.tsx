@@ -3,9 +3,7 @@ import { ModalOptions } from "../../../Rules/ModalManager";
 import { DeliveryCard } from "../../../Rules/card-types";
 import styles from "./styles.module.scss";
 
-export const BlackMarketModal: FC<ModalOptions<DeliveryCard>> = (props) => {
-    console.log(props.params);
-    
+export const BlackMarketModal: FC<ModalOptions<DeliveryCard>> = (props) => { 
     return (
         <div className={styles.modal}>
             {props.params && props.params.map((card, id) => (

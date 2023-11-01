@@ -114,11 +114,11 @@ export class ActionManager {
   };
 
   activateCardOnTable = async (card: CardDefinition) => {
-    this.currentManager?.activateCardOnTable(card);
+    await this.currentManager?.activateCardOnTable(card);
     this.currentManager?.isEnded && this.nextRound();
   };
 
-  reset = async () => this.currentManager?.reset();
+  reset = async () => await this.currentManager?.reset();
 
   get isDisabled(): (card: CardDefinition) => boolean {
     return (card: CardDefinition) => {
