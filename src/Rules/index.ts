@@ -15,11 +15,10 @@ export class GameState {
   constructor(public readonly gameId: string = "") {
     makeAutoObservable(this);
   }
-
-  hand = new HandModel(this.gameId);
+  hand = new HandModel(this, this.gameId);
   decks = new DeckManager(this.gameId);
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
-  table = new TableModel(this.gameId);
+  table = new TableModel(this, this.gameId);
   modal = new ModalManager();
   round = new RoundManager(this.decks, this.hand, this.colonyDeck, this.gameId);
   resources = new ResourcesModel(this.table, this.modal, this.gameId);

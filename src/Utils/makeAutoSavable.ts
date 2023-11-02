@@ -12,7 +12,8 @@ export function makeAutoSavable<T>(
   object: T,
   gameId: string,
   prefix: string,
-  keys: (keyof T | AutoSavableProperty<T>)[] = []
+  keys: (keyof T | AutoSavableProperty<T>)[] = [],
+  saveCondition?: () => boolean,
 ) {
   const savedData = localStorage.getItem(`${prefix}_${gameId}`);
   if (savedData) {
@@ -32,8 +33,12 @@ export function makeAutoSavable<T>(
       acc[key] = condition(object[key]) ? object[key] : data[key];
       return acc;
     }, {} as any);
-    
+    if (saveCondition!==undefined && saveCondition()) {
     localStorage.setItem(`${prefix}_${gameId}`, JSON.stringify(data));
+    }
+    if (saveCondition===undefined) {
+      localStorage.setItem(`${prefix}_${gameId}`, JSON.stringify(data));
+    }
   });
   return !!savedData;
 }

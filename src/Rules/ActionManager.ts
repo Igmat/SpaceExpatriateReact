@@ -24,11 +24,17 @@ export class ActionManager {
     private readonly gameId: string,
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly modal: ModalManager
+    private readonly modal: ModalManager,
   ) {
     makeAutoObservable(this);
-    if (!gameId) return;
-    makeAutoSavable(this, gameId, `action`, [`activeAction`]);
+
+    const saveCondition = () => {
+      if (this.round===undefined) return false;
+      if (this.round.current<5) return true;
+      if (this.activeAction === undefined) return true;
+      return false;
+    }
+    makeAutoSavable(this, gameId, `action`, [`activeAction`], saveCondition);
   }
 
   private managers = {

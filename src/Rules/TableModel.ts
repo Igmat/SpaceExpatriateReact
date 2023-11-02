@@ -8,17 +8,26 @@ import {
   TerraformingCard,
 } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
+import { GameState } from ".";
 
 export class TableModel {
-  constructor(gameId: string) {
+  constructor(private readonly gameState: GameState, gameId: string) {
     makeAutoObservable(this);
-    if (!gameId) return;
-    makeAutoSavable(this, gameId, "table", [
-      "delivery",
-      "engineering",
-      "terraforming",
-      "military",
-    ]);
+
+    const saveCondition = () => {
+      if (this.gameState.round === undefined) return true;
+      if (this.gameState.round.current < 5) return true;
+      if (this.gameState.action.activeAction === undefined) return true;
+      return false;
+    };
+
+    makeAutoSavable(
+      this,
+      gameId,
+      "table",
+      ["delivery", "engineering", "terraforming", "military"],
+      saveCondition
+    );
   }
 
   delivery: (DeliveryCard & { isSelected: boolean })[] = [];

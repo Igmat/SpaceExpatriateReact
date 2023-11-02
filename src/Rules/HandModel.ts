@@ -1,21 +1,26 @@
 import { makeAutoObservable } from "mobx";
 import { CardDefinition } from "../Rules/card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
+import { GameState } from ".";
 
 export class HandModel {
   public cardsInHand: CardDefinition[] = [];
   public tempDroppedCards: CardDefinition[] = [];
 
-  constructor(gameId: string) {
+  constructor(private readonly gameState: GameState, gameId: string) {
     makeAutoObservable(this);
-    if (!gameId) return;
-    makeAutoSavable(this, gameId, "hand", ["cardsInHand", 
-    // "tempDroppedCards"
-  ]);
+    
+    const saveCondition = () => {
+      if (this.gameState.round === undefined) return true;
+      if (this.gameState.round.current < 5) return true;
+      if (this.gameState.action.activeAction === undefined) return true;
+      return false;
+    };
+    makeAutoSavable(this, gameId, "hand", ["cardsInHand"], saveCondition);
   }
   dropCard = (ind: number) => {
     const card = this.cardsInHand[ind];
-    this.cardsInHand.splice(ind, 1); //вырезаем карту из руки
+    this.cardsInHand.splice(ind, 1);
     return card;
   };
 
