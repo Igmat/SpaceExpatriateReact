@@ -9,11 +9,13 @@ import { ChooseResource } from "../components/ModalWindows/ChooseResource";
 import { DeliveryResourcesModal } from "../components/ModalWindows/DeliveryActionWindow/DeliveryResourcesModal";
 import { ModalOptions } from "../Rules/ModalManager";
 import { AdjustGarbage } from "../components/ModalWindows/AdjustGarbage";
+import { BlackMarketModal } from "../components/ModalWindows/BlackMarketModal";
 
 const modals = {
   military: MillitaryModal,
   deliveryOptions: DeliveryActionWindow,
   deliveryResources: DeliveryResourcesModal,
+  blackMarket: BlackMarketModal,
   terraforming: TerraformingModal,
   resources: ChooseResource,
   adjustGarbage: AdjustGarbage,

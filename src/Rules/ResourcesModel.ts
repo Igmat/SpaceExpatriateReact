@@ -67,7 +67,7 @@ export class ResourcesModel {
     FinishCounter: 0,
   };
 
-  getResources = () => {
+  getResources = async () => {
     this.dropResources();
     this.table.delivery.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
@@ -79,7 +79,6 @@ export class ResourcesModel {
       })
 
     this.charterResource && this.playerResources[this.charterResource]++;
-    // this.savePlayerResources()//запасной вариант востановления ресурсов при ресете
   };
 
   addResource = (resource: ResourcePrimitive) => {
@@ -197,11 +196,11 @@ export class ResourcesModel {
     this.points.round = 0;
   };
 
-  resetRoundState = () => {
+  resetRoundState = async () => {
     this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
     this.resetEnergy(); // обнуляем счетчик энергии
     this.createEngineeringMaps(this.table.engineering);
-    this.getResources();
+    await this.getResources();
   };
 
   confirmRoundResourceActions = () => {
