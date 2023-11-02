@@ -69,7 +69,8 @@ export class ActionManager implements IActionManager {
     if (this.deliveryOption === "garbage") {
       this.resources.removeResourcesFromGarbage(this.selectedResource);
     }
-    this.resources.getResources();
+
+    await this.resources.getResources();
     this.round.startPerformingStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
@@ -78,7 +79,7 @@ export class ActionManager implements IActionManager {
     return this._isEnded;
   }
 
-  confirm = () => {
+  confirm = async () => {
     this.deliveryOption = undefined;
     this.decks.dropCards(...this.hand.tempDroppedCards); //сброс временных карт из руки в общий сброс
     this.dropTempCards(); //очистка временных карт из руки
@@ -87,18 +88,18 @@ export class ActionManager implements IActionManager {
     this._isEnded = true;
   };
 
-  activateDeck = (type: CardType) => {};
+  activateDeck = async (type: CardType) => {};
 
-  activateCard = (card: number) => {
+  activateCard = async (card: number) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
 
-  activateColonyCard = (card: number) => {};
+  activateColonyCard = async (card: number) => {};
 
   activateCardOnTable = async (card: CardDefinition) => {
     if (card.type === "engineering") {
-      this.activateEngineeringCard(card);
+      await this.activateEngineeringCard(card);
     }
     if (card.type === "terraforming") {
       if (!this.usedTerraformingCards.includes(card.id)) {
@@ -121,10 +122,10 @@ export class ActionManager implements IActionManager {
     return card;
   };
 
-  reset = () => {
+  reset = async () => {
     this.resetTempDroppedCards();
     this.usedTerraformingCards = [];
-    this.resources.resetRoundState();
+    await this.resources.resetRoundState();
   };
 
   dropTempCards = () => {
