@@ -19,8 +19,8 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-  const handleClick = async (card: CardDefinition) => {
-    await props.action.activateCardOnTable(card);
+  const handleClick = (card: CardDefinition) => {
+    props.action.activateCardOnTable(card);
   };
 
   return (

@@ -95,27 +95,27 @@ export class ActionManager {
 
   confirm = async () => {
     await this.currentManager?.confirm();
-    this.currentManager?.isEnded && this.nextRound();
+    this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateDeck = (type: CardType) => {
+  activateDeck = async (type: CardType) => {
     this.currentManager?.activateDeck(type);
-    this.currentManager?.isEnded && this.nextRound();
+    this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateCard = (card: number) => {
+  activateCard = async (card: number) => {
     this.currentManager?.activateCard(card);
-    this.currentManager?.isEnded && this.nextRound();
+    this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateColonyCard = (card: number) => {
+  activateColonyCard = async (card: number) => {
     this.currentManager?.activateColonyCard(card);
-    this.currentManager?.isEnded && this.nextRound();
+    this.currentManager?.isEnded && await this.nextRound();
   };
 
   activateCardOnTable = async (card: CardDefinition) => {
     await this.currentManager?.activateCardOnTable(card);
-    this.currentManager?.isEnded && this.nextRound();
+    this.currentManager?.isEnded && await this.nextRound();
   };
 
   reset = async () => await this.currentManager?.reset();

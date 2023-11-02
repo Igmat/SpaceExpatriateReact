@@ -22,8 +22,8 @@ interface DeckProps {
 export const Deck = observer((props: DeckProps) => {
 
   //console.log(props.model.openedCard)
-  const onOpenCardClick = async () => {
-    await props.action.perform(props.model.openedCard);
+  const onOpenCardClick = () => {
+    props.action.perform(props.model.openedCard);
   };
   return (
     <>

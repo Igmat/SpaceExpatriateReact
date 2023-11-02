@@ -41,7 +41,7 @@ export class ActionManager implements IActionManager {
     return this.remaining.activateDeck === 0;
   }
 
-  activateDeck = (type: CardType) => {
+  activateDeck = async (type: CardType) => {
     if (
       this.round.step === "performing" &&
       this.militaryOption === "exploration"
@@ -50,8 +50,8 @@ export class ActionManager implements IActionManager {
     this.remaining.activateDeck = 0;
   };
 
-  activateCard = (card: number) => {};
-  activateColonyCard = (card: number) => {};
+  activateCard = async (card: number) => {};
+  activateColonyCard = async (card: number) => {};
   activateCardOnTable = async (card: CardDefinition) => {
     return false;
   };

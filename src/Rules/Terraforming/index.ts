@@ -53,11 +53,11 @@ export class ActionManager implements IActionManager {
     return this._isEnded;
   }
 
-  activateDeck = (type: CardType) => {};
+  activateDeck = async (type: CardType) => {};
 
-  activateCard = (card: number) => {};
+  activateCard = async (card: number) => {};
 
-  activateColonyCard = (card: number) => {
+  activateColonyCard = async (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
       return this.buildColony(card); //строим колонию
