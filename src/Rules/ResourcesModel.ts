@@ -25,14 +25,15 @@ export class ResourcesModel {
     gameId: string
   ) {
     makeAutoObservable(this);
+    if (!gameId) return;
     makeAutoSavable(this, gameId, "resources", [
       "garbageResources",
-      "playerResources",
-      "tempGarbageResources",
-      "charterResource",
-      "engineeringMaps",
+      // "playerResources",
+      // "tempGarbageResources",
+      // "charterResource",
+      // "engineeringMaps",
       "points",
-      "_energy" as any,
+      // "_energy" as any,
     ]);
   }
 

@@ -27,6 +27,7 @@ export class ActionManager {
     private readonly modal: ModalManager
   ) {
     makeAutoObservable(this);
+    if (!gameId) return;
     makeAutoSavable(this, gameId, `action`, [`activeAction`]);
   }
 

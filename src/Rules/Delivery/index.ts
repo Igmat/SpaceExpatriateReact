@@ -14,7 +14,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+// import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ModalManager } from "../ModalManager";
 
 const DeliveryOptions = ["charter", "garbage"] as const;
@@ -31,12 +31,12 @@ export class ActionManager implements IActionManager {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "deliveryManager", [
-      "calculatedResources",
-      "deliveryOption",
-      "usedTerraformingCards",
-      "tempDroppedCards",
-    ]);
+    // makeAutoSavable(this, gameId, "deliveryManager", [
+    //   "calculatedResources",
+    //   "deliveryOption",
+    //   "usedTerraformingCards",
+    //   "tempDroppedCards",
+    // ]);
   }
 
   public calculatedResources: Resource[] = [];

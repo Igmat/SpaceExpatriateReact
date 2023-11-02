@@ -32,6 +32,7 @@ export class ColonyManager {
     private readonly decks: DeckManager
   ) {
     makeAutoObservable(this);
+    if (!gameId) return;
     makeAutoSavable(this, this.gameId, "colony", ["colonies"]);
   }
 

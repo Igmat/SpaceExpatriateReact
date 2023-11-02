@@ -4,7 +4,7 @@ import { CardDefinition, CardType, CardTypes } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+// import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
@@ -26,10 +26,10 @@ export class ActionManager implements IActionManager {
     private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "terraformingManager", [
-      "cardsToDrop",
-      "missionType",
-    ]);
+    // makeAutoSavable(this, gameId, "terraformingManager", [
+    //   "cardsToDrop",
+    //   "missionType",
+    // ]);
   }
   private _isEnded: boolean = false;
 

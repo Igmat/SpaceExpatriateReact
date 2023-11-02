@@ -32,6 +32,7 @@ export function makeAutoSavable<T>(
       acc[key] = condition(object[key]) ? object[key] : data[key];
       return acc;
     }, {} as any);
+    
     localStorage.setItem(`${prefix}_${gameId}`, JSON.stringify(data));
   });
   return !!savedData;

@@ -12,6 +12,7 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 export class TableModel {
   constructor(gameId: string) {
     makeAutoObservable(this);
+    if (!gameId) return;
     makeAutoSavable(this, gameId, "table", [
       "delivery",
       "engineering",

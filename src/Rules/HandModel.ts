@@ -8,7 +8,10 @@ export class HandModel {
 
   constructor(gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "hand", ["cardsInHand", "tempDroppedCards"]);
+    if (!gameId) return;
+    makeAutoSavable(this, gameId, "hand", ["cardsInHand", 
+    // "tempDroppedCards"
+  ]);
   }
   dropCard = (ind: number) => {
     const card = this.cardsInHand[ind];
