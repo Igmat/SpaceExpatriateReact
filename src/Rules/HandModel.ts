@@ -9,14 +9,7 @@ export class HandModel {
 
   constructor(private readonly gameState: GameState, gameId: string) {
     makeAutoObservable(this);
-    
-    const saveCondition = () => {
-      if (this.gameState.round === undefined) return true;
-      if (this.gameState.round.current < 5) return true;
-      if (this.gameState.action.activeAction === undefined) return true;
-      return false;
-    };
-    makeAutoSavable(this, gameId, "hand", ["cardsInHand"], saveCondition);
+    makeAutoSavable(this, gameId, "hand", ["cardsInHand"], this.gameState.saveCondition);
   }
   dropCard = (ind: number) => {
     const card = this.cardsInHand[ind];

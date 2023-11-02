@@ -13,20 +13,12 @@ import { GameState } from ".";
 export class TableModel {
   constructor(private readonly gameState: GameState, gameId: string) {
     makeAutoObservable(this);
-
-    const saveCondition = () => {
-      if (this.gameState.round === undefined) return true;
-      if (this.gameState.round.current < 5) return true;
-      if (this.gameState.action.activeAction === undefined) return true;
-      return false;
-    };
-
     makeAutoSavable(
       this,
       gameId,
       "table",
       ["delivery", "engineering", "terraforming", "military"],
-      saveCondition
+      this.gameState.saveCondition
     );
   }
 

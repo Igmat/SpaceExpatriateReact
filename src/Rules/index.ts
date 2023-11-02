@@ -15,15 +15,24 @@ export class GameState {
   constructor(public readonly gameId: string = "") {
     makeAutoObservable(this);
   }
+  saveCondition = () => {
+    if (this.round === undefined) return true;
+    if (this.action === undefined) return false;
+    if (this.round.current < 5) return true;
+    if (this.action.activeAction === undefined) return true;
+    return false;
+  };
+
   hand = new HandModel(this, this.gameId);
-  decks = new DeckManager(this.gameId);
+  decks = new DeckManager(this, this.gameId);
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
   table = new TableModel(this, this.gameId);
   modal = new ModalManager();
   round = new RoundManager(this.decks, this.hand, this.colonyDeck, this.gameId);
-  resources = new ResourcesModel(this.table, this.modal, this.gameId);
+  resources = new ResourcesModel(this, this.table, this.modal, this.gameId);
   colony = new ColonyManager(this, this.gameId, this.table, this.resources, this.colonyDeck, this.hand, this.decks);
-  action = new ActionManager(this.decks, this.table, this.round, this.hand, this.resources, this.gameId, this.colony, this.colonyDeck, this.modal);
+  action = new ActionManager(this, this.decks, this.table, this.round, this.hand, this.resources, this.gameId, this.colony, this.colonyDeck, this.modal);
+
 }
 
 const gameStateContext = createContext(new GameState())

@@ -11,6 +11,7 @@ import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 import { ModalManager } from "./ModalManager";
+import { GameState } from ".";
 
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
@@ -20,21 +21,16 @@ export type GarbageResources = Omit<PlayerResources, "dark matter">;
 
 export class ResourcesModel {
   constructor(
+    private readonly gameState: GameState,
     private readonly table: TableModel,
     private readonly modal: ModalManager,
     gameId: string
   ) {
     makeAutoObservable(this);
-    if (!gameId) return;
     makeAutoSavable(this, gameId, "resources", [
       "garbageResources",
-      // "playerResources",
-      // "tempGarbageResources",
-      // "charterResource",
-      // "engineeringMaps",
       "points",
-      // "_energy" as any,
-    ]);
+    ], this.gameState.saveCondition);
   }
 
   public playerResources: PlayerResources = {

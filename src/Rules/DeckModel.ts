@@ -1,3 +1,4 @@
+import { GameState } from ".";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { CardDefinition, CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
@@ -6,7 +7,8 @@ export class DeckModel<T extends { id: number }> {
   constructor(
     public readonly type: CardType,
     private readonly cardsDefinitions: { [key: number]: T },
-    gameId: string
+    gameId: string,
+    gameState: GameState
   ) {
     makeAutoObservable(this);
  
@@ -14,7 +16,7 @@ export class DeckModel<T extends { id: number }> {
       "_activeCards" as any,
       "_droppedCards" as any,
       "openedCard",
-    ]);
+    ], gameState.saveCondition);
     if (!isLoaded) {
       this.initialize();
     }
