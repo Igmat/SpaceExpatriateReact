@@ -45,7 +45,9 @@ export const colonyCards = createCards<ColonyCard>(
     // whenIsActivated: "before",
     mutateAction: "delivery",
     name: "SPACE LIFT",
-    triggers: {},
+    triggers: {
+      before: "adjustGarbage",
+    },
   },
 
   {

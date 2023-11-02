@@ -8,6 +8,7 @@ import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
 import { ChooseResource } from "../components/ModalWindows/ChooseResource";
 import { DeliveryResourcesModal } from "../components/ModalWindows/DeliveryActionWindow/DeliveryResourcesModal";
 import { ModalOptions } from "../Rules/ModalManager";
+import { AdjustGarbage } from "../components/ModalWindows/AdjustGarbage";
 
 const modals = {
   military: MillitaryModal,
@@ -15,6 +16,7 @@ const modals = {
   deliveryResources: DeliveryResourcesModal,
   terraforming: TerraformingModal,
   resources: ChooseResource,
+  adjustGarbage: AdjustGarbage,
 } as const;
 
 export type ModalType = keyof typeof modals;
