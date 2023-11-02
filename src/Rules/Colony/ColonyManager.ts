@@ -78,7 +78,15 @@ export class ColonyManager {
       });
     },
 
-    adjustGarbage: async () => {},
+    adjustGarbage: async (colony: ColonyCard) => {
+      const adjustedResources = await this.gameState.modal.show(
+        "adjustGarbage",
+        this.resources.garbageResources
+      )
+
+      this.resources.garbageResources = adjustedResources;
+      
+    },
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isSelectableEngineeringCard(colony.data)) {
