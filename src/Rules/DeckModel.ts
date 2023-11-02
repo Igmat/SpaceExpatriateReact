@@ -9,7 +9,7 @@ export class DeckModel<T extends { id: number }> {
     gameId: string
   ) {
     makeAutoObservable(this);
-    if (!gameId) return;
+ 
     const isLoaded = makeAutoSavable(this, gameId, `deckmodel_${type}`, [
       "_activeCards" as any,
       "_droppedCards" as any,
@@ -25,7 +25,8 @@ export class DeckModel<T extends { id: number }> {
   openedCard?: T;
 
   initialize = () => {
-    this._activeCards = Object.keys(this.cardsDefinitions);
+    this._activeCards = Object.keys(this.cardsDefinitions).map((key) =>
+      Number(key));
     this.mixCards();
     this.openCard();
   };
