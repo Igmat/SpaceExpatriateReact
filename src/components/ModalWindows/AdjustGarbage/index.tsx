@@ -1,33 +1,43 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { ModalOptionsColony } from "../../../Rules/ModalManager"
 import { BasicResource, BasicResources } from "../../../Rules/card-types"
 import { GarbageResources } from "../../../Rules/ResourcesModel"
 import styles from "./AdjustGarbage.module.scss"
 
-export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
-
-    const playersCount = 4;
-
-    const [resources, setResources] = useState(props.params);
-    const [allowedChangesCountState, setAllowedChangesCountState] = useState(playersCount);
-
-    const handleAdd = (resource: BasicResource) => {
-        
-        if (allowedChangesCountState > 0 && allowedChangesCountState <= 4) {
-            setAllowedChangesCountState(allowedChangesCountState - 1)
-            setResources({ ...resources, [resource]: resources[resource] + 1 });
-        } else {
-            setResources({ ...resources, [resource]: resources[resource] })
+const findDiff = (arr1: number[], arr2: number[]) => {
+    let diff = 0;
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+            diff++;
         }
     }
+    return diff;
+}
 
+export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
+
+    const [resources, setResources] = useState(props.params);
+    const [diff, setDiff] = useState(0);
+    const originalResources = props.params;
+    const playersCount = 4;
+
+    useEffect(() => {
+        const diff = findDiff(Object.values(resources), Object.values(originalResources))
+        setDiff(diff);
+
+    }, [originalResources, resources])
+
+    console.log(diff);
+    
+    
+    const handleAdd = (resource: BasicResource) => {
+        if (diff >= 0 && diff < playersCount) {
+           setResources({ ...resources, [resource]: resources[resource] + 1 });
+        }       
+    }
     const handleRemove = (resource: BasicResource) => {
-        
-        if (allowedChangesCountState > 0 && allowedChangesCountState <= 4) {
-            setResources({ ...resources, [resource]: resources[resource] - 1 });
-            setAllowedChangesCountState(allowedChangesCountState - 1)
-        } else {
-            setResources({ ...resources, [resource]: resources[resource] })
+        if (diff >= 0 && diff <= playersCount) {
+            setResources({ ...resources, [resource]: (resources[resource] <= 0 ? 0 : resources[resource] - 1)});
         }
     }
 
@@ -40,7 +50,7 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
                         <div
                             className={`${resource === "biotic materials" ? styles.bioticMaterial : styles[resource]}`}
                         >
-                            {resources[resource] > 0 ? resources[resource] : 0}
+                            {resources[resource]}
                         </div>
                         <div className={styles.buttons}>
                             <button className={styles.button} onClick={() => handleAdd(resource)}>+</button>
