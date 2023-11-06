@@ -5,13 +5,13 @@ import { GarbageResources } from "../../../Rules/ResourcesModel"
 import styles from "./AdjustGarbage.module.scss"
 
 const findDiff = (arr1: number[], arr2: number[]) => {
-    let diff = 0;
+    let diff1 = 0;
+    let diff2 = 0;
     for (let i = 0; i < arr1.length; i++) {
-        if (arr1[i] !== arr2[i]) {
-            diff++;
-        }
+        diff1 = diff1 + arr1[i]
+        diff2 = diff2 + arr2[i]
     }
-    return diff;
+    return diff2 - diff1
 }
 
 export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
@@ -22,13 +22,12 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
     const playersCount = 4;
 
     useEffect(() => {
-        const diff = findDiff(Object.values(resources), Object.values(originalResources))
+        const diff = findDiff(Object.values(originalResources), Object.values(resources) )
         setDiff(diff);
 
     }, [originalResources, resources])
 
     console.log(diff);
-    
     
     const handleAdd = (resource: BasicResource) => {
         if (diff >= 0 && diff < playersCount) {
