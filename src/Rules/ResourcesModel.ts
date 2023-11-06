@@ -10,8 +10,8 @@ import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 import { ModalManager } from "./ModalManager";
-import { EngineeringCard } from "../Rules/CardsModel/engineering";
-import { TerraformingCard } from "./CardsModel/terraforming";
+import { EngineeringCard } from "./Cards/engineering";
+import { TerraformingCard } from "./Cards/terraforming";
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
 };

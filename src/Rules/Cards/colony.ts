@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { CardType, Trigger, TriggerName } from "../card-types";
+import { CardsMethods } from ".";
 
 /*
 export interface ColonyCard {
@@ -30,7 +31,7 @@ export interface ColonyCardDefinition {
   }
 }
 
-export class ColonyCard {
+export class ColonyCard /* extends CardsMethods */implements ColonyCardDefinition{
   public benefit: string;
   public mutateAction: CardType;
   public name: string;
@@ -44,6 +45,7 @@ export class ColonyCard {
 
   }
   constructor(public id: number, data: ColonyCardDefinition) {
+    //super()
     this.after = data.after;
     this.before = data.before;
     this.benefit = data.benefit;
@@ -53,6 +55,5 @@ export class ColonyCard {
     this.name = data.name;
     this.players = data.players;
     this.triggers = data.triggers;
-    makeAutoObservable(this);
   }
 }

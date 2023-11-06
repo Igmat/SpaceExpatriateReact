@@ -13,7 +13,7 @@ import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
 import { GarbageResources, ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
-import { ColonyCard } from "../CardsModel/colony";
+import { ColonyCard } from "../Cards/colony";
 import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";

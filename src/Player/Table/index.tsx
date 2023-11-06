@@ -5,7 +5,7 @@ import { Card } from "../../components/Card";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import { CardDefinition, CardTypes } from "../../Rules/card-types";
+import { GeneralCard, CardTypes } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { ColonyCard } from "../../components/ColonyCard";
 import { ColonyManager } from "../../Rules/Colony/ColonyManager";
@@ -19,7 +19,8 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-  const handleClick = (card: CardDefinition) => {
+  const handleClick = (card: GeneralCard) => {
+    console.log(card)
     props.action.activateCardOnTable(card);
   };
 
@@ -38,7 +39,8 @@ export const Table = observer((props: TableProps) => {
             {props.model[el].map((card, ind) => (
               <Card
                 key={ind}
-                {...card}
+              //  {...card}
+              model={card}
                 onClick={() => handleClick(card)}
                 action={props.action} />
             ))}

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType } from "../card-types";
+import { GeneralCard, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -35,7 +35,7 @@ export class ActionManager implements IActionManager {
     this._remaining.activateCard += value;
   };
 
-  perform = (card: CardDefinition) => {
+  perform = (card: GeneralCard) => {
     this.adjustRemainingActivateDeck(1);
     this.adjustRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
@@ -63,12 +63,14 @@ export class ActionManager implements IActionManager {
   };
 
   activateColonyCard = (card: number) => {};
-  activateCardOnTable = async (card: CardDefinition) => false;
+  activateCardOnTable = async (card: GeneralCard) => false;
 
   reset = () => {};
 
-  isDisabled = (card: CardDefinition): boolean =>
+  isDisabled = (card: GeneralCard): boolean =>
     this.hand.isInHand(card) && this._remaining.activateCard ? false : true;
+ // card.isHand && this._remaining.activateCard ? false : true;
+
 
   isDisabledDeck = (type: CardType): boolean =>
     !this._remaining.activateDeck ? true : false;

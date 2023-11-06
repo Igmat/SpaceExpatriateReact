@@ -1,9 +1,10 @@
 import { GameState } from ".";
 import type { EffectName } from "./Colony/ColonyManager";
-import { DeliveryCard} from "./CardsModel/delivery";
-import { MilitaryCard} from "./CardsModel/military";
-import { EngineeringCard } from "./CardsModel/engineering";
-import { TerraformingCard } from "./CardsModel/terraforming";
+import { DeliveryCard, DeliveryCardDefinition} from "./Cards/delivery";
+import { MilitaryCard, MilitaryCardDefinition} from "./Cards/military";
+import { EngineeringCard, EngineeringCardDefinition } from "./Cards/engineering";
+import { TerraformingCard, TerraformingCardDefinition } from "./Cards/terraforming";
+import { ColonyCard, ColonyCardDefinition } from "./Cards/colony";
 
 export const BasicResources = [
   "fuel",
@@ -53,26 +54,20 @@ export const isSelectableEngineeringCard = (
 };
 
 
-export type CardDefinition =//Card?  CardDefinition union от чистых данных DeliveryCardDefinition  ...
+export type GeneralCard =
   | DeliveryCard
   | EngineeringCard
   | TerraformingCard
   | MilitaryCard
 
-/*
-export type Cards =
-  | DeliveryCard
-  | EngineeringCard
-  | TerraformingCard
-  | MilitaryCard
-  | ColonyCard
+//export type GeneralCard = Omit<DeliveryCard | EngineeringCard | TerraformingCard | MilitaryCard, 'decks' | 'table' | 'hand'>;
 
-  export type CardDefinition =
+  export type CardDefinition =//переименовать как-то, хз как
   | DeliveryCardDefinition 
   | EngineeringCardDefinition 
   | MilitaryCardDefinition
   | TerraformingCardDefinition
-  | ColonyCardDefinition */
+  | ColonyCardDefinition 
 
 
 

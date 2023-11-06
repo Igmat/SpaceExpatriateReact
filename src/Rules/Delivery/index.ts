@@ -2,14 +2,14 @@ import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
 import { TableModel } from "../TableModel";
 import {
-  CardDefinition,
+  GeneralCard,
   CardType,
   Resource,
   BasicResources,
   BasicResource,
 } from "../card-types";
-import { TerraformingCard } from "../CardsModel/terraforming";
-import { EngineeringCard } from "../CardsModel/engineering";
+import { TerraformingCard } from "../Cards/terraforming";
+import { EngineeringCard } from "../Cards/engineering";
 import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
@@ -43,14 +43,14 @@ export class ActionManager implements IActionManager {
   deliveryOption?: DeliveryOption;
   selectedResource?: BasicResource;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
-  tempDroppedCards: CardDefinition[] = [];
+  tempDroppedCards: GeneralCard[] = [];
   private _isEnded: boolean = false;
 
   useTerraformingCard = (card: TerraformingCard) => {
     this.usedTerraformingCards.push(card.id);
   };
 
-  perform = async (card: CardDefinition) => {
+  perform = async (card: GeneralCard) => {
     this._isEnded = false;
     this.round.startOptionsStep();
     this.deliveryOption = await this.modal.show(
@@ -96,7 +96,7 @@ export class ActionManager implements IActionManager {
 
   activateColonyCard = (card: number) => {};
 
-  activateCardOnTable = async (card: CardDefinition) => {
+  activateCardOnTable = async (card: GeneralCard) => {
     if (card.type === "engineering") {
       this.activateEngineeringCard(card);
     }
@@ -156,9 +156,11 @@ export class ActionManager implements IActionManager {
     )) && this.resources.handleCardProcessing(card);
   };
 
-  isDisabled(card: CardDefinition): boolean {
-    if (this.table.isOnTable(card)) {
-      if (card.type === "engineering") {
+  isDisabled(card: GeneralCard): boolean {
+   if (this.table.isOnTable(card)) {
+   // if (card.isTable) {
+
+      if (card instanceof EngineeringCard ) {
         const isEmpty =
           (card.connection === "start" &&
             !this.resources.engineeringMaps.Start[card.id]) ||
@@ -169,12 +171,14 @@ export class ActionManager implements IActionManager {
         return isEmpty;
       }
 
-      if (card.type === "terraforming") {
+      if (card instanceof TerraformingCard) {
         return this.usedTerraformingCards.includes(card.id); //не подсвечивает возможности исходя из ресурсов
       }
     }
 
     if (this.hand.isInHand(card)) return false;
+    //if (card.isHand) return false;
+
     return true;
   }
 

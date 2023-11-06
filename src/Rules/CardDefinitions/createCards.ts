@@ -1,20 +1,18 @@
-import { ColonyCard } from "../CardsModel/colony";
-import { CardDefinition } from "../card-types";
+import { ColonyCard } from "../Cards/colony";
+import { GeneralCard } from "../card-types";
 
+export type GeneralCards = ColonyCard | GeneralCard;
+type AdjustedDefinition<D> = D & { quantity?: number };
 
-export type GeneralCardDefinition = ColonyCard | CardDefinition;
-type AdjustedDefinition<T extends GeneralCardDefinition> = Omit<T,"type" | "id"> & {
-   quantity?: number };
-
-export function createCards<T extends GeneralCardDefinition>(
-  cardClass: new (id: number, data: T) => T,
-  ...definitions: AdjustedDefinition<T>[]
+export function createCards<T extends GeneralCards, D> (
+  cardClass: new (id: number, data: D) => T,
+  ...definitions: AdjustedDefinition<D>[]
 ): { [key: number]: T } {
   return definitions
     .reduce(
       (acc, { quantity = 1, ...el }) =>
         (acc.push(...Array(quantity).fill({ ...el })) && acc) || acc,
-      [] as T[]
+      [] as D[]
     )
     .reduce((acc, el, id) => {
       const card = new cardClass(id, el);
@@ -22,3 +20,22 @@ export function createCards<T extends GeneralCardDefinition>(
       return acc;
     }, {} as { [key: number]: T });
 }
+
+/*
+export function createCards<T extends GeneralCards, D, A> (
+  cardClass: new (id: number, data: D, args: A) => T,
+  ...definitions: (AdjustedDefinition<D> & { args: A })[]
+): { [key: number]: T } {
+  return definitions
+    .reduce(
+      (acc, { quantity = 1, ...el }) =>
+        (acc.push(...Array(quantity).fill({ ...el })) && acc) || acc,
+      [] as (D & { args: A })[]
+    )
+    .reduce((acc, el, id) => {
+      const card = new cardClass(id, el, el.args);
+      acc[id] = card;
+      return acc;
+    }, {} as { [key: number]: T });
+}
+*/

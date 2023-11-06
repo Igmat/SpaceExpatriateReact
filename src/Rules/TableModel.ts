@@ -1,13 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import {
-  CardDefinition, SelectableEngineeringCard } from "./card-types";
-import { DeliveryCard } from "../Rules/CardsModel/delivery";
-import { EngineeringCard } from "../Rules/CardsModel/engineering";
-import { MilitaryCard } from "../Rules/CardsModel/military";
-import { TerraformingCard } from "../Rules/CardsModel/terraforming";
+  GeneralCard, SelectableEngineeringCard } from "./card-types";
+import { DeliveryCard } from "./Cards/delivery";
+import { EngineeringCard } from "./Cards/engineering";
+import { MilitaryCard } from "./Cards/military";
+import { TerraformingCard } from "./Cards/terraforming";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 
-export class TableModel {
+
+export class TableModel  {
   constructor(gameId: string) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "table", [
@@ -41,7 +42,7 @@ export class TableModel {
     return cards;
   };
 
-  takeCard = (card: CardDefinition) => {
+  takeCard = (card: GeneralCard) => {
     this[card.type].push(card as any);
   };
 
@@ -52,7 +53,7 @@ export class TableModel {
     this.military.forEach((card) => (card.isSelected = false));
   };
 
-  toggleSelectedFlag = (card: CardDefinition) => {
+  toggleSelectedFlag = (card: GeneralCard) => {
     this[card.type].forEach((el) => {
       if (el.id === card.id) {
         el.isSelected = !el.isSelected;
@@ -60,7 +61,7 @@ export class TableModel {
     });
   };
 
-  isOnTable = (card: CardDefinition) => {
+  isOnTable = (card: GeneralCard) => {
     return this[card.type].some((tableCard) => tableCard.id === card.id);
   };
 }

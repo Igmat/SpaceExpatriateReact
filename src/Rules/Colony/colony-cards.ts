@@ -1,5 +1,5 @@
 import { createCards } from "../CardDefinitions/createCards";
-import { ColonyCard } from "../CardsModel/colony";
+import { ColonyCard } from "../Cards/colony";
 import { SelectableEngineeringCard } from "../card-types";
 
 export const colonyCards = createCards(

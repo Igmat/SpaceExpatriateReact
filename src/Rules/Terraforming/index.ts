@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType, CardTypes } from "../card-types";
+import { GeneralCard, CardType, CardTypes } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -11,7 +11,7 @@ import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
 import { HandModel } from "../HandModel";
 export class ActionManager implements IActionManager {
-  cardsToDrop: CardDefinition[] = [];
+  cardsToDrop: GeneralCard[] = [];
   missionType?: CardType;
 
   constructor(
@@ -33,7 +33,7 @@ export class ActionManager implements IActionManager {
   }
   private _isEnded: boolean = false;
 
-  perform = async (card: CardDefinition) => {
+  perform = async (card: GeneralCard) => {
     this._isEnded = false;
     this.missionType = await this.modal.show("terraforming", CardTypes);
 
@@ -64,7 +64,7 @@ export class ActionManager implements IActionManager {
     }
   };
 
-  activateCardOnTable = async (card: CardDefinition) => {
+  activateCardOnTable = async (card: GeneralCard) => {
     const cardIndex = this.cardsToDrop.indexOf(card);
     this.table.toggleSelectedFlag(card);
     if (cardIndex !== -1) {
@@ -126,17 +126,22 @@ export class ActionManager implements IActionManager {
       ).filter(Boolean).length === 4
     );
   }
-
-  isDisabled(card: CardDefinition): boolean {
+/*
+  isDisabled(card: GeneralCard): boolean {
     if (this.table.isOnTable(card)) {
-      return this.isDisabledTable(card);
+   // if (card.isTable) {
+    return this.isDisabledTable(card);
     }
     if (this.hand.isInHand(card) || this.decks.isInDeck(card)) {
+   // if (card.isHand || card.isDeck) {
+
       return true;
     }
     return false;
-  }
+  }*/
+  get isDisabled(){return true}
+
   isDisabledDeck = (type: CardType): boolean => true;
 
-  isDisabledTable = (card: CardDefinition): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
+  isDisabledTable = (card: GeneralCard): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
 }

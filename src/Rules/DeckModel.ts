@@ -1,8 +1,10 @@
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { CardDefinition, CardType } from "./card-types";
+import { GeneralCard, CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
 
-export class DeckModel<T extends { id: number }> {
+//export class DeckModel<T extends { id: number }> {
+export class DeckModel<T extends GeneralCard> {
+
   constructor(
     public readonly type: CardType,
     private readonly cardsDefinitions: { [key: number]: T },
@@ -73,7 +75,7 @@ export class DeckModel<T extends { id: number }> {
     this._droppedCards.push(...cards);
   };
 
-  findCard = (card: CardDefinition) => {
+  findCard = (card: GeneralCard) => {
     return card.id === this.openedCard?.id;
   };
 

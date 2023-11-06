@@ -1,4 +1,5 @@
-import { DeliveryCard } from "../CardsModel/delivery";
+
+import { DeliveryCard } from "../Cards/delivery";
 import { createCards } from "./createCards";
 
 export const deliveryCards = createCards(

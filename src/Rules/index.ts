@@ -10,6 +10,7 @@ import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 import { colonyCards } from "./Colony/colony-cards";
 import { ModalManager } from "./ModalManager";
+import { CardsMethods } from "./Cards";
 
 export class GameState {
   constructor(public readonly gameId: string = "") {
@@ -21,6 +22,7 @@ export class GameState {
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
   table = new TableModel(this.gameId);
   modal = new ModalManager();
+  //cards = new  CardsMethods(this.decks, this.table, this.hand)
   round = new RoundManager(this.decks, this.hand, this.colonyDeck, this.gameId);
   resources = new ResourcesModel(this.table, this.modal, this.gameId);
   colony = new ColonyManager(this, this.gameId, this.table, this.resources, this.colonyDeck, this.hand, this.decks);

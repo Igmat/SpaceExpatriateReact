@@ -1,4 +1,4 @@
-import { MilitaryCard } from "../CardsModel/military";
+import { MilitaryCard } from "../Cards/military";
 import { createCards } from "./createCards";
 
 export const militaryCards = createCards(

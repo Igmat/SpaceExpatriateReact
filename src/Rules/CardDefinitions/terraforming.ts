@@ -1,4 +1,4 @@
-import { TerraformingCard } from "../CardsModel/terraforming";
+import { TerraformingCard } from "../Cards/terraforming";
 import { createCards } from "./createCards";
 
 export const terraformingCards = createCards(

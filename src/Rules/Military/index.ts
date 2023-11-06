@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType } from "../card-types";
+import { GeneralCard, CardType } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
@@ -24,7 +24,7 @@ export class ActionManager implements IActionManager {
     activateDeck: 0,
   };
 
-  perform = async (card: CardDefinition) => {
+  perform = async (card: GeneralCard) => {
     this.militaryOption = await this.modal.show("military", MilitaryOptions);
 
     if (this.militaryOption === "political") {
@@ -52,13 +52,13 @@ export class ActionManager implements IActionManager {
 
   activateCard = (card: number) => {};
   activateColonyCard = (card: number) => {};
-  activateCardOnTable = async (card: CardDefinition) => {
+  activateCardOnTable = async (card: GeneralCard) => {
     return false;
   };
 
   reset = () => {};
 
-  isDisabled = (card: CardDefinition): boolean => true;
+  isDisabled = (card: GeneralCard): boolean => true;
 
   isDisabledDeck = (type: CardType): boolean => false;
 }

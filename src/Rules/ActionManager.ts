@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType } from "./card-types";
+import { GeneralCard, CardType } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
@@ -67,14 +67,17 @@ export class ActionManager {
     return this.activeAction && this.managers[this.activeAction];
   }
 
-  perform = async (card?: CardDefinition) => {
+  perform = async (card?: GeneralCard) => {
     if (!card) return;
 
     if (this.round.phase !== "active") return;
 
     this.activeAction = card.type;
     this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
-
+    /*
+    const from = this.decks[card.type]
+    const to = this.table
+    card.move(from, to)*/
     if (this.round.current < 5) {
       this.nextRound();
       return;
@@ -113,7 +116,7 @@ export class ActionManager {
     this.currentManager?.isEnded && this.nextRound();
   };
 
-  activateCardOnTable = (card: CardDefinition) => {
+  activateCardOnTable = (card: GeneralCard) => {
     this.currentManager?.activateCardOnTable(card);
     this.currentManager?.isEnded && this.nextRound();
   };
@@ -121,14 +124,18 @@ export class ActionManager {
   reset = () => {
     this.currentManager?.reset();
   };
+/*
+  get isDisabled(): (card: GeneralCard) => boolean {
+    return (card: GeneralCard) => {
+    // if (!this.activeAction) return !this.decks.isInDeck(card);
+   // if (!this.activeAction) return !card.isDeck;
 
-  get isDisabled(): (card: CardDefinition) => boolean {
-    return (card: CardDefinition) => {
-      if (!this.activeAction) return !this.decks.isInDeck(card);
-      return this.managers[this.activeAction].isDisabled(card);
-    };
-  }
+   //   return this.managers[this.activeAction].isDisabled(card);
 
+   };
+
+  }*/
+  get isDisabled(){return true}
   get isDisabledDeck(): (type: CardType) => boolean {
     return (type: CardType) => {
       if (!this.activeAction) return true;

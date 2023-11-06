@@ -1,4 +1,4 @@
-import { EngineeringCard } from "../CardsModel/engineering";
+import { EngineeringCard } from "../Cards/engineering";
 import { createCards } from "./createCards";
 
 export const engineeringCards = createCards(
