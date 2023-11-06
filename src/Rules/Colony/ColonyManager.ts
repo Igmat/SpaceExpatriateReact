@@ -59,7 +59,6 @@ export class ColonyManager {
           this.table.delivery =
             this.table.delivery.filter(card => card !== selected);
           await originalGetResources();
-          console.log(this.table.delivery);
           this.table.delivery = originalTableCards;
           selected.resources.forEach(resource => this.resources.playerResources[resource]++);
         }

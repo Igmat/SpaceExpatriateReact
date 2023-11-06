@@ -5,40 +5,39 @@ import { GarbageResources } from "../../../Rules/ResourcesModel"
 import styles from "./AdjustGarbage.module.scss"
 
 const findDiff = (arr1: number[], arr2: number[]) => {
-    let diff1 = 0;
-    let diff2 = 0;
-    for (let i = 0; i < arr1.length; i++) {
-        diff1 = diff1 + arr1[i]
-        diff2 = diff2 + arr2[i]
-    }
-    return diff2 - diff1
+    let diff: number = 0;
+    arr1.forEach((el, id) => {
+        diff += Math.abs(el - arr2[id]);
+    })
+    return diff;
 }
 
 export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
 
     const [resources, setResources] = useState(props.params);
-    const [diff, setDiff] = useState(0);
+    const [counter, setCounter] = useState(0);
     const originalResources = props.params;
     const playersCount = 4;
 
     useEffect(() => {
-        const diff = findDiff(Object.values(originalResources), Object.values(resources) )
-        setDiff(diff);
+        const diff = findDiff(Object.values(originalResources), Object.values(resources))
+        setCounter(diff);
 
-    }, [originalResources, resources])
-
-    console.log(diff);
-    
+    }, [originalResources, resources]);
+   
     const handleAdd = (resource: BasicResource) => {
-        if (diff >= 0 && diff < playersCount) {
+        if (counter < playersCount) {
            setResources({ ...resources, [resource]: resources[resource] + 1 });
         }       
     }
     const handleRemove = (resource: BasicResource) => {
-        if (diff >= 0 && diff <= playersCount) {
-            setResources({ ...resources, [resource]: (resources[resource] <= 0 ? 0 : resources[resource] - 1)});
+        if (resources[resource] > 0) {
+            setResources({ ...resources, [resource]: (counter <= playersCount ? resources[resource] - 1 : resources[resource])});
         }
     }
+
+    console.log(counter);
+    
 
     return (
         <div className={styles.container}>
