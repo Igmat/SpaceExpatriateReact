@@ -58,7 +58,6 @@ export const colonyCards = createCards<ColonyCard>(
       entryPoint: ["fuel", "biotic materials", "minerals"],
       points: 2,
       name: "HELIOSTAT DESERT",
-      isSelected: false,
     } as SelectableEngineeringCard,
     mutateAction: "delivery",
     name: "HELIOSTAT DESERT",

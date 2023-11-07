@@ -6,7 +6,7 @@ import { ActionManager } from "../../Rules/ActionManager";
 
 type CardProps = CardDefinition & {
   onClick?: () => void;
-  isSelected?: boolean;
+  isSelected: boolean;
   action: ActionManager;
 
 }; 

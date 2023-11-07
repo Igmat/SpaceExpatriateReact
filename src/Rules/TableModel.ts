@@ -4,7 +4,6 @@ import {
   DeliveryCard,
   EngineeringCard,
   MilitaryCard,
-  SelectableEngineeringCard,
   TerraformingCard,
 } from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
@@ -22,10 +21,22 @@ export class TableModel {
     );
   }
 
-  delivery: (DeliveryCard & { isSelected: boolean })[] = [];
-  engineering: SelectableEngineeringCard[] = [];
-  terraforming: (TerraformingCard & { isSelected: boolean })[] = [];
-  military: (MilitaryCard & { isSelected: boolean })[] = [];
+  delivery: DeliveryCard[] = [];
+  engineering: EngineeringCard[] = [];
+  terraforming: TerraformingCard[] = [];
+  military: MilitaryCard[] = [];
+
+  selected: {
+    delivery: number[];
+    engineering: number[];
+    terraforming: number[];
+    military: number[];
+  } = {
+    delivery: [],
+    engineering: [],
+    terraforming: [],
+    military: [],
+  };
 
   dropCards = (
     //очистить сброшенные карты со стола
@@ -50,18 +61,19 @@ export class TableModel {
   };
 
   resetSelectedFlags = () => {
-    this.delivery.forEach((card) => (card.isSelected = false));
-    this.engineering.forEach((card) => (card.isSelected = false));
-    this.terraforming.forEach((card) => (card.isSelected = false));
-    this.military.forEach((card) => (card.isSelected = false));
+    this.selected.delivery = [];
+    this.selected.engineering = [];
+    this.selected.terraforming = [];
+    this.selected.military = [];
   };
 
   toggleSelectedFlag = (card: CardDefinition) => {
-    this[card.type].forEach((el) => {
-      if (el.id === card.id) {
-        el.isSelected = !el.isSelected;
-      }
-    });
+    this.selected[card.type].includes(card.id)
+      ? this.selected[card.type].splice(
+          this.selected[card.type].indexOf(card.id),
+          1
+        )
+      : this.selected[card.type].push(card.id);
   };
 
   isOnTable = (card: CardDefinition) => {
