@@ -13,7 +13,6 @@ const findDiff = (arr1: number[], arr2: number[]) => {
 export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
 
     const [resources, setResources] = useState(props.params);
-    const [disabled, setDisabled] = useState(false);
     const originalResources = props.params;
     const playersCount = 4;
 
@@ -27,7 +26,6 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
     const handleRemove = (resource: BasicResource) => {
 
         if ((resources[resource] > 0 && counter < playersCount) || resources[resource] > originalResources[resource]) {
-            setDisabled(false);
             setResources({ ...resources, [resource]: resources[resource] - 1 });
         }
     }
@@ -54,7 +52,7 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
                                 className=
                                 {`
                                     ${counter === playersCount &&
-                                    (originalResources[resource] === resources[resource] || originalResources[resource] < resources[resource]) ?
+                                        (originalResources[resource] === resources[resource] || originalResources[resource] < resources[resource]) ?
                                             styles.disabled :
                                                 styles.button}
                                 `}
@@ -63,8 +61,8 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
                                 className=
                                 {`
                                     ${resources[resource] === 0 ||
-                                        counter === playersCount &&
-                                (originalResources[resource] > resources[resource] || originalResources[resource] === resources[resource]) ?
+                                        (counter === playersCount &&
+                                            (originalResources[resource] > resources[resource] || originalResources[resource] === resources[resource])) ?
                                                 styles.disabled :
                                                     styles.button}
                                 `}
