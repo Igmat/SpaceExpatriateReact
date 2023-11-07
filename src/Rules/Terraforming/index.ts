@@ -40,7 +40,7 @@ export class ActionManager implements IActionManager {
     if (this.missionType) {
       this.round.startPerformingStep();
     }
-    this.table.resetSelectedFlags();
+    this.table.resetSelected();
   };
 
   confirm = () => {
@@ -66,7 +66,7 @@ export class ActionManager implements IActionManager {
 
   activateCardOnTable = async (card: CardDefinition) => {
     const cardIndex = this.cardsToDrop.indexOf(card);
-    this.table.toggleSelectedFlag(card);
+    this.table.toggleSelected(card);
     if (cardIndex !== -1) {
       this.cardsToDrop.splice(cardIndex, 1);
       return true;
@@ -81,7 +81,7 @@ export class ActionManager implements IActionManager {
       this.cardsToDrop.forEach((card) => this.table.takeCard(card));
     }
     this.cardsToDrop = [];
-    this.table.resetSelectedFlags();
+    this.table.resetSelected();
   };
 
   dropCards = () => {

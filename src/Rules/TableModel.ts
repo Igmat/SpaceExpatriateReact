@@ -60,20 +60,24 @@ export class TableModel {
     this[card.type].push(card as any);
   };
 
-  resetSelectedFlags = () => {
+  resetSelected = () => {
     this.selected.delivery = [];
     this.selected.engineering = [];
     this.selected.terraforming = [];
     this.selected.military = [];
   };
 
-  toggleSelectedFlag = (card: CardDefinition) => {
+  toggleSelected = (card: CardDefinition) => {
     this.selected[card.type].includes(card.id)
       ? this.selected[card.type].splice(
           this.selected[card.type].indexOf(card.id),
           1
         )
       : this.selected[card.type].push(card.id);
+  };
+
+  isSelected = (card: CardDefinition) => {
+    return this.selected[card.type].includes(card.id);
   };
 
   isOnTable = (card: CardDefinition) => {
