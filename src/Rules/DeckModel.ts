@@ -11,12 +11,14 @@ export class DeckModel<T extends { id: number }> {
     gameState: GameState
   ) {
     makeAutoObservable(this);
- 
-    const isLoaded = makeAutoSavable(this, gameId, `deckmodel_${type}`, [
-      "_activeCards" as any,
-      "_droppedCards" as any,
-      "openedCard",
-    ], gameState.saveCondition);
+
+    const isLoaded = makeAutoSavable(
+      this,
+      gameId,
+      `deckmodel_${type}`,
+      ["_activeCards" as any, "_droppedCards" as any, "_openedCard"],
+      gameState.saveCondition
+    );
     if (!isLoaded) {
       this.initialize();
     }
@@ -24,24 +26,32 @@ export class DeckModel<T extends { id: number }> {
 
   private _activeCards: number[] = [];
   private _droppedCards: number[] = [];
-  openedCard?: T;
+  private _openedCard?: number;
 
   initialize = () => {
     this._activeCards = Object.keys(this.cardsDefinitions).map((key) =>
-      Number(key));
+      Number(key)
+    );
     this.mixCards();
     this.openCard();
   };
 
+  get openedCard(): T | undefined {
+    if (this._openedCard !== undefined)
+      return this.cardsDefinitions[this._openedCard];
+    return undefined;
+  }
+
   openCard = () => {
-    this.openedCard !== undefined && this.dropCards(this.openedCard.id);
-    this.openedCard = this.takeCard();
+    this._openedCard !== undefined && this.dropCards(this._openedCard);
+    this._openedCard = this.takeCard().id;
   };
 
-  takeOpenedCard() {
-    const result = this.openedCard;
-    this.openedCard = undefined;
-    return result;
+  takeOpenedCard(): T | undefined {
+    if (this._openedCard === undefined) return undefined;
+    const result = this._openedCard;
+    this._openedCard = undefined;
+    return this.cardsDefinitions[result];
   }
 
   takeOpenedCardAndOpenNew = () => {
@@ -78,7 +88,7 @@ export class DeckModel<T extends { id: number }> {
   };
 
   findCard = (card: CardDefinition) => {
-    return card.id === this.openedCard?.id;
+    return card.id === this._openedCard;
   };
 
   get restCount() {
