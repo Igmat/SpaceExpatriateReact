@@ -11,6 +11,7 @@ export class HandModel {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "hand", ["cardsInHand"], this.gameState.saveCondition);
   }
+  
   dropCard = (ind: number) => {
     const card = this.cardsInHand[ind];
     this.cardsInHand.splice(ind, 1);
