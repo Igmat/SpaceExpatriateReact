@@ -209,7 +209,7 @@ export class ResourcesModel {
     this.charterResource = undefined; //обнуление чартера
   };
 
-  createEngineeringMaps = (cards: EngineeringCard[]) => {
+  createEngineeringMaps = (cards: readonly EngineeringCard[]) => {
     if (cards.length === 0) return;
     const startArr: EngineeringCard[] = [];
     const continueArr: EngineeringCard[] = [];

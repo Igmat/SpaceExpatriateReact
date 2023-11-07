@@ -6,7 +6,7 @@ import { makeAutoObservable } from "mobx";
 export class DeckModel<T extends { id: number }> {
   constructor(
     public readonly type: CardType,
-    private readonly cardsDefinitions: { [key: number]: T },
+    public readonly cardsDefinitions: { [key: number]: T },
     gameId: string,
     gameState: GameState
   ) {

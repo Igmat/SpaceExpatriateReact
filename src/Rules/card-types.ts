@@ -33,13 +33,13 @@ export const isCardType = (option: string): option is CardType =>
 export const CardTypes = ["delivery", "engineering", "terraforming", "military"] as const;
 export type CardType = (typeof CardTypes)[number];
 
-export const isSelectableEngineeringCard = (
+export const isEngineeringCard = (
   value: unknown
-): value is SelectableEngineeringCard => {
+): value is EngineeringCard => {
   return (
     typeof value === "object" &&
     !!value &&
-    "isSelected" in value &&
+    // "isSelected" in value &&
     "id" in value &&
     "type" in value &&
     value.type === "engineering" &&

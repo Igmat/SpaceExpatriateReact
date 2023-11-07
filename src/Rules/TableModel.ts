@@ -16,15 +16,46 @@ export class TableModel {
       this,
       gameId,
       "table",
-      ["delivery", "engineering", "terraforming", "military"],
+      ["columns"] as any,
       this.gameState.saveCondition
     );
   }
+  private columns: {
+    delivery: number[];
+    engineering: number[];
+    terraforming: number[];
+    military: number[];
+  } = {
+    delivery: [],
+    engineering: [],
+    terraforming: [],
+    military: [],
+  };
 
-  delivery: DeliveryCard[] = [];
-  engineering: EngineeringCard[] = [];
-  terraforming: TerraformingCard[] = [];
-  military: MilitaryCard[] = [];
+  get delivery(): readonly DeliveryCard[] {
+    return this.columns.delivery.map(
+      (id) => this.gameState.decks.delivery.cardsDefinitions[id]
+    );
+  }
+
+  tempEngineering: EngineeringCard[] = [];
+
+  get engineering(): readonly EngineeringCard[] {
+    return this.columns.engineering.map(
+      (id) => this.gameState.decks.engineering.cardsDefinitions[id]
+    ).concat(this.tempEngineering);
+  }
+
+  get terraforming(): readonly TerraformingCard[] {
+    return this.columns.terraforming.map(
+      (id) => this.gameState.decks.terraforming.cardsDefinitions[id]
+    );
+  }
+  get military(): readonly MilitaryCard[] {
+    return this.columns.military.map(
+      (id) => this.gameState.decks.military.cardsDefinitions[id]
+    );
+  }
 
   selected: {
     delivery: number[];
@@ -39,7 +70,6 @@ export class TableModel {
   };
 
   dropCards = (
-    //очистить сброшенные карты со стола
     ...cards: (
       | DeliveryCard
       | EngineeringCard
@@ -47,17 +77,23 @@ export class TableModel {
       | MilitaryCard
     )[]
   ) => {
-    this.delivery = this.delivery.filter((card) => !cards.includes(card));
-    this.engineering = this.engineering.filter((card) => !cards.includes(card));
-    this.terraforming = this.terraforming.filter(
-      (card) => !cards.includes(card)
+    this.columns.delivery = this.columns.delivery.filter(
+      (id) => !cards.map((card) => card.id).includes(id)
     );
-    this.military = this.military.filter((card) => !cards.includes(card));
+    this.columns.engineering = this.columns.engineering.filter(
+      (id) => !cards.map((card) => card.id).includes(id)
+    );
+    this.columns.terraforming = this.columns.terraforming.filter(
+      (id) => !cards.map((card) => card.id).includes(id)
+    );
+    this.columns.military = this.columns.military.filter(
+      (id) => !cards.map((card) => card.id).includes(id)
+    );
     return cards;
   };
 
   takeCard = (card: CardDefinition) => {
-    this[card.type].push(card as any);
+    this.columns[card.type].push(card.id);
   };
 
   resetSelected = () => {
@@ -81,6 +117,6 @@ export class TableModel {
   };
 
   isOnTable = (card: CardDefinition) => {
-    return this[card.type].some((tableCard) => tableCard.id === card.id);
+    return this.columns[card.type].some((id) => id === card.id);
   };
 }

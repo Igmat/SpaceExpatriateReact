@@ -1,5 +1,5 @@
 import { createCards } from "../CardDefinitions/createCards";
-import { ColonyCard, SelectableEngineeringCard } from "../card-types";
+import { ColonyCard, EngineeringCard} from "../card-types";
 
 export const colonyCards = createCards<ColonyCard>(
   "colony",
@@ -58,12 +58,13 @@ export const colonyCards = createCards<ColonyCard>(
       entryPoint: ["fuel", "biotic materials", "minerals"],
       points: 2,
       name: "HELIOSTAT DESERT",
-    } as SelectableEngineeringCard,
+    } as EngineeringCard,
     mutateAction: "delivery",
     name: "HELIOSTAT DESERT",
     triggers: {
       before: "addTempEngineering",
     },
+    quantity: 100,
   },
 
   // -------------- Engineering ----------------

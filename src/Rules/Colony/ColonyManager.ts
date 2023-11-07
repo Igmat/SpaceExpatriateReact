@@ -8,8 +8,7 @@ import {
   TriggerName,
   TriggerNames,
   expandTrigger,
-  isSelectableEngineeringCard,
-
+  isEngineeringCard
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
@@ -83,17 +82,14 @@ export class ColonyManager {
     adjustGarbage: async () => {},
 
     addTempEngineering: async (colony: ColonyCard) => {
-      if (isSelectableEngineeringCard(colony.data)) {
-        this.table.engineering.push(colony.data);
+      if (isEngineeringCard(colony.data)) {
+        this.table.tempEngineering.push(colony.data);
       }
       return async () => {
-        this.table.engineering.pop();
+        this.table.tempEngineering.pop();
       };
     },
 
-    // removeTempEngineering: async (colony: ColonyCard) => {
-    //   this.table.engineering.pop();
-    // },
 
     addPointsFromColonies: async (colony: ColonyCard) => {
       this.colonyDeck.openedCards.forEach((card) =>
