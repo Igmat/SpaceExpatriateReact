@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import {
   BasicResource,
+  DeliveryCard,
   EngineeringCard,
   Resource,
   ResourcePrimitive,
@@ -64,9 +65,9 @@ export class ResourcesModel {
     FinishCounter: 0,
   };
 
-  getResources = async () => {
+  getResources = async (cards:readonly DeliveryCard[]) => {
     this.dropResources();
-    this.table.delivery.forEach((card) =>
+   cards.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
     Object.keys(this.garbageResources)
@@ -197,7 +198,7 @@ export class ResourcesModel {
     this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
     this.resetEnergy(); // обнуляем счетчик энергии
     this.createEngineeringMaps(this.table.engineering);
-    await this.getResources();
+    await this.getResources(this.table.delivery);
   };
 
   confirmRoundResourceActions = () => {

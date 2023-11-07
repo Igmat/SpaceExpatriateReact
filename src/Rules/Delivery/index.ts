@@ -70,7 +70,7 @@ export class ActionManager implements IActionManager {
       this.resources.removeResourcesFromGarbage(this.selectedResource);
     }
 
-    await this.resources.getResources();
+    await this.resources.getResources(this.table.delivery);
     this.round.startPerformingStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
