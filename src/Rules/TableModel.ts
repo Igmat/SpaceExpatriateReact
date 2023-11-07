@@ -9,6 +9,13 @@ import {
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 
+export interface TableColumns {
+  delivery: number[];
+  engineering: number[];
+  terraforming: number[];
+  military: number[];
+}
+
 export class TableModel {
   constructor(private readonly gameState: GameState, gameId: string) {
     makeAutoObservable(this);
@@ -20,12 +27,7 @@ export class TableModel {
       this.gameState.saveCondition
     );
   }
-  private columns: {
-    delivery: number[];
-    engineering: number[];
-    terraforming: number[];
-    military: number[];
-  } = {
+  private columns:TableColumns = {
     delivery: [],
     engineering: [],
     terraforming: [],
@@ -41,9 +43,9 @@ export class TableModel {
   tempEngineering: EngineeringCard[] = [];
 
   get engineering(): readonly EngineeringCard[] {
-    return this.columns.engineering.map(
-      (id) => this.gameState.decks.engineering.cardsDefinitions[id]
-    ).concat(this.tempEngineering);
+    return this.columns.engineering
+      .map((id) => this.gameState.decks.engineering.cardsDefinitions[id])
+      .concat(this.tempEngineering);
   }
 
   get terraforming(): readonly TerraformingCard[] {
@@ -57,12 +59,7 @@ export class TableModel {
     );
   }
 
-  selected: {
-    delivery: number[];
-    engineering: number[];
-    terraforming: number[];
-    military: number[];
-  } = {
+  selected: TableColumns = {
     delivery: [],
     engineering: [],
     terraforming: [],

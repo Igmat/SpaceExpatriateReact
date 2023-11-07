@@ -28,12 +28,4 @@ export class DeckManager {
     return this[card.type].findCard(card);
   };
 
-  get dropLength() {
-    return (
-      this.delivery.restCount +
-      this.engineering.restCount +
-      this.terraforming.restCount +
-      this.military.restCount
-    );
-  }
 }
