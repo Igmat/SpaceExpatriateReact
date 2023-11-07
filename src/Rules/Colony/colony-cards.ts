@@ -63,8 +63,7 @@ export const colonyCards = createCards<ColonyCard>(
     name: "HELIOSTAT DESERT",
     triggers: {
       before: "addTempEngineering",
-    },
-    quantity: 100,
+    }
   },
 
   // -------------- Engineering ----------------
