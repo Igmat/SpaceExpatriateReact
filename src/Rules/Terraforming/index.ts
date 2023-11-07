@@ -43,8 +43,8 @@ export class ActionManager implements IActionManager {
     this.table.resetSelected();
   };
 
-  confirm = () => {
-    this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
+  confirm = async () => {
+    await this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
     this.colonyDeck.countPoints();
     this._isEnded = true;
   };
@@ -53,11 +53,11 @@ export class ActionManager implements IActionManager {
     return this._isEnded;
   }
 
-  activateDeck = (type: CardType) => {};
+  activateDeck = async (type: CardType) => {};
 
-  activateCard = (card: number) => {};
+  activateCard = async (card: number) => {};
 
-  activateColonyCard = (card: number) => {
+  activateColonyCard = async (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
       return this.buildColony(card); //строим колонию
@@ -76,7 +76,7 @@ export class ActionManager implements IActionManager {
     return true;
   };
 
-  reset = () => {
+  reset = async () => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       this.cardsToDrop.forEach((card) => this.table.takeCard(card));
     }

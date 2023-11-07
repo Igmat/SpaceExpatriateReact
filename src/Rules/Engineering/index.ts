@@ -35,7 +35,7 @@ export class ActionManager implements IActionManager {
     this._remaining.activateCard += value;
   };
 
-  perform = (card: CardDefinition) => {
+  perform = async (card: CardDefinition) => {
     this.adjustRemainingActivateDeck(1);
     this.adjustRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
@@ -46,26 +46,26 @@ export class ActionManager implements IActionManager {
       this._remaining.activateDeck === 0 && this._remaining.activateCard === 0
     );
   }
-  confirm = () => {};
+  confirm = async () => {};
 
-  activateDeck = (type: CardType) => {
+  activateDeck = async (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
     this.adjustRemainingActivateDeck(-1);
     this.table.takeCard(this.decks[type].takeCard());
     //return this.tryNext();
   };
 
-  activateCard = (card: number) => {
+  activateCard = async (card: number) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
     this.table.takeCard(this.hand.dropCard(card));
     // return this.tryNext();
   };
 
-  activateColonyCard = (card: number) => {};
+  activateColonyCard = async (card: number) => {};
   activateCardOnTable = async (card: CardDefinition) => false;
 
-  reset = () => {};
+  reset = async () => {};
 
   isDisabled = (card: CardDefinition): boolean =>
     this.hand.isInHand(card) && this._remaining.activateCard ? false : true;

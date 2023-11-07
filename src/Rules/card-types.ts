@@ -59,7 +59,7 @@ export type CardDefinition =
 export interface DeliveryCard {
   id: number;
   type: "delivery";
-  resources: /*ResourcePrimitive | */ ResourcePrimitive[];
+  resources: BasicResource[];
   // points: number
 }
 

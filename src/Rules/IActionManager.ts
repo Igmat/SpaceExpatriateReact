@@ -1,11 +1,11 @@
 import { CardDefinition, CardType } from "./card-types";
 
 export interface IActionManager {
-  perform: (card: CardDefinition) => void;
-  confirm: () => void;
-  activateDeck: (type: CardType) => void;
-  activateCard: (card: number) => void;
+  perform: (card: CardDefinition) => Promise<void>;
+  confirm: () => Promise<void>;
+  activateDeck: (type: CardType) => Promise<void>;
+  activateCard: (card: number) => Promise<void>;
   activateCardOnTable: (card: CardDefinition) => Promise<boolean>;
-  reset: () => void;
+  reset: () => Promise<void>;
   get isEnded(): boolean;
 }

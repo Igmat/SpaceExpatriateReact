@@ -1,7 +1,6 @@
 import { makeAutoObservable, reaction } from "mobx";
 import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import {
-  BasicResource,
   CardType,
   ColonyCard,
   FullTrigger,
@@ -12,12 +11,13 @@ import {
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
-import { GarbageResources, ResourcesModel } from "../ResourcesModel";
+import { ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
 import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";
 import { DeckManager } from "../DeckManager";
+
 
 export type EffectName = keyof ColonyManager["effects"];
 
@@ -40,46 +40,35 @@ export class ColonyManager {
 
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
-      const getValidCombination = (
-        deliveryResources: BasicResource[][],
-        garbageResources: GarbageResources
-      ) => {
-        const garbageResourcesFiltered = Object.entries(garbageResources)
-          .filter(([_, value]) => value > 0)
-          .reduce(
-            (acc, [key, value]) => ({ ...acc, [key]: value }),
-            {} as GarbageResources
-          );
-        const garbageResourcesArray = Object.keys(garbageResourcesFiltered);
-        return deliveryResources.filter((array) =>
-          array.some((resource) =>
-            garbageResourcesArray.some(
-              (garbageResource) => garbageResource === resource
-            )
-          )
-        );
-      };
 
-      const deliveryResources = this.table.delivery.map(
-        (card) => card.resources as BasicResource[]
-      );
-      const validCardCombinations = getValidCombination(
-        deliveryResources,
-        this.resources.garbageResources
-      );
-      if (validCardCombinations.length === 0) {
-        return;
+      const originalGetResources = this.resources.getResources;
+
+      this.resources.getResources = async () => {
+        const availableCards = this.table.delivery.filter(card =>
+          card.resources
+            .filter(resource => this.resources.garbageResources[resource] > 0).length > 0
+        )
+        if (availableCards.length === 0) {
+          await originalGetResources();
+        } else if (availableCards.length === 1) {
+          await originalGetResources();
+          const resources = availableCards[0].resources;
+          resources.forEach(resource => this.resources.playerResources[resource]++);
+        } else {
+          const selected = await this.gameState.modal.show("blackMarket", availableCards);
+          const originalTableCards = this.table.delivery;
+          this.table.delivery =
+            this.table.delivery.filter(card => card !== selected);
+          await originalGetResources();
+          console.log(this.table.delivery);
+          this.table.delivery = originalTableCards;
+          selected.resources.forEach(resource => this.resources.playerResources[resource]++);
+        }
       }
-      const selected = await this.gameState.modal.show(
-        "resources",
-        validCardCombinations
-      );
-      selected.forEach((resource) => {
-        this.resources.gainResource(resource);
-      });
+      return async () => {
+        this.resources.getResources = originalGetResources;
+      }
     },
-
-    adjustGarbage: async () => {},
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isEngineeringCard(colony.data)) {
@@ -125,7 +114,7 @@ export class ColonyManager {
 
     changeEngineeringLogic: async (colony: ColonyCard) => {
       const currentManager = this.gameState.action.currentManager as EAM;
-      currentManager.activateDeck = (type: CardType) => {
+      currentManager.activateDeck = async (type: CardType) => {
         if (currentManager.remaining.activateDeck === 0) return;
         currentManager.adjustRemainingActivateDeck(-1);
         this.hand.takeCard(this.decks[type].takeCard()!);
