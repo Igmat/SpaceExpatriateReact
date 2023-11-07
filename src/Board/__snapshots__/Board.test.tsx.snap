@@ -50,12 +50,12 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
-          delivery
+          engineering
         </div>
         <div
           className="benefit"
         >
-          Adds extra engineering card with start connection and gives 2 points
+          On Engineering, whenever you need to dock a Station Module from hand/supply,draw a card (from any supply) and then dock a Station Module from your hand instead.This Colony card effect gives its owner the privilege of a wider choice of Station Modules to dock.
         </div>
         <p
           className="points"
@@ -68,7 +68,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          HELIOSTAT DESERT
+          Institute of Technology
         </p>
       </div>
       <div
@@ -78,12 +78,12 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
-          delivery
+          military
         </div>
         <div
           className="benefit"
         >
-          Adds extra engineering card with start connection and gives 2 points
+          Tactical Nanorobotics
         </div>
         <p
           className="points"
@@ -96,7 +96,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          HELIOSTAT DESERT
+          TACTICAL NANOROBOTICS
         </p>
       </div>
       <div
@@ -106,12 +106,12 @@ exports[`Board snapshot 1`] = `
         <div
           className="mutateAction"
         >
-          delivery
+          engineering
         </div>
         <div
           className="benefit"
         >
-          Adds extra engineering card with start connection and gives 2 points
+          On Engineering gain 1 point for each Station Module being docked to your Station during the Action
         </div>
         <p
           className="points"
@@ -124,7 +124,7 @@ exports[`Board snapshot 1`] = `
         <p
           className="name"
         >
-          HELIOSTAT DESERT
+          SPACE INDUSTRY CENTER
         </p>
       </div>
     </div>
