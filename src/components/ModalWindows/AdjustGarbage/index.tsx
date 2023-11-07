@@ -1,43 +1,39 @@
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { ModalOptionsColony } from "../../../Rules/ModalManager"
 import { BasicResource, BasicResources } from "../../../Rules/card-types"
 import { GarbageResources } from "../../../Rules/ResourcesModel"
 import styles from "./AdjustGarbage.module.scss"
 
 const findDiff = (arr1: number[], arr2: number[]) => {
-    let diff: number = 0;
-    arr1.forEach((el, id) => {
-        diff += Math.abs(el - arr2[id]);
-    })
-    return diff;
+    return arr1.reduce((acc, el, id) => {
+        return acc + Math.abs(el - arr2[id]);
+    }, 0)
 }
 
 export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
 
     const [resources, setResources] = useState(props.params);
-    const [counter, setCounter] = useState(0);
+    const [disabled, setDisabled] = useState(false);
     const originalResources = props.params;
     const playersCount = 4;
 
-    useEffect(() => {
-        const diff = findDiff(Object.values(originalResources), Object.values(resources))
-        setCounter(diff);
+    let counter = findDiff(Object.values(originalResources), Object.values(resources));
 
-    }, [originalResources, resources]);
-   
     const handleAdd = (resource: BasicResource) => {
-        if (counter < playersCount) {
-           setResources({ ...resources, [resource]: resources[resource] + 1 });
-        }       
+        if (counter < playersCount || resources[resource] < originalResources[resource]) {
+            setResources({ ...resources, [resource]: resources[resource] + 1 });
+        }
     }
     const handleRemove = (resource: BasicResource) => {
-        if (resources[resource] > 0) {
-            setResources({ ...resources, [resource]: (counter <= playersCount ? resources[resource] - 1 : resources[resource])});
+
+        if ((resources[resource] > 0 && counter < playersCount) || resources[resource] > originalResources[resource]) {
+            setDisabled(false);
+            setResources({ ...resources, [resource]: resources[resource] - 1 });
         }
     }
 
     console.log(counter);
-    
+
 
     return (
         <div className={styles.container}>
@@ -45,19 +41,41 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
             <div className={styles.resourcesContainer}>
                 {BasicResources.map((resource, id) => (
                     <div key={id} className={styles.resources}>
-                        <div
-                            className={`${resource === "biotic materials" ? styles.bioticMaterial : styles[resource]}`}
-                        >
-                            {resources[resource]}
+                        <div className={styles.wrapper}>
+                            <div className={styles.changes}>{Math.abs(originalResources[resource] - resources[resource])}</div>
+                            <div
+                                className={`${resource === "biotic materials" ? styles.bioticMaterial : styles[resource]}`}
+                            >
+                                {resources[resource]}
+                            </div>
                         </div>
                         <div className={styles.buttons}>
-                            <button className={styles.button} onClick={() => handleAdd(resource)}>+</button>
-                            <button className={styles.button} onClick={() => handleRemove(resource)}>-</button>
+                            <button
+                                className=
+                                {`
+                                    ${counter === playersCount &&
+                                    (originalResources[resource] === resources[resource] || originalResources[resource] < resources[resource]) ?
+                                            styles.disabled :
+                                                styles.button}
+                                `}
+                                onClick={() => handleAdd(resource)}>+</button>
+                            <button
+                                className=
+                                {`
+                                    ${resources[resource] === 0 ||
+                                        counter === playersCount &&
+                                (originalResources[resource] > resources[resource] || originalResources[resource] === resources[resource]) ?
+                                                styles.disabled :
+                                                    styles.button}
+                                `}
+
+                                onClick={() => handleRemove(resource)}>-</button>
                         </div>
                     </div>
                 ))}
 
             </div>
+            <div className={styles.counter}>Left {playersCount - counter} resources that can be changed</div>
             <div className={styles.action} onClick={() => props.onSelect(resources)}>Confirm</div>
         </div>
     )
