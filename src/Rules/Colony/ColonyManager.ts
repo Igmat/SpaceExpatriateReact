@@ -18,7 +18,6 @@ import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";
 import { DeckManager } from "../DeckManager";
 
-
 export type EffectName = keyof ColonyManager["effects"];
 
 export class ColonyManager {
@@ -73,9 +72,7 @@ export class ColonyManager {
         "adjustGarbage",
         this.resources.garbageResources
       )
-
       this.resources.garbageResources = adjustedResources;
-
     },
 
     addTempEngineering: async (colony: ColonyCard) => {
