@@ -132,7 +132,7 @@ export class ActionManager implements IActionManager {
     this.tempDroppedCards = []; //очищаем временный сброс
   };
   resetTempDroppedCards = () => {
-    this.tempDroppedCards.forEach((card) => this.hand.cardsInHand.push(card));
+    this.tempDroppedCards.forEach((card) => this.hand.takeCard(card));
     this.tempDroppedCards = [];
   };
 
