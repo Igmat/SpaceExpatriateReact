@@ -4,11 +4,19 @@ import { BasicResource, BasicResources } from "../../../Rules/card-types"
 import { GarbageResources } from "../../../Rules/ResourcesModel"
 import styles from "./AdjustGarbage.module.scss"
 
-const findDiff = (arr1: number[], arr2: number[]) => {
-    return arr1.reduce((acc, el, id) => {
-        return acc + Math.abs(el - arr2[id]);
-    }, 0)
+type ResourceAdjustmentParamsType = {
+    isAdditionBlocked: boolean;
+    isRemovalBlocked: boolean;
 }
+
+type ResourceManipulationType<T> = {
+    [K in BasicResource]: T
+}
+
+const calculateArrayDifference = (arr1: number[], arr2: number[]) =>
+    arr1.reduce((acc, el, id) =>
+        acc + Math.abs(el - arr2[id]
+        ), 0);
 
 export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
 
@@ -16,22 +24,25 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
     const originalResources = props.params;
     const playersCount = 4;
 
-    let counter = findDiff(Object.values(originalResources), Object.values(resources));
+    let resourceDifference = calculateArrayDifference(Object.values(originalResources), Object.values(resources));
+
+    const resourceManipulationObject: ResourceManipulationType<ResourceAdjustmentParamsType> = BasicResources.reduce((acc, resource) => {
+        acc[resource] = {
+            isAdditionBlocked: resourceDifference === playersCount && (originalResources[resource] <= resources[resource]),
+            isRemovalBlocked: resources[resource] === 0 || (resourceDifference === playersCount && (originalResources[resource] >= resources[resource]))
+        };
+        return acc;
+    }, {} as ResourceManipulationType<ResourceAdjustmentParamsType>);
 
     const handleAdd = (resource: BasicResource) => {
-        if (counter < playersCount || resources[resource] < originalResources[resource]) {
-            setResources({ ...resources, [resource]: resources[resource] + 1 });
-        }
+        if (resourceManipulationObject[resource].isAdditionBlocked) return;
+        setResources({ ...resources, [resource]: resources[resource] + 1 });
     }
+
     const handleRemove = (resource: BasicResource) => {
-
-        if ((resources[resource] > 0 && counter < playersCount) || resources[resource] > originalResources[resource]) {
-            setResources({ ...resources, [resource]: resources[resource] - 1 });
-        }
+        if (resourceManipulationObject[resource].isRemovalBlocked) return;
+        setResources({ ...resources, [resource]: resources[resource] - 1 });
     }
-
-    console.log(counter);
-
 
     return (
         <div className={styles.container}>
@@ -40,7 +51,7 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
                 {BasicResources.map((resource, id) => (
                     <div key={id} className={styles.resources}>
                         <div className={styles.wrapper}>
-                            <div className={styles.changes}>{Math.abs(originalResources[resource] - resources[resource])}</div>
+                            <div className={styles.changes}>{resources[resource] - originalResources[resource]}</div>
                             <div
                                 className={`${resource === "biotic materials" ? styles.bioticMaterial : styles[resource]}`}
                             >
@@ -50,30 +61,22 @@ export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) =
                         <div className={styles.buttons}>
                             <button
                                 className=
-                                {`
-                                    ${counter === playersCount &&
-                                        (originalResources[resource] === resources[resource] || originalResources[resource] < resources[resource]) ?
-                                            styles.disabled :
-                                                styles.button}
-                                `}
+                                {`${resourceManipulationObject[resource].isAdditionBlocked ?
+                                    styles.disabled :
+                                    styles.button}`}
                                 onClick={() => handleAdd(resource)}>+</button>
                             <button
                                 className=
-                                {`
-                                    ${resources[resource] === 0 ||
-                                        (counter === playersCount &&
-                                            (originalResources[resource] > resources[resource] || originalResources[resource] === resources[resource])) ?
-                                                styles.disabled :
-                                                    styles.button}
-                                `}
-
+                                {`${resourceManipulationObject[resource].isRemovalBlocked ?
+                                    styles.disabled :
+                                    styles.button}`}
                                 onClick={() => handleRemove(resource)}>-</button>
                         </div>
                     </div>
                 ))}
 
             </div>
-            <div className={styles.counter}>Left {playersCount - counter} resources that can be changed</div>
+            <div className={styles.counter}>Left {playersCount - resourceDifference} resources that can be changed</div>
             <div className={styles.action} onClick={() => props.onSelect(resources)}>Confirm</div>
         </div>
     )
