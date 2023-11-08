@@ -54,7 +54,10 @@ export type CardDefinition =
   | TerraformingCard
   | MilitaryCard;
 
-
+  export interface CardId {
+    id: number;
+    type: CardType;
+  }
 
 export interface DeliveryCard {
   id: number;

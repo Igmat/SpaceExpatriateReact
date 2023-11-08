@@ -10,6 +10,11 @@ import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 import { colonyCards } from "./Colony/colony-cards";
 import { ModalManager } from "./ModalManager";
+import { deliveryCards } from "./CardDefinitions/delivery";
+import { engineeringCards } from "./CardDefinitions/engineering";
+import { terraformingCards } from "./CardDefinitions/terraforming";
+import { militaryCards } from "./CardDefinitions/military";
+
 
 export class GameState {
   constructor(public readonly gameId: string = "") {
@@ -21,6 +26,13 @@ export class GameState {
     if (this.round.current < 5) return true;
     if (this.action.activeAction === undefined) return true;
     return false;
+  };
+  
+  cards = {
+    delivery: deliveryCards,
+    engineering: engineeringCards,
+    terraforming: terraformingCards,
+    military: militaryCards
   };
 
   hand = new HandModel(this, this.gameId);

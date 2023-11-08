@@ -36,7 +36,7 @@ export class TableModel {
 
   get delivery(): readonly DeliveryCard[] {
     return this.columns.delivery.map(
-      (id) => this.gameState.decks.delivery.cardsDefinitions[id]
+      (id) => this.gameState.cards.delivery[id]
     );
   }
 
@@ -44,18 +44,18 @@ export class TableModel {
 
   get engineering(): readonly EngineeringCard[] {
     return this.columns.engineering
-      .map((id) => this.gameState.decks.engineering.cardsDefinitions[id])
+      .map((id) => this.gameState.cards.engineering[id])
       .concat(this.tempEngineering);
   }
 
   get terraforming(): readonly TerraformingCard[] {
     return this.columns.terraforming.map(
-      (id) => this.gameState.decks.terraforming.cardsDefinitions[id]
+      (id) => this.gameState.cards.terraforming[id]
     );
   }
   get military(): readonly MilitaryCard[] {
     return this.columns.military.map(
-      (id) => this.gameState.decks.military.cardsDefinitions[id]
+      (id) => this.gameState.cards.military[id]
     );
   }
 

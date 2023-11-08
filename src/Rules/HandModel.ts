@@ -1,12 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import { CardDefinition, CardType } from "../Rules/card-types";
+import { CardDefinition, CardId} from "../Rules/card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 
-export interface CardId {
-  id: number;
-  type: CardType;
-}
+
 
 export class HandModel {
   private _cardsInHand: CardId[] = [];
@@ -18,13 +15,13 @@ export class HandModel {
   }
   
   get cardsInHand(): readonly CardDefinition[] {
-    return this._cardsInHand.map((cardId) => this.gameState.decks[cardId.type].cardsDefinitions[cardId.id]);
+    return this._cardsInHand.map((cardId) => this.gameState.cards[cardId.type][cardId.id]);
   }
 
   dropCard = (ind: number) => {
     const card = this._cardsInHand[ind];
     this._cardsInHand.splice(ind, 1);
-    return this.gameState.decks[card.type].cardsDefinitions[card.id];
+    return this.gameState.cards[card.type][card.id];
   };
 
   takeCard(card?: CardDefinition) {
