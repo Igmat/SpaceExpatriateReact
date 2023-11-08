@@ -1,5 +1,5 @@
 import { FC, useState } from "react"
-import { ModalOptionsColony } from "../../../Rules/ModalManager"
+import { ModalUnifiedOptions } from "../../../Rules/ModalManager"
 import { BasicResource, BasicResources } from "../../../Rules/card-types"
 import { GarbageResources } from "../../../Rules/ResourcesModel"
 import styles from "./AdjustGarbage.module.scss"
@@ -18,13 +18,13 @@ const calculateArrayDifference = (arr1: number[], arr2: number[]) =>
         acc + Math.abs(el - arr2[id]
         ), 0);
 
-export const AdjustGarbage: FC<ModalOptionsColony<GarbageResources>> = (props) => {
+export const AdjustGarbage: FC<ModalUnifiedOptions<GarbageResources>> = (props) => {
 
     const [resources, setResources] = useState(props.params);
     const originalResources = props.params;
     const playersCount = 4;
 
-    let resourceDifference = calculateArrayDifference(Object.values(originalResources), Object.values(resources));
+    const resourceDifference = calculateArrayDifference(Object.values(originalResources), Object.values(resources));
 
     const resourceManipulationObject: ResourceManipulationType<ResourceAdjustmentParamsType> = BasicResources.reduce((acc, resource) => {
         acc[resource] = {

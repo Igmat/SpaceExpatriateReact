@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { ModalOptions } from "../../../Rules/ModalManager";
+import { ModalVariousOptions } from "../../../Rules/ModalManager";
 import { DeliveryCard } from "../../../Rules/card-types";
 import styles from "./styles.module.scss";
 
-export const BlackMarketModal: FC<ModalOptions<DeliveryCard>> = (props) => { 
+export const BlackMarketModal: FC<ModalVariousOptions<DeliveryCard>> = (props) => {
     return (
         <div className={styles.modal}>
             {props.params && props.params.map((card, id) => (
@@ -13,4 +13,4 @@ export const BlackMarketModal: FC<ModalOptions<DeliveryCard>> = (props) => {
             ))}
         </div>
     );
-    }
+}

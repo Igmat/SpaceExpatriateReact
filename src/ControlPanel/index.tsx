@@ -7,7 +7,7 @@ import { TerraformingModal } from "../components/ModalWindows/TerraformingModal"
 import { MillitaryModal } from "../components/ModalWindows/MillitaryModal";
 import { ChooseResource } from "../components/ModalWindows/ChooseResource";
 import { DeliveryResourcesModal } from "../components/ModalWindows/DeliveryActionWindow/DeliveryResourcesModal";
-import { ModalOptions } from "../Rules/ModalManager";
+import { ModalVariousOptions } from "../Rules/ModalManager";
 import { AdjustGarbage } from "../components/ModalWindows/AdjustGarbage";
 import { BlackMarketModal } from "../components/ModalWindows/BlackMarketModal";
 
@@ -29,9 +29,9 @@ export const ControlPanel = observer(() => {
   const modalService = useModalService();
 
   useEffect(() => {
-    if (!gameState.modal.type || !gameState.modal.onSelect || !gameState.modal.params) return;    
+    if (!gameState.modal.type || !gameState.modal.onSelect || !gameState.modal.params) return;
     modalService.show(
-      modals[gameState.modal.type] as FC<ModalOptions<unknown>>,
+      modals[gameState.modal.type] as FC<ModalVariousOptions<unknown>>,
       gameState.modal.onSelect,
       gameState.modal.params,
       true

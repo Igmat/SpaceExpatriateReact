@@ -1,9 +1,9 @@
 import styles from "./Military.module.scss";
-import { ModalOptions } from "../../../Rules/ModalManager";
+import { ModalVariousOptions } from "../../../Rules/ModalManager";
 import { FC } from "react";
 import { Militaryoption } from "../../../Rules/Military";
 
-export const MillitaryModal: FC<ModalOptions<Militaryoption>> = (props) => {
+export const MillitaryModal: FC<ModalVariousOptions<Militaryoption>> = (props) => {
 
   return (
     <div className={styles.modal}>

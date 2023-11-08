@@ -1,12 +1,12 @@
 import { makeAutoObservable } from "mobx";
 import type { ModalType } from "../ControlPanel";
 
-export type ModalOptions<T> = {
+export type ModalVariousOptions<T> = {
     onSelect: (selected: T) => void;
     params: readonly T[];
 }
 
-export type ModalOptionsColony<T> = {
+export type ModalUnifiedOptions<T> = {
     onSelect: (selected: T) => void;
     params: T;
 }
@@ -27,7 +27,7 @@ export class ModalManager {
     get params() {
         return this._params;
     }
-    
+
     get onSelect() {
         return this._onSelect;
     }
@@ -37,7 +37,7 @@ export class ModalManager {
         this._type = type;
 
         this._params = params;
-        
+
         return new Promise((resolve) => {
             this._onSelect = (selected) => {
                 resolve(selected as T);
