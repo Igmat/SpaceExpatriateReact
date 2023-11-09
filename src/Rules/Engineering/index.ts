@@ -37,7 +37,7 @@ export class ActionManager implements IActionManager {
 
   perform = (card: GeneralCard) => {
     this.adjustRemainingActivateDeck(1);
-    this.adjustRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
+    this.adjustRemainingActivateCard(this.hand.cardsInHand.cards.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
   };
 
@@ -51,7 +51,7 @@ export class ActionManager implements IActionManager {
   activateDeck = (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
     this.adjustRemainingActivateDeck(-1);
-    this.table.takeCard(this.decks[type].takeCard());
+   this.table.takeCard(this.decks[type].takeCard());
     //return this.tryNext();
   };
 

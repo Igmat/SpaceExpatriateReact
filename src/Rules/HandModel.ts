@@ -1,39 +1,56 @@
 import { makeAutoObservable } from "mobx";
 import { GeneralCard } from "../Rules/card-types";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { DeliveryCard } from "./Cards/delivery";
-import { EngineeringCard } from "./Cards/engineering";
-import { MilitaryCard } from "./Cards/military";
-import { TerraformingCard } from "./Cards/terraforming";
 
-export class HandModel{
-  public cardsInHand: GeneralCard[] = [];
+export class HandModel {
+  cardsInHand = {
+    takeCard: (card: GeneralCard) => {
+      //  dropCard
+      this.cardsInHand.cards.filter((cardInHand) => cardInHand !== card);
+      return card; // не очень правильно)
+    },
+    placeCard: (card: GeneralCard) => {
+      return card;
+    },
+    cards: [] as GeneralCard[],
+  };
+
+  drop = {
+    takeCard: (card: GeneralCard) => {
+      return card; // не очень правильно)
+    },
+    placeCard: (card: GeneralCard) => {
+      this.drop._droppedCards.push(card.id);
+      return card;
+    },
+    _droppedCards: [] as number[],
+  };
+
   public tempDroppedCards: GeneralCard[] = [];
 
   constructor(gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "hand", ["cardsInHand", "tempDroppedCards"]);
+  }
+  placeCard(card: GeneralCard): GeneralCard {
+    throw new Error("Method not implemented.");
   }
 
   dropCard = (ind: number) => {
-    const card = this.cardsInHand[ind];
-    this.cardsInHand.splice(ind, 1); //вырезаем карту из руки
+    //move
+    const card = this.cardsInHand.cards[ind];
+    card.move(this.cardsInHand, this.cardsInHand);
     return card;
   };
 
-  takeCard(card?: GeneralCard) {
-    card && this.cardsInHand.push(card);
+  takeCard(card: GeneralCard) {
+    //арг был ?
+    card && this.cardsInHand.cards.push(card);
+    return card;
   }
 
   isInHand = (card: GeneralCard): boolean => {
-    return this.cardsInHand.some(
+    /*return this.cardsInHand.some(
       (handCard) => handCard.id === card.id && card.type === handCard.type
-    );
+    );*/
+    return true;
   };
-/*
-  isInHand = (id: number): boolean => {
-    return this.cardsInHand.some(
-      (handCard) => handCard.id === id && card.type === handCard.type
-    );
-  };**/
 }

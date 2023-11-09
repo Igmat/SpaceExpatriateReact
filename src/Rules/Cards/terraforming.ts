@@ -29,15 +29,14 @@ export class TerraformingCard
   public points: number;
   constructor(public id: number, data: TerraformingCardDefinition) {
     super();
-
-    this.name = data.name;
-    this.resources = data.resources;
-    this.points = data.points;
-
     makeObservable(this, {
       name: observable,
       resources: observable,
       points: observable,
-    });
+    })
+    this.name = data.name;
+    this.resources = data.resources;
+    this.points = data.points;
   }
+
 }

@@ -4,6 +4,7 @@ import { CardsMethods } from ".";
 import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
 import { TableModel } from "../TableModel";
+import { ICardPlace } from "./ICardPlace";
 
 /*
 export interface DeliveryCard {
@@ -23,10 +24,9 @@ export class DeliveryCard
   public resources: ResourcePrimitive[];
   constructor(public id: number, data: DeliveryCardDefinition) {
     super();
-
-    this.resources = data.resources;
-    makeObservable(this, {
+   /* makeObservable(this, {
       resources: observable,
-    });
+    });*/
+    this.resources = data.resources;
   }
 }

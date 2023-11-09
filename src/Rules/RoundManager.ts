@@ -2,7 +2,6 @@ import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 type Phase = "active" | CardType | "passive";
@@ -13,20 +12,20 @@ export class RoundManager {
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
     private readonly colonyDeck: ColonyDeckModel,
-    gameId: string,
+    gameId: string
   ) {
     makeAutoObservable(this);
-    const isLoaded = makeAutoSavable(this, gameId, "round", [
-      "current",
-      "phase",
-      { key: "_step" as any, condition: (value) => value !== "resources" },
-    ]);
-    if (!isLoaded) {
+
+    /*
       this.hand.takeCard(this.decks.delivery.takeCard());
       this.hand.takeCard(this.decks.engineering.takeCard());
       this.hand.takeCard(this.decks.military.takeCard());
-      this.hand.takeCard(this.decks.terraforming.takeCard());
-    }
+      this.hand.takeCard(this.decks.terraforming.takeCard());*/
+
+    this.hand.takeCard(this.decks.delivery.active.takeCard());
+    this.hand.takeCard(this.decks.engineering.active.takeCard());
+    this.hand.takeCard(this.decks.military.active.takeCard());
+    this.hand.takeCard(this.decks.terraforming.active.takeCard());
   }
 
   current = 1;
@@ -51,7 +50,7 @@ export class RoundManager {
   private setStep(step: Step) {
     this._step = step;
   }
-  
+
   startPerformingStep() {
     this.setStep("performing");
   }
@@ -68,9 +67,15 @@ export class RoundManager {
   }
 
   get isConfirmable(): boolean {
-    return this.step === "performing" && (this.phase === "delivery" || this.phase === "terraforming");
+    return (
+      this.step === "performing" &&
+      (this.phase === "delivery" || this.phase === "terraforming")
+    );
   }
   get isEndable(): boolean {
-    return this.step === "performing" && (this.phase === "military" || this.phase === "engineering");
+    return (
+      this.step === "performing" &&
+      (this.phase === "military" || this.phase === "engineering")
+    );
   }
 }

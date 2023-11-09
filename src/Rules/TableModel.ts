@@ -1,22 +1,14 @@
 import { makeAutoObservable } from "mobx";
-import {
-  GeneralCard, SelectableEngineeringCard } from "./card-types";
+import { GeneralCard, SelectableEngineeringCard } from "./card-types";
 import { DeliveryCard } from "./Cards/delivery";
 import { EngineeringCard } from "./Cards/engineering";
 import { MilitaryCard } from "./Cards/military";
 import { TerraformingCard } from "./Cards/terraforming";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
+import { ICardPlace } from "./Cards/ICardPlace";
 
-
-export class TableModel  {
+export class TableModel implements ICardPlace {
   constructor(gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "table", [
-      "delivery",
-      "engineering",
-      "terraforming",
-      "military",
-    ]);
   }
 
   delivery: (DeliveryCard & { isSelected: boolean })[] = [];
@@ -43,8 +35,15 @@ export class TableModel  {
   };
 
   takeCard = (card: GeneralCard) => {
+    console.log(card);
     this[card.type].push(card as any);
+    
+    return card;
   };
+  placeCard(card: GeneralCard): GeneralCard {
+    this[card.type].push(card as any);
+    return card;
+  }
 
   resetSelectedFlags = () => {
     this.delivery.forEach((card) => (card.isSelected = false));

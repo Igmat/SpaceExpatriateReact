@@ -41,20 +41,19 @@ export class EngineeringCard
     data: EngineeringCardDefinition,
   ) {
     super();
-
-    this.name = data.name;
-    this.connection = data.connection;
-    this.points = data.points;
-    this.entryPoint = data.entryPoint;
-    this.exitPoint = data.exitPoint;
-
     makeObservable(this, {
       name: observable,
       connection: observable,
       entryPoint: observable,
       exitPoint: observable,
       points: observable,
+    })
+    this.name = data.name;
+    this.connection = data.connection;
+    this.points = data.points;
+    this.entryPoint = data.entryPoint;
+    this.exitPoint = data.exitPoint;
 
-    });
   }
+
 }

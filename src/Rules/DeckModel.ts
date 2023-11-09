@@ -1,85 +1,101 @@
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GeneralCard, CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
 
-//export class DeckModel<T extends { id: number }> {
 export class DeckModel<T extends GeneralCard> {
-
   constructor(
     public readonly type: CardType,
-    private readonly cardsDefinitions: { [key: number]: T },
+    private readonly cardsDefinitions: { [key: number]: T }, //GenerealCard?
     gameId: string
   ) {
     makeAutoObservable(this);
-    const isLoaded = makeAutoSavable(this, gameId, `deckmodel_${type}`, [
-      "_activeCards" as any,
-      "_droppedCards" as any,
-      "openedCard",
-    ]);
-    if (!isLoaded) {
-      this.initialize();
-    }
+
+    this.initialize();
+  }
+  takeCard(card?: GeneralCard | undefined): GeneralCard {
+    console.log("Method not implemented takeCard in . DeckModel");
+    return card!;
   }
 
-  private _activeCards: number[] = [];
-  private _droppedCards: number[] = [];
-  openedCard?: T;
-
   initialize = () => {
-    this._activeCards = Object.keys(this.cardsDefinitions);
+    this.active.cards = this.cardsDefinitions;
     this.mixCards();
     this.openCard();
   };
 
-  openCard = () => {
-    this.openedCard !== undefined && this.dropCards(this.openedCard.id);
-    this.openedCard = this.takeCard();
+  openedCard = {
+    takeCard: (card: T) => {
+      const result = this.openedCard.card!;
+      this.openedCard = { ...this.openedCard, card: undefined };
+      return result;
+    },
+    placeCard: (card: T) => {
+      this.openedCard = { ...this.openedCard, card };
+
+      return card;
+    },
+    card: undefined as T | undefined,
   };
 
-  takeOpenedCard() {
-    const result = this.openedCard;
-    this.openedCard = undefined;
-    return result;
-  }
+  drop = {
+    takeCard: (card: T) => {
+      return card; // не очень правильно)
+    },
+    placeCard: (card: T) => {
+      this.drop._droppedCards.push(card);
+      return card;
+    },
+    _droppedCards: [] as T[],
+  };
 
-  takeOpenedCardAndOpenNew = () => {
-    const result = this.takeOpenedCard();
-    this.openCard();
+  active = {
+    takeCard: () => {
+      const keys = Object.keys(this.active.cards);
+      const cardA = this.active.cards[keys[0]];
+      if (keys.length === 1) {
+        this.active.cards = this.drop._droppedCards;
+        this.drop._droppedCards = [];
+        this.mixCards();
+        console.log("i mix cards");
+      }
+      delete this.active.cards[keys[0]];
+      return cardA;
+    },
+    placeCard: (card: T) => {
+      return card;
+    },
+    cards: {} as { [key: number]: T },
+  };
 
-    return result;
+  openCard = () => {
+    this.openedCard.card !== undefined && this.openedCard.card.move(this.openedCard, this.drop);
+    const keys = Object.keys(this.active.cards);
+    this.active.cards[keys[0]].move(this.active, this.openedCard);
   };
 
   private mixCards() {
-    const result: number[] = [];
-    const restCards = [...this._activeCards];
-
-    while (restCards.length > 0) {
-      const randomIndex = Math.floor(Math.random() * restCards.length);
-      result.push(restCards[randomIndex]);
-      restCards.splice(randomIndex, 1);
+    const keys = Object.keys(this.active.cards);
+    for (let i = keys.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.active.cards[keys[i]], this.active.cards[keys[j]]] = [
+        this.active.cards[keys[j]],
+        this.active.cards[keys[i]],
+      ];
     }
-    this._activeCards = result;
+
+    return this.active.cards;
   }
 
-  takeCard = (): T => {
-    const idOfCard = this._activeCards.pop()!;
-    if (this._activeCards.length === 0) {
-      this._activeCards = this._droppedCards;
-      this._droppedCards = [];
-      this.mixCards();
-    }
-    return this.cardsDefinitions[idOfCard];
+  findCard = (card: T) => {
+    // return card.id === this.openedCard?.id;
+    // return  card.id === this.openedCard?.takeCard(card).id;
   };
-
-  dropCards = (...cards: number[]) => {
-    this._droppedCards.push(...cards);
-  };
-
-  findCard = (card: GeneralCard) => {
-    return card.id === this.openedCard?.id;
-  };
+  get showId() {
+    const keys = Object.keys(this.active.cards);
+    const card = this.active.cards[keys[0]];
+    return card && card.id;
+  }
 
   get restCount() {
-    return this._droppedCards.length;
+    return this.drop._droppedCards.length;
   }
 }

@@ -20,7 +20,7 @@ interface TableProps {
 
 export const Table = observer((props: TableProps) => {
   const handleClick = (card: GeneralCard) => {
-    console.log(card)
+   // console.log(card)
     props.action.activateCardOnTable(card);
   };
 

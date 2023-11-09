@@ -115,7 +115,7 @@ export class ActionManager implements IActionManager {
   };
 
   addCardsToTempDrop = (ind: number) => {
-    const card = this.hand.cardsInHand[ind];
+    const card = this.hand.cardsInHand.cards[ind];
     this.tempDroppedCards.push(card); //пушим карту во временный сброс
     this.hand.dropCard(ind); //вырезаем карту из руки
     return card;
@@ -131,7 +131,7 @@ export class ActionManager implements IActionManager {
     this.tempDroppedCards = []; //очищаем временный сброс
   };
   resetTempDroppedCards = () => {
-    this.tempDroppedCards.forEach((card) => this.hand.cardsInHand.push(card));
+    this.tempDroppedCards.forEach((card) => this.hand.cardsInHand.cards.push(card));
     this.tempDroppedCards = [];
   };
 

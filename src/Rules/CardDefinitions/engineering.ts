@@ -111,4 +111,4 @@ export const engineeringCards = createCards(
   }
 );
 
-console.log(engineeringCards[2]);
+//console.log(engineeringCards[2]);

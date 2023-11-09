@@ -5,6 +5,7 @@ import { militaryCards } from "./CardDefinitions/military";
 import { terraformingCards } from "./CardDefinitions/terraforming";
 import { DeckModel } from "./DeckModel";
 import { GeneralCard } from "./card-types";
+import { ICardPlace } from "./Cards/ICardPlace";
 
 export class DeckManager {
   constructor(private readonly gameId: string) {
@@ -16,7 +17,9 @@ export class DeckManager {
   military = new DeckModel("military", militaryCards, this.gameId);
 
   dropCards = (...cards: GeneralCard[]) => {
-    cards.forEach((card) => this[card.type].dropCards(card.id));
+   // cards.forEach((card) => this[card.type].dropCards(card.id));
+   cards.forEach((card: GeneralCard) => this[card.type].drop.placeCard(card as any));
+  
   };
 
   isInDeck = (card: GeneralCard) => {

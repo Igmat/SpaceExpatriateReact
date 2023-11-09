@@ -34,13 +34,13 @@ export class MilitaryCard
 
   ) {
     super();
-    this.name = data.name;
-    this.weapon = data.weapon;
-
     makeObservable(this, {
       name: observable,
       weapon: observable,
-    });
+    })
+    this.name = data.name;
+    this.weapon = data.weapon;
+
   }
 
 }

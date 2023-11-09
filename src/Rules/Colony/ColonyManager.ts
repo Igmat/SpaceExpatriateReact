@@ -99,7 +99,7 @@ export class ColonyManager {
       );
     },
     addPointsForMissionType: async (colony: ColonyCard) => {
-      this.hand.cardsInHand.forEach((card) => {
+      this.hand.cardsInHand.cards.forEach((card) => {
         if (
           card.type ===
           (this.gameState.action.currentManager as TAM).missionType

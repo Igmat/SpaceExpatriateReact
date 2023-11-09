@@ -73,11 +73,10 @@ export class ActionManager {
     if (this.round.phase !== "active") return;
 
     this.activeAction = card.type;
-    this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
-    /*
-    const from = this.decks[card.type]
-    const to = this.table
-    card.move(from, to)*/
+   // this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
+    const from = this.decks[card.type].openedCard
+    const to = this.table 
+    card.move(from, to)
     if (this.round.current < 5) {
       this.nextRound();
       return;
@@ -93,7 +92,7 @@ export class ActionManager {
     this.activeAction && (await this.colony.triggers.after(this.activeAction));
     this.colony.cancelActiveEffects();
     this.round.next();
-    this.activeAction = undefined;
+  this.activeAction = undefined;
   };
 
   confirm = () => {

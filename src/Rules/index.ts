@@ -22,7 +22,7 @@ export class GameState {
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);
   table = new TableModel(this.gameId);
   modal = new ModalManager();
-  //cards = new  CardsMethods(this.decks, this.table, this.hand)
+  cards = new  CardsMethods()
   round = new RoundManager(this.decks, this.hand, this.colonyDeck, this.gameId);
   resources = new ResourcesModel(this.table, this.modal, this.gameId);
   colony = new ColonyManager(this, this.gameId, this.table, this.resources, this.colonyDeck, this.hand, this.decks);
