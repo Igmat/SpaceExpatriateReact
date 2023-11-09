@@ -11,22 +11,22 @@ exports[`Board snapshot 1`] = `
       className="garbage"
     >
       <div
-        className="biotic"
-      >
-        0
-      </div>
-      <div
         className="fuel"
       >
         0
       </div>
       <div
-        className="machinery"
+        className="minerals"
       >
         0
       </div>
       <div
-        className="minerals"
+        className="biotic"
+      >
+        0
+      </div>
+      <div
+        className="machinery"
       >
         0
       </div>

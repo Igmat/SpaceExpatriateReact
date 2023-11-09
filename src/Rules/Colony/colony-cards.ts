@@ -30,7 +30,6 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "On Delivery one of your Delivery Station Modules ignores Space Garbage",
-    // whenIsActivated: "during",
     mutateAction: "delivery",
     players: 2,
     name: "BLACK MARKET",
@@ -42,10 +41,11 @@ export const colonyCards = createCards<ColonyCard>(
   {
     benefit:
       "Before Delivery add/remove a resource to/from Space Garbage. You may do this as many times as there are players in the game",
-    // whenIsActivated: "before",
     mutateAction: "delivery",
     name: "SPACE LIFT",
-    triggers: {},
+    triggers: {
+      before: "adjustGarbage",
+    },
   },
 
   {

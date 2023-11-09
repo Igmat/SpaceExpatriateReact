@@ -1,9 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import type { ModalType } from "../ControlPanel";
 
-export type ModalOptions<T> = {
+export type ModalVariousOptions<T> = {
     onSelect: (selected: T) => void;
-    params?: readonly T[];
+    params: readonly T[];
+}
+
+export type ModalUnifiedOptions<T> = {
+    onSelect: (selected: T) => void;
+    params: T;
 }
 export class ModalManager {
     constructor(
@@ -12,7 +17,7 @@ export class ModalManager {
     }
 
     private _type?: ModalType = undefined;
-    private _params?: readonly unknown[] = undefined;
+    private _params?: unknown | readonly unknown[] = undefined;
     private _onSelect?: (selected: unknown) => void = undefined;
 
     get type() {
@@ -22,17 +27,17 @@ export class ModalManager {
     get params() {
         return this._params;
     }
-    
+
     get onSelect() {
         return this._onSelect;
     }
 
-    async show<T>(type: ModalType, params?: readonly T[]): Promise<T> {
+    async show<T>(type: ModalType, params: T | readonly T[]): Promise<T> {
 
         this._type = type;
 
         this._params = params;
-        
+
         return new Promise((resolve) => {
             this._onSelect = (selected) => {
                 resolve(selected as T);
