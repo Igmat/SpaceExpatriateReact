@@ -18,7 +18,6 @@ import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";
 import { DeckManager } from "../DeckManager";
 
-
 export type EffectName = keyof ColonyManager["effects"];
 
 export class ColonyManager {
@@ -59,7 +58,6 @@ export class ColonyManager {
           this.table.delivery =
             this.table.delivery.filter(card => card !== selected);
           await originalGetResources();
-          console.log(this.table.delivery);
           this.table.delivery = originalTableCards;
           selected.resources.forEach(resource => this.resources.playerResources[resource]++);
         }
@@ -67,6 +65,14 @@ export class ColonyManager {
       return async () => {
         this.resources.getResources = originalGetResources;
       }
+    },
+
+    adjustGarbage: async (colony: ColonyCard) => {
+      const adjustedResources = await this.gameState.modal.show(
+        "adjustGarbage",
+        this.resources.garbageResources
+      )
+      this.resources.garbageResources = adjustedResources;
     },
 
     addTempEngineering: async (colony: ColonyCard) => {
