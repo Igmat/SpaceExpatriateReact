@@ -23,7 +23,7 @@ export class TableModel {
       this,
       gameId,
       "table",
-      ["columns"] as any,
+      ["columns"  as any],
       this.gameState.saveCondition
     );
   }

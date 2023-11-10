@@ -13,7 +13,7 @@ export function makeAutoSavable<T>(
   gameId: string,
   prefix: string,
   keys: (keyof T | AutoSavableProperty<T>)[] = [],
-  saveCondition?: () => boolean,
+  saveCondition?: () => boolean
 ) {
   const savedData = localStorage.getItem(`${prefix}_${gameId}`);
   if (savedData) {
@@ -24,22 +24,19 @@ export function makeAutoSavable<T>(
     });
   }
 
-  let data:Partial<T> = {};
+  let data: Partial<T> = {};
 
   autorun(() => {
     data = keys.reduce((acc, property) => {
       const key = isKey(property) ? property : property.key;
-      const condition = (isKey(property) ? undefined : property.condition) || (() => true);
+      const condition =
+        (isKey(property) ? undefined : property.condition) || (() => true);
       acc[key] = condition(object[key]) ? object[key] : data[key];
       return acc;
     }, {} as any);
-    if (saveCondition!==undefined && saveCondition()) {
-    localStorage.setItem(`${prefix}_${gameId}`, JSON.stringify(data));
-    }
-    if (saveCondition===undefined) {
+    if (saveCondition === undefined || saveCondition()) {
       localStorage.setItem(`${prefix}_${gameId}`, JSON.stringify(data));
     }
   });
   return !!savedData;
 }
-
