@@ -22,7 +22,7 @@ export class DeckModel<T extends GeneralCard> {
     this.openCard();
   };
 
-  openedCard = {
+  openedCard = {//открытая колода = new Place
     takeCard: (card: T) => {
       const result = this.openedCard.card!;
       this.openedCard = { ...this.openedCard, card: undefined };
@@ -30,7 +30,6 @@ export class DeckModel<T extends GeneralCard> {
     },
     placeCard: (card: T) => {
       this.openedCard = { ...this.openedCard, card };
-
       return card;
     },
     card: undefined as T | undefined,
@@ -38,7 +37,17 @@ export class DeckModel<T extends GeneralCard> {
 
   drop = {
     takeCard: (card: T) => {
-      return card; // не очень правильно)
+      const index = this.drop._droppedCards.findIndex(
+        (droppedCard) => droppedCard.id === card.id
+      );
+
+      if (index !== -1) {
+        const removedCard = this.drop._droppedCards.splice(index, 1)[0];
+        return removedCard;
+      }
+
+      return card;
+      // не очень правильно)
     },
     placeCard: (card: T) => {
       this.drop._droppedCards.push(card);
@@ -47,7 +56,7 @@ export class DeckModel<T extends GeneralCard> {
     _droppedCards: [] as T[],
   };
 
-  active = {
+  active = {//закрытая колода
     takeCard: () => {
       const keys = Object.keys(this.active.cards);
       const cardA = this.active.cards[keys[0]];
@@ -67,7 +76,8 @@ export class DeckModel<T extends GeneralCard> {
   };
 
   openCard = () => {
-    this.openedCard.card !== undefined && this.openedCard.card.move(this.openedCard, this.drop);
+    this.openedCard.card !== undefined &&
+      this.openedCard.card.move(this.openedCard, this.drop);
     const keys = Object.keys(this.active.cards);
     this.active.cards[keys[0]].move(this.active, this.openedCard);
   };
