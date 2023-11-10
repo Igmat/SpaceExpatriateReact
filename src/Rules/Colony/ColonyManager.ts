@@ -7,7 +7,7 @@ import {
   TriggerName,
   TriggerNames,
   expandTrigger,
-  isSelectableEngineeringCard,
+  isEngineeringCard
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
@@ -31,6 +31,7 @@ export class ColonyManager {
     private readonly decks: DeckManager
   ) {
     makeAutoObservable(this);
+    if (!gameId) return;
     makeAutoSavable(this, this.gameId, "colony", ["colonies"]);
   }
 
@@ -46,22 +47,17 @@ export class ColonyManager {
           card.resources
             .filter(resource => this.resources.garbageResources[resource] > 0).length > 0
         )
+
         if (availableCards.length === 0) {
-          await originalGetResources();
-        } else if (availableCards.length === 1) {
-          await originalGetResources();
-          const resources = availableCards[0].resources;
-          resources.forEach(resource => this.resources.playerResources[resource]++);
-        } else {
-          const selected = await this.gameState.modal.show("blackMarket", availableCards);
-          const originalTableCards = this.table.delivery;
-          this.table.delivery =
-            this.table.delivery.filter(card => card !== selected);
-          await originalGetResources();
-          this.table.delivery = originalTableCards;
-          selected.resources.forEach(resource => this.resources.playerResources[resource]++);
+          return await originalGetResources(this.table.delivery);
         }
+
+        const selected = availableCards.length===1? availableCards[0]: await this.gameState.modal.show("blackMarket", availableCards);
+        await originalGetResources(this.table.delivery.filter(card => card !== selected));
+        const resources = selected.resources;
+        resources.forEach(resource => this.resources.playerResources[resource]++); 
       }
+
       return async () => {
         this.resources.getResources = originalGetResources;
       }
@@ -76,17 +72,14 @@ export class ColonyManager {
     },
 
     addTempEngineering: async (colony: ColonyCard) => {
-      if (isSelectableEngineeringCard(colony.data)) {
-        this.table.engineering.push(colony.data);
+      if (isEngineeringCard(colony.data)) {
+        this.table.tempEngineering.push(colony.data);
       }
       return async () => {
-        this.table.engineering.pop();
+        this.table.tempEngineering.pop();
       };
     },
 
-    // removeTempEngineering: async (colony: ColonyCard) => {
-    //   this.table.engineering.pop();
-    // },
 
     addPointsFromColonies: async (colony: ColonyCard) => {
       this.colonyDeck.openedCards.forEach((card) =>

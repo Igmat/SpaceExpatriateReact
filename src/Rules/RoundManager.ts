@@ -16,10 +16,11 @@ export class RoundManager {
     gameId: string,
   ) {
     makeAutoObservable(this);
+    if (!gameId) return;
     const isLoaded = makeAutoSavable(this, gameId, "round", [
       "current",
-      "phase",
-      { key: "_step" as any, condition: (value) => value !== "resources" },
+      // "phase",
+      // { key: "_step" as any, condition: (value) => value !== "resources" },
     ]);
     if (!isLoaded) {
       this.hand.takeCard(this.decks.delivery.takeCard());

@@ -5,7 +5,7 @@ import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
 import { HandModel } from "../HandModel";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+// import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 //не заканчивается раунд
 export class ActionManager implements IActionManager {
@@ -17,7 +17,7 @@ export class ActionManager implements IActionManager {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "engineeringManager", ["_remaining" as any]);
+    // makeAutoSavable(this, gameId, "engineeringManager", ["_remaining" as any]);
   }
 
   private _remaining = {

@@ -10,6 +10,7 @@ export class ColonyDeckModel {
     gameId: string
   ) {
     makeAutoObservable(this);
+    if (!gameId) return;
     const isLoaded = makeAutoSavable(this, gameId, "colonyDeck", [
       "_activeCards" as any,
       "openedCards",

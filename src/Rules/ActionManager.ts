@@ -13,9 +13,11 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyManager } from "./Colony/ColonyManager";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 import { ModalManager } from "./ModalManager";
+import { GameState } from ".";
 
 export class ActionManager {
   constructor(
+    private readonly gameState: GameState,
     private readonly decks: DeckManager,
     private readonly table: TableModel,
     private readonly round: RoundManager,
@@ -24,10 +26,10 @@ export class ActionManager {
     private readonly gameId: string,
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly modal: ModalManager
+    private readonly modal: ModalManager,
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, `action`, [`activeAction`]);
+    makeAutoSavable(this, gameId, `action`, [`activeAction`],this.gameState.saveCondition);
   }
 
   private managers = {

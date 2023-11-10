@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import {
   BasicResource,
+  DeliveryCard,
   EngineeringCard,
   Resource,
   ResourcePrimitive,
@@ -11,6 +12,7 @@ import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 import { ModalManager } from "./ModalManager";
+import { GameState } from ".";
 
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
@@ -20,6 +22,7 @@ export type GarbageResources = Omit<PlayerResources, "dark matter">;
 
 export class ResourcesModel {
   constructor(
+    private readonly gameState: GameState,
     private readonly table: TableModel,
     private readonly modal: ModalManager,
     gameId: string
@@ -27,13 +30,8 @@ export class ResourcesModel {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "resources", [
       "garbageResources",
-      "playerResources",
-      "tempGarbageResources",
-      "charterResource",
-      "engineeringMaps",
       "points",
-      "_energy" as any,
-    ]);
+    ], this.gameState.saveCondition);
   }
 
   public playerResources: PlayerResources = {
@@ -67,9 +65,9 @@ export class ResourcesModel {
     FinishCounter: 0,
   };
 
-  getResources = async () => {
+  getResources = async (cards:readonly DeliveryCard[]) => {
     this.dropResources();
-    this.table.delivery.forEach((card) =>
+   cards.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
     Object.keys(this.garbageResources)
@@ -200,7 +198,7 @@ export class ResourcesModel {
     this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
     this.resetEnergy(); // обнуляем счетчик энергии
     this.createEngineeringMaps(this.table.engineering);
-    await this.getResources();
+    await this.getResources(this.table.delivery);
   };
 
   confirmRoundResourceActions = () => {
@@ -211,7 +209,7 @@ export class ResourcesModel {
     this.charterResource = undefined; //обнуление чартера
   };
 
-  createEngineeringMaps = (cards: EngineeringCard[]) => {
+  createEngineeringMaps = (cards: readonly EngineeringCard[]) => {
     if (cards.length === 0) return;
     const startArr: EngineeringCard[] = [];
     const continueArr: EngineeringCard[] = [];

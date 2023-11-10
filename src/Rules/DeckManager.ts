@@ -1,20 +1,20 @@
 import { makeAutoObservable } from "mobx";
-import { deliveryCards } from "./CardDefinitions/delivery";
-import { engineeringCards } from "./CardDefinitions/engineering";
-import { militaryCards } from "./CardDefinitions/military";
-import { terraformingCards } from "./CardDefinitions/terraforming";
 import { DeckModel } from "./DeckModel";
 import { CardDefinition } from "./card-types";
+import { GameState } from ".";
 
 export class DeckManager {
-  constructor(private readonly gameId: string) {
+  constructor(
+    private readonly gameState: GameState,
+    private readonly gameId: string
+  ) {
     makeAutoObservable(this);
   }
 
-  delivery = new DeckModel("delivery", deliveryCards, this.gameId);
-  engineering = new DeckModel("engineering", engineeringCards, this.gameId);
-  terraforming = new DeckModel("terraforming", terraformingCards, this.gameId);
-  military = new DeckModel("military", militaryCards, this.gameId);
+  delivery = new DeckModel("delivery", this.gameState.cards.delivery, this.gameId, this.gameState);
+  engineering = new DeckModel("engineering", this.gameState.cards.engineering, this.gameId, this.gameState);
+  terraforming = new DeckModel("terraforming", this.gameState.cards.terraforming, this.gameId, this.gameState);
+  military = new DeckModel("military", this.gameState.cards.military, this.gameId, this.gameState);
 
   dropCards = (...cards: CardDefinition[]) => {
     cards.forEach((card) => this[card.type].dropCards(card.id));
@@ -24,12 +24,4 @@ export class DeckManager {
     return this[card.type].findCard(card);
   };
 
-  get dropLength() {
-    return (
-      this.delivery.restCount +
-      this.engineering.restCount +
-      this.terraforming.restCount +
-      this.military.restCount
-    );
-  }
 }

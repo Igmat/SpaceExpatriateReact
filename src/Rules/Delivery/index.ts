@@ -14,7 +14,7 @@ import { ResourcesModel } from "../ResourcesModel";
 import { HandModel } from "../HandModel";
 import { RoundManager } from "../RoundManager";
 import { DeckManager } from "../DeckManager";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
+// import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ModalManager } from "../ModalManager";
 
 const DeliveryOptions = ["charter", "garbage"] as const;
@@ -31,12 +31,12 @@ export class ActionManager implements IActionManager {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "deliveryManager", [
-      "calculatedResources",
-      "deliveryOption",
-      "usedTerraformingCards",
-      "tempDroppedCards",
-    ]);
+    // makeAutoSavable(this, gameId, "deliveryManager", [
+    //   "calculatedResources",
+    //   "deliveryOption",
+    //   "usedTerraformingCards",
+    //   "tempDroppedCards",
+    // ]);
   }
 
   public calculatedResources: Resource[] = [];
@@ -70,7 +70,7 @@ export class ActionManager implements IActionManager {
       this.resources.removeResourcesFromGarbage(this.selectedResource);
     }
 
-    await this.resources.getResources();
+    await this.resources.getResources(this.table.delivery);
     this.round.startPerformingStep();
     this.resources.createEngineeringMaps(this.table.engineering);
   };
@@ -132,7 +132,7 @@ export class ActionManager implements IActionManager {
     this.tempDroppedCards = []; //очищаем временный сброс
   };
   resetTempDroppedCards = () => {
-    this.tempDroppedCards.forEach((card) => this.hand.cardsInHand.push(card));
+    this.tempDroppedCards.forEach((card) => this.hand.takeCard(card));
     this.tempDroppedCards = [];
   };
 
