@@ -1,8 +1,8 @@
-import { TerraformingCard } from "../card-types";
+import { TerraformingCard } from "../Cards/terraforming";
 import { createCards } from "./createCards";
 
-export const terraformingCards = createCards<TerraformingCard>(
-  "terraforming",
+export const terraformingCards = createCards(
+  TerraformingCard,
 
   {
     name: "Power Station",

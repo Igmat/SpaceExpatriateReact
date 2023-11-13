@@ -5,7 +5,7 @@ import { Card } from "../../components/Card";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import { CardDefinition, CardTypes } from "../../Rules/card-types";
+import { CardTypes, GeneralCard } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { ColonyCard } from "../../components/ColonyCard";
 import { ColonyManager } from "../../Rules/Colony/ColonyManager";
@@ -19,7 +19,7 @@ interface TableProps {
 }
 
 export const Table = observer((props: TableProps) => {
-  const handleClick = (card: CardDefinition) => {
+  const handleClick = (card:  GeneralCard) => {
     props.action.activateCardOnTable(card);
   };
 

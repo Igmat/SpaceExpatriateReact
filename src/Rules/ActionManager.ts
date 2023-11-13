@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType } from "./card-types";
+import { CardDefinition, CardType, GeneralCard } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
@@ -69,13 +69,17 @@ export class ActionManager {
     return this.activeAction && this.managers[this.activeAction];
   }
 
-  perform = async (card?: CardDefinition) => {
+  perform = async (card?: GeneralCard) => {
     if (!card) return;
 
     if (this.round.phase !== "active") return;
 
     this.activeAction = card.type;
-    this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
+   this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
+   /* const from = this.decks[card.type].openedCard
+    const to = this.table 
+    card.move(from, to)*/
+
 
     if (this.round.current < 5) {
       this.nextRound();
@@ -115,15 +119,15 @@ export class ActionManager {
     this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateCardOnTable = async (card: CardDefinition) => {
+  activateCardOnTable = async (card: GeneralCard) => {
     await this.currentManager?.activateCardOnTable(card);
     this.currentManager?.isEnded && await this.nextRound();
   };
 
   reset = async () => await this.currentManager?.reset();
 
-  get isDisabled(): (card: CardDefinition) => boolean {
-    return (card: CardDefinition) => {
+  get isDisabled(): (card:GeneralCard) => boolean {
+    return (card:GeneralCard) => {
       if (!this.activeAction) return !this.decks.isInDeck(card);
       return this.managers[this.activeAction].isDisabled(card);
     };

@@ -1,11 +1,11 @@
 import { makeAutoObservable } from "mobx";
-import {
-  CardDefinition,
-  DeliveryCard,
-  EngineeringCard,
-  MilitaryCard,
-  TerraformingCard,
-} from "./card-types";
+import { GeneralCard} from "./card-types";
+import { DeliveryCard } from "./Cards/delivery";
+import { EngineeringCard } from "./Cards/engineering";
+import { MilitaryCard } from "./Cards/military";
+import { TerraformingCard } from "./Cards/terraforming";
+
+
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 
@@ -89,7 +89,7 @@ export class TableModel {
     return cards;
   };
 
-  takeCard = (card: CardDefinition) => {
+  takeCard = (card: GeneralCard) => {
     this.columns[card.type].push(card.id);
   };
 
@@ -100,7 +100,7 @@ export class TableModel {
     this.selected.military = [];
   };
 
-  toggleSelected = (card: CardDefinition) => {
+  toggleSelected = (card: GeneralCard) => {
     this.selected[card.type].includes(card.id)
       ? this.selected[card.type].splice(
           this.selected[card.type].indexOf(card.id),
@@ -109,11 +109,11 @@ export class TableModel {
       : this.selected[card.type].push(card.id);
   };
 
-  isSelected = (card: CardDefinition) => {
+  isSelected = (card:GeneralCard) => {
     return this.selected[card.type].includes(card.id);
   };
 
-  isOnTable = (card: CardDefinition) => {
+  isOnTable = (card: GeneralCard) => {
     return this.columns[card.type].some((id) => id === card.id);
   };
 }

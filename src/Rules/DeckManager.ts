@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckModel } from "./DeckModel";
-import { CardDefinition } from "./card-types";
+import { CardDefinition, GeneralCard } from "./card-types";
 import { GameState } from ".";
 
 export class DeckManager {
@@ -16,11 +16,11 @@ export class DeckManager {
   terraforming = new DeckModel("terraforming", this.gameState.cards.terraforming, this.gameId, this.gameState);
   military = new DeckModel("military", this.gameState.cards.military, this.gameId, this.gameState);
 
-  dropCards = (...cards: CardDefinition[]) => {
+  dropCards = (...cards: GeneralCard[]) => {
     cards.forEach((card) => this[card.type].dropCards(card.id));
   };
 
-  isInDeck = (card: CardDefinition) => {
+  isInDeck = (card: GeneralCard) => {
     return this[card.type].findCard(card);
   };
 

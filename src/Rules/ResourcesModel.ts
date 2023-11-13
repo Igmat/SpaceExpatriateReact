@@ -1,18 +1,14 @@
+import { GameState } from ".";
 import { makeAutoObservable } from "mobx";
-import {
-  BasicResource,
-  DeliveryCard,
-  EngineeringCard,
-  Resource,
-  ResourcePrimitive,
-  TerraformingCard,
-} from "./card-types";
+import { BasicResource, Resource, ResourcePrimitive } from "./card-types";
 import { TableModel } from "./TableModel";
 import { generateCombinations, toArrayArray } from "../Utils";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyCardWithPoints } from "./Colony/ColonyDeckModel";
 import { ModalManager } from "./ModalManager";
-import { GameState } from ".";
+import { EngineeringCard } from "./Cards/engineering";
+import { TerraformingCard } from "./Cards/terraforming";
+import { DeliveryCard } from "./Cards/delivery";
 
 export type PlayerResources = {
   [key in ResourcePrimitive]: number;
@@ -28,10 +24,13 @@ export class ResourcesModel {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "resources", [
-      "garbageResources",
-      "points",
-    ], this.gameState.saveCondition);
+    makeAutoSavable(
+      this,
+      gameId,
+      "resources",
+      ["garbageResources", "points"],
+      this.gameState.saveCondition
+    );
   }
 
   public playerResources: PlayerResources = {
@@ -65,16 +64,15 @@ export class ResourcesModel {
     FinishCounter: 0,
   };
 
-  getResources = async (cards:readonly DeliveryCard[]) => {
+  getResources = async (cards: readonly DeliveryCard[]) => {
     this.dropResources();
-   cards.forEach((card) =>
+    cards.forEach((card) =>
       card.resources.forEach((res) => this.playerResources[res]++)
     );
-    Object.keys(this.garbageResources)
-      .forEach(key => {
-        this.playerResources[key] -= this.garbageResources[key]
-        if (this.playerResources[key] < 0) this.playerResources[key] = 0;
-      })
+    Object.keys(this.garbageResources).forEach((key) => {
+      this.playerResources[key] -= this.garbageResources[key];
+      if (this.playerResources[key] < 0) this.playerResources[key] = 0;
+    });
 
     this.charterResource && this.playerResources[this.charterResource]++;
   };
@@ -84,13 +82,15 @@ export class ResourcesModel {
   };
 
   dropToGarbage = () => {
-    Object.keys(this.garbageResources)
-      .forEach(key => this.garbageResources[key] = this.playerResources[key])
+    Object.keys(this.garbageResources).forEach(
+      (key) => (this.garbageResources[key] = this.playerResources[key])
+    );
   };
 
   dropResources = () => {
-    Object.keys(this.playerResources)
-      .forEach(key => this.playerResources[key] = 0)
+    Object.keys(this.playerResources).forEach(
+      (key) => (this.playerResources[key] = 0)
+    );
   };
 
   consumeResources = (resources: ResourcePrimitive[]) => {
@@ -156,18 +156,16 @@ export class ResourcesModel {
       return;
     }
     const selected = await this.modal.show("resources", combinations);
-      selected.forEach((resource) => {
+    selected.forEach((resource) => {
       this.gainResource(resource);
-    })
+    });
   }
 
   gainResource = (resource: ResourcePrimitive) => {
     this.playerResources[resource]++;
   };
 
-  removeResourcesFromGarbage = (
-    resource: BasicResource
-  ) => {
+  removeResourcesFromGarbage = (resource: BasicResource) => {
     this.garbageResources[resource] = 0;
   };
 
@@ -176,7 +174,7 @@ export class ResourcesModel {
     this.points.total += colonyPoints;
     delete selectedCard.points;
   };
-  
+
   addPoints = (points: number) => {
     this.points.total += points;
   };

@@ -1,14 +1,13 @@
 import styles from "./Card.module.scss";
-import { CardDefinition } from "../../Rules/card-types";
+import { CardDefinition, GeneralCard } from "../../Rules/card-types";
 import { ResourceComponent } from "../ResourceComponent";
 import { observer } from "mobx-react-lite";
 import { ActionManager } from "../../Rules/ActionManager";
 
-type CardProps = CardDefinition & {
+type CardProps = GeneralCard & {
   onClick?: () => void;
   isSelected: boolean;
   action: ActionManager;
-
 }; 
 //проверка на активность карты делать тут
 export const Card = observer((props: CardProps) => {

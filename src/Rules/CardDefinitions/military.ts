@@ -1,8 +1,8 @@
-import { MilitaryCard } from "../card-types";
+import { MilitaryCard } from "../Cards/military";
 import { createCards } from "./createCards";
 
-export const militaryCards = createCards<MilitaryCard>(
-  "military",
+export const militaryCards = createCards(
+  MilitaryCard,
   { weapon: "fighters", quantity:8, name:"Fighters"},
   { weapon: "spaceborne", quantity:8, name:"Spaceborne"},
   { weapon: "orbital", quantity:8, name:"Orbital"},

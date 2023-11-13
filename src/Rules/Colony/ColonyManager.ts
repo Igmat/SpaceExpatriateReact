@@ -2,7 +2,6 @@ import { makeAutoObservable, reaction } from "mobx";
 import { ColonyCardWithPoints, ColonyDeckModel } from "./ColonyDeckModel";
 import {
   CardType,
-  ColonyCard,
   FullTrigger,
   TriggerName,
   TriggerNames,
@@ -17,6 +16,7 @@ import { HandModel } from "../HandModel";
 import { ActionManager as TAM } from "../Terraforming";
 import { ActionManager as EAM } from "../Engineering";
 import { DeckManager } from "../DeckManager";
+import { ColonyCard } from "../Cards/colony";
 
 export type EffectName = keyof ColonyManager["effects"];
 

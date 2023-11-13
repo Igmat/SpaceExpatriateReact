@@ -1,8 +1,10 @@
 import { createCards } from "../CardDefinitions/createCards";
-import { ColonyCard, EngineeringCard} from "../card-types";
+import { ColonyCard } from "../Cards/colony";
+import { EngineeringCard } from "../Cards/engineering";
 
-export const colonyCards = createCards<ColonyCard>(
-  "colony",
+
+export const colonyCards = createCards(
+ ColonyCard,
 
   // -------------- Delivery ----------------
   /*{

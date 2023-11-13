@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { CardDefinition, CardId} from "../Rules/card-types";
+import { CardId, GeneralCard} from "../Rules/card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 
@@ -7,14 +7,14 @@ import { GameState } from ".";
 
 export class HandModel {
   private _cardsInHand: CardId[] = [];
-  public tempDroppedCards: CardDefinition[] = [];
+  public tempDroppedCards: GeneralCard [] = [];
 
   constructor(private readonly gameState: GameState, gameId: string) {
     makeAutoObservable(this);
     makeAutoSavable(this, gameId, "hand", ["_cardsInHand" as any], this.gameState.saveCondition);
   }
   
-  get cardsInHand(): readonly CardDefinition[] {
+  get cardsInHand(): readonly GeneralCard[] {
     return this._cardsInHand.map((cardId) => this.gameState.cards[cardId.type][cardId.id]);
   }
 
@@ -24,11 +24,11 @@ export class HandModel {
     return this.gameState.cards[card.type][card.id];
   };
 
-  takeCard(card?: CardDefinition) {
+  takeCard(card?: GeneralCard) {
     card && this._cardsInHand.push({id:card.id, type: card.type});
   }
 
-  isInHand = (card: CardDefinition): boolean => {
+  isInHand = (card: GeneralCard): boolean => {
     return this.cardsInHand.some(
       (handCard) => handCard.id === card.id && card.type === handCard.type
     );

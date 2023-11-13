@@ -1,9 +1,9 @@
-import { EngineeringCard } from "../card-types";
+import { EngineeringCard } from "../Cards/engineering";
 import { createCards } from "./createCards";
 
-export const engineeringCards = createCards<EngineeringCard>(
-    "engineering",
-    { connection: "continue", exitPoint: ["fuel"], name: "REMOTE CONTROL PUMPJACK", quantity: 2 },
+export const engineeringCards = createCards(
+  EngineeringCard,
+  {connection: "continue", exitPoint: ["fuel"], name: "REMOTE CONTROL PUMPJACK", quantity: 2 },
     { connection: "continue", exitPoint: ["minerals"], name: "MINING ROBOTS", quantity: 2 },
     { connection: "continue", exitPoint: ["biotic materials"], name: "BIOTIC MATERIALS LAB", quantity: 2 },
     { connection: "continue", entryPoint: "fuel", exitPoint: [["machinery", "nanotechnologies"]], name: "SPECIALIZED SPACE FACTORY", quantity: 2 },

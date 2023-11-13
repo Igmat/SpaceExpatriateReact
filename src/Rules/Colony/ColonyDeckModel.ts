@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
-import { ColonyCard } from "../card-types";
+import { ColonyCard } from "../Cards/colony";
 
 export type ColonyCardWithPoints = ColonyCard & { points?: number };
 
