@@ -1,6 +1,6 @@
 import { GameState } from ".";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { CardDefinition, CardType, GeneralCard } from "./card-types";
+import { CardType, GeneralCard } from "./card-types";
 import { makeAutoObservable } from "mobx";
 
 export class DeckModel<T extends { id: number }> {
@@ -54,12 +54,6 @@ export class DeckModel<T extends { id: number }> {
     return this.cardsDefinitions[result];
   }
 
-  takeOpenedCardAndOpenNew = () => {
-    const result = this.takeOpenedCard();
-    this.openCard();
-
-    return result;
-  };
 
   private mixCards() {
     const result: number[] = [];

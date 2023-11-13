@@ -10,10 +10,13 @@ import {
   import { DeckModel } from "../DeckModel";
   
   export class CardsMethods {
-    public place?: "hand" | "deck" | "table" = undefined;
+    public placeFrom?: "hand" | "deck" | "table" = undefined;
+    public placeNow?: "hand" | "deck" | "table" = undefined;
+    
     constructor() {
       makeObservable(this, {
-        place: observable,
+        placeFrom: observable,
+        placeNow: observable,
         isInHand: computed,
         isInDeck: computed,
         isOnTable: computed,
@@ -21,14 +24,15 @@ import {
       });
     }
     public get isInHand() {
-      return this.place === "hand";
+      return this.placeNow === "hand";
     }
   
     public get isInDeck() {
-      return this.place === "deck";
+      return this.placeNow === "deck";
     }
+
     public get isOnTable() {
-      return this.place === "table";
+      return this.placeNow === "table";
     }
   
     public move(from: ICardPlace, to: ICardPlace) {

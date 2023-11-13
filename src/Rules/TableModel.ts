@@ -4,8 +4,6 @@ import { DeliveryCard } from "./Cards/delivery";
 import { EngineeringCard } from "./Cards/engineering";
 import { MilitaryCard } from "./Cards/military";
 import { TerraformingCard } from "./Cards/terraforming";
-
-
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 import { TablePlace } from "./Places/TablePlace";
@@ -28,13 +26,15 @@ export class TableModel {
       this.gameState.saveCondition
     );*/
   }
-  private columns:TableColumns = {
-    delivery = new TablePlace<DeliveryCard>('передать карты ', this.gameId),
-    engineering = new TablePlace(EngineeringCard, this.gameId),
-    terraforming = new TablePlace(TerraformingCard, this.gameId),
-    military = new TablePlace(MilitaryCard, this.gameId),
+
+  public columns:TableColumns = {
+    delivery = new TablePlace<DeliveryCard>("delivery", this.gameState.cards.delivery, this.gameId),
+    engineering = new TablePlace<EngineeringCard>("engineering", this.gameState.cards.engineering, this.gameId),
+    terraforming = new TablePlace<TerraformingCard>("terraforming", this.gameState.cards.terraforming, this.gameId),
+    military = new TablePlace<MilitaryCard>("military", this.gameState.cards.military, this.gameId),
   };
 
+/*
   get delivery(): readonly DeliveryCard[] {
     return this.columns.delivery.map(
       (id) => this.gameState.cards.delivery[id]
@@ -59,7 +59,7 @@ export class TableModel {
       (id) => this.gameState.cards.military[id]
     );
   }
-
+*/
   selected: TableColumns = {
     delivery: [],
     engineering: [],
@@ -67,6 +67,7 @@ export class TableModel {
     military: [],
   };
 
+  /*
   dropCards = (
     ...cards: (
       | DeliveryCard
@@ -88,12 +89,12 @@ export class TableModel {
       (id) => !cards.map((card) => card.id).includes(id)
     );
     return cards;
-  };
-
+  };*/
+/*
   takeCard = (card: GeneralCard) => {
     this.columns[card.type].push(card.id);
   };
-
+*/
   resetSelected = () => {
     this.selected.delivery = [];
     this.selected.engineering = [];
@@ -113,8 +114,9 @@ export class TableModel {
   isSelected = (card:GeneralCard) => {
     return this.selected[card.type].includes(card.id);
   };
-
+/*
   isOnTable = (card: GeneralCard) => {
     return this.columns[card.type].some((id) => id === card.id);
   };
+  */
 }

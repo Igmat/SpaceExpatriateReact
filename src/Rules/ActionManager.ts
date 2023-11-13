@@ -75,10 +75,10 @@ export class ActionManager {
     if (this.round.phase !== "active") return;
 
     this.activeAction = card.type;
-   this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
-   /* const from = this.decks[card.type].openedCard
-    const to = this.table 
-    card.move(from, to)*/
+   //this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
+   const from = this.decks[card.type].openedCard
+    const to = this.table.columns[card.type].takeCard(card).placeNow
+    card.move(from, to)
 
 
     if (this.round.current < 5) {
