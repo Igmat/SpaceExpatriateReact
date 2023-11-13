@@ -6,7 +6,7 @@ import {
   } from "mobx";
   import { HandModel } from "../HandModel";
   import { TableModel } from "../TableModel";
- import { ICardPlace } from "./ICardPlace";
+ import { ICardPlace } from "../Places/ICardPlace";
   import { DeckModel } from "../DeckModel";
   
   export class CardsMethods {

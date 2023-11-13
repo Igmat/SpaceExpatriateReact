@@ -8,6 +8,7 @@ import { TerraformingCard } from "./Cards/terraforming";
 
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
+import { TablePlace } from "./Places/TablePlace";
 
 export interface TableColumns {
   delivery: number[];
@@ -17,21 +18,21 @@ export interface TableColumns {
 }
 
 export class TableModel {
-  constructor(private readonly gameState: GameState, gameId: string) {
+  constructor(private readonly gameState: GameState, private readonly gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(
+   /* makeAutoSavable(
       this,
       gameId,
       "table",
       ["columns"  as any],
       this.gameState.saveCondition
-    );
+    );*/
   }
   private columns:TableColumns = {
-    delivery: [],
-    engineering: [],
-    terraforming: [],
-    military: [],
+    delivery = new TablePlace<DeliveryCard>('передать карты ', this.gameId),
+    engineering = new TablePlace(EngineeringCard, this.gameId),
+    terraforming = new TablePlace(TerraformingCard, this.gameId),
+    military = new TablePlace(MilitaryCard, this.gameId),
   };
 
   get delivery(): readonly DeliveryCard[] {
