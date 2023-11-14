@@ -21,10 +21,10 @@ export class TableModel {
   }
 
   public columns = {
-    delivery: new TablePlace("delivery", this.gameState.cards.delivery, this.gameId),
-    engineering: new TablePlace("engineering", this.gameState.cards.engineering, this.gameId),
-    terraforming: new TablePlace("terraforming", this.gameState.cards.terraforming, this.gameId),
-    military: new TablePlace("military", this.gameState.cards.military, this.gameId),
+    delivery: new TablePlace("delivery", this.gameState.cards, this.gameId),
+    engineering: new TablePlace("engineering", this.gameState.cards, this.gameId),
+    terraforming: new TablePlace("terraforming", this.gameState.cards, this.gameId),
+    military: new TablePlace("military", this.gameState.cards, this.gameId),
   };
 
 /*

@@ -14,7 +14,18 @@ import { deliveryCards } from "./CardDefinitions/delivery";
 import { engineeringCards } from "./CardDefinitions/engineering";
 import { terraformingCards } from "./CardDefinitions/terraforming";
 import { militaryCards } from "./CardDefinitions/military";
+import { BasicCard } from "./Cards";
+import { DeliveryCard } from "./Cards/delivery";
+import { EngineeringCard } from "./Cards/engineering";
+import { MilitaryCard } from "./Cards/military";
+import { TerraformingCard } from "./Cards/terraforming";
 
+export interface GameStateCards {
+  delivery: { [key: number]: DeliveryCard };
+  engineering: { [key: number]: EngineeringCard };
+  terraforming: { [key: number]: TerraformingCard };
+  military: { [key: number]: MilitaryCard };
+}
 
 export class GameState {
   constructor(public readonly gameId: string = "") {
@@ -28,7 +39,7 @@ export class GameState {
     return false;
   };
   
-  cards = {
+  cards: GameStateCards = {
     delivery: deliveryCards,
     engineering: engineeringCards,
     terraforming: terraformingCards,

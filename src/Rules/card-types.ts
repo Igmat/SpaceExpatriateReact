@@ -51,6 +51,7 @@ export const CardTypes = ["delivery", "engineering", "terraforming", "military"]
 export type CardType = (typeof CardTypes)[number];
 
 export const isEngineeringCard = (
+  
   value: unknown
 ): value is EngineeringCard => {
   return (

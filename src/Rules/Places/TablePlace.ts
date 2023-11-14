@@ -1,13 +1,16 @@
 import { makeAutoObservable } from "mobx";
 import { EngineeringCard } from "../Cards/engineering";
-import { CardType, GeneralCard } from "../card-types";
+import { CardId, CardType, GeneralCard } from "../card-types";
 import { ICardPlace } from "./ICardPlace";
 import { BasicCard } from "../Cards";
+import { GameStateCards } from "..";
 
-export class TablePlace<T extends BasicCard> implements ICardPlace<T> {
+
+
+export class TablePlace implements ICardPlace<BasicCard, CardId> {
     constructor(
         private prefix: CardType,
-        private readonly cardsCollection: { [key: number]: T },
+        private readonly cardsCollection: GameStateCards,
         gameId: string,
 
     ) {
@@ -21,24 +24,24 @@ export class TablePlace<T extends BasicCard> implements ICardPlace<T> {
         );*/
     }
 
-    private cardsId: number[] = []
+    private cardsOnTable: CardId[] = []
     tempEngineering: EngineeringCard[] = [];
 
-    get cards(): readonly T[] {
-        return this.cardsId.map(
-            (id) => this.cardsCollection[id]
+    get cards(): readonly GeneralCard[] {
+        return this.cardsOnTable.map(
+            (card) => this.cardsCollection[card.type][card.id]
         )//.concat(this.tempEngineering);
     }
 
     //выписывает карту из места
-    takeCard(id: number): T {
-        this.cardsId = this.cardsId.filter(el => el !== id)
-        return this.cardsCollection[id]
+    takeCard(card: CardId): GeneralCard {
+        this.cardsOnTable = this.cardsOnTable.filter(el => el.id !== card.id)
+        return this.cardsCollection[card.type][card.id]
     }
 
     //записывает карту в место
-    placeCard(card: T) {
+    placeCard(card: CardId) {
         if (card === undefined) return;
-        this.cardsId.push(card.id);
+        this.cardsOnTable.push({ id: card.id, type: card.type });
     }
 }

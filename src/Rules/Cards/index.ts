@@ -30,7 +30,7 @@ export class BasicCard {
     return this.place instanceof TablePlace;
   }
 
-  public move(to: ICardPlace<T>) {
+  public move(to: ICardPlace<BasicCard>) {
     to.placeCard(this.place.takeCard(this.id));
     this.place = to;
   }
