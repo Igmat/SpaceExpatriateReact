@@ -1,14 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import { GeneralCard} from "./card-types";
-import { DeliveryCard } from "./Cards/delivery";
-import { EngineeringCard } from "./Cards/engineering";
-import { MilitaryCard } from "./Cards/military";
-import { TerraformingCard } from "./Cards/terraforming";
-
-
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 import { TablePlace } from "./Places/TablePlace";
+
 
 export interface TableColumns {
   delivery: number[];
@@ -17,24 +12,22 @@ export interface TableColumns {
   military: number[];
 }
 
+
 export class TableModel {
-  constructor(private readonly gameState: GameState, private readonly gameId: string) {
+  constructor(
+    private readonly gameState: GameState,
+    private readonly gameId: string) {
     makeAutoObservable(this);
-   /* makeAutoSavable(
-      this,
-      gameId,
-      "table",
-      ["columns"  as any],
-      this.gameState.saveCondition
-    );*/
   }
-  private columns:TableColumns = {
-    delivery = new TablePlace<DeliveryCard>('передать карты ', this.gameId),
-    engineering = new TablePlace(EngineeringCard, this.gameId),
-    terraforming = new TablePlace(TerraformingCard, this.gameId),
-    military = new TablePlace(MilitaryCard, this.gameId),
+
+  public columns = {
+    delivery: new TablePlace("delivery", this.gameState.cards.delivery, this.gameId),
+    engineering: new TablePlace("engineering", this.gameState.cards.engineering, this.gameId),
+    terraforming: new TablePlace("terraforming", this.gameState.cards.terraforming, this.gameId),
+    military: new TablePlace("military", this.gameState.cards.military, this.gameId),
   };
 
+/*
   get delivery(): readonly DeliveryCard[] {
     return this.columns.delivery.map(
       (id) => this.gameState.cards.delivery[id]
@@ -59,7 +52,7 @@ export class TableModel {
       (id) => this.gameState.cards.military[id]
     );
   }
-
+*/
   selected: TableColumns = {
     delivery: [],
     engineering: [],
@@ -67,14 +60,12 @@ export class TableModel {
     military: [],
   };
 
+  
   dropCards = (
-    ...cards: (
-      | DeliveryCard
-      | EngineeringCard
-      | TerraformingCard
-      | MilitaryCard
-    )[]
+    ...cards: GeneralCard[]
   ) => {
+    cards.forEach(card => card.move(this.drop))
+    /*
     this.columns.delivery = this.columns.delivery.filter(
       (id) => !cards.map((card) => card.id).includes(id)
     );
@@ -88,12 +79,13 @@ export class TableModel {
       (id) => !cards.map((card) => card.id).includes(id)
     );
     return cards;
+    */
   };
-
+/*
   takeCard = (card: GeneralCard) => {
     this.columns[card.type].push(card.id);
   };
-
+*/
   resetSelected = () => {
     this.selected.delivery = [];
     this.selected.engineering = [];
@@ -113,8 +105,9 @@ export class TableModel {
   isSelected = (card:GeneralCard) => {
     return this.selected[card.type].includes(card.id);
   };
-
+/*
   isOnTable = (card: GeneralCard) => {
     return this.columns[card.type].some((id) => id === card.id);
   };
+  */
 }

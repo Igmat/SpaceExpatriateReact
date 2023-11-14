@@ -1,6 +1,6 @@
 import { makeObservable, observable } from "mobx";
 import { Resource } from "../card-types";
-import { CardsMethods } from ".";
+import { BasicCard } from ".";
 
 /*
 export interface TerraformingCard {
@@ -16,9 +16,8 @@ export interface TerraformingCardDefinition {
   points: number;
 }
 export class TerraformingCard
-  extends CardsMethods
-  implements TerraformingCardDefinition
-{
+  extends BasicCard
+  implements TerraformingCardDefinition {
   public readonly type = "terraforming";
   public name: string;
   public resources: Resource[];

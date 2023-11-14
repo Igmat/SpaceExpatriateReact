@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { CardType, Trigger, TriggerName } from "../card-types";
-import { CardsMethods } from ".";
+import { BasicCard } from ".";
 
 /*
 export interface ColonyCard {
@@ -31,7 +31,7 @@ export interface ColonyCardDefinition {
   }
 }
 
-export class ColonyCard /* extends CardsMethods */implements ColonyCardDefinition{
+export class ColonyCard /* extends CardsMethods */ implements ColonyCardDefinition {
   public benefit: string;
   public mutateAction: CardType;
   public name: string;
@@ -40,7 +40,7 @@ export class ColonyCard /* extends CardsMethods */implements ColonyCardDefinitio
   public data?: unknown;
   public during?: Trigger;
   public players?: number;
-  public triggers:{
+  public triggers: {
     [key in TriggerName]?: Trigger
 
   }

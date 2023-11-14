@@ -1,5 +1,5 @@
 import { makeObservable, observable } from "mobx";
-import { CardsMethods } from ".";
+import { BasicCard } from ".";
 
 /*
 export interface MilitaryCard {
@@ -19,9 +19,8 @@ export interface MilitaryCardDefinition {
 }
 
 export class MilitaryCard
-  extends CardsMethods
-  implements MilitaryCardDefinition
-{
+  extends BasicCard
+  implements MilitaryCardDefinition {
   public readonly type = "military";
   public name: string;
   public weapon: WeaponType;

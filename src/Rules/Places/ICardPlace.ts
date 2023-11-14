@@ -1,8 +1,8 @@
-import { GeneralCard } from "../card-types";
+import { BasicCard as BasicCard } from "../Cards";
 
-export interface ICardPlace {
+export interface ICardPlace<T extends BasicCard> {
 
-    takeCard(card?: GeneralCard): GeneralCard;//откуда
-    placeCard(card: GeneralCard): GeneralCard;//куда
+  takeCard(id: number): T;//откуда
+  placeCard(card: T): void;//куда
 
-  }
+}

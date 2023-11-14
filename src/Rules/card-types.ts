@@ -1,7 +1,7 @@
 import { GameState } from ".";
 import type { EffectName } from "./Colony/ColonyManager";
-import { DeliveryCard, DeliveryCardDefinition} from "./Cards/delivery";
-import { MilitaryCard, MilitaryCardDefinition} from "./Cards/military";
+import { DeliveryCard, DeliveryCardDefinition } from "./Cards/delivery";
+import { MilitaryCard, MilitaryCardDefinition } from "./Cards/military";
 import { EngineeringCard, EngineeringCardDefinition } from "./Cards/engineering";
 import { TerraformingCard, TerraformingCardDefinition } from "./Cards/terraforming";
 import { ColonyCard, ColonyCardDefinition } from "./Cards/colony";
@@ -39,20 +39,13 @@ export type GeneralCard =
   | EngineeringCard
   | TerraformingCard
   | MilitaryCard
-  
-/*Old vercion
-export type CardDefinition =
-  | DeliveryCard
-  | EngineeringCard
-  | TerraformingCard
-  | MilitaryCard;*/
 
-  export type CardDefinition =//переименовать как-то, хз как
-  | DeliveryCardDefinition 
-  | EngineeringCardDefinition 
+export type CardDefinition =
+  | DeliveryCardDefinition
+  | EngineeringCardDefinition
   | MilitaryCardDefinition
   | TerraformingCardDefinition
-  | ColonyCardDefinition 
+  | ColonyCardDefinition
 
 export const CardTypes = ["delivery", "engineering", "terraforming", "military"] as const;
 export type CardType = (typeof CardTypes)[number];
@@ -72,23 +65,14 @@ export const isEngineeringCard = (
   );
 };
 
-
-
-  export interface CardId {
-    id: number;
-    type: CardType;
-  }
-
-
-
+export interface CardId {
+  id: number;
+  type: CardType;
+}
 
 export type SelectableEngineeringCard = EngineeringCard & {
   isSelected: boolean;
 };
-
-
-
-
 
 export type EffectActivateFn = (gameState: GameState) => Promise<unknown>;
 
