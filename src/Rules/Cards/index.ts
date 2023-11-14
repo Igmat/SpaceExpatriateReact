@@ -8,7 +8,7 @@ import { ICardPlace } from "../Places/ICardPlace";
 import { TablePlace } from "../Places/TablePlace";
 
 export class BasicCard {
-  private place: ICardPlace<T>; 
+  private readonly place: ICardPlace<BasicCard>; 
 
   constructor(public id: number) {
     makeObservable(this, {
@@ -34,5 +34,4 @@ export class BasicCard {
     to.placeCard(this.place.takeCard(this.id));
     this.place = to;
   }
-
 }
