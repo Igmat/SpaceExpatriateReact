@@ -3,7 +3,7 @@ import { GeneralCard} from "./card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 import { TablePlace } from "./Places/TablePlace";
-import { DeliveryCard } from "./Cards/delivery";
+
 
 export interface TableColumns {
   delivery: number[];

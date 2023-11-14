@@ -1,7 +1,6 @@
 import { makeObservable, observable } from "mobx";
-import { BasicResource, ResourcePrimitive } from "../card-types";
-import { CardsMethods } from ".";
-
+import { BasicResource } from "../card-types";
+import { BasicCard } from ".";
 
 /*
 export interface DeliveryCard {
@@ -14,13 +13,12 @@ export interface DeliveryCardDefinition {
   resources: BasicResource[];
 }
 export class DeliveryCard
-  extends CardsMethods
-  implements DeliveryCardDefinition
-{
+  extends BasicCard
+  implements DeliveryCardDefinition {
   public readonly type = "delivery";
   public resources: BasicResource[];
-  constructor(public id: number, data: DeliveryCardDefinition) {
-    super();
+  constructor(id: number, data: DeliveryCardDefinition) {
+    super(id);
     makeObservable(this, {
       resources: observable,
     });

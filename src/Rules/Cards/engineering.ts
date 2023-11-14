@@ -1,6 +1,6 @@
 import { makeObservable, observable } from "mobx";
 import { Resource } from "../card-types";
-import { CardsMethods } from ".";
+import { BasicCard } from ".";
 
 /*
 export interface EngineeringCard {
@@ -24,9 +24,8 @@ export interface EngineeringCardDefinition {
   exitPoint?: Resource[];
 }
 export class EngineeringCard
-  extends CardsMethods
-  implements EngineeringCardDefinition
-{
+  extends BasicCard
+  implements EngineeringCardDefinition {
   public readonly type = "engineering";
   public name: string;
   public connection: ConectionType;

@@ -40,13 +40,6 @@ export type GeneralCard =
   | TerraformingCard
   | MilitaryCard
 
-/*Old vercion
-export type CardDefinition =
-  | DeliveryCard
-  | EngineeringCard
-  | TerraformingCard
-  | MilitaryCard;*/
-
 export type CardDefinition =
   | DeliveryCardDefinition
   | EngineeringCardDefinition
