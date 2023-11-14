@@ -1,45 +1,44 @@
+import { makeAutoObservable } from "mobx";
 import { EngineeringCard } from "../Cards/engineering";
-import { GeneralCard } from "../card-types";
+import { CardType, GeneralCard } from "../card-types";
 import { ICardPlace } from "./ICardPlace";
+import { BasicCard } from "../Cards";
 
-export class TablePlace<T extends GeneralCard> implements ICardPlace {
+export class TablePlace<T extends BasicCard> implements ICardPlace<T> {
     constructor(
-        prefix: string,
-        readonly cards: T,
+        private prefix: CardType,
+        private readonly cardsCollection: { [key: number]: T },
         gameId: string,
 
-    ) { //makeAutoSavable 
+    ) {
+        makeAutoObservable(this);
+        /* makeAutoSavable(
+            this,
+            gameId,
+            "prefix",
+            ["cardsId"  as any],
+            this.gameState.saveCondition
+        );*/
     }
 
     private cardsId: number[] = []
     tempEngineering: EngineeringCard[] = [];
 
-    get fullCard(): readonly T[] {
+    get cards(): readonly T[] {
         return this.cardsId.map(
-            (id) => this.cards[id] //не работает изза типов
-        ).concat(this.tempEngineering);
+            (id) => this.cardsCollection[id]
+        )//.concat(this.tempEngineering);
     }
 
-    //откуда
-    takeCard(card?: GeneralCard | undefined): GeneralCard | undefined{
+    //выписывает карту из места
+    takeCard(id: number): T {
+        this.cardsId = this.cardsId.filter(el => el !== id)
+        return this.cardsCollection[id]
+    }
+
+    //записывает карту в место
+    placeCard(card: T) {
         if (card === undefined) return;
         this.cardsId.push(card.id);
-        this.placeCard(card)
-        return card
     }
-
-    //куда
-    placeCard(card: GeneralCard) {
-        card.placeNow = "table"
-    }
-
-    dropCards = (
-        ...cards: (GeneralCard)[]
-    ) => {
-        this.cardsId = this.cardsId.filter(
-            (id) => !cards.map((card) => card.id).includes(id)
-        );
-        return cards;
-    };
-
 }
