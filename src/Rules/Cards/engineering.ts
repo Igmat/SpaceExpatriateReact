@@ -33,10 +33,10 @@ export class EngineeringCard
   public exitPoint?: Resource[];
   public points?: number;
   constructor(
-    public id: number,
+    id: number,
     data: EngineeringCardDefinition,
   ) {
-    super();
+    super(id);
     makeObservable(this, {
       name: observable,
       connection: observable,

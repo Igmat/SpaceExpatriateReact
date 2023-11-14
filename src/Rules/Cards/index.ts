@@ -4,11 +4,13 @@ import {
   makeObservable,
   observable,
 } from "mobx";
-import { ICardPlace } from "../Places/ICardPlace";
 import { TablePlace } from "../Places/TablePlace";
+import { CardType } from "../card-types";
+import { BasicPlace } from "../Places";
 
-export class BasicCard {
-  private readonly place: ICardPlace<BasicCard>; 
+export abstract class BasicCard {
+  private place: BasicPlace<BasicCard>; 
+  public abstract readonly type: CardType
 
   constructor(public id: number) {
     makeObservable(this, {
@@ -30,8 +32,10 @@ export class BasicCard {
     return this.place instanceof TablePlace;
   }
 
-  public move(to: ICardPlace<BasicCard>) {
-    to.placeCard(this.place.takeCard(this.id));
+  public move(to: BasicPlace<BasicCard>) {
+    this.place.takeCard(this.id, this.type)
+    to.placeCard(this.id, this.type);
     this.place = to;
   }
 }
+

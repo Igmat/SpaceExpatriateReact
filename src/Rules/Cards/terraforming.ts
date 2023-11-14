@@ -22,8 +22,8 @@ export class TerraformingCard
   public name: string;
   public resources: Resource[];
   public points: number;
-  constructor(public id: number, data: TerraformingCardDefinition) {
-    super();
+  constructor(id: number, data: TerraformingCardDefinition) {
+    super(id);
     makeObservable(this, {
       name: observable,
       resources: observable,

@@ -25,11 +25,11 @@ export class MilitaryCard
   public name: string;
   public weapon: WeaponType;
   constructor(
-    public id: number,
+    id: number,
     data: MilitaryCardDefinition,
 
   ) {
-    super();
+    super(id);
     makeObservable(this, {
       name: observable,
       weapon: observable,
