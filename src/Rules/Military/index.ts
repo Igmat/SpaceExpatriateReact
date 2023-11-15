@@ -46,7 +46,7 @@ export class ActionManager implements IActionManager {
       this.round.step === "performing" &&
       this.militaryOption === "exploration"
     )
-      this.hand.takeCard(this.decks[type].takeCard());
+    this.decks[type].topCard.move(this.hand._cardsInHand);
     this.remaining.activateDeck = 0;
   };
 
