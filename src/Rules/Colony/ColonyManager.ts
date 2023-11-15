@@ -53,7 +53,7 @@ export class ColonyManager {
         }
 
         const selected = availableCards.length===1? availableCards[0]: await this.gameState.modal.show("blackMarket", availableCards);
-        await originalGetResources(this.table.delivery.filter(card => card !== selected));
+        await originalGetResources(this.table.columns.delivery.cards.filter(card => card !== selected));
         const resources = selected.resources;
         resources.forEach(resource => this.resources.playerResources[resource]++); 
       }
@@ -87,7 +87,7 @@ export class ColonyManager {
       );
     },
     addPointsForMissionType: async (colony: ColonyCard) => {
-      this.hand.cardsInHand.forEach((card) => {
+      this.hand._cardsInHand.cards.forEach((card) => {
         if (
           card.type ===
           (this.gameState.action.currentManager as TAM).missionType
@@ -134,10 +134,10 @@ export class ColonyManager {
     pointsForDocking: async (colony: ColonyCard) => {
       const cancelReaction = reaction(
         () => [
-          this.table.delivery.length,
-          this.table.engineering.length,
-          this.table.terraforming.length,
-          this.table.military.length,
+          this.table.columns.delivery.cards.length,
+          this.table.columns.engineering.cards.length,
+          this.table.columns.terraforming.cards.length,
+          this.table.columns.military.cards.length,
         ],
         () => {
           this.resources.addPoints(1);
