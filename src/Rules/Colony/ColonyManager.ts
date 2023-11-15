@@ -43,13 +43,13 @@ export class ColonyManager {
       const originalGetResources = this.resources.getResources;
 
       this.resources.getResources = async () => {
-        const availableCards = this.table.delivery.filter(card =>
+        const availableCards = this.table.columns.delivery.cards.filter(card =>
           card.resources
             .filter(resource => this.resources.garbageResources[resource] > 0).length > 0
         )
 
         if (availableCards.length === 0) {
-          return await originalGetResources(this.table.delivery);
+          return await originalGetResources(this.table.columns.delivery.cards);
         }
 
         const selected = availableCards.length===1? availableCards[0]: await this.gameState.modal.show("blackMarket", availableCards);

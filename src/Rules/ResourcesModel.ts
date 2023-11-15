@@ -195,8 +195,8 @@ export class ResourcesModel {
   resetRoundState = async () => {
     this.resetRoundPoints(); // был ресет всех очков, а надо только раунда
     this.resetEnergy(); // обнуляем счетчик энергии
-    this.createEngineeringMaps(this.table.engineering);
-    await this.getResources(this.table.delivery);
+    this.createEngineeringMaps(this.table.columns.engineering.cards);
+    await this.getResources(this.table.columns.delivery.cards);
   };
 
   confirmRoundResourceActions = () => {
