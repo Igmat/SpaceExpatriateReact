@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { GeneralCard} from "../Rules/card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 import { HandPlace } from "./Places/HandPlace";
@@ -9,7 +8,7 @@ import { HandPlace } from "./Places/HandPlace";
 export class HandModel {
   
   _cardsInHand = new HandPlace(this.gameState.cards, this.gameId)
-  public tempDroppedCards: GeneralCard[] = [];
+
   
   constructor(
     private readonly gameState: GameState,
