@@ -59,10 +59,10 @@ export class RoundManager {
   }
   
   dealCards() {
-    this.decks.delivery.topCard().move(this.hand._cardsInHand);
-    this.decks.engineering.topCard().move(this.hand._cardsInHand);
-    this.decks.military.topCard().move(this.hand._cardsInHand);
-    this.decks.terraforming.topCard().move(this.hand._cardsInHand);
+    this.decks.delivery.topCard.move(this.hand._cardsInHand);
+    this.decks.engineering.topCard.move(this.hand._cardsInHand);
+    this.decks.military.topCard.move(this.hand._cardsInHand);
+    this.decks.terraforming.topCard.move(this.hand._cardsInHand);
   }
 
   get isResetable(): boolean {

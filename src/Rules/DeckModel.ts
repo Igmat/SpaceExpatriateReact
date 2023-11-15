@@ -58,7 +58,7 @@ export class DeckModel<T extends BasicCard> {
     this._openedCard.cards.forEach((card) => {
       card.move(this._droppedCards);
     });
-    this.topCard().move(this._openedCard);
+    this.topCard.move(this._openedCard);
   }; // переписан по новому
 
   private checkActive() {
@@ -70,7 +70,7 @@ export class DeckModel<T extends BasicCard> {
     }
   } // переписан по новому
 
-  topCard = () => {
+  get topCard (){
     this.checkActive();
     return this._activeCards.cards[0];
   };//повертає верхню карту
