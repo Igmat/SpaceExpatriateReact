@@ -55,7 +55,7 @@ export class ActionManager implements IActionManager {
 
   activateDeck = async (type: CardType) => {};
 
-  activateCard = async (card: number) => {};
+  activateCard = async (card: GeneralCard) => {};
 
   activateColonyCard = async (card: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {

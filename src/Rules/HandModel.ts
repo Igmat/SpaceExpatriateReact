@@ -22,11 +22,11 @@ export class HandModel {
     return this._cardsInHand.map((cardId) => this.gameState.cards[cardId.type][cardId.id]);
   }
 */
-  dropCard = (ind: number) => {
-    const card = this._cardsInHand[ind];
-    this._cardsInHand.splice(ind, 1);
-    return this.gameState.cards[card.type][card.id];
-  };
+  // dropCard = (ind: number) => {
+  //   const card = this._cardsInHand[ind];
+  //   this._cardsInHand.splice(ind, 1);
+  //   return this.gameState.cards[card.type][card.id];
+  // };
   
   
 /*

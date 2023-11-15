@@ -90,7 +90,7 @@ export class ActionManager implements IActionManager {
 
   activateDeck = async (type: CardType) => {};
 
-  activateCard = async (card: number) => {
+  activateCard = async (card: GeneralCard) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
