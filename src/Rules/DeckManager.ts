@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckModel } from "./DeckModel";
 import { GameState } from ".";
-import { BasicCard } from "./Cards";
 
 export class DeckManager {
   constructor(

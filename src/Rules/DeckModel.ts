@@ -1,11 +1,12 @@
 import { GameState } from ".";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { CardType, GeneralCard } from "./card-types";
+import { CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
 import { DropCardsPlace } from "./Places/DropCardsPlace";
 import { BasicCard } from "./Cards";
 import { ActiveCardsPlace } from "./Places/ActiveCardsPlace";
 import { OpenedCardsPlace } from "./Places/OpenedCardPlace";
+import { Deck } from "../Board/Deck";
 
 export class DeckModel<T extends BasicCard> {
   constructor(
@@ -18,16 +19,14 @@ export class DeckModel<T extends BasicCard> {
   ) {
     makeAutoObservable(this);
 
-    // const isLoaded = makeAutoSavable(
-    //   this,
-    //   gameId,
-    //   `deckmodel_${type}`,
+    const isLoaded = makeAutoSavable(
+     this, gameId, `deck_${type}`,
     //   ["_activeCards" as any, "_droppedCards" as any, "_openedCard"],
     //   gameState.saveCondition
-    // );
-    // if (!isLoaded) {
+    );
+    if (!isLoaded) {
     this.initialize();
-    // }
+    }
   }
 
   private _activeCards = new ActiveCardsPlace(

@@ -14,7 +14,7 @@ export class HandModel {
     private readonly gameState: GameState,
     private readonly gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "hand", ["_cardsInHand" as any], this.gameState.saveCondition);
+
   }
   /*
   get cardsInHand(): readonly GeneralCard[] {

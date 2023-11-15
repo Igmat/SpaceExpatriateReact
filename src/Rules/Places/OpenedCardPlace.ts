@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { CardType } from "../card-types";
 import { BasicPlace } from ".";
 import { BasicCard } from "../Cards";
+import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class OpenedCardsPlace<T extends BasicCard> extends BasicPlace<T> {
   protected getCardInstance(id: number): T {
@@ -17,12 +18,11 @@ export class OpenedCardsPlace<T extends BasicCard> extends BasicPlace<T> {
   ) {
     super();
     makeAutoObservable(this);
-    /* makeAutoSavable(
-             this,
-             gameId,
-             "prefix",
-             ["cardsId"  as any],
-             this.gameState.saveCondition
-         );*/
+    makeAutoSavable(
+      this,
+      gameId,
+      `openedCard_${prefix}`
+      ["_cards" as any] /*, this.gameState.saveCondition*/
+    );
   }
 }
