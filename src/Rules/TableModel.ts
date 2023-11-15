@@ -1,6 +1,5 @@
 import { makeAutoObservable } from "mobx";
 import { GeneralCard} from "./card-types";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 import { TablePlace } from "./Places/TablePlace";
 
