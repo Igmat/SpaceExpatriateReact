@@ -73,12 +73,14 @@ export class ColonyManager {
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isEngineeringCard(colony.data)) {
-        this.table.tempEngineering.push(colony.data);
+        colony.data.move(this.table.columns.engineering);
+        // this.table.tempEngineering.push(colony.data);
       }
       return async () => {
-        this.table.tempEngineering.pop();
+        // this.table.tempEngineering.pop();
+        this.table.columns.engineering.takeCard(111, "engineering");
       };
-    },
+    },//грязно но возможно работает
 
 
     addPointsFromColonies: async (colony: ColonyCard) => {

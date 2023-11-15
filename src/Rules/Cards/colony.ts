@@ -1,6 +1,5 @@
-import { makeAutoObservable } from "mobx";
 import { CardType, Trigger, TriggerName } from "../card-types";
-import { BasicCard } from ".";
+
 
 /*
 export interface ColonyCard {
