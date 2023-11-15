@@ -1,16 +1,14 @@
-import {
-  action,
-  computed,
-  makeObservable,
-  observable,
-} from "mobx";
+import { action, computed, makeObservable} from "mobx";
 import { TablePlace } from "../Places/TablePlace";
 import { CardType } from "../card-types";
 import { BasicPlace } from "../Places";
+import { HandPlace } from "../Places/HandPlace";
+import { ActiveCardsPlace } from "../Places/ActiveCardsPlace";
+import { OpenedCardsPlace } from "../Places/OpenedCardPlace";
 
 export abstract class BasicCard {
-  private place: BasicPlace<BasicCard>; 
-  public abstract readonly type: CardType
+  private place?: BasicPlace<BasicCard>;
+  public abstract readonly type: CardType;
 
   constructor(public id: number) {
     makeObservable(this, {
@@ -25,7 +23,11 @@ export abstract class BasicCard {
   }
 
   public get isInDeck() {
-    return this.place instanceof DeckPlace; //создать
+    return this.place instanceof ActiveCardsPlace; //создать
+  }
+  
+  public get isOpened() {
+    return this.place instanceof OpenedCardsPlace; //создать
   }
 
   public get isOnTable() {
@@ -33,9 +35,10 @@ export abstract class BasicCard {
   }
 
   public move(to: BasicPlace<BasicCard>) {
-    this.place.takeCard(this.id, this.type)
+    if (this.place !== undefined) {
+      this.place.takeCard(this.id, this.type);
+    }
     to.placeCard(this.id, this.type);
     this.place = to;
   }
 }
-

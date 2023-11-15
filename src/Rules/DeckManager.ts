@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckModel } from "./DeckModel";
-import { CardDefinition, GeneralCard } from "./card-types";
+import { GeneralCard } from "./card-types";
 import { GameState } from ".";
 
 export class DeckManager {
@@ -20,8 +20,8 @@ export class DeckManager {
     cards.forEach((card) => this[card.type].dropCards(card.id));
   };
 
-  isInDeck = (card: GeneralCard) => {
-    return this[card.type].findCard(card);
-  };
+  // isInDeck = (card: GeneralCard) => {
+  //   return this[card.type].findCard(card);
+  // };
 
 }
