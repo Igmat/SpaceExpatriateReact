@@ -75,12 +75,14 @@ export class ColonyManager {
       if (isEngineeringCard(colony.data)) {
         colony.data.move(this.table.columns.engineering);
         // this.table.tempEngineering.push(colony.data);
+        const id = colony.data.id;
+        return async () => {
+          // this.table.tempEngineering.pop();
+          this.table.columns.engineering.takeCard(id, "engineering");
+        };
       }
-      return async () => {
-        // this.table.tempEngineering.pop();
-        this.table.columns.engineering.takeCard(111, "engineering");
-      };
-    },//грязно но возможно работает
+     return async () => {};
+    },//переписала колонию
 
 
     addPointsFromColonies: async (colony: ColonyCard) => {
