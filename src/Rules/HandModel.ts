@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { CardId, GeneralCard} from "../Rules/card-types";
+import { GeneralCard} from "../Rules/card-types";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 import { HandPlace } from "./Places/HandPlace";
@@ -28,15 +28,16 @@ export class HandModel {
     return this.gameState.cards[card.type][card.id];
   };
   
+  
 /*
   takeCard(card?: GeneralCard) {
     card && this._cardsInHand.push({id:card.id, type: card.type});
   }
 */
   
-  isInHand = (card: GeneralCard): boolean => {
-    return this.cardsInHand.some(
-      (handCard) => handCard.id === card.id && card.type === handCard.type
-    );
-  };
+  // isInHand = (card: GeneralCard): boolean => {
+  //   return this.cardsInHand.some(
+  //     (handCard) => handCard.id === card.id && card.type === handCard.type
+  //   );
+  // };
 }

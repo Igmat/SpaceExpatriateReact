@@ -23,10 +23,7 @@ export class RoundManager {
       // { key: "_step" as any, condition: (value) => value !== "resources" },
     ]);
     if (!isLoaded) {
-      this.hand.takeCard(this.decks.delivery.takeCard());
-      this.hand.takeCard(this.decks.engineering.takeCard());
-      this.hand.takeCard(this.decks.military.takeCard());
-      this.hand.takeCard(this.decks.terraforming.takeCard());
+      this.dealCards()
     }
   }
 
@@ -59,6 +56,13 @@ export class RoundManager {
 
   startOptionsStep() {
     this.setStep("options");
+  }
+  
+  dealCards() {
+    this.decks.delivery.topCard.move(this.hand._cardsInHand);
+    this.decks.engineering.topCard.move(this.hand._cardsInHand);
+    this.decks.military.topCard.move(this.hand._cardsInHand);
+    this.decks.terraforming.topCard.move(this.hand._cardsInHand);
   }
 
   get isResetable(): boolean {
