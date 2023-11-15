@@ -7,6 +7,7 @@ import {
 import { TablePlace } from "../Places/TablePlace";
 import { CardType } from "../card-types";
 import { BasicPlace } from "../Places";
+import { HandPlace } from "../Places/HandPlace";
 
 export abstract class BasicCard {
   private place: BasicPlace<BasicCard>; 
@@ -21,7 +22,7 @@ export abstract class BasicCard {
     });
   }
   public get isInHand() {
-    return this.place instanceof HandPlace; //создать
+    return this.place instanceof HandPlace;
   }
 
   public get isInDeck() {
