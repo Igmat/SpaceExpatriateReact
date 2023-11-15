@@ -52,6 +52,7 @@ export class ActionManager {
       this.hand
     ),
     delivery: new DAM(
+      this.gameState,
       this.table,
       this.round,
       this.hand,

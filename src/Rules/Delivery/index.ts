@@ -16,26 +16,28 @@ import { DeckManager } from "../DeckManager";
 import { ModalManager } from "../ModalManager";
 import { EngineeringCard } from "../Cards/engineering";
 import { TerraformingCard } from "../Cards/terraforming";
+import { TempDroppedCardsPlace } from "../Places/TempDroppedCardsPlace";
+import { GameState } from "..";
 
 const DeliveryOptions = ["charter", "garbage"] as const;
 export type DeliveryOption = (typeof DeliveryOptions)[number];
 
 export class ActionManager implements IActionManager {
   constructor(
+    private readonly gameState: GameState,
     private readonly table: TableModel,
     private readonly round: RoundManager,
     private readonly hand: HandModel,
     private readonly resources: ResourcesModel,
     private readonly decks: DeckManager,
     private readonly modal: ModalManager,
-    gameId: string
+    private readonly gameId: string
   ) {
     makeAutoObservable(this);
     // makeAutoSavable(this, gameId, "deliveryManager", [
     //   "calculatedResources",
     //   "deliveryOption",
     //   "usedTerraformingCards",
-    //   "tempDroppedCards",
     // ]);
   }
 
@@ -43,7 +45,7 @@ export class ActionManager implements IActionManager {
   deliveryOption?: DeliveryOption;
   selectedResource?: BasicResource;
   usedTerraformingCards: number[] = []; //использованные карты Terraforming
-  tempDroppedCards: GeneralCard[] = [];
+  tempDroppedCards = new TempDroppedCardsPlace(this.gameState.cards, this.gameId);
   private _isEnded: boolean = false;
 
   useTerraformingCard = (card: TerraformingCard) => {
@@ -70,9 +72,9 @@ export class ActionManager implements IActionManager {
       this.resources.removeResourcesFromGarbage(this.selectedResource);
     }
 
-    await this.resources.getResources(this.table.delivery);
+    await this.resources.getResources(this.table.columns.delivery.cards);
     this.round.startPerformingStep();
-    this.resources.createEngineeringMaps(this.table.engineering);
+    this.resources.createEngineeringMaps(this.table.columns.engineering.cards);
   };
 
   get isEnded() {
@@ -88,14 +90,14 @@ export class ActionManager implements IActionManager {
     this._isEnded = true;
   };
 
-  activateDeck = async (type: CardType) => {};
+  activateDeck = async (type: CardType) => { };
 
   activateCard = async (card: number) => {
     this.addCardsToTempDrop(card); //сброс карты с руки во временное хранилище
     this.resources.increaseEnergyAndMapValues(); //увеличение энергии, midleMap, FinishCounter после сброса карты
   };
 
-  activateColonyCard = async (card: number) => {};
+  activateColonyCard = async (card: number) => { };
 
   activateCardOnTable = async (card: GeneralCard) => {
     if (card.type === "engineering") {
