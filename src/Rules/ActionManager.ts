@@ -103,7 +103,7 @@ export class ActionManager {
     this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateCard = async (card: number) => {
+  activateCard = async (card: GeneralCard) => {
     this.currentManager?.activateCard(card);
     this.currentManager?.isEnded && await this.nextRound();
   };
@@ -122,7 +122,7 @@ export class ActionManager {
 
   get isDisabled(): (card:GeneralCard) => boolean {
     return (card:GeneralCard) => {
-      if (!this.activeAction) return !this.decks.isInDeck(card);
+      if (!this.activeAction) return !card.isInDeck;
       return this.managers[this.activeAction].isDisabled(card);
     };
   }

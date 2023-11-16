@@ -20,19 +20,6 @@ export abstract class BasicPlace<T extends BasicCard = BasicCard> {
     placeCard(id: number, type: CardType) {
         this._cards.push({ id, type });
     }
-    // // выписываем карту
-    // take(card: CardId) {
-    //     this._cards = this._cards.filter(
-    //         (el) => el.id !== card.id && el.type !== card.type)
-    // }
-    // // вписываем карту
-    // place(card: CardId) {
-    //     this._cards.push(card);
-    // }
-
-    // get ids(): readonly CardId[] {
-    //     return this._cards;
-    // }
     get isEmpty () {
         return this._cards.length === 0;
     }
