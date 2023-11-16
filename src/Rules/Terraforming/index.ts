@@ -10,15 +10,16 @@ import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
 import { HandModel } from "../HandModel";
+import { CardsToDropPlace } from "../Places/CardsToDropPlace";
+import { GameState } from "..";
+import { BasicCard } from "../Cards";
 export class ActionManager implements IActionManager {
-  cardsToDrop: GeneralCard[] = [];
-  missionType?: CardType;
-
   constructor(
+    private readonly gameState: GameState,
     private readonly round: RoundManager,
     private readonly table: TableModel,
     private readonly decks: DeckManager,
-    gameId: string,
+    private readonly gameId: string,
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
     private readonly resources: ResourcesModel,
@@ -31,7 +32,11 @@ export class ActionManager implements IActionManager {
     //   "missionType",
     // ]);
   }
+
   private _isEnded: boolean = false;
+  private _cardsToDrop = new CardsToDropPlace(this.gameState.cards, this.gameId);
+  private _selectedToDrop: GeneralCard[] = [];
+  missionType?: CardType;
 
   perform = async (card: GeneralCard) => {
     this._isEnded = false;
@@ -40,52 +45,44 @@ export class ActionManager implements IActionManager {
     if (this.missionType) {
       this.round.startPerformingStep();
     }
-    this.table.resetSelected();
-  };
-
-  confirm = async () => {
-    await this.reset(); // чистим масив сбрасываемых карт и если выполняется условие для постройки колонии, но не строим, то возвращаем карты на стол
-    this.colonyDeck.countPoints();
-    this._isEnded = true;
   };
 
   get isEnded() {
     return this._isEnded;
   }
 
+  get isThreeCardsOfSameType() {
+    return (
+      this._cardsToDrop.cards.length === 3 &&
+      this._cardsToDrop.cards.filter((card) => card.type === this.missionType)
+        .length === 3
+    );
+  }
+
+  get isOneCardOfEachType() {
+    return (
+      this._cardsToDrop.cards.length === 4 &&
+      CardTypes.map(
+        (el) => this._cardsToDrop.cards.filter((card) => card.type === el).length === 1
+      ).filter(Boolean).length === 4
+    );
+  }
+
   activateDeck = async (type: CardType) => {};
 
-  activateCard = async (card: number) => {};
+  activateCard = async (card: GeneralCard) => {};
 
-  activateColonyCard = async (card: number) => {
-    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      //если выполняется условие для постройки колонии
-      return this.buildColony(card); //строим колонию
-    }
-  };
-
-  activateCardOnTable = async (card: GeneralCard) => {
-    const cardIndex = this.cardsToDrop.indexOf(card);
-    this.table.toggleSelected(card);
-    if (cardIndex !== -1) {
-      this.cardsToDrop.splice(cardIndex, 1);
-      return true;
-    }
-    this.cardsToDrop.push(card);
+  activateCardOnTable = async (card: GeneralCard) => { 
+    card.move(this._cardsToDrop) //карта уходит во временный сброс
     this.tryBuildColony();
     return true;
   };
 
-  reset = async () => {
+  activateColonyCard = async (selectedCardIndex: number) => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      this.cardsToDrop.forEach((card) => this.table.takeCard(card));
+      //если выполняется условие для постройки колонии
+      return this.buildColony(selectedCardIndex); //строим колонию
     }
-    this.cardsToDrop = [];
-    this.table.resetSelected();
-  };
-
-  dropCards = () => {
-    this.table.dropCards(...this.cardsToDrop);
   };
 
   tryBuildColony = () => {
@@ -95,47 +92,49 @@ export class ActionManager implements IActionManager {
     }
   };
 
-  buildColony = (selectedCardIndex: number) => {
+  buildColony = async (selectedCardIndex: number) => {
     const selectedCard = this.colonyDeck.takeOpenedCard(selectedCardIndex);
 
     if (!selectedCard) {
       //  console.log("No more colony cards available.");
       return;
     }
-
     this.resources.extractColonyPoints(selectedCard);
-
     this.colony.takeColonyCard(selectedCard);
-    this.decks.dropCards(...this.cardsToDrop); //сбрасываем карты в колоду постоянного сброса
-    this.cardsToDrop = []; //чистим масив сбрасываемых карт
+    this.confirm()
+    //this.decks.dropCards(...this.cardsToDrop); 
+    //this.cardsToDrop = []; //чистим масив сбрасываемых карт
   };
 
-  get isThreeCardsOfSameType() {
-    return (
-      this.cardsToDrop.length === 3 &&
-      this.cardsToDrop.filter((card) => card.type === this.missionType)
-        .length === 3
-    );
-  }
+  confirm = async () => { 
+    this.colonyDeck.countPoints();
+    this._isEnded = true;
+  };
 
-  get isOneCardOfEachType() {
-    return (
-      this.cardsToDrop.length === 4 &&
-      CardTypes.map(
-        (el) => this.cardsToDrop.filter((card) => card.type === el).length === 1
-      ).filter(Boolean).length === 4
-    );
-  }
+  reset = async () => {
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
+      this._cardsToDrop.cards.forEach((card) => card.move(this.table.columns[card.type]));
+    }
+  };
+
+  dropCards = () => {
+     //сбрасываем карты в колоду постоянного сброса
+    this._cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type]._droppedCards));
+    //this.table.dropCards(...this.cardsToDrop); // было
+  };
 
   isDisabled(card: GeneralCard): boolean {
-    if (this.table.isOnTable(card)) {
+    if (this.table.columns[card.type].cards.every(card=>card.isOnTable)) {
       return this.isDisabledTable(card);
     }
-    if (this.hand.isInHand(card) || this.decks.isInDeck(card)) {
+    if (this.hand._cardsInHand.cards.every(card => card.isInHand) ||
+        this.decks[card.type]._activeCards.cards.every(card => card.isInDeck) ||
+          this.decks[card.type]._openedCard.cards.every(card => card.isInDeck)) {
       return true;
     }
     return false;
   }
+
   isDisabledDeck = (type: CardType): boolean => true;
 
   isDisabledTable = (card: GeneralCard): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии

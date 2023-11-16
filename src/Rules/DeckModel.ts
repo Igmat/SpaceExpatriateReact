@@ -1,6 +1,6 @@
 import { GameState } from ".";
 import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { CardType } from "./card-types";
+import { CardType, GeneralCard } from "./card-types";
 import { makeAutoObservable } from "mobx";
 import { DropCardsPlace } from "./Places/DropCardsPlace";
 import { BasicCard } from "./Cards";
@@ -30,17 +30,17 @@ export class DeckModel<T extends BasicCard> {
     // }
   }
 
-  private _activeCards = new ActiveCardsPlace(
+  public _activeCards = new ActiveCardsPlace(
     this.type,
     this.cardsDefinitions,
     this.gameId
   );
-  private _droppedCards = new DropCardsPlace(
+  public _droppedCards = new DropCardsPlace(
     this.type,
     this.cardsDefinitions,
     this.gameId
   );
-  private _openedCard = new OpenedCardsPlace(
+  public _openedCard = new OpenedCardsPlace(
     this.type,
     this.cardsDefinitions,
     this.gameId
@@ -107,8 +107,8 @@ export class DeckModel<T extends BasicCard> {
   //   return this.cardsDefinitions[idOfCard];
   // };
 
-  dropCards = (...cards: number[]) => {
-    this._droppedCards.push(...cards);
+  dropCards = (card: GeneralCard) => {
+    card.move(this._droppedCards);
   };
 
   // findCard = (card: GeneralCard) => {

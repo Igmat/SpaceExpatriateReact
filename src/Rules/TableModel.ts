@@ -61,7 +61,7 @@ export class TableModel {
   dropCards = (
     ...cards: GeneralCard[]
   ) => {
-    cards.forEach(card => card.move(this.drop))
+    cards.forEach(card => card.move(this.gameState.decks[card.type]._droppedCards))
     /*
     this.columns.delivery = this.columns.delivery.filter(
       (id) => !cards.map((card) => card.id).includes(id)
@@ -89,8 +89,8 @@ export class TableModel {
     this.selected.terraforming = [];
     this.selected.military = [];
   };
-
-  toggleSelected = (card: GeneralCard) => {
+/*
+  toggleSelected = (card: GeneralCard) => { 
     this.selected[card.type].includes(card.id)
       ? this.selected[card.type].splice(
           this.selected[card.type].indexOf(card.id),
@@ -98,10 +98,11 @@ export class TableModel {
         )
       : this.selected[card.type].push(card.id);
   };
-
+  */
   isSelected = (card:GeneralCard) => {
     return this.selected[card.type].includes(card.id);
   };
+
 /*
   isOnTable = (card: GeneralCard) => {
     return this.columns[card.type].some((id) => id === card.id);

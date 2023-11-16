@@ -4,18 +4,15 @@ import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { GameState } from ".";
 import { HandPlace } from "./Places/HandPlace";
 
-
-
 export class HandModel {
   
   _cardsInHand = new HandPlace(this.gameState.cards, this.gameId)
-  public tempDroppedCards: GeneralCard[] = [];
   
   constructor(
     private readonly gameState: GameState,
     private readonly gameId: string) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, "hand", ["_cardsInHand" as any], this.gameState.saveCondition);
+    // makeAutoSavable(this, gameId, "hand", ["_cardsInHand" as any], this.gameState.saveCondition);
   }
   /*
   get cardsInHand(): readonly GeneralCard[] {
@@ -28,6 +25,9 @@ export class HandModel {
     return this.gameState.cards[card.type][card.id];
   };
   
+  
+  
+
   
 /*
   takeCard(card?: GeneralCard) {

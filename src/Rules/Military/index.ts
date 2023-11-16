@@ -50,7 +50,7 @@ export class ActionManager implements IActionManager {
     this.remaining.activateDeck = 0;
   };
 
-  activateCard = async (card: number) => {};
+  activateCard = async (card: GeneralCard) => {};
   activateColonyCard = async (card: number) => {};
   activateCardOnTable = async (card: CardDefinition) => {
     return false;

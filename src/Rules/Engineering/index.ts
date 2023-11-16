@@ -55,7 +55,7 @@ export class ActionManager implements IActionManager {
     //return this.tryNext();
   };
 
-  activateCard = async (card: number) => {
+  activateCard = async (card: GeneralCard) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
     this.table.takeCard(this.hand.dropCard(card));

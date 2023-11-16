@@ -41,6 +41,7 @@ export class ActionManager {
       this.gameId
     ),
     terraforming: new TAM(
+      this.gameState,
       this.round,
       this.table,
       this.decks,
@@ -104,7 +105,7 @@ export class ActionManager {
     this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateCard = async (card: number) => {
+  activateCard = async (card: GeneralCard) => {
     this.currentManager?.activateCard(card);
     this.currentManager?.isEnded && await this.nextRound();
   };
@@ -121,9 +122,9 @@ export class ActionManager {
 
   reset = async () => await this.currentManager?.reset();
 
-  get isDisabled(): (card:GeneralCard) => boolean {
+  get isDisabled(): (card: GeneralCard) => boolean {
     return (card:GeneralCard) => {
-      if (!this.activeAction) return !this.decks.isInDeck(card);
+      if (!this.activeAction) return !this.decks[card.type]._activedCard.cards.isInDeck(); // какую колоду проверять?
       return this.managers[this.activeAction].isDisabled(card);
     };
   }
