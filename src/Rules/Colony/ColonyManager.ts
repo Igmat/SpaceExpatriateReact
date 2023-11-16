@@ -6,7 +6,7 @@ import {
   TriggerName,
   TriggerNames,
   expandTrigger,
-  isEngineeringCard
+  isEngineeringCard,
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
@@ -39,35 +39,43 @@ export class ColonyManager {
 
   effects = {
     selectDeliveryStation: async (colony: ColonyCard) => {
-
       const originalGetResources = this.resources.getResources;
 
       this.resources.getResources = async () => {
-        const availableCards = this.table.columns.delivery.cards.filter(card =>
-          card.resources
-            .filter(resource => this.resources.garbageResources[resource] > 0).length > 0
-        )
+        const availableCards = this.table.columns.delivery.cards.filter(
+          (card) =>
+            card.resources.filter(
+              (resource) => this.resources.garbageResources[resource] > 0
+            ).length > 0
+        );
 
         if (availableCards.length === 0) {
           return await originalGetResources(this.table.columns.delivery.cards);
         }
 
-        const selected = availableCards.length===1? availableCards[0]: await this.gameState.modal.show("blackMarket", availableCards);
-        await originalGetResources(this.table.columns.delivery.cards.filter(card => card !== selected));
+        const selected =
+          availableCards.length === 1
+            ? availableCards[0]
+            : await this.gameState.modal.show("blackMarket", availableCards);
+        await originalGetResources(
+          this.table.columns.delivery.cards.filter((card) => card !== selected)
+        );
         const resources = selected.resources;
-        resources.forEach(resource => this.resources.playerResources[resource]++); 
-      }
+        resources.forEach(
+          (resource) => this.resources.playerResources[resource]++
+        );
+      };
 
       return async () => {
         this.resources.getResources = originalGetResources;
-      }
+      };
     },
 
     adjustGarbage: async (colony: ColonyCard) => {
       const adjustedResources = await this.gameState.modal.show(
         "adjustGarbage",
         this.resources.garbageResources
-      )
+      );
       this.resources.garbageResources = adjustedResources;
     },
 
@@ -84,9 +92,8 @@ export class ColonyManager {
           // this.table.columns.engineering.takeCard(id, "engineering");
         };
       }
-     return async () => {};
-    },//переписала колонию
-
+      return async () => {};
+    }, 
 
     addPointsFromColonies: async (colony: ColonyCard) => {
       this.colonyDeck.openedCards.forEach((card) =>
@@ -130,15 +137,19 @@ export class ColonyManager {
         currentManager.adjustRemainingActivateCard(1);
         return currentManager.confirm();
       };
-    },// переписала колонию
+    }, // переписала колонию
 
     dockStationModuleOfMissionType: async (colony: ColonyCard) => {
-      this.table.takeCard(
-        this.decks[
-          (this.gameState.action.currentManager as TAM).missionType!
-        ].takeCard()!
-      );
-    },
+      this.decks[
+        (this.gameState.action.currentManager as TAM).missionType!
+      ].topCard.move(this.table.columns.engineering);
+      // this.table.takeCard(
+      //   this.decks[
+      //     (this.gameState.action.currentManager as TAM).missionType!
+      //   ].takeCard()!
+      // );
+    },// переписала колонию
+
     pointsForDocking: async (colony: ColonyCard) => {
       const cancelReaction = reaction(
         () => [
