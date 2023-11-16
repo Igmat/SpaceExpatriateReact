@@ -35,7 +35,6 @@ export class ActionManager implements IActionManager {
 
   private _isEnded: boolean = false;
   private _cardsToDrop = new CardsToDropPlace(this.gameState.cards, this.gameId);
-  private _selectedToDrop: GeneralCard[] = [];
   missionType?: CardType;
 
   perform = async (card: GeneralCard) => {

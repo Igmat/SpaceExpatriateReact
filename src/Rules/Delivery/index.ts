@@ -16,8 +16,8 @@ import { DeckManager } from "../DeckManager";
 import { ModalManager } from "../ModalManager";
 import { EngineeringCard } from "../Cards/engineering";
 import { TerraformingCard } from "../Cards/terraforming";
-import { TempDroppedCardsPlace } from "../Places/TempDroppedCardsPlace";
 import { GameState } from "..";
+import { CardsToDropPlace } from "../Places/CardsToDropPlace";
 
 const DeliveryOptions = ["charter", "garbage"] as const;
 export type DeliveryOption = (typeof DeliveryOptions)[number];
@@ -46,7 +46,7 @@ export class ActionManager implements IActionManager {
   selectedResource?: BasicResource;
   _usedTerraformingCards: number[] = []; //использованные карты Terraforming
   
-  private _tempDroppedCards = new TempDroppedCardsPlace(
+  private _tempDroppedCards = new CardsToDropPlace(
     this.gameState.cards,
     this.gameId
   );
@@ -90,10 +90,8 @@ export class ActionManager implements IActionManager {
     this.deliveryOption = undefined;
 
     //сброс временных карт из руки в общий сброс
-    //this._tempDroppedCards.cards.forEach(card => card.move(this.decks._droppedCards)); //может нужен сеттер или убрать приватность?
+    this._tempDroppedCards.cards.forEach(card => card.move(this.decks[card.type].droppedCards)); 
 
-    //this.decks.dropCards(...this._tempDroppedCards.cards);
-    //this.dropTempCards(); //очистка временных карт из руки
     this._usedTerraformingCards = []; //очистка использованных карт Terraforming
     this.resources.confirmRoundResourceActions(); // считаем очки, перемещаем ресы в мусор, сбрасываем счетчик энергии, обнуляем ресы
     this._isEnded = true;
@@ -134,17 +132,6 @@ export class ActionManager implements IActionManager {
     this._usedTerraformingCards = [];
     await this.resources.resetRoundState();
   };
-
-  /* --- старый вариант
-  dropTempCards = () => {
-    this.tempDroppedCards = []; //очищаем временный сброс
-  };
-
-  resetTempDroppedCards = () => {
-    this.tempDroppedCards.forEach((card) => this.hand.takeCard(card));
-    this.tempDroppedCards = [];
-  };
-  */
   
   activateEngineeringCard = async (card: EngineeringCard) => {
     if (
