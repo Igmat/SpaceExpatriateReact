@@ -102,8 +102,6 @@ export class ActionManager implements IActionManager {
     this.resources.extractColonyPoints(selectedCard);
     this.colony.takeColonyCard(selectedCard);
     this.confirm()
-    //this.decks.dropCards(...this.cardsToDrop); 
-    //this.cardsToDrop = []; //чистим масив сбрасываемых карт
   };
 
   confirm = async () => { 
@@ -119,17 +117,14 @@ export class ActionManager implements IActionManager {
 
   dropCards = () => {
      //сбрасываем карты в колоду постоянного сброса
-    this._cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type]._droppedCards));
-    //this.table.dropCards(...this.cardsToDrop); // было
+    this._cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type].droppedCards));
   };
 
   isDisabled(card: GeneralCard): boolean {
-    if (this.table.columns[card.type].cards.every(card=>card.isOnTable)) {
+    if (card.isOnTable) {
       return this.isDisabledTable(card);
     }
-    if (this.hand._cardsInHand.cards.every(card => card.isInHand) ||
-        this.decks[card.type]._activeCards.cards.every(card => card.isInDeck) ||
-          this.decks[card.type]._openedCard.cards.every(card => card.isInDeck)) {
+    if (card.isInHand || card.isInDeck) {
       return true;
     }
     return false;

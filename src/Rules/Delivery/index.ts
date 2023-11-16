@@ -130,7 +130,7 @@ export class ActionManager implements IActionManager {
   };
 
   reset = async () => {
-    this._tempDroppedCards.cards.forEach((card) => card.move(this.hand._cardsInHand));
+    this._tempDroppedCards.cards.forEach((card) => card.move(this.hand.cardsInHand));
     this._usedTerraformingCards = [];
     await this.resources.resetRoundState();
   };
@@ -170,7 +170,7 @@ export class ActionManager implements IActionManager {
   //эти методы нужно будет добавить в интерфейс
 
   isDisabled(card: GeneralCard): boolean {
-    if (this.table.columns.engineering.cards.every(card => card.isOnTable)) {
+    if (card.isOnTable) {
         const isEmpty =
           (card.type === "engineering" && card.connection  === "start" &&
             !this.resources.engineeringMaps.Start[card.id]) ||
@@ -185,7 +185,7 @@ export class ActionManager implements IActionManager {
         return this._usedTerraformingCards.includes(card.id); //не подсвечивает возможности исходя из ресурсов
       }
   
-  if (this.hand._cardsInHand.cards.every(card=>card.isInHand)) return false;
+  if (card.isInHand) return false;
     return true;
   }
 

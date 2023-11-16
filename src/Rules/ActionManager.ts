@@ -123,8 +123,8 @@ export class ActionManager {
   reset = async () => await this.currentManager?.reset();
 
   get isDisabled(): (card: GeneralCard) => boolean {
-    return (card:GeneralCard) => {
-      if (!this.activeAction) return !this.decks[card.type]._activedCard.cards.isInDeck(); // какую колоду проверять?
+    return (card: GeneralCard) => {
+      if (!this.activeAction) return !card.isInDeck;
       return this.managers[this.activeAction].isDisabled(card);
     };
   }
