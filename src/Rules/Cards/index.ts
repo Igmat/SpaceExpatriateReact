@@ -41,4 +41,10 @@ export abstract class BasicCard {
     to?.placeCard(this.id, this.type);
     this.place = to;
   }
+
+  // public move(to?: BasicPlace<BasicCard>) {
+  //   this.place?.takeCard(this.id, this.type);
+  //   to?.placeCard(this.id, this.type);
+  //   this.place = to;
+  // }
 }

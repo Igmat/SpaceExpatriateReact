@@ -24,32 +24,6 @@ export class TableModel {
     military: new TablePlace("military", this.gameState.cards.military, this.gameId),
   };
 
-/*
-  get delivery(): readonly DeliveryCard[] {
-    return this.columns.delivery.map(
-      (id) => this.gameState.cards.delivery[id]
-    );
-  }
-
-  tempEngineering: EngineeringCard[] = [];
-
-  get engineering(): readonly EngineeringCard[] {
-    return this.columns.engineering
-      .map((id) => this.gameState.cards.engineering[id])
-      .concat(this.tempEngineering);
-  }
-
-  get terraforming(): readonly TerraformingCard[] {
-    return this.columns.terraforming.map(
-      (id) => this.gameState.cards.terraforming[id]
-    );
-  }
-  get military(): readonly MilitaryCard[] {
-    return this.columns.military.map(
-      (id) => this.gameState.cards.military[id]
-    );
-  }
-*/
   selected: TableColumns = {
     delivery: [],
     engineering: [],
@@ -57,32 +31,7 @@ export class TableModel {
     military: [],
   };
 
-  
-  dropCards = (
-    ...cards: GeneralCard[]
-  ) => {
-    cards.forEach(card => card.move(this.drop))
-    /*
-    this.columns.delivery = this.columns.delivery.filter(
-      (id) => !cards.map((card) => card.id).includes(id)
-    );
-    this.columns.engineering = this.columns.engineering.filter(
-      (id) => !cards.map((card) => card.id).includes(id)
-    );
-    this.columns.terraforming = this.columns.terraforming.filter(
-      (id) => !cards.map((card) => card.id).includes(id)
-    );
-    this.columns.military = this.columns.military.filter(
-      (id) => !cards.map((card) => card.id).includes(id)
-    );
-    return cards;
-    */
-  };
-/*
-  takeCard = (card: GeneralCard) => {
-    this.columns[card.type].push(card.id);
-  };
-*/
+
   resetSelected = () => {
     this.selected.delivery = [];
     this.selected.engineering = [];
@@ -102,9 +51,5 @@ export class TableModel {
   isSelected = (card:GeneralCard) => {
     return this.selected[card.type].includes(card.id);
   };
-/*
-  isOnTable = (card: GeneralCard) => {
-    return this.columns[card.type].some((id) => id === card.id);
-  };
-  */
+
 }

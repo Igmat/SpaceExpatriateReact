@@ -1,5 +1,4 @@
 import { GameState } from ".";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { CardType } from "./card-types";
 import { makeAutoObservable } from "mobx";
 import { DropCardsPlace } from "./Places/DropCardsPlace";
@@ -82,40 +81,4 @@ export class DeckModel<T extends BasicCard> {
     }
   } // переписан по новому
   
-  dropCards = (card:T) => {
-    card.move(this.droppedCards);
-  };//переписан по новому
-
-  // takeOpenedCard(): T | undefined {
-  //   if (this._openedCard === undefined) return undefined;
-  //   const result = this._openedCard;
-  //   this._openedCard = undefined;
-  //   return this.cardsDefinitions[result];
-  // }
-
-  // get openedCard(): T | undefined {
-  //   if (this._openedCard !== undefined)
-  //     return this.cardsDefinitions[this._openedCard];
-  //   return undefined;
-  // }
-
-  // takeCard = (): T => {
-  //   const idOfCard = this._activeCards.pop()!;
-  //   if (this._activeCards.length === 0) {
-  //     this._activeCards = this._droppedCards;
-  //     this._droppedCards = [];
-  //     this.mixCards();
-  //   }
-  //   return this.cardsDefinitions[idOfCard];
-  // };
-
-
-
-  // findCard = (card: GeneralCard) => {
-  //   return card.id === this._openedCard;
-  // };
-
-  // get restCount() {
-  //   return this._droppedCards.length;
-  // }
 }
