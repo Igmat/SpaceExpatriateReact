@@ -73,12 +73,15 @@ export class ColonyManager {
 
     addTempEngineering: async (colony: ColonyCard) => {
       if (isEngineeringCard(colony.data)) {
+        // создать инстанс класса
+        //добавить в колекцию
         colony.data.move(this.table.columns.engineering);
         // this.table.tempEngineering.push(colony.data);
         const id = colony.data.id;
         return async () => {
           // this.table.tempEngineering.pop();
-          this.table.columns.engineering.takeCard(id, "engineering");
+          colony.data.move();
+          // this.table.columns.engineering.takeCard(id, "engineering");
         };
       }
      return async () => {};
@@ -91,7 +94,7 @@ export class ColonyManager {
       );
     },
     addPointsForMissionType: async (colony: ColonyCard) => {
-      this.hand._cardsInHand.cards.forEach((card) => {
+      this.hand.cardsInHand.cards.forEach((card) => {
         if (
           card.type ===
           (this.gameState.action.currentManager as TAM).missionType

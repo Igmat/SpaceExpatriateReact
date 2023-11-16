@@ -29,17 +29,17 @@ export class DeckModel<T extends BasicCard> {
     }
   }
 
-  private _activeCards = new ActiveCardsPlace(
+  public activeCards = new ActiveCardsPlace(
     this.type,
     this.cardsDefinitions,
     this.gameId
   );
-  private _droppedCards = new DropCardsPlace(
+  public droppedCards = new DropCardsPlace(
     this.type,
     this.cardsDefinitions,
     this.gameId
   );
-  private _openedCard = new OpenedCardsPlace(
+  public openedCard = new OpenedCardsPlace(
     this.type,
     this.cardsDefinitions,
     this.gameId
@@ -47,23 +47,23 @@ export class DeckModel<T extends BasicCard> {
 
   initialize = () => {
     Object.values(this.cardsDefinitions).forEach((card) =>
-      card.move(this._activeCards)
+      card.move(this.activeCards)
     );
     this.mixCards();
     this.openCard();
   }; // переписан по новому
 
   openCard = () => {
-    this._openedCard.cards.forEach((card) => {
-      card.move(this._droppedCards);
+    this.openedCard.cards.forEach((card) => {
+      card.move(this.droppedCards);
     });
-    this.topCard.move(this._openedCard);
+    this.topCard.move(this.openedCard);
   }; // переписан по новому
 
   private checkActive() {
-    if (this._activeCards.isEmpty) {
-      this._droppedCards.cards.forEach((card) => {
-        card.move(this._activeCards);
+    if (this.activeCards.isEmpty) {
+      this.droppedCards.cards.forEach((card) => {
+        card.move(this.activeCards);
       });
       this.mixCards();
     }
@@ -71,20 +71,20 @@ export class DeckModel<T extends BasicCard> {
 
   get topCard (){
     this.checkActive();
-    return this._activeCards.cards[0];
+    return this.activeCards.cards[0];
   };//повертає верхню карту
 
   private mixCards() {
-    const restCards = [...this._activeCards.cards];
+    const restCards = [...this.activeCards.cards];
     while (restCards.length > 0) {
       const randomIndex = Math.floor(Math.random() * restCards.length);
-      restCards[randomIndex].move(this._activeCards);
+      restCards[randomIndex].move(this.activeCards);
       restCards.splice(randomIndex, 1);
     }
   } // переписан по новому
   
   dropCards = (card:T) => {
-    card.move(this._droppedCards);
+    card.move(this.droppedCards);
   };//переписан по новому
 
   // takeOpenedCard(): T | undefined {

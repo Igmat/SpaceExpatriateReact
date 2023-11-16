@@ -16,6 +16,6 @@ export class HandPlace extends BasicPlace {
     ) {
         super()
         makeAutoObservable(this);
-        makeAutoSavable(this, gameId, "hand", ["_cards" as any]/*, this.gameState.saveCondition*/); 
+        // makeAutoSavable(this, gameId, "hand", ["_cards" as any]/*, this.gameState.saveCondition*/); 
     }
 }

@@ -18,11 +18,11 @@ export class TablePlace<T extends BasicCard> extends BasicPlace<T> {
   ) {
     super();
     makeAutoObservable(this);
-    makeAutoSavable(
-      this,
-      gameId,
-      `table_${prefix}`
-      ["_cards" as any] /*, this.gameState.saveCondition*/
-    );
+    // makeAutoSavable(
+    //   this,
+    //   gameId,
+    //   `table_${prefix}`
+    //   ["_cards" as any] /*, this.gameState.saveCondition*/
+    // );
   }
 }

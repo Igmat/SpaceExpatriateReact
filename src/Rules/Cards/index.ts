@@ -34,11 +34,11 @@ export abstract class BasicCard {
     return this.place instanceof TablePlace;
   }
 
-  public move(to: BasicPlace<BasicCard>) {
+  public move(to?: BasicPlace<BasicCard>) {
     if (this.place !== undefined) {
       this.place.takeCard(this.id, this.type);
     }
-    to.placeCard(this.id, this.type);
+    to?.placeCard(this.id, this.type);
     this.place = to;
   }
 }

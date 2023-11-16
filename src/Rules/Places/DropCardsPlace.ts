@@ -18,11 +18,11 @@ export class DropCardsPlace<T extends BasicCard> extends BasicPlace<T> {
   ) {
     super();
     makeAutoObservable(this);
-    makeAutoSavable(
-      this,
-      gameId,
-      `dropedCards_${prefix}`
-      ["_cards" as any] /*, this.gameState.saveCondition*/
-    );
+    // makeAutoSavable(
+    //   this,
+    //   gameId,
+    //   `dropedCards_${prefix}`
+    //   ["_cards" as any] /*, this.gameState.saveCondition*/
+    // );
   }
 }

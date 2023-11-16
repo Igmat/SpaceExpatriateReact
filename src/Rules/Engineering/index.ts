@@ -37,7 +37,7 @@ export class ActionManager implements IActionManager {
 
   perform = async (card:GeneralCard) => {
     this.adjustRemainingActivateDeck(1);
-    this.adjustRemainingActivateCard(this.hand._cardsInHand.cards.length > 0 ? 1 : 0);
+    this.adjustRemainingActivateCard(this.hand.cardsInHand.cards.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
   };
 

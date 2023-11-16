@@ -46,7 +46,7 @@ export class ActionManager implements IActionManager {
       this.round.step === "performing" &&
       this.militaryOption === "exploration"
     )
-    this.decks[type].topCard.move(this.hand._cardsInHand);
+    this.decks[type].topCard.move(this.hand.cardsInHand);
     this.remaining.activateDeck = 0;
   };
 
@@ -58,7 +58,7 @@ export class ActionManager implements IActionManager {
 
   reset = async () => {};
 
-  isDisabled = (card: CardDefinition): boolean => true;
+  isDisabled = (card: GeneralCard): boolean => true;
 
   isDisabledDeck = (type: CardType): boolean => false;
 }
