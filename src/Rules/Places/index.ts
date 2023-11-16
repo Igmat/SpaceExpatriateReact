@@ -20,6 +20,11 @@ export abstract class BasicPlace<T extends BasicCard = BasicCard> {
     placeCard(id: number, type: CardType) {
         this._cards.push({ id, type });
     }
+    
+    get isEmpty () {
+        return this._cards.length === 0;
+    }
+
     // // выписываем карту
     // take(card: CardId) {
     //     this._cards = this._cards.filter(
@@ -33,7 +38,4 @@ export abstract class BasicPlace<T extends BasicCard = BasicCard> {
     // get ids(): readonly CardId[] {
     //     return this._cards;
     // }
-    get isEmpty () {
-        return this._cards.length === 0;
-    }
 }

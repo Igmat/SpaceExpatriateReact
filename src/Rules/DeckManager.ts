@@ -17,7 +17,7 @@ export class DeckManager {
   military = new DeckModel("military", this.gameState.cards.military, this.gameId, this.gameState);
 
   dropCards = (...cards: GeneralCard[]) => {
-    cards.forEach((card) => this[card.type].dropCards(card.id));
+    cards.forEach((card) => this[card.type].dropCards(card));
   };
 
   // isInDeck = (card: GeneralCard) => {
