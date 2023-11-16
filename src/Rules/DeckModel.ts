@@ -1,5 +1,6 @@
 import { GameState } from ".";
-import { CardType } from "./card-types";
+import { makeAutoSavable } from "../Utils/makeAutoSavable";
+import { CardType, GeneralCard } from "./card-types";
 import { makeAutoObservable } from "mobx";
 import { DropCardsPlace } from "./Places/DropCardsPlace";
 import { BasicCard } from "./Cards";

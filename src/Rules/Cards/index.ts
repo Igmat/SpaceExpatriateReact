@@ -19,7 +19,7 @@ export abstract class BasicCard {
     });
   }
   public get isInHand() {
-    return this.place instanceof HandPlace; //создать
+    return this.place instanceof HandPlace;
   }
 
   public get isInDeck() {

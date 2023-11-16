@@ -22,7 +22,8 @@ interface DeckProps {
 export const Deck = observer((props: DeckProps) => {
   //console.log(props.model.openedCard)
   const onOpenCardClick = () => {
-    props.action.perform(props.model.openedCard);
+    props.action.perform(props.model.openedCard.cards[0])
+    //props.action.perform(props.model.openedCard);
   };
   return (
     <>
@@ -32,8 +33,8 @@ export const Deck = observer((props: DeckProps) => {
       >
         {props.model.openedCard && (
           <Card
-            isSelected={false}
-            key={props.model.openedCard.id}
+            //key={props.model.openedCard.id}
+            key={props.model.openedCard.cards[0].id}
             {...props.model.openedCard}
             action={props.action}
           />

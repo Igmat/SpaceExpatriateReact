@@ -23,7 +23,7 @@ export class TableModel {
     terraforming: new TablePlace("terraforming", this.gameState.cards.terraforming, this.gameId),
     military: new TablePlace("military", this.gameState.cards.military, this.gameId),
   };
-
+/*
   selected: TableColumns = {
     delivery: [],
     engineering: [],
@@ -39,7 +39,7 @@ export class TableModel {
     this.selected.military = [];
   };
 
-  toggleSelected = (card: GeneralCard) => {
+  toggleSelected = (card: GeneralCard) => { 
     this.selected[card.type].includes(card.id)
       ? this.selected[card.type].splice(
           this.selected[card.type].indexOf(card.id),
@@ -47,9 +47,9 @@ export class TableModel {
         )
       : this.selected[card.type].push(card.id);
   };
-
+ 
   isSelected = (card:GeneralCard) => {
     return this.selected[card.type].includes(card.id);
   };
-
+ */
 }

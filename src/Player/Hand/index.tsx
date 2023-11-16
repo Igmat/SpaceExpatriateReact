@@ -14,12 +14,11 @@ interface HandProps {
 export const Hand = observer((props: HandProps) => {
   return (
     <div className={styles.container}>
-      {props.model.cardsInHand.map((card, ind) => (
+      {props.model.cardsInHand.cards.map((card, ind) => (
         <Card
-          isSelected={false}
           key={ind}
           {...card}
-          onClick={() => props.action.activateCard(ind)}
+          onClick={() => props.action.activateCard(card)}
           action={props.action}
         />
       ))}

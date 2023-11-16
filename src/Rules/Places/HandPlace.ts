@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { computed, makeAutoObservable, makeObservable, observable } from "mobx";
 import { BasicCard } from "../Cards";
 import { CardType } from "../card-types";
 import { GameStateCards } from "..";
@@ -15,7 +15,7 @@ export class HandPlace extends BasicPlace {
 
     ) {
         super()
-        makeAutoObservable(this);
-        // makeAutoSavable(this, gameId, "hand", ["_cards" as any]/*, this.gameState.saveCondition*/); 
+
+        //makeAutoSavable(this, gameId, "hand", ["_cards" as any]/*, this.gameState.saveCondition*/); 
     }
 }

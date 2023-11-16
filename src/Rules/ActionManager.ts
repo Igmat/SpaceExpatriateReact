@@ -41,6 +41,7 @@ export class ActionManager {
       this.gameId
     ),
     terraforming: new TAM(
+      this.gameState,
       this.round,
       this.table,
       this.decks,
@@ -52,6 +53,7 @@ export class ActionManager {
       this.hand
     ),
     delivery: new DAM(
+      this.gameState,
       this.table,
       this.round,
       this.hand,
@@ -120,8 +122,8 @@ export class ActionManager {
 
   reset = async () => await this.currentManager?.reset();
 
-  get isDisabled(): (card:GeneralCard) => boolean {
-    return (card:GeneralCard) => {
+  get isDisabled(): (card: GeneralCard) => boolean {
+    return (card: GeneralCard) => {
       if (!this.activeAction) return !card.isInDeck;
       return this.managers[this.activeAction].isDisabled(card);
     };

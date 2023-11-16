@@ -1,9 +1,19 @@
+import { makeObservable, computed, action, observable } from "mobx";
 import { BasicCard } from "../Cards";
 import { CardId, CardType } from "../card-types";
 
 export abstract class BasicPlace<T extends BasicCard = BasicCard> {
 
     private _cards: CardId[] = [];
+
+    constructor() {
+        makeObservable(this, {
+            cards: computed,
+            isEmpty: computed,
+            takeCard: action.bound,
+            placeCard: action.bound,
+        })
+    }
 
     protected abstract getCardInstance(id: number, type: CardType): T
 

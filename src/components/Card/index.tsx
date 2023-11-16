@@ -6,14 +6,14 @@ import { ActionManager } from "../../Rules/ActionManager";
 
 type CardProps = GeneralCard & {
   onClick?: () => void;
-  isSelected: boolean;
   action: ActionManager;
+  
 }; 
 //проверка на активность карты делать тут
 export const Card = observer((props: CardProps) => {
   return (
     <div
-      className={`${styles[props.type]} ${styles.card} ${props.action.isDisabled(props) ? styles.disabled : ""}  ${props.isSelected ? styles.selected : ""}`}
+      className={`${styles[props.type]} ${styles.card} ${props.action.isDisabled(props) ? styles.disabled : ""} `}
       onClick={props.onClick}
     > <div>{"ID: " + props.id}</div>
       {props.type === "delivery" &&

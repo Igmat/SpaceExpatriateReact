@@ -17,7 +17,7 @@ export class TablePlace<T extends BasicCard> extends BasicPlace<T> {
     gameId: string
   ) {
     super();
-    makeAutoObservable(this);
+    //makeAutoObservable(this);
     // makeAutoSavable(
     //   this,
     //   gameId,

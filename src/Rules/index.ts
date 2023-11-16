@@ -14,7 +14,6 @@ import { deliveryCards } from "./CardDefinitions/delivery";
 import { engineeringCards } from "./CardDefinitions/engineering";
 import { terraformingCards } from "./CardDefinitions/terraforming";
 import { militaryCards } from "./CardDefinitions/military";
-import { BasicCard } from "./Cards";
 import { DeliveryCard } from "./Cards/delivery";
 import { EngineeringCard } from "./Cards/engineering";
 import { MilitaryCard } from "./Cards/military";
