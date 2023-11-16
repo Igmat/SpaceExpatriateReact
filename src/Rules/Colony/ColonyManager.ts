@@ -125,11 +125,12 @@ export class ColonyManager {
       currentManager.activateDeck = async (type: CardType) => {
         if (currentManager.remaining.activateDeck === 0) return;
         currentManager.adjustRemainingActivateDeck(-1);
-        this.hand.takeCard(this.decks[type].takeCard()!);
+        this.decks[type].topCard.move(this.hand.cardsInHand);
+        // this.hand.takeCard(this.decks[type].takeCard()!);
         currentManager.adjustRemainingActivateCard(1);
         return currentManager.confirm();
       };
-    },
+    },// переписала колонию
 
     dockStationModuleOfMissionType: async (colony: ColonyCard) => {
       this.table.takeCard(
