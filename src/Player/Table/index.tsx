@@ -35,9 +35,8 @@ export const Table = observer((props: TableProps) => {
       {CardTypes.map(
         (el) => (
           <div className={styles.cardsContainer} key={el}>
-            {props.model[el].map((card, ind) => (
+            {props.model.columns[el].cards.map((card, ind) => (
               <Card
-              isSelected={props.model.isSelected(card)}
                 key={ind}
                 {...card}
                 onClick={() => handleClick(card)}
