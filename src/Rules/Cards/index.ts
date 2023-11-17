@@ -23,11 +23,11 @@ export abstract class BasicCard {
   }
 
   public get isInDeck() {
-    return this.place instanceof ActiveCardsPlace; //создать
+    return this.place instanceof ActiveCardsPlace; 
   }
   
   public get isOpened() {
-    return this.place instanceof OpenedCardsPlace; //создать
+    return this.place instanceof OpenedCardsPlace;
   }
 
   public get isOnTable() {

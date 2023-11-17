@@ -59,6 +59,8 @@ export class RoundManager {
   }
   
   dealCards() {
+    console.log("deal cards")
+    console.log(this.decks.delivery.topCard)
     this.decks.delivery.topCard.move(this.hand.cardsInHand);
     this.decks.engineering.topCard.move(this.hand.cardsInHand);
     this.decks.military.topCard.move(this.hand.cardsInHand);

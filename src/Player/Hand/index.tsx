@@ -17,7 +17,7 @@ export const Hand = observer((props: HandProps) => {
       {props.model.cardsInHand.cards.map((card, ind) => (
         <Card
           key={ind}
-          {...card}
+          model={card}
           onClick={() => props.action.activateCard(card)}
           action={props.action}
         />

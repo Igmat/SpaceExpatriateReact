@@ -1,21 +1,18 @@
-import { computed, makeAutoObservable, makeObservable, observable } from "mobx";
-import { BasicCard } from "../Cards";
-import { CardType } from "../card-types";
+
+import { CardType, GeneralCard } from "../card-types";
 import { GameStateCards } from "..";
 import { BasicPlace } from ".";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
-export class HandPlace extends BasicPlace {
-    protected getCardInstance(id: number, type: CardType): BasicCard {
-        return this.cardsCollection[type][id]
-    }
-    constructor(
-        private readonly cardsCollection: GameStateCards,
-        gameId: string,
-
-    ) {
-        super()
-
-        //makeAutoSavable(this, gameId, "hand", ["_cards" as any]/*, this.gameState.saveCondition*/); 
-    }
+export class HandPlace extends BasicPlace<GeneralCard> {
+  protected getCardInstance(id: number, type: CardType): GeneralCard {
+    return this.cardsCollection[type][id];
+  }
+  constructor(
+    private readonly cardsCollection: GameStateCards,
+    gameId: string
+  ) {
+    super();
+    //makeAutoSavable(this, gameId, "hand", ["_cards" as any]/*, this.gameState.saveCondition*/);
+  }
 }

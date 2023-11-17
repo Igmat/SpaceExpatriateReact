@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+
 import { CardType } from "../card-types";
 import { BasicPlace } from ".";
 import { BasicCard } from "../Cards";
@@ -25,4 +25,5 @@ export class TablePlace<T extends BasicCard> extends BasicPlace<T> {
     //   ["_cards" as any] /*, this.gameState.saveCondition*/
     // );
   }
+  
 }

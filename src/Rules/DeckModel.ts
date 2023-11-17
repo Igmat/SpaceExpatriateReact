@@ -7,7 +7,7 @@ import { BasicCard } from "./Cards";
 import { ActiveCardsPlace } from "./Places/ActiveCardsPlace";
 import { OpenedCardsPlace } from "./Places/OpenedCardPlace";
 
-export class DeckModel<T extends BasicCard> {
+export class DeckModel<T extends GeneralCard> {
   constructor(
     public readonly type: CardType,
     public readonly cardsDefinitions: {
@@ -50,6 +50,7 @@ export class DeckModel<T extends BasicCard> {
     );
     this.mixCards();
     this.openCard();
+   
   }; // переписан по новому
 
   openCard = () => {
@@ -68,10 +69,10 @@ export class DeckModel<T extends BasicCard> {
     }
   } // переписан по новому
 
-  get topCard (){
+  get topCard() {
     this.checkActive();
     return this.activeCards.cards[0];
-  };//повертає верхню карту
+  } //повертає верхню карту
 
   private mixCards() {
     const restCards = [...this.activeCards.cards];
@@ -81,5 +82,4 @@ export class DeckModel<T extends BasicCard> {
       restCards.splice(randomIndex, 1);
     }
   } // переписан по новому
-  
 }
