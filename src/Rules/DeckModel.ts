@@ -1,9 +1,7 @@
 import { GameState } from ".";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { CardType, GeneralCard } from "./card-types";
 import { makeAutoObservable } from "mobx";
 import { DropCardsPlace } from "./Places/DropCardsPlace";
-import { BasicCard } from "./Cards";
 import { ActiveCardsPlace } from "./Places/ActiveCardsPlace";
 import { OpenedCardsPlace } from "./Places/OpenedCardPlace";
 
@@ -25,7 +23,7 @@ export class DeckModel<T extends GeneralCard> {
     // );
     // if (!isLoaded) {
     this.initialize();
-    // }
+    //}
   }
 
   public activeCards = new ActiveCardsPlace(
@@ -50,7 +48,7 @@ export class DeckModel<T extends GeneralCard> {
     );
     this.mixCards();
     this.openCard();
-   
+    this.dealCards();
   }; // переписан по новому
 
   openCard = () => {
@@ -82,4 +80,7 @@ export class DeckModel<T extends GeneralCard> {
       restCards.splice(randomIndex, 1);
     }
   } // переписан по новому
+  dealCards() {
+    this.topCard.move(this.gameState.hand.cardsInHand);
+  }
 }
