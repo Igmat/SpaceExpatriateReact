@@ -81,9 +81,9 @@ export class ActionManager implements IActionManager {
       this.resources.removeResourcesFromGarbage(this.selectedResource);
     }
 
-    await this.resources.getResources(this.table.columns.delivery.cards);
+    await this.resources.getResources(this.table.delivery.cards);
     this.round.startPerformingStep();
-    this.resources.createEngineeringMaps(this.table.columns.engineering.cards);
+    this.resources.createEngineeringMaps(this.table.engineering.cards);
   };
 
   confirm = async () => {

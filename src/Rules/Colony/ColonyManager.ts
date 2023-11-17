@@ -41,7 +41,7 @@ export class ColonyManager {
       const originalGetResources = this.resources.getResources;
 
       this.resources.getResources = async () => {
-        const availableCards = this.table.columns.delivery.cards.filter(
+        const availableCards = this.table.delivery.cards.filter(
           (card) =>
             card.resources.filter(
               (resource) => this.resources.garbageResources[resource] > 0
@@ -49,7 +49,7 @@ export class ColonyManager {
         );
 
         if (availableCards.length === 0) {
-          return await originalGetResources(this.table.columns.delivery.cards);
+          return await originalGetResources(this.table.delivery.cards);
         }
 
         const selected =
@@ -57,7 +57,7 @@ export class ColonyManager {
             ? availableCards[0]
             : await this.gameState.modal.show("blackMarket", availableCards);
         await originalGetResources(
-          this.table.columns.delivery.cards.filter((card) => card !== selected)
+          this.table.delivery.cards.filter((card) => card !== selected)
         );
         const resources = selected.resources;
         resources.forEach(
@@ -141,7 +141,7 @@ export class ColonyManager {
     dockStationModuleOfMissionType: async (colony: ColonyCard) => {
       this.decks[
         (this.gameState.action.currentManager as TAM).missionType!
-      ].topCard.move(this.table.columns.engineering);
+      ].topCard.move(this.table.engineering);
       // this.table.takeCard(
       //   this.decks[
       //     (this.gameState.action.currentManager as TAM).missionType!
@@ -152,10 +152,10 @@ export class ColonyManager {
     pointsForDocking: async (colony: ColonyCard) => {
       const cancelReaction = reaction(
         () => [
-          this.table.columns.delivery.cards.length,
-          this.table.columns.engineering.cards.length,
-          this.table.columns.terraforming.cards.length,
-          this.table.columns.military.cards.length,
+          this.table.delivery.cards.length,
+          this.table.engineering.cards.length,
+          this.table.terraforming.cards.length,
+          this.table.military.cards.length,
         ],
         () => {
           this.resources.addPoints(1);

@@ -35,7 +35,7 @@ export const Table = observer((props: TableProps) => {
       {CardTypes.map(
         (el) => (
           <div className={styles.cardsContainer} key={el}>
-            {props.model.columns[el].cards.map((card, ind) => (
+            {props.model[el].cards.map((card, ind) => (
               <Card
                 key={ind}
                 model = {card}
