@@ -1,4 +1,3 @@
-import { makeAutoObservable } from "mobx";
 import { CardType } from "../card-types";
 import { BasicPlace } from ".";
 import { BasicCard } from "../Cards";

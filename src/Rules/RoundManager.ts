@@ -2,7 +2,6 @@ import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 type Phase = "active" | CardType | "passive";
@@ -17,11 +16,11 @@ export class RoundManager {
   ) {
     makeAutoObservable(this);
     if (!gameId) return;
-    const isLoaded = makeAutoSavable(this, gameId, "round", [
-      "current",
+    // const isLoaded = makeAutoSavable(this, gameId, "round", [
+    //   "current",
       // "phase",
       // { key: "_step" as any, condition: (value) => value !== "resources" },
-    ]);
+    // ]);
     // if (!isLoaded) {
     //   this.dealCards();
     // }

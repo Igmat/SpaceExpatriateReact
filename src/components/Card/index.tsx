@@ -1,5 +1,5 @@
 import styles from "./Card.module.scss";
-import { CardDefinition, GeneralCard } from "../../Rules/card-types";
+import { GeneralCard } from "../../Rules/card-types";
 import { ResourceComponent } from "../ResourceComponent";
 import { observer } from "mobx-react-lite";
 import { ActionManager } from "../../Rules/ActionManager";

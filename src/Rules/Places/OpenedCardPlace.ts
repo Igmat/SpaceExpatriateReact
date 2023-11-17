@@ -1,7 +1,5 @@
-import { makeAutoObservable } from "mobx";
 import { CardType, GeneralCard } from "../card-types";
 import { BasicPlace } from ".";
-import { BasicCard } from "../Cards";
 
 export class OpenedCardsPlace<T extends GeneralCard> extends BasicPlace<T> {
   protected getCardInstance(id: number): T {

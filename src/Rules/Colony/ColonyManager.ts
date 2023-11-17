@@ -5,8 +5,7 @@ import {
   FullTrigger,
   TriggerName,
   TriggerNames,
-  expandTrigger,
-  isEngineeringCard,
+  expandTrigger
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";

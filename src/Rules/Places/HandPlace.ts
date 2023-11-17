@@ -1,8 +1,6 @@
-
 import { CardType, GeneralCard } from "../card-types";
 import { GameStateCards } from "..";
 import { BasicPlace } from ".";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class HandPlace extends BasicPlace<GeneralCard> {
   protected getCardInstance(id: number, type: CardType): GeneralCard {

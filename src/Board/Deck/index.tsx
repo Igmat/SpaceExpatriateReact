@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { DeckModel } from "../../Rules/DeckModel";
 import { Card } from "../../components/Card";
-import { CardDefinition, GeneralCard } from "../../Rules/card-types";
+import { GeneralCard } from "../../Rules/card-types";
 import { HandModel } from "../../Rules/HandModel";
 import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";

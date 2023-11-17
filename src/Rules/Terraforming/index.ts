@@ -12,7 +12,6 @@ import { ModalManager } from "../ModalManager";
 import { HandModel } from "../HandModel";
 import { CardsToDropPlace } from "../Places/CardsToDropPlace";
 import { GameState } from "..";
-import { BasicCard } from "../Cards";
 export class ActionManager implements IActionManager {
   constructor(
     private readonly gameState: GameState,

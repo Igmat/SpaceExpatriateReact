@@ -1,8 +1,6 @@
-
 import { CardType } from "../card-types";
 import { BasicPlace } from ".";
 import { BasicCard } from "../Cards";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 
 export class TablePlace<T extends BasicCard> extends BasicPlace<T> {
   protected getCardInstance(id: number): T {
