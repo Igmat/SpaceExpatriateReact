@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { DeckModel } from "../../Rules/DeckModel";
 import { Card } from "../../components/Card";
-import { CardDefinition, GeneralCard } from "../../Rules/card-types";
+import { GeneralCard } from "../../Rules/card-types";
 import { HandModel } from "../../Rules/HandModel";
 import { TableModel } from "../../Rules/TableModel";
 import { ActionManager } from "../../Rules/ActionManager";
@@ -22,7 +22,7 @@ interface DeckProps {
 export const Deck = observer((props: DeckProps) => {
   //console.log(props.model.openedCard)
   const onOpenCardClick = () => {
-    props.action.perform(props.model.openedCard.cards[0])
+    props.action.perform(props.model.openedCard.cards[0]);
     //props.action.perform(props.model.openedCard);
   };
   return (
@@ -31,11 +31,10 @@ export const Deck = observer((props: DeckProps) => {
         className={`${styles[props.model.type]} ${styles.deck} ${styles.open}`}
         onClick={onOpenCardClick}
       >
-        {props.model.openedCard && (
+        {!props.model.openedCard.isEmpty && (
           <Card
-            //key={props.model.openedCard.id}
             key={props.model.openedCard.cards[0].id}
-            {...props.model.openedCard}
+            model={props.model.openedCard.cards[0]}
             action={props.action}
           />
         )}

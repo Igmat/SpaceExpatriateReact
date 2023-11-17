@@ -1,14 +1,13 @@
 import { makeAutoObservable } from "mobx";
-import { GeneralCard} from "./card-types";
 import { GameState } from ".";
 import { TablePlace } from "./Places/TablePlace";
 
-export interface TableColumns {
-  delivery: number[];
-  engineering: number[];
-  terraforming: number[];
-  military: number[];
-}
+// export interface TableColumns {
+//   delivery: number[];
+//   engineering: number[];
+//   terraforming: number[];
+//   military: number[];
+// }
 
 export class TableModel {
   constructor(

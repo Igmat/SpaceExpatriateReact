@@ -8,6 +8,7 @@ export abstract class BasicPlace<T extends BasicCard = BasicCard> {
 
     constructor() {
         makeObservable(this, {
+            ["_cards" as any]: observable,
             cards: computed,
             isEmpty: computed,
             takeCard: action.bound,
@@ -24,7 +25,7 @@ export abstract class BasicPlace<T extends BasicCard = BasicCard> {
     // выписываем карту
     takeCard(id: number, type: CardType) {
         this._cards = this._cards.filter(
-            (el) => el.id !== id && el.type !== type)
+            (el) => el.id !== id || el.type !== type)
     }
     // вписываем карту
     placeCard(id: number, type: CardType) {

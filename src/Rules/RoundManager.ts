@@ -2,7 +2,6 @@ import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
 import { HandModel } from "./HandModel";
 import { CardType } from "./card-types";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
 import { ColonyDeckModel } from "./Colony/ColonyDeckModel";
 
 type Phase = "active" | CardType | "passive";
@@ -13,18 +12,18 @@ export class RoundManager {
     private readonly decks: DeckManager,
     private readonly hand: HandModel,
     private readonly colonyDeck: ColonyDeckModel,
-    gameId: string,
+    gameId: string
   ) {
     makeAutoObservable(this);
     if (!gameId) return;
-    const isLoaded = makeAutoSavable(this, gameId, "round", [
-      "current",
+    // const isLoaded = makeAutoSavable(this, gameId, "round", [
+    //   "current",
       // "phase",
       // { key: "_step" as any, condition: (value) => value !== "resources" },
-    ]);
-    if (!isLoaded) {
-      this.dealCards()
-    }
+    // ]);
+    // if (!isLoaded) {
+    //   this.dealCards();
+    // }
   }
 
   current = 1;
@@ -49,7 +48,7 @@ export class RoundManager {
   private setStep(step: Step) {
     this._step = step;
   }
-  
+
   startPerformingStep() {
     this.setStep("performing");
   }
@@ -57,13 +56,13 @@ export class RoundManager {
   startOptionsStep() {
     this.setStep("options");
   }
-  
-  dealCards() {
-    this.decks.delivery.topCard.move(this.hand.cardsInHand);
-    this.decks.engineering.topCard.move(this.hand.cardsInHand);
-    this.decks.military.topCard.move(this.hand.cardsInHand);
-    this.decks.terraforming.topCard.move(this.hand.cardsInHand);
-  }
+
+  // dealCards() {
+  //   this.decks.delivery.topCard.move(this.hand.cardsInHand);
+  //   this.decks.engineering.topCard.move(this.hand.cardsInHand);
+  //   this.decks.military.topCard.move(this.hand.cardsInHand);
+  //   this.decks.terraforming.topCard.move(this.hand.cardsInHand);
+  // }
 
   get isResetable(): boolean {
     return (
@@ -73,9 +72,15 @@ export class RoundManager {
   }
 
   get isConfirmable(): boolean {
-    return this.step === "performing" && (this.phase === "delivery" || this.phase === "terraforming");
+    return (
+      this.step === "performing" &&
+      (this.phase === "delivery" || this.phase === "terraforming")
+    );
   }
   get isEndable(): boolean {
-    return this.step === "performing" && (this.phase === "military" || this.phase === "engineering");
+    return (
+      this.step === "performing" &&
+      (this.phase === "military" || this.phase === "engineering")
+    );
   }
 }

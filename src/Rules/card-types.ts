@@ -4,7 +4,7 @@ import { DeliveryCard, DeliveryCardDefinition } from "./Cards/delivery";
 import { MilitaryCard, MilitaryCardDefinition } from "./Cards/military";
 import { EngineeringCard, EngineeringCardDefinition } from "./Cards/engineering";
 import { TerraformingCard, TerraformingCardDefinition } from "./Cards/terraforming";
-import { ColonyCard, ColonyCardDefinition } from "./Cards/colony";
+import { ColonyCardDefinition } from "./Cards/colony";
 export const BasicResources = [
   "fuel",
   "minerals",

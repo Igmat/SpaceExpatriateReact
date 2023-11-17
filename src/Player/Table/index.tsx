@@ -38,7 +38,7 @@ export const Table = observer((props: TableProps) => {
             {props.model.columns[el].cards.map((card, ind) => (
               <Card
                 key={ind}
-                {...card}
+                model = {card}
                 onClick={() => handleClick(card)}
                 action={props.action} />
             ))}

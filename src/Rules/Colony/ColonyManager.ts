@@ -5,8 +5,7 @@ import {
   FullTrigger,
   TriggerName,
   TriggerNames,
-  expandTrigger,
-  isEngineeringCard,
+  expandTrigger
 } from "../card-types";
 import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
@@ -80,19 +79,19 @@ export class ColonyManager {
     },
 
     addTempEngineering: async (colony: ColonyCard) => {
-      if (isEngineeringCard(colony.data)) {
-        // создать инстанс класса
-        //добавить в колекцию
-        colony.data.move(this.table.columns.engineering);
-        // this.table.tempEngineering.push(colony.data);
-        const id = colony.data.id;
-        return async () => {
-          // this.table.tempEngineering.pop();
-          colony.data.move();
-          // this.table.columns.engineering.takeCard(id, "engineering");
-        };
-      }
-      return async () => {};
+      // if (isEngineeringCard(colony.data)) {
+      //   // создать инстанс класса
+      //   //добавить в колекцию
+      //   colony.data.move(this.table.columns.engineering);
+      //   // this.table.tempEngineering.push(colony.data);
+      //   const id = colony.data.id;
+      //   return async () => {
+      //     // this.table.tempEngineering.pop();
+      //     colony.data.move();
+      //     // this.table.columns.engineering.takeCard(id, "engineering");
+      //   };
+      // }
+      // return async () => {};
     }, 
 
     addPointsFromColonies: async (colony: ColonyCard) => {

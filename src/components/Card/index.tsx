@@ -1,11 +1,12 @@
 import styles from "./Card.module.scss";
-import { CardDefinition, GeneralCard } from "../../Rules/card-types";
+import { GeneralCard } from "../../Rules/card-types";
 import { ResourceComponent } from "../ResourceComponent";
 import { observer } from "mobx-react-lite";
 import { ActionManager } from "../../Rules/ActionManager";
 
-type CardProps = GeneralCard & {
+type CardProps =  {
   onClick?: () => void;
+  model: GeneralCard;
   action: ActionManager;
   
 }; 
@@ -13,42 +14,42 @@ type CardProps = GeneralCard & {
 export const Card = observer((props: CardProps) => {
   return (
     <div
-      className={`${styles[props.type]} ${styles.card} ${props.action.isDisabled(props) ? styles.disabled : ""} `}
+      className={`${styles[props.model.type]} ${styles.card} ${props.action.isDisabled(props.model) ? styles.disabled : ""} `}
       onClick={props.onClick}
-    > <div>{"ID: " + props.id}</div>
-      {props.type === "delivery" &&
-        props.resources.map((el, ind) => (
+    > <div>{"ID: " + props.model.id}</div>
+      {props.model.type === "delivery" &&
+        props.model.resources.map((el, ind) => (
           <ResourceComponent key={ind} type={el} />
         ))}
-      {props.type === "engineering" && (
-        <div className={styles[props.connection]}>
-          <div>{props.connection}</div>
+      {props.model.type === "engineering" && (
+        <div className={styles[props.model.connection]}>
+          <div>{props.model.connection}</div>
           <div className={styles.entryPoint}>
-            {props.entryPoint && <ResourceComponent type={props.entryPoint} />}
+            {props.model.entryPoint && <ResourceComponent type={props.model.entryPoint} />}
           </div>
           <div className={styles.exitPoint}>
-            {props.exitPoint &&
-              props.exitPoint.map((el, ind) => (
+            {props.model.exitPoint &&
+              props.model.exitPoint.map((el, ind) => (
                 <ResourceComponent key={ind} type={el} />
               ))}
-            {props.points && <div>{props.points}</div>}
+            {props.model.points && <div>{props.model.points}</div>}
           </div>
         </div>
       )}
-      {props.type === "military" && (
-        <div className={styles[props.weapon]}>{props.name}</div>
+      {props.model.type === "military" && (
+        <div className={styles[props.model.weapon]}>{props.model.name}</div>
       )}
-      {props.type === "terraforming" && (
+      {props.model.type === "terraforming" && (
         <div className={ styles.infoWrapper}>
           <div className={styles.resourceWrapper}>
-                {props.resources.map((el, ind) => (
+                {props.model.resources.map((el, ind) => (
               <ResourceComponent key={ind} type={el} />
             ))}
         
           </div>
        
-          <div className={styles.points}>{props.points}</div>
-          <p className={styles.cardName}>{props.name}</p>
+          <div className={styles.points}>{props.model.points}</div>
+          <p className={styles.cardName}>{props.model.name}</p>
         </div>
       )}
     </div>
