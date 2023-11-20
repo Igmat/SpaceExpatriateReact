@@ -16,19 +16,18 @@ export class TableModel {
     makeAutoObservable(this);
   }
 
-  public columns = {
-    delivery: new TablePlace("delivery", this.gameState.cards.delivery, this.gameId),
-    engineering: new TablePlace("engineering", this.gameState.cards.engineering, this.gameId),
-    terraforming: new TablePlace("terraforming", this.gameState.cards.terraforming, this.gameId),
-    military: new TablePlace("military", this.gameState.cards.military, this.gameId),
-  };
-/*
-  selected: TableColumns = {
+    delivery = new TablePlace("delivery", this.gameState.cards.delivery, this.gameId)
+    engineering = new TablePlace("engineering", this.gameState.cards.engineering, this.gameId)
+    terraforming = new TablePlace("terraforming", this.gameState.cards.terraforming, this.gameId)
+    military = new TablePlace("military", this.gameState.cards.military, this.gameId)
+
+  /*selected: TableColumns = {
     delivery: [],
     engineering: [],
     terraforming: [],
     military: [],
   };
+  
 
 
   resetSelected = () => {
@@ -50,5 +49,6 @@ export class TableModel {
   isSelected = (card:GeneralCard) => {
     return this.selected[card.type].includes(card.id);
   };
- */
+  
+  */
 }

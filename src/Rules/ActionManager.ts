@@ -50,7 +50,6 @@ export class ActionManager {
       this.colonyDeck,
       this.resources,
       this.modal,
-      this.hand
     ),
     delivery: new DAM(
       this.gameState,
@@ -75,7 +74,7 @@ export class ActionManager {
     if (!card) return;
     if (this.round.phase !== "active") return;
     this.activeAction = card.type;
-    card.move(this.table.columns[card.type])
+    card.move(this.table[card.type])
 
     if (this.round.current < 5) {
       this.nextRound();
