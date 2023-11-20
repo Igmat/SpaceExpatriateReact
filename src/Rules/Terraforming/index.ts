@@ -108,7 +108,6 @@ export class ActionManager implements IActionManager {
     console.log("reset");
     
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      console.log("reset");
       this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
     }
   };

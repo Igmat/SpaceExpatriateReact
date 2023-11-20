@@ -137,7 +137,7 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="delivery card disabled "
+        className="delivery card  "
       >
          
         <div>
@@ -186,7 +186,7 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="engineering card disabled "
+        className="engineering card  "
       >
          
         <div>
@@ -249,7 +249,7 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="terraforming card disabled "
+        className="terraforming card  "
       >
          
         <div>
@@ -316,7 +316,7 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="military card disabled "
+        className="military card  "
       >
          
         <div>

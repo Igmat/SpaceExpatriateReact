@@ -123,7 +123,7 @@ export class ActionManager {
 
   get isDisabled(): (card: GeneralCard) => boolean {
     return (card: GeneralCard) => {
-      if (!this.activeAction) return !card.isInDeck;
+      if (!this.activeAction) return !card.isOpened;
       return this.managers[this.activeAction].isDisabled(card);
     };
   }
