@@ -75,7 +75,7 @@ export class ActionManager {
     if (!card) return;
     if (this.round.phase !== "active") return;
     this.activeAction = card.type;
-    card.move(this.table.columns[card.type])
+    card.move(this.table[card.type])
 
     if (this.round.current < 5) {
       this.nextRound();
@@ -124,7 +124,7 @@ export class ActionManager {
 
   get isDisabled(): (card: GeneralCard) => boolean {
     return (card: GeneralCard) => {
-      if (!this.activeAction) return !card.isInDeck;
+      if (!this.activeAction) return !card.isOpened;
       return this.managers[this.activeAction].isDisabled(card);
     };
   }

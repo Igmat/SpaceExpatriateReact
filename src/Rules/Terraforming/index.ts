@@ -109,7 +109,7 @@ export class ActionManager implements IActionManager {
 
   reset = async () => {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      this._cardsToDrop.cards.forEach((card) => card.move(this.table.columns[card.type]));
+      this._cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
     }
   };
 

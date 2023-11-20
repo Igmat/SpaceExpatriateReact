@@ -51,13 +51,13 @@ export class ActionManager implements IActionManager {
   activateDeck = async (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
     this.adjustRemainingActivateDeck(-1);
-    this.decks[type].topCard.move(this.table.columns[type])
+    this.decks[type].topCard.move(this.table[type])
   };
 
   activateCard = async (card: GeneralCard) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
-    card.move(this.table.columns[card.type]);
+    card.move(this.table[card.type]);
   };
 
   activateColonyCard = async (card: number) => {};
