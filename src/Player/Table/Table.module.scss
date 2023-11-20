@@ -39,6 +39,25 @@
     color: rgb(177, 177, 177, 0.5);
     z-index: -1;
   }
+
+  & .cardsToDrop {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+
+    & div {
+      width: 90px;
+      height: 170px;
+    }
+  }
+
 }
 @keyframes radial-anakausug {
   0% { box-shadow: 0 0 0 0px rgba(244, 234, 99, 0.3); }  
