@@ -17,8 +17,4 @@ export class CardsToDropPlace extends BasicPlace<GeneralCard> {
         //makeAutoSavable(this, gameId, "hand", ["_cardsInHand" as any], this.gameState.saveCondition); 
     }
 
-    get cardsInDropPlace() {
-        return this.cards
-    }
-
 }
