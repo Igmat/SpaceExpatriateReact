@@ -39,7 +39,7 @@ export class ActionManager implements IActionManager {
 
     if (this.missionType) {
       this.round.startPerformingStep();
-    }
+    }  
   };
 
   get isEnded() {
@@ -67,9 +67,9 @@ export class ActionManager implements IActionManager {
 
   activateCard = async (card: GeneralCard) => {};
 
-  activateCardOnTable = async (card: GeneralCard) => { 
+  activateCardOnTable = async (card: GeneralCard) => {
+    if (this.gameState.cardsToDrop.cards.length >= 4) return false;
     card.move(this.gameState.cardsToDrop) //карта уходит во временный сброс
-    this.tryBuildColony();
     return true;
   };
 
@@ -84,6 +84,7 @@ export class ActionManager implements IActionManager {
     //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       this.dropCards();
+      return true
     }
   };
 
@@ -99,17 +100,17 @@ export class ActionManager implements IActionManager {
     this.confirm()
   };
 
-  confirm = async () => { 
-    this.colonyDeck.countPoints();
-    this._isEnded = true;
+  confirm = async () => {
+    if (!this.tryBuildColony() && this.gameState.cardsToDrop.isEmpty === false)  return
+    
+    if (this.gameState.cardsToDrop.isEmpty || this.tryBuildColony()) {
+      this.colonyDeck.countPoints();
+      this._isEnded = true;
+    }
   };
 
   reset = async () => {
-    console.log("reset");
-    
-    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
-    }
+    this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
   };
 
   dropCards = () => {
