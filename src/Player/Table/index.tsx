@@ -9,6 +9,7 @@ import { CardTypes, GeneralCard } from "../../Rules/card-types";
 import { ResetButton } from "../../components/ResetButton";
 import { ColonyCard } from "../../components/ColonyCard";
 import { ColonyManager } from "../../Rules/Colony/ColonyManager";
+import { CardsToDropPlace } from "../../Rules/Places/CardsToDropPlace";
 
 interface TableProps {
   model: TableModel;
@@ -16,6 +17,7 @@ interface TableProps {
   action: ActionManager;
   resources: ResourcesModel;
   colony: ColonyManager;
+  cardsToDrop: CardsToDropPlace;
 }
 
 export const Table = observer((props: TableProps) => {
@@ -35,7 +37,7 @@ export const Table = observer((props: TableProps) => {
       {CardTypes.map(
         (el) => (
           <div className={styles.cardsContainer} key={el}>
-            {props.model.columns[el].cards.map((card, ind) => (
+            {props.model[el].cards.map((card, ind) => (
               <Card
                 key={ind}
                 model = {card}
@@ -45,6 +47,17 @@ export const Table = observer((props: TableProps) => {
           </div>
         )
       )}
+      <div className={styles.cardsToDrop}>
+      {props.round.phase === "terraforming" && 
+        props.cardsToDrop.cards.map((card, ind) => (
+        <Card
+          key={ind}
+          model={card}
+          onClick={() => handleClick(card)}
+          action={props.action}
+        />
+        ))}
+      </div>
       {props.round.isResetable && <ResetButton action={props.action} />}
       {props.round.isConfirmable && (
         <button className={styles.endTurnButton} onClick={props.action.confirm}>

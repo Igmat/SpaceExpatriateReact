@@ -9,9 +9,8 @@ import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
-import { HandModel } from "../HandModel";
-import { CardsToDropPlace } from "../Places/CardsToDropPlace";
 import { GameState } from "..";
+
 export class ActionManager implements IActionManager {
   constructor(
     private readonly gameState: GameState,
@@ -23,7 +22,6 @@ export class ActionManager implements IActionManager {
     private readonly colonyDeck: ColonyDeckModel,
     private readonly resources: ResourcesModel,
     private readonly modal: ModalManager,
-    private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
     // makeAutoSavable(this, gameId, "terraformingManager", [
@@ -33,7 +31,6 @@ export class ActionManager implements IActionManager {
   }
 
   private _isEnded: boolean = false;
-  private _cardsToDrop = new CardsToDropPlace(this.gameState.cards, this.gameId);
   missionType?: CardType;
 
   perform = async (card: GeneralCard) => {
@@ -51,17 +48,17 @@ export class ActionManager implements IActionManager {
 
   get isThreeCardsOfSameType() {
     return (
-      this._cardsToDrop.cards.length === 3 &&
-      this._cardsToDrop.cards.filter((card) => card.type === this.missionType)
+      this.gameState.cardsToDrop.cards.length === 3 &&
+      this.gameState.cardsToDrop.cards.filter((card) => card.type === this.missionType)
         .length === 3
     );
   }
 
   get isOneCardOfEachType() {
     return (
-      this._cardsToDrop.cards.length === 4 &&
+      this.gameState.cardsToDrop.cards.length === 4 &&
       CardTypes.map(
-        (el) => this._cardsToDrop.cards.filter((card) => card.type === el).length === 1
+        (el) => this.gameState.cardsToDrop.cards.filter((card) => card.type === el).length === 1
       ).filter(Boolean).length === 4
     );
   }
@@ -71,7 +68,7 @@ export class ActionManager implements IActionManager {
   activateCard = async (card: GeneralCard) => {};
 
   activateCardOnTable = async (card: GeneralCard) => { 
-    card.move(this._cardsToDrop) //карта уходит во временный сброс
+    card.move(this.gameState.cardsToDrop) //карта уходит во временный сброс
     this.tryBuildColony();
     return true;
   };
@@ -108,14 +105,17 @@ export class ActionManager implements IActionManager {
   };
 
   reset = async () => {
+    console.log("reset");
+    
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      this._cardsToDrop.cards.forEach((card) => card.move(this.table.columns[card.type]));
+      console.log("reset");
+      this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
     }
   };
 
   dropCards = () => {
      //сбрасываем карты в колоду постоянного сброса
-    this._cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type].droppedCards));
+    this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type].droppedCards));
   };
 
   isDisabled(card: GeneralCard): boolean {
