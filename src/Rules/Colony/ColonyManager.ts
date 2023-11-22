@@ -7,7 +7,6 @@ import {
   TriggerNames,
   expandTrigger
 } from "../card-types";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { TableModel } from "../TableModel";
 import { ResourcesModel } from "../ResourcesModel";
 import { GameState } from "..";
@@ -30,8 +29,7 @@ export class ColonyManager {
     private readonly decks: DeckManager
   ) {
     makeAutoObservable(this);
-    if (!gameId) return;
-    makeAutoSavable(this, this.gameId, "colony", ["colonies"]);
+   
   }
 
   colonies: ColonyCard[] = [];

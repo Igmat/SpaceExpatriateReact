@@ -24,13 +24,13 @@ export class ResourcesModel {
     gameId: string
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(
-      this,
-      gameId,
-      "resources",
-      ["garbageResources", "points"],
-      this.gameState.saveCondition
-    );
+    // makeAutoSavable(
+    //   this,
+    //   gameId,
+    //   "resources",
+    //   ["garbageResources", "points"],
+    //   this.gameState.saveCondition
+    // );
   }
 
   public playerResources: PlayerResources = {

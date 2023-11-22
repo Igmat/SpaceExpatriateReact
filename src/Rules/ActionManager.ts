@@ -26,12 +26,21 @@ export class ActionManager {
     private readonly gameId: string,
     private readonly colony: ColonyManager,
     private readonly colonyDeck: ColonyDeckModel,
-    private readonly modal: ModalManager,
+    private readonly modal: ModalManager
   ) {
     makeAutoObservable(this);
-    makeAutoSavable(this, gameId, `action`, [`activeAction`],this.gameState.saveCondition);
+    // makeAutoSavable(this, gameId, `action`, [`activeAction`],this.gameState.saveCondition);
+  }
+  serialize(): any {
+    return ({
+      activeAction: this.activeAction,
+    });
   }
 
+  deserialize(data: any): void {
+    this.activeAction = data.activeAction;
+  }
+  
   private managers = {
     engineering: new EAM(
       this.round,
@@ -75,7 +84,7 @@ export class ActionManager {
     if (!card) return;
     if (this.round.phase !== "active") return;
     this.activeAction = card.type;
-    card.move(this.table[card.type])
+    card.move(this.table[card.type]);
 
     if (this.round.current < 5) {
       this.nextRound();
@@ -97,27 +106,27 @@ export class ActionManager {
 
   confirm = async () => {
     await this.currentManager?.confirm();
-    this.currentManager?.isEnded && await this.nextRound();
+    this.currentManager?.isEnded && (await this.nextRound());
   };
 
   activateDeck = async (type: CardType) => {
     this.currentManager?.activateDeck(type);
-    this.currentManager?.isEnded && await this.nextRound();
+    this.currentManager?.isEnded && (await this.nextRound());
   };
 
   activateCard = async (card: GeneralCard) => {
     this.currentManager?.activateCard(card);
-    this.currentManager?.isEnded && await this.nextRound();
+    this.currentManager?.isEnded && (await this.nextRound());
   };
 
   activateColonyCard = async (card: number) => {
     this.currentManager?.activateColonyCard(card);
-    this.currentManager?.isEnded && await this.nextRound();
+    this.currentManager?.isEnded && (await this.nextRound());
   };
 
   activateCardOnTable = async (card: GeneralCard) => {
     await this.currentManager?.activateCardOnTable(card);
-    this.currentManager?.isEnded && await this.nextRound();
+    this.currentManager?.isEnded && (await this.nextRound());
   };
 
   reset = async () => await this.currentManager?.reset();
