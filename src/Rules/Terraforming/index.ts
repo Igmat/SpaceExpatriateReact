@@ -39,7 +39,7 @@ export class ActionManager implements IActionManager {
 
     if (this.missionType) {
       this.round.startPerformingStep();
-    }  
+    }
   };
 
   get isEnded() {
@@ -58,18 +58,33 @@ export class ActionManager implements IActionManager {
     return (
       this.gameState.cardsToDrop.cards.length === 4 &&
       CardTypes.map(
-        (el) => this.gameState.cardsToDrop.cards.filter((card) => card.type === el).length === 1
-      ).filter(Boolean).length === 4
+        (el) => this.gameState.cardsToDrop.cards
+          .filter((card) => card.type === el).length === 1)
+        .filter(Boolean).length === 4
     );
   }
 
-  activateDeck = async (type: CardType) => {};
+  get tryBuildColony() {
+    //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
+      return true
+    } else
+      return false
+  };
 
-  activateCard = async (card: GeneralCard) => {};
+  get dropCards() {
+    //сбрасываем карты в колоду постоянного сброса
+    this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type].droppedCards));
+    return true
+  };
+
+  activateDeck = async (type: CardType) => { };
+
+  activateCard = async (card: GeneralCard) => { };
 
   activateCardOnTable = async (card: GeneralCard) => {
     if (this.gameState.cardsToDrop.cards.length >= 4) return false;
-    card.move(this.gameState.cardsToDrop) //карта уходит во временный сброс
+    !this.tryBuildColony && card.move(this.gameState.cardsToDrop) //карта уходит во временный сброс
     return true;
   };
 
@@ -77,14 +92,6 @@ export class ActionManager implements IActionManager {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
       return this.buildColony(selectedCardIndex); //строим колонию
-    }
-  };
-
-  tryBuildColony = () => {
-    //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
-    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      this.dropCards();
-      return true
     }
   };
 
@@ -101,9 +108,9 @@ export class ActionManager implements IActionManager {
   };
 
   confirm = async () => {
-    if (!this.tryBuildColony() && this.gameState.cardsToDrop.isEmpty === false)  return
-    
-    if (this.gameState.cardsToDrop.isEmpty || this.tryBuildColony()) {
+    if (!this.tryBuildColony && this.gameState.cardsToDrop.isEmpty === false) return
+
+    if (this.gameState.cardsToDrop.isEmpty || (this.tryBuildColony && this.dropCards)) {
       this.colonyDeck.countPoints();
       this._isEnded = true;
     }
@@ -113,17 +120,15 @@ export class ActionManager implements IActionManager {
     this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
   };
 
-  dropCards = () => {
-     //сбрасываем карты в колоду постоянного сброса
-    this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type].droppedCards));
-  };
-
   isDisabled(card: GeneralCard): boolean {
     if (card.isOnTable) {
       return this.isDisabledTable(card);
     }
     if (card.isInHand || card.isInDeck) {
       return true;
+    }
+    if (this.gameState.cardsToDrop.cards.some(el => el.id === card.id)) {
+      return !this.isDisabledTable(card);
     }
     return false;
   }
