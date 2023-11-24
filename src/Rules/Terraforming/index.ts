@@ -65,7 +65,7 @@ export class ActionManager implements IActionManager {
   }
 
   get tryBuildColony() {
-    //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
+    //даёт разрешение на сброс карт
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       return true
     } else
@@ -84,7 +84,7 @@ export class ActionManager implements IActionManager {
 
   activateCardOnTable = async (card: GeneralCard) => {
     if (this.gameState.cardsToDrop.cards.length >= 4) return false;
-    !this.tryBuildColony && card.move(this.gameState.cardsToDrop) //карта уходит во временный сброс
+    !this.tryBuildColony && card.move(this.gameState.cardsToDrop) //если условие для сброса карт больше не выполняется - карты сбрасывать нельзя
     return true;
   };
 
@@ -104,36 +104,63 @@ export class ActionManager implements IActionManager {
     }
     this.resources.extractColonyPoints(selectedCard);
     this.colony.takeColonyCard(selectedCard);
-    this.confirm()
+    if (this.tryBuildColony && this.dropCards) {
+      this.colonyDeck.countPoints();
+      this._isEnded = true;
+    }
   };
 
   confirm = async () => {
     if (!this.tryBuildColony && this.gameState.cardsToDrop.isEmpty === false) return
 
-    if (this.gameState.cardsToDrop.isEmpty || (this.tryBuildColony && this.dropCards)) {
+    if (this.gameState.cardsToDrop.isEmpty) {
       this.colonyDeck.countPoints();
       this._isEnded = true;
     }
+
   };
 
   reset = async () => {
     this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
   };
 
+  disableColumn = () => {
+
+  }
+
+
   isDisabled(card: GeneralCard): boolean {
-    if (card.isOnTable) {
-      return this.isDisabledTable(card);
+    if (this.round.phase === "terraforming" && card.isOnTable) {
+      if (this.gameState.cardsToDrop.isEmpty) {
+        return false
+      }
+      if (card.isOnTable && this.gameState.cardsToDrop.cards.length >= 1) {
+        const cards = this.gameState.cardsToDrop.cards;
+
+        if (cards.length >= 1 && cards[0].type !== this.missionType && cards.some(el => el.type === card.type)) {
+          return true;
+        }
+
+        if (cards.length > 1 && cards.every(c => c.type === this.missionType) && card.type !== this.missionType ) {
+          return true;
+        }      
+      }
     }
-    if (card.isInHand || card.isInDeck) {
-      return true;
-    }
-    if (this.gameState.cardsToDrop.cards.some(el => el.id === card.id)) {
-      return !this.isDisabledTable(card);
-    }
-    return false;
+
+      if (card.isOnTable) {
+        return this.isDisabledTable(card);
+      }
+      if (card.isInHand || card.isInDeck || card.isOpened) {
+        return true;
+      }
+      return false;
+    
   }
 
   isDisabledDeck = (type: CardType): boolean => true;
 
   isDisabledTable = (card: GeneralCard): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
+
+  isDisabledCard = (card: GeneralCard): boolean => true;
+
 }
