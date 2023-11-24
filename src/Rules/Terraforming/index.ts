@@ -124,11 +124,6 @@ export class ActionManager implements IActionManager {
     this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
   };
 
-  disableColumn = () => {
-
-  }
-
-
   isDisabled(card: GeneralCard): boolean {
     if (this.round.phase === "terraforming" && card.isOnTable) {
       if (this.gameState.cardsToDrop.isEmpty) {
@@ -141,24 +136,24 @@ export class ActionManager implements IActionManager {
           return true;
         }
 
-        if (cards.length > 1 && cards.every(c => c.type === this.missionType) && card.type !== this.missionType ) {
+        if (cards.length > 1 && cards.every(el => el.type === this.missionType) && card.type !== this.missionType) {
           return true;
         }
-        
+
         if (cards.length >= 2 && cards.some(el => el.type !== this.missionType) && cards.some(el => el.type === card.type)) {
           return true;
         }
       }
     }
 
-      if (card.isOnTable) {
-        return this.isDisabledTable(card);
-      }
-      if (card.isInHand || card.isInDeck || card.isOpened) {
-        return true;
-      }
-      return false;
-    
+    if (card.isOnTable) {
+      return this.isDisabledTable(card);
+    }
+    if (card.isInHand || card.isInDeck || card.isOpened) {
+      return true;
+    }
+    return false;
+
   }
 
   isDisabledDeck = (type: CardType): boolean => true;
