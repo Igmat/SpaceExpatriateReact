@@ -143,7 +143,11 @@ export class ActionManager implements IActionManager {
 
         if (cards.length > 1 && cards.every(c => c.type === this.missionType) && card.type !== this.missionType ) {
           return true;
-        }      
+        }
+        
+        if (cards.length >= 2 && cards.some(el => el.type !== this.missionType) && cards.some(el => el.type === card.type)) {
+          return true;
+        }
       }
     }
 
