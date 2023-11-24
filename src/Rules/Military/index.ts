@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType } from "../card-types";
+import { CardDefinition, CardType, GeneralCard } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { HandModel } from "../HandModel";
 import { DeckManager } from "../DeckManager";
@@ -46,11 +46,11 @@ export class ActionManager implements IActionManager {
       this.round.step === "performing" &&
       this.militaryOption === "exploration"
     )
-      this.hand.takeCard(this.decks[type].takeCard());
+    this.decks[type].topCard.move(this.hand.cardsInHand);
     this.remaining.activateDeck = 0;
   };
 
-  activateCard = async (card: number) => {};
+  activateCard = async (card: GeneralCard) => {};
   activateColonyCard = async (card: number) => {};
   activateCardOnTable = async (card: CardDefinition) => {
     return false;
@@ -58,7 +58,7 @@ export class ActionManager implements IActionManager {
 
   reset = async () => {};
 
-  isDisabled = (card: CardDefinition): boolean => true;
+  isDisabled = (card: GeneralCard): boolean => true;
 
   isDisabledDeck = (type: CardType): boolean => false;
 }

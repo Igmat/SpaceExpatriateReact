@@ -137,22 +137,22 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="delivery card   "
+        className="delivery card  "
       >
          
         <div>
-          ID: 0
+          ID: 16
         </div>
         <div>
           <div>
             <div
-              className="fuel resource"
+              className="minerals resource"
             >
               <div
                 className="resName"
               >
                  
-                fuel
+                minerals
               </div>
             </div>
              
@@ -162,13 +162,13 @@ exports[`Board snapshot 1`] = `
         <div>
           <div>
             <div
-              className="fuel resource"
+              className="biotic-materials resource"
             >
               <div
                 className="resName"
               >
                  
-                fuel
+                biotic-materials
               </div>
             </div>
              
@@ -186,17 +186,17 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="engineering card   "
+        className="engineering card  "
       >
          
         <div>
-          ID: 0
+          ID: 16
         </div>
         <div
-          className="continue"
+          className="end"
         >
           <div>
-            continue
+            end
           </div>
           <div
             className="entryPoint"
@@ -220,6 +220,22 @@ exports[`Board snapshot 1`] = `
                 <div />
               </div>
             </div>
+            <div>
+              <div>
+                <div
+                  className="minerals resource"
+                >
+                  <div
+                    className="resName"
+                  >
+                     
+                    minerals
+                  </div>
+                </div>
+                 
+                <div />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -233,11 +249,11 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="terraforming card   "
+        className="terraforming card  "
       >
          
         <div>
-          ID: 0
+          ID: 16
         </div>
         <div
           className="infoWrapper"
@@ -264,43 +280,13 @@ exports[`Board snapshot 1`] = `
             <div>
               <div>
                 <div
-                  className="fuel resource"
+                  className="nanotechnologies resource"
                 >
                   <div
                     className="resName"
                   >
                      
-                    fuel
-                  </div>
-                </div>
-                /
-                 
-                <div />
-              </div>
-              <div>
-                <div
-                  className="biotic-materials resource"
-                >
-                  <div
-                    className="resName"
-                  >
-                     
-                    biotic-materials
-                  </div>
-                </div>
-                /
-                 
-                <div />
-              </div>
-              <div>
-                <div
-                  className="minerals resource"
-                >
-                  <div
-                    className="resName"
-                  >
-                     
-                    minerals
+                    nanotechnologies
                   </div>
                 </div>
                  
@@ -311,12 +297,12 @@ exports[`Board snapshot 1`] = `
           <div
             className="points"
           >
-            2
+            3
           </div>
           <p
             className="cardName"
           >
-            Power Station
+            Recycling tank
           </p>
         </div>
       </div>
@@ -330,16 +316,16 @@ exports[`Board snapshot 1`] = `
       onClick={[Function]}
     >
       <div
-        className="military card   "
+        className="military card  "
       >
          
         <div>
-          ID: 0
+          ID: 16
         </div>
         <div
-          className="fighters"
+          className="orbital"
         >
-          Fighters
+          Orbital
         </div>
       </div>
     </div>

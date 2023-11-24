@@ -14,7 +14,18 @@ import { deliveryCards } from "./CardDefinitions/delivery";
 import { engineeringCards } from "./CardDefinitions/engineering";
 import { terraformingCards } from "./CardDefinitions/terraforming";
 import { militaryCards } from "./CardDefinitions/military";
+import { DeliveryCard } from "./Cards/delivery";
+import { EngineeringCard } from "./Cards/engineering";
+import { MilitaryCard } from "./Cards/military";
+import { TerraformingCard } from "./Cards/terraforming";
+import { CardsToDropPlace } from "./Places/CardsToDropPlace";
 
+export interface GameStateCards {
+  delivery: { [key: number]: DeliveryCard };
+  engineering: { [key: number]: EngineeringCard };
+  terraforming: { [key: number]: TerraformingCard };
+  military: { [key: number]: MilitaryCard };
+}
 
 export class GameState {
   constructor(public readonly gameId: string = "") {
@@ -28,13 +39,14 @@ export class GameState {
     return false;
   };
   
-  cards = {
+  cards: GameStateCards = {
     delivery: deliveryCards,
     engineering: engineeringCards,
     terraforming: terraformingCards,
     military: militaryCards
   };
 
+  cardsToDrop = new CardsToDropPlace(this.cards);
   hand = new HandModel(this, this.gameId);
   decks = new DeckManager(this, this.gameId);
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);

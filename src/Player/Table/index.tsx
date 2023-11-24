@@ -5,10 +5,10 @@ import { Card } from "../../components/Card";
 import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
-import { CardDefinition, CardTypes } from "../../Rules/card-types";
-import { ResetButton } from "../../components/ResetButton";
+import { CardTypes, GeneralCard } from "../../Rules/card-types";
 import { ColonyCard } from "../../components/ColonyCard";
 import { ColonyManager } from "../../Rules/Colony/ColonyManager";
+import { CardsToDropPlace } from "../../Rules/Places/CardsToDropPlace";
 
 interface TableProps {
   model: TableModel;
@@ -16,10 +16,11 @@ interface TableProps {
   action: ActionManager;
   resources: ResourcesModel;
   colony: ColonyManager;
+  cardsToDrop: CardsToDropPlace;
 }
 
 export const Table = observer((props: TableProps) => {
-  const handleClick = (card: CardDefinition) => {
+  const handleClick = (card: GeneralCard) => {
     props.action.activateCardOnTable(card);
   };
 
@@ -35,18 +36,33 @@ export const Table = observer((props: TableProps) => {
       {CardTypes.map(
         (el) => (
           <div className={styles.cardsContainer} key={el}>
-            {props.model[el].map((card, ind) => (
+            {props.model[el].cards.map((card, ind) => (
               <Card
-              isSelected={props.model.isSelected(card)}
                 key={ind}
-                {...card}
+                model={card}
                 onClick={() => handleClick(card)}
                 action={props.action} />
             ))}
           </div>
         )
       )}
-      {props.round.isResetable && <ResetButton action={props.action} />}
+      {props.cardsToDrop.cards.length > 0 &&
+        (<div className={styles.cardsToDrop}>
+          {
+            props.cardsToDrop.cards.map((card, ind) => (
+              <Card
+                key={ind}
+                model={card}
+                action={props.action} />
+            ))
+          }
+        </div>)
+      }
+      {props.round.isResetable && (
+        <button className={styles.resetButton} onClick={props.action.reset}>
+          Reset
+        </button>
+      )}
       {props.round.isConfirmable && (
         <button className={styles.endTurnButton} onClick={props.action.confirm}>
           Confirm

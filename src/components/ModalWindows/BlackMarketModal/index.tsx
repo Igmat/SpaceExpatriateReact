@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { ModalVariousOptions } from "../../../Rules/ModalManager";
-import { DeliveryCard } from "../../../Rules/card-types";
+
 import styles from "./styles.module.scss";
+import { DeliveryCard } from "../../../Rules/Cards/delivery";
 
 export const BlackMarketModal: FC<ModalVariousOptions<DeliveryCard>> = (props) => {
     return (

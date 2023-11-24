@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { IActionManager } from "../IActionManager";
-import { CardDefinition, CardType } from "../card-types";
+import { CardType, GeneralCard } from "../card-types";
 import { RoundManager } from "../RoundManager";
 import { TableModel } from "../TableModel";
 import { DeckManager } from "../DeckManager";
@@ -35,9 +35,9 @@ export class ActionManager implements IActionManager {
     this._remaining.activateCard += value;
   };
 
-  perform = async (card: CardDefinition) => {
+  perform = async (card:GeneralCard) => {
     this.adjustRemainingActivateDeck(1);
-    this.adjustRemainingActivateCard(this.hand.cardsInHand.length > 0 ? 1 : 0);
+    this.adjustRemainingActivateCard(this.hand.cardsInHand.cards.length > 0 ? 1 : 0);
     this.round.startPerformingStep();
   };
 
@@ -51,24 +51,22 @@ export class ActionManager implements IActionManager {
   activateDeck = async (type: CardType) => {
     if (this._remaining.activateDeck === 0) return;
     this.adjustRemainingActivateDeck(-1);
-    this.table.takeCard(this.decks[type].takeCard());
-    //return this.tryNext();
+    this.decks[type].topCard.move(this.table[type])
   };
 
-  activateCard = async (card: number) => {
+  activateCard = async (card: GeneralCard) => {
     if (this._remaining.activateCard === 0) return;
     this._remaining.activateCard--;
-    this.table.takeCard(this.hand.dropCard(card));
-    // return this.tryNext();
+    card.move(this.table[card.type]);
   };
 
   activateColonyCard = async (card: number) => {};
-  activateCardOnTable = async (card: CardDefinition) => false;
+  activateCardOnTable = async (card: GeneralCard) => false;
 
   reset = async () => {};
 
-  isDisabled = (card: CardDefinition): boolean =>
-    this.hand.isInHand(card) && this._remaining.activateCard ? false : true;
+  isDisabled = (card: GeneralCard): boolean =>
+   card.isInHand && this._remaining.activateCard ? false : true;
 
   isDisabledDeck = (type: CardType): boolean =>
     !this._remaining.activateDeck ? true : false;

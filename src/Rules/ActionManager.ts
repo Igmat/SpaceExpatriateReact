@@ -1,6 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { DeckManager } from "./DeckManager";
-import { CardDefinition, CardType } from "./card-types";
+import { CardType, GeneralCard } from "./card-types";
 import { TableModel } from "./TableModel";
 import { RoundManager } from "./RoundManager";
 import { HandModel } from "./HandModel";
@@ -41,6 +41,7 @@ export class ActionManager {
       this.gameId
     ),
     terraforming: new TAM(
+      this.gameState,
       this.round,
       this.table,
       this.decks,
@@ -49,9 +50,9 @@ export class ActionManager {
       this.colonyDeck,
       this.resources,
       this.modal,
-      this.hand
     ),
     delivery: new DAM(
+      this.gameState,
       this.table,
       this.round,
       this.hand,
@@ -69,13 +70,11 @@ export class ActionManager {
     return this.activeAction && this.managers[this.activeAction];
   }
 
-  perform = async (card?: CardDefinition) => {
+  perform = async (card?: GeneralCard) => {
     if (!card) return;
-
     if (this.round.phase !== "active") return;
-
     this.activeAction = card.type;
-    this.table.takeCard(this.decks[card.type].takeOpenedCard()!);
+    card.move(this.table[card.type])
 
     if (this.round.current < 5) {
       this.nextRound();
@@ -105,7 +104,7 @@ export class ActionManager {
     this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateCard = async (card: number) => {
+  activateCard = async (card: GeneralCard) => {
     this.currentManager?.activateCard(card);
     this.currentManager?.isEnded && await this.nextRound();
   };
@@ -115,16 +114,16 @@ export class ActionManager {
     this.currentManager?.isEnded && await this.nextRound();
   };
 
-  activateCardOnTable = async (card: CardDefinition) => {
+  activateCardOnTable = async (card: GeneralCard) => {
     await this.currentManager?.activateCardOnTable(card);
     this.currentManager?.isEnded && await this.nextRound();
   };
 
   reset = async () => await this.currentManager?.reset();
 
-  get isDisabled(): (card: CardDefinition) => boolean {
-    return (card: CardDefinition) => {
-      if (!this.activeAction) return !this.decks.isInDeck(card);
+  get isDisabled(): (card: GeneralCard) => boolean {
+    return (card: GeneralCard) => {
+      if (!this.activeAction) return !card.isOpened;
       return this.managers[this.activeAction].isDisabled(card);
     };
   }

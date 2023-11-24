@@ -1,97 +1,86 @@
 import { GameState } from ".";
-import { makeAutoSavable } from "../Utils/makeAutoSavable";
-import { CardDefinition, CardType } from "./card-types";
+import { CardType, GeneralCard } from "./card-types";
 import { makeAutoObservable } from "mobx";
+import { DropCardsPlace } from "./Places/DropCardsPlace";
+import { ActiveCardsPlace } from "./Places/ActiveCardsPlace";
+import { OpenedCardsPlace } from "./Places/OpenedCardPlace";
 
-export class DeckModel<T extends { id: number }> {
+export class DeckModel<T extends GeneralCard> {
   constructor(
     public readonly type: CardType,
-    public readonly cardsDefinitions: { [key: number]: T },
-    gameId: string,
-    gameState: GameState
+    public readonly cardsDefinitions: {
+      [key: number]: T;
+    },
+    public readonly gameId: string,
+    public readonly gameState: GameState
   ) {
     makeAutoObservable(this);
 
-    const isLoaded = makeAutoSavable(
-      this,
-      gameId,
-      `deckmodel_${type}`,
-      ["_activeCards" as any, "_droppedCards" as any, "_openedCard"],
-      gameState.saveCondition
-    );
-    if (!isLoaded) {
-      this.initialize();
-    }
+    // const isLoaded = makeAutoSavable(
+    //  this, gameId, `deck_${type}`,
+    // //   ["_activeCards" as any, "_droppedCards" as any, "_openedCard"],
+    // //   gameState.saveCondition
+    // );
+    // if (!isLoaded) {
+    this.initialize();
+    //}
   }
 
-  private _activeCards: number[] = [];
-  private _droppedCards: number[] = [];
-  private _openedCard?: number;
+  public activeCards = new ActiveCardsPlace(
+    this.type,
+    this.cardsDefinitions,
+    this.gameId
+  );
+  public droppedCards = new DropCardsPlace(
+    this.type,
+    this.cardsDefinitions,
+    this.gameId
+  );
+  public openedCard = new OpenedCardsPlace(
+    this.type,
+    this.cardsDefinitions,
+    this.gameId
+  );
 
   initialize = () => {
-    this._activeCards = Object.keys(this.cardsDefinitions).map((key) =>
-      Number(key)
+    Object.values(this.cardsDefinitions).forEach((card) =>
+      card.move(this.activeCards)
     );
     this.mixCards();
     this.openCard();
-  };
-
-  get openedCard(): T | undefined {
-    if (this._openedCard !== undefined)
-      return this.cardsDefinitions[this._openedCard];
-    return undefined;
-  }
+    this.dealCards();
+  }; // переписан по новому
 
   openCard = () => {
-    this._openedCard !== undefined && this.dropCards(this._openedCard);
-    this._openedCard = this.takeCard().id;
-  };
+    this.openedCard.cards.forEach((card) => {
+      card.move(this.droppedCards);
+    });
+    this.topCard.move(this.openedCard);
+  }; // переписан по новому
 
-  takeOpenedCard(): T | undefined {
-    if (this._openedCard === undefined) return undefined;
-    const result = this._openedCard;
-    this._openedCard = undefined;
-    return this.cardsDefinitions[result];
-  }
-
-  takeOpenedCardAndOpenNew = () => {
-    const result = this.takeOpenedCard();
-    this.openCard();
-
-    return result;
-  };
-
-  private mixCards() {
-    const result: number[] = [];
-    const restCards = [...this._activeCards];
-
-    while (restCards.length > 0) {
-      const randomIndex = Math.floor(Math.random() * restCards.length);
-      result.push(restCards[randomIndex]);
-      restCards.splice(randomIndex, 1);
-    }
-    this._activeCards = result;
-  }
-
-  takeCard = (): T => {
-    const idOfCard = this._activeCards.pop()!;
-    if (this._activeCards.length === 0) {
-      this._activeCards = this._droppedCards;
-      this._droppedCards = [];
+  private checkActive() {
+    if (this.activeCards.isEmpty) {
+      this.droppedCards.cards.forEach((card) => {
+        card.move(this.activeCards);
+      });
       this.mixCards();
     }
-    return this.cardsDefinitions[idOfCard];
-  };
+  } // переписан по новому
 
-  dropCards = (...cards: number[]) => {
-    this._droppedCards.push(...cards);
-  };
+  get topCard() {
+    this.checkActive();
+    return this.activeCards.cards[0];
+  } //повертає верхню карту
 
-  findCard = (card: CardDefinition) => {
-    return card.id === this._openedCard;
-  };
-
-  get restCount() {
-    return this._droppedCards.length;
+  private mixCards() {
+    const restCards = [...this.activeCards.cards];
+    while (restCards.length > 0) {
+      const randomIndex = Math.floor(Math.random() * restCards.length);
+      restCards[randomIndex].move(this.activeCards);
+      restCards.splice(randomIndex, 1);
+    }
+  } // переписан по новому
+  dealCards() {
+    this.topCard.move(this.gameState.hand.cardsInHand);
   }
 }

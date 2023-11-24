@@ -1,6 +1,10 @@
 import { GameState } from ".";
 import type { EffectName } from "./Colony/ColonyManager";
-
+import { DeliveryCard, DeliveryCardDefinition } from "./Cards/delivery";
+import { MilitaryCard, MilitaryCardDefinition } from "./Cards/military";
+import { EngineeringCard, EngineeringCardDefinition } from "./Cards/engineering";
+import { TerraformingCard, TerraformingCardDefinition } from "./Cards/terraforming";
+import { ColonyCardDefinition } from "./Cards/colony";
 export const BasicResources = [
   "fuel",
   "minerals",
@@ -30,10 +34,24 @@ export const isCardType = (option: string): option is CardType =>
 
 */
 
+export type GeneralCard =
+  | DeliveryCard
+  | EngineeringCard
+  | TerraformingCard
+  | MilitaryCard
+
+export type CardDefinition =
+  | DeliveryCardDefinition
+  | EngineeringCardDefinition
+  | MilitaryCardDefinition
+  | TerraformingCardDefinition
+  | ColonyCardDefinition
+
 export const CardTypes = ["delivery", "engineering", "terraforming", "military"] as const;
 export type CardType = (typeof CardTypes)[number];
 
 export const isEngineeringCard = (
+  
   value: unknown
 ): value is EngineeringCard => {
   return (
@@ -48,53 +66,14 @@ export const isEngineeringCard = (
   );
 };
 
-export type CardDefinition =
-  | DeliveryCard
-  | EngineeringCard
-  | TerraformingCard
-  | MilitaryCard;
-
-  export interface CardId {
-    id: number;
-    type: CardType;
-  }
-
-export interface DeliveryCard {
+export interface CardId {
   id: number;
-  type: "delivery";
-  resources: BasicResource[];
-  // points: number
-}
-
-export interface EngineeringCard {
-  id: number;
-  type: "engineering";
-  connection: "start" | "continue" | "end";
-  entryPoint?: Resource;
-  exitPoint?: Resource[];
-  points?: number;
-  name: string;
+  type: CardType;
 }
 
 export type SelectableEngineeringCard = EngineeringCard & {
   isSelected: boolean;
 };
-
-export interface TerraformingCard {
-  name: string;
-  id: number;
-  type: "terraforming";
-  resources: Resource[];
-  points: number;
-}
-
-export interface MilitaryCard {
-  id: number;
-  type: "military";
-  weapon: "orbital" | "intelligence" | "fighters" | "spaceborne";
-  name: string;
-  // points: number
-}
 
 export type EffectActivateFn = (gameState: GameState) => Promise<unknown>;
 
@@ -112,19 +91,6 @@ export type Trigger =
 export const TriggerNames = ["before", "after", "during", "beforeSelect", "afterSelect", "afterPerform"] as const;
 
 export type TriggerName = (typeof TriggerNames)[number]
-
-export interface ColonyCard {
-  id: number;
-  type: "colony";
-  benefit: string;
-  mutateAction: CardType;
-  data?: unknown;
-  players?: number;
-  name: string;
-  triggers: {
-    [key in TriggerName]?: Trigger
-  }
-}
 
 export const expandTrigger = (trigger?: Trigger): FullTrigger => {
   if (!trigger) {
