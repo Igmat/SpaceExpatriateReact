@@ -47,8 +47,7 @@ export class ActionManager implements IActionManager {
   _usedTerraformingCards: number[] = []; //использованные карты Terraforming
   
   private _tempDroppedCards = new CardsToDropPlace(
-    this.gameState.cards,
-    this.gameId
+    this.gameState.cards
   );
 
   private _isEnded: boolean = false;

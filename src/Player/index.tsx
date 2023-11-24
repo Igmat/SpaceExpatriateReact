@@ -10,7 +10,14 @@ export const Player = observer(() => {
 
   return (
     <>
-      <Table model={gameState.table} round={gameState.round} action={gameState.action} resources={gameState.resources} colony={gameState.colony} />
+      <Table
+        model={gameState.table}
+        round={gameState.round}
+        action={gameState.action}
+        resources={gameState.resources}
+        colony={gameState.colony}
+        cardsToDrop={gameState.cardsToDrop}
+      />
       <Hand model={gameState.hand} decks={gameState.decks} action={gameState.action} />
       <PlayerMenu resources={gameState.resources} />
     </>

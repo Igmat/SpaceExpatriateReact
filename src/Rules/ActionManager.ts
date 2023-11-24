@@ -50,7 +50,6 @@ export class ActionManager {
       this.colonyDeck,
       this.resources,
       this.modal,
-      this.hand
     ),
     delivery: new DAM(
       this.gameState,

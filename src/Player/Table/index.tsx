@@ -6,9 +6,9 @@ import { ActionManager } from "../../Rules/ActionManager";
 import { RoundManager } from "../../Rules/RoundManager";
 import { ResourcesModel } from "../../Rules/ResourcesModel";
 import { CardTypes, GeneralCard } from "../../Rules/card-types";
-import { ResetButton } from "../../components/ResetButton";
 import { ColonyCard } from "../../components/ColonyCard";
 import { ColonyManager } from "../../Rules/Colony/ColonyManager";
+import { CardsToDropPlace } from "../../Rules/Places/CardsToDropPlace";
 
 interface TableProps {
   model: TableModel;
@@ -16,10 +16,11 @@ interface TableProps {
   action: ActionManager;
   resources: ResourcesModel;
   colony: ColonyManager;
+  cardsToDrop: CardsToDropPlace;
 }
 
 export const Table = observer((props: TableProps) => {
-  const handleClick = (card:  GeneralCard) => {
+  const handleClick = (card: GeneralCard) => {
     props.action.activateCardOnTable(card);
   };
 
@@ -38,14 +39,30 @@ export const Table = observer((props: TableProps) => {
             {props.model[el].cards.map((card, ind) => (
               <Card
                 key={ind}
-                model = {card}
+                model={card}
                 onClick={() => handleClick(card)}
                 action={props.action} />
             ))}
           </div>
         )
       )}
-      {props.round.isResetable && <ResetButton action={props.action} />}
+      {props.cardsToDrop.cards.length > 0 &&
+        (<div className={styles.cardsToDrop}>
+          {
+            props.cardsToDrop.cards.map((card, ind) => (
+              <Card
+                key={ind}
+                model={card}
+                action={props.action} />
+            ))
+          }
+        </div>)
+      }
+      {props.round.isResetable && (
+        <button className={styles.resetButton} onClick={props.action.reset}>
+          Reset
+        </button>
+      )}
       {props.round.isConfirmable && (
         <button className={styles.endTurnButton} onClick={props.action.confirm}>
           Confirm
