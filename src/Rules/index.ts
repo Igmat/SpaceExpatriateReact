@@ -19,6 +19,7 @@ import { EngineeringCard } from "./Cards/engineering";
 import { MilitaryCard } from "./Cards/military";
 import { TerraformingCard } from "./Cards/terraforming";
 import { Serializer } from "../Utils/serializer";
+import { CardsToDropPlace } from "./Places/CardsToDropPlace";
 
 export interface GameStateCards {
   delivery: { [key: number]: DeliveryCard };
@@ -104,6 +105,7 @@ export class GameState {
     military: militaryCards,
   };
 
+  cardsToDrop = new CardsToDropPlace(this.cards);
   hand = new HandModel(this, this.gameId);
   decks = new DeckManager(this, this.gameId);
   colonyDeck = new ColonyDeckModel(colonyCards, this.gameId);

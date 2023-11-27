@@ -9,9 +9,8 @@ import { ResourcesModel } from "../ResourcesModel";
 import { ColonyDeckModel } from "../Colony/ColonyDeckModel";
 import { ColonyManager } from "../Colony/ColonyManager";
 import { ModalManager } from "../ModalManager";
-import { HandModel } from "../HandModel";
-import { CardsToDropPlace } from "../Places/CardsToDropPlace";
 import { GameState } from "..";
+
 export class ActionManager implements IActionManager {
   constructor(
     private readonly gameState: GameState,
@@ -23,7 +22,6 @@ export class ActionManager implements IActionManager {
     private readonly colonyDeck: ColonyDeckModel,
     private readonly resources: ResourcesModel,
     private readonly modal: ModalManager,
-    private readonly hand: HandModel
   ) {
     makeAutoObservable(this);
     // makeAutoSavable(this, gameId, "terraformingManager", [
@@ -33,7 +31,6 @@ export class ActionManager implements IActionManager {
   }
 
   private _isEnded: boolean = false;
-  private _cardsToDrop = new CardsToDropPlace(this.gameState.cards, this.gameId);
   missionType?: CardType;
 
   perform = async (card: GeneralCard) => {
@@ -51,28 +48,43 @@ export class ActionManager implements IActionManager {
 
   get isThreeCardsOfSameType() {
     return (
-      this._cardsToDrop.cards.length === 3 &&
-      this._cardsToDrop.cards.filter((card) => card.type === this.missionType)
+      this.gameState.cardsToDrop.cards.length === 3 &&
+      this.gameState.cardsToDrop.cards.filter((card) => card.type === this.missionType)
         .length === 3
     );
   }
 
   get isOneCardOfEachType() {
     return (
-      this._cardsToDrop.cards.length === 4 &&
+      this.gameState.cardsToDrop.cards.length === 4 &&
       CardTypes.map(
-        (el) => this._cardsToDrop.cards.filter((card) => card.type === el).length === 1
-      ).filter(Boolean).length === 4
+        (el) => this.gameState.cardsToDrop.cards
+          .filter((card) => card.type === el).length === 1)
+        .filter(Boolean).length === 4
     );
   }
 
-  activateDeck = async (type: CardType) => {};
+  get tryBuildColony() {
+    //даёт разрешение на сброс карт
+    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
+      return true
+    } else
+      return false
+  };
 
-  activateCard = async (card: GeneralCard) => {};
+  get dropCards() {
+    //сбрасываем карты в колоду постоянного сброса
+    this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type].droppedCards));
+    return true
+  };
 
-  activateCardOnTable = async (card: GeneralCard) => { 
-    card.move(this._cardsToDrop) //карта уходит во временный сброс
-    this.tryBuildColony();
+  activateDeck = async (type: CardType) => { };
+
+  activateCard = async (card: GeneralCard) => { };
+
+  activateCardOnTable = async (card: GeneralCard) => {
+    if (this.gameState.cardsToDrop.cards.length >= 4) return false;
+    !this.tryBuildColony && card.move(this.gameState.cardsToDrop) //если условие для сброса карт больше не выполняется - карты сбрасывать нельзя
     return true;
   };
 
@@ -80,13 +92,6 @@ export class ActionManager implements IActionManager {
     if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
       //если выполняется условие для постройки колонии
       return this.buildColony(selectedCardIndex); //строим колонию
-    }
-  };
-
-  tryBuildColony = () => {
-    //проверяем, выполняется ли условие для постройки колонии, отвечает за перенос карт в временны сброс. Можем вернуть ресетом
-    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      this.dropCards();
     }
   };
 
@@ -99,36 +104,62 @@ export class ActionManager implements IActionManager {
     }
     this.resources.extractColonyPoints(selectedCard);
     this.colony.takeColonyCard(selectedCard);
-    this.confirm()
+    if (this.tryBuildColony && this.dropCards) {
+      this.colonyDeck.countPoints();
+      this._isEnded = true;
+    }
   };
 
-  confirm = async () => { 
-    this.colonyDeck.countPoints();
-    this._isEnded = true;
+  confirm = async () => {
+    if (!this.tryBuildColony && this.gameState.cardsToDrop.isEmpty === false) return
+
+    if (this.gameState.cardsToDrop.isEmpty) {
+      this.colonyDeck.countPoints();
+      this._isEnded = true;
+    }
+
   };
 
   reset = async () => {
-    if (this.isThreeCardsOfSameType || this.isOneCardOfEachType) {
-      this._cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
-    }
-  };
-
-  dropCards = () => {
-     //сбрасываем карты в колоду постоянного сброса
-    this._cardsToDrop.cards.forEach((card) => card.move(this.decks[card.type].droppedCards));
+    this.gameState.cardsToDrop.cards.forEach((card) => card.move(this.table[card.type]));
   };
 
   isDisabled(card: GeneralCard): boolean {
+    if (this.round.phase === "terraforming" && card.isOnTable) {
+      if (this.gameState.cardsToDrop.isEmpty) {
+        return false
+      }
+      if (card.isOnTable && this.gameState.cardsToDrop.cards.length >= 1) {
+        const cards = this.gameState.cardsToDrop.cards;
+
+        if (cards.length >= 1 && cards[0].type !== this.missionType && cards.some(el => el.type === card.type)) {
+          return true;
+        }
+
+        if (cards.length > 1 && cards.every(el => el.type === this.missionType) && card.type !== this.missionType) {
+          return true;
+        }
+
+        if (cards.length >= 2 && cards.some(el => el.type !== this.missionType) && cards.some(el => el.type === card.type)) {
+          return true;
+        }
+      }
+    }
+
     if (card.isOnTable) {
       return this.isDisabledTable(card);
     }
-    if (card.isInHand || card.isInDeck) {
+    if (card.isInHand || card.isInDeck || card.isOpened) {
       return true;
     }
     return false;
+
   }
 
   isDisabledDeck = (type: CardType): boolean => true;
 
   isDisabledTable = (card: GeneralCard): boolean => false; //тут надо доделать логику полсле того, как будет понятно, каки работает метод постройки колонии
+
+  isDisabledCard = (card: GeneralCard): boolean => true;
+
 }
