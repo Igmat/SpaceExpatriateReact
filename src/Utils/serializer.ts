@@ -1,10 +1,14 @@
+import { makeAutoObservable } from "mobx";
+
 export class Serializer<T> {
   constructor(
     private readonly prefix: string,
     private readonly object: T,
     private readonly keys: (keyof T)[] = []
 
-  ) {}
+  ) {
+    makeAutoObservable(this);
+  }
 
   serialize(data:any): void {
     data[this.prefix] =  this.keys.reduce((acc, key) => {
