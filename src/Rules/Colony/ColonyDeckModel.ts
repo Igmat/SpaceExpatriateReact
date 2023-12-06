@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { makeAutoSavable } from "../../Utils/makeAutoSavable";
 import { ColonyCard } from "../Cards/colony";
 
 export type ColonyCardWithPoints = ColonyCard & { points?: number };
@@ -10,15 +9,8 @@ export class ColonyDeckModel {
     gameId: string
   ) {
     makeAutoObservable(this);
-    if (!gameId) return;
-    const isLoaded = makeAutoSavable(this, gameId, "colonyDeck", [
-      "_activeCards" as any,
-      "openedCards",
-    ]);
-    if (!isLoaded) {
-      this.initialize();
-    }
   }
+
 
   private _activeCards: number[] = [];
   openedCards: ColonyCardWithPoints[] = [];

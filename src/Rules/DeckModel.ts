@@ -15,15 +15,6 @@ export class DeckModel<T extends GeneralCard> {
     public readonly gameState: GameState
   ) {
     makeAutoObservable(this);
-
-    // const isLoaded = makeAutoSavable(
-    //  this, gameId, `deck_${type}`,
-    // //   ["_activeCards" as any, "_droppedCards" as any, "_openedCard"],
-    // //   gameState.saveCondition
-    // );
-    // if (!isLoaded) {
-    this.initialize();
-    //}
   }
 
   public activeCards = new ActiveCardsPlace(

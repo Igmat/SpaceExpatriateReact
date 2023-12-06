@@ -9,9 +9,9 @@ export class TableModel {
     private readonly gameId: string) {
     makeAutoObservable(this);
   }
-    public delivery = new TablePlace("delivery", this.gameState.cards.delivery, this.gameId);
-    public engineering = new TablePlace("engineering", this.gameState.cards.engineering, this.gameId);
-    public terraforming = new TablePlace("terraforming", this.gameState.cards.terraforming, this.gameId);
-    public military = new TablePlace("military", this.gameState.cards.military, this.gameId);
+  public delivery = new TablePlace("delivery", this.gameState.cards.delivery, this.gameId);
+  public engineering = new TablePlace("engineering", this.gameState.cards.engineering, this.gameId);
+  public terraforming = new TablePlace("terraforming", this.gameState.cards.terraforming, this.gameId);
+  public military = new TablePlace("military", this.gameState.cards.military, this.gameId);
 
 }
